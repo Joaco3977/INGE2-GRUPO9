@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Clínica Veterinaria</title>
+    <style>
+      /* Estilos CSS aquí */
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Clínica Veterinaria</h1>
+      <nav>
+        <ul>
+          <li><a href="#servicios">Servicios</a></li>
+          <li><a href="#equipo">Nuestro equipo</a></li>
+          <li><a href="#contacto">Contacto</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section id="banner">
+        <img src="imagen-clinica.jpg" alt="Clínica Veterinaria">
+        <h2>Bienvenidos a nuestra clínica</h2>
+      </section>
+      <section id="servicios">
+        <h2>Servicios</h2>
+        <ul>
+          <li>Consultas veterinarias</li>
+          <li>Vacunación y desparasitación</li>
+          <li>Cirugía y hospitalización</li>
+          <li>Peluquería y estética</li>
+          <li>Alimentación y accesorios</li>
+        </ul>
+      </section>
+      <section id="equipo">
+        <h2>Nuestro equipo</h2>
+        <p>Nuestro equipo está formado por veterinarios altamente cualificados y amantes de los animales. Estamos comprometidos con la salud y el bienestar de tus mascotas.</p>
+        <img src="imagen-equipo.jpg" alt="Equipo de veterinarios">
+      </section>
+      <section id="contacto">
+        <h2>Contacto</h2>
+        <p>Puedes encontrarnos en:</p>
+        <address>
+          <p>Calle Veterinaria, 123</p>
+          <p>1900 La Plata</p>
+          <p>Teléfono: 91 123 45 67</p>
+        </address>
+        <form action="enviar.php" method="post">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" name="nombre" required>
+          <label for="email">Email:</label>
+          <input type="email" id="email" name="email" required>
+          <label for="mensaje">Mensaje:</label>
+          <textarea id="mensaje" name="mensaje" required></textarea>
+          <button type="submit">Enviar mensaje</button>
+        </form>
+      </section>
+    </main>
+    <footer>
+      <p>© 2023 Clínica Veterinaria. Todos los derechos reservados.</p>
+    </footer>
+  </body>
+</html>
