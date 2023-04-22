@@ -1,0 +1,112 @@
+1-CAMPANIA
+	IDcampania
+	titulo
+	descripcion
+	linkpago
+	
+2-LOG
+	DNIVETERINARIO(FK)
+	tipolog
+	DNICLIENTE(FK)?
+	DNIPASEADOR(FK)?
+	IDPERRO(FK)?
+	IDCAMPANIA(FK)?
+	IDTURNO(FK)?
+	...
+
+3-PASEADOR
+	DNIpaseador
+	nombreapellido
+	telefono
+	mail
+	zonatrabajo
+	horariotrabajo
+
+4-CLIENTE
+	DNIcliente
+	nombreapellido
+	direccion
+	telefono
+	mail
+	fecharegistro
+	password
+	username
+	donado (reiniciar a 0 luego de consumir el valor en la vet!)
+
+5-PERROADOPTAR
+	sexo
+	tamanio
+	edad?
+	telefono
+	mail
+	DNICLIENTE(FK)
+
+6-PERROCRUZA
+	foto
+	sexo
+	tamanio
+	IDRAZA(FK)
+	DNICLIENTE(FK)
+
+7-PERROPERDIDO
+	foto
+	tamanio
+	edad?
+	telefono
+	mail
+
+8-PERRO
+	foto
+	RAZA(FK)
+	tamanio
+
+9-CONSULTA
+	IDconsulta
+	pregunta
+	respuesta (para saber si respondida preg is not null)
+
+10-VETERINARIO
+	foto?
+	DNIveterinario
+	nombreapellido
+	mail
+
+11-TURNO
+	IDPERRO(FK)
+	DNIVETERINARIO(FK)
+	fecha
+	hora
+	estado (pendiente, aprobado, rechazado, terminado, cancelado por cliente, ausente!)
+	IDSERVICIO(FK)
+	IDVACUNA(FK)?
+	
+12-TIPOSERVICIO
+
+13-VACUNA
+	IDvacuna
+	nombrevacuna
+
+14-HISTORIALMEDICO
+
+15-ENTRADAHISTORIAL
+
+16-RAZA
+	IDRAZA
+	nombreraza
+
+17-ENTRADAVETERINARIA
+	(fecha
+	DIRECCIONVET(FK) (PK))
+
+18-VETERINARIA
+	DIRECCIONVET
+	nombre
+
+19-ADMIN
+	IDadmin (setear en 0)
+	password
+	mail
+-------------------------------------------------
+R1-CRUZA
+	IDCLIENTE(FK)
+	IDPERROCRUZA(FK)

@@ -1,0 +1,24 @@
+LOG
+log.subirEntrada({horaActual} + ": " + Localstorage.nombre + "realizo atencion al perro " + {perro.nombre} + " del cliente ");
+	VET
+		agregue/edite/borre cliente
+		agregue/edite/borre perro
+		acepte/rechace turno perro del cliente
+		realice atencion de turno de perro del cliente
+		agregue/edite/borre veterinaria de turno
+		
+		
+	CLIENTE
+		editar/borrar perfil
+
+
+CONTACTO
+	redireccionamiento a mail?
+	redireccionamiento a wsp?
+
+AñADIR SUGERENCIA A AUTOCOMPLETADO
+
+	sugerencias.agregarSugerencia("nombreEntidad", "nuevaSugerencia")
+		traer entidad de nombreEntidad de BD
+		agregar la nuevaSugerencia
+
