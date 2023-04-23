@@ -22,6 +22,20 @@ export const router = createRouter({
     {
         path: '/contacto',
         component: () => import ('./views/Contacto.vue'),
+    },
+    {
+        path: '/admin',
+        component: () => import ('./views/admin/Admin.vue'),
+        children: [
+          {
+            path: 'log',
+            component: () => import ('./views/admin/Log.vue')
+          },
+          {
+            path: 'admvets',
+            component: () => import ('./views/admin/AdministrarVets.vue'),
+          }
+        ]
     }
   ],
 })

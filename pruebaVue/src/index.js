@@ -44,6 +44,7 @@ function login(mail, password) {
         console.log(rows);
         respuesta.estado = true;
         respuesta.nombre = rows[0].NOMBREAPELLIDO;
+        respuesta.mail =rows[0].MAIL;
         respuesta.rol = 3;
         return respuesta;
       } else {
@@ -86,7 +87,17 @@ app.post('/intentoLogin', (req, res) => {
       let token = generarToken()
       console.log('\x1b[32m%s\x1b[0m', 'se le asigna el token: ', token)
       console.log('\x1b[32m%s\x1b[0m', 'sus credenciales son validas!')
-      //generar entrada a tabla sesion con resultado.rol y token
+      knex('token').insert({
+        mail: resultado.mail,
+        token: token,
+        rol: resultado.rol,
+      })
+      .then(() => {
+        console.log('Registro insertado correctamente')
+      })
+      .catch((err) => {
+        console.error(err);
+      });
       res.status(200).send({ token: token , username: resultado.nombre});
     } else {
       console.log('\x1b[32m%s\x1b[0m', 'sus credenciales no son validas!')
@@ -96,8 +107,30 @@ app.post('/intentoLogin', (req, res) => {
 })
 
 app.post('/logout', (req, res) => {
-  console.log('\x1b[36m%s\x1b[0m', 'Cierre de sesion con el token: ', req.body.token)
-  res.status(200).send('Sesion cerrada con exito!')
+  knex('token')
+  .where({ token : req.body.token })
+  .del()
+  .then(function(rowsDeleted) {
+    console.log('Rows deleted: ' + rowsDeleted);
+    res.status(200).send('Sesion cerrada con exito!')
+  })
+  .catch(function(error) {
+    console.error(error);
+    res.status(404).send('No se encontro esa sesion')
+  });
+})
+
+
+app.post('/pedirRol', (req,res) =>{
+  knex('token')
+  .where({token : req.body.token})
+  .then(rows => {
+    if (rows.length>0){
+      console.log('entre, rol: ', rows[0].rol)
+      res.status(200).send({ rol: rows[0].rol})
+    }else{
+      res.status(401).send({ rol : 0})
+  }})
 })
 
 app.listen(5137, function() {

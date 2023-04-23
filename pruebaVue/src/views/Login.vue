@@ -5,15 +5,24 @@
   var dirBD = 'http://190.191.175.12:5137'
 
   const loggedIn=ref(false)
+  const username = ref('')
   const mail =ref('')
   const password =ref('')
 
-  const username = ref('')
+  const cheqLoggedIn = () => {
+    axios.post(`${dirBD}/pedirRol`, { token : localStorage.getItem('token') })
+      .then(res => {
+        if (res.status = 200) {
+          loggedIn.value = true;
+          username.value = localStorage.getItem('username')
+          console.log(localStorage.getItem('username'))
+        } else {
+          loggedIn.value = false;
+        }
+    })
+  } 
 
-  axios.get(`${dirBD}/usuarios`)
-  .then(response => {
-    console.log(response.data)
-  })
+  cheqLoggedIn()
 
   function logout(){
     const data = {
@@ -38,6 +47,7 @@
         if (response.status==200) {
           console.log(response.data)
           localStorage.setItem('token',response.data.token);
+          localStorage.setItem('username', response.data.username)
           username.value = response.data.username;
           loggedIn.value = true;
         } else {
