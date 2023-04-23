@@ -3,19 +3,25 @@
   import axios from 'axios'
 
   const loggedIn=ref(false)
-  const username =ref('');
+  const mail =ref('');
   const password =ref('');
 
   function logout(){
     loggedIn.value=false
   }
   function login(){
-    console.log(username.value)
-    console.log(password.value)
-    if (username.value == "renzo") {
-      console.log("entre")
-      loggedIn.value=true
-    }
+    console.log(mail.value, "   ", password.value)
+    const data = {
+      mail: mail.value,
+      password: password.value,
+    };
+    axios.post('./intentoLogin', { data })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   }
 </script>
 
@@ -25,9 +31,10 @@
       <button @click="logout">Cerrar sesión</button>
     </div>
     <div v-else>
+      <h4>Iniciar Sesion</h4>
       <form @submit.prevent="login">
-       <label for="username">Nombre de usuario:</label>
-        <input type="text" id="username" v-model="username">
+       <label for="mail">Mail:</label>
+        <input type="text" id="mail" v-model="mail">
        <label for="password">Contraseña:</label>
        <input type="password" id="password" v-model="password">
        <button type="submit">Iniciar sesión</button>

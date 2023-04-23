@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+
 const mysql = require('mysql2');
 
 // Crea una conexión a la base de datos
@@ -22,17 +23,20 @@ connection.connect(function(error) {
 
 app.use(cors());
 
-app.get('/', function(req, res) {
-    console.log("alguien hizo peticion")
-  res.json({mensaje:'¡Hola, mundo!'});
-});
-
 app.get('/usuarios', function(req,res){
     console.log("alguien hizo peticion de clientes")
     connection.query('SELECT * FROM cliente', function(error, resultados, campos) {
         if (error) throw error;
         res.json(resultados);
       })
+})
+
+app.post('/intentoLogin', function (req, res) {
+    const mail = req.body.mail
+    const password = req.body.password
+    console.log(`El usuario ${mail} y la contraseña ${password}.`);
+    /*chequear en BD si coincidencia*/
+    res.status(200).json({  }); /*enviar true o false*/
 })
 
 app.listen(5137, function() {
