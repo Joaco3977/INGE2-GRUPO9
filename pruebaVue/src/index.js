@@ -31,14 +31,14 @@ app.get('/usuarios', function(req,res){
       })
 })
 
-app.post('/intentoLogin', function (req, res) {
+app.post('/intentoLogin', function(req, res) {
     const mail = req.body.mail
     const password = req.body.password
     console.log(`El usuario ${mail} y la contraseña ${password}.`);
     /*chequear en BD si coincidencia*/
-    res.status(200).json({  }); /*enviar true o false*/
+    res.json({  }); /*enviar true o false*/
 })
 
-app.listen(5137, function() {
-  console.log('Servidor web iniciado en el puerto 5137');
+app.listen(5173, function() {
+  console.log('Servidor web iniciado en el puerto 5173');
 });

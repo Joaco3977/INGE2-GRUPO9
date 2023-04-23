@@ -12,10 +12,10 @@
   function login(){
     console.log(mail.value, "   ", password.value)
     const data = {
-      mail: mail.value,
-      password: password.value,
-    };
-    axios.post('./intentoLogin', { data })
+        mail: mail.value,
+        password: password.value,
+      } 
+    axios.post('/intentoLogin',data)
       .then(response => {
         console.log(response.data);
       })
