@@ -15,7 +15,7 @@
         mail: mail.value,
         password: password.value,
       } 
-    axios.post('/intentoLogin',data)
+    axios.post('login/intentoLogin',data)
       .then(response => {
         console.log(response.data);
       })

@@ -31,7 +31,7 @@ app.get('/usuarios', function(req,res){
       })
 })
 
-app.post('/intentoLogin', function(req, res) {
+app.post('login/intentoLogin', function(req, res) {
     const mail = req.body.mail
     const password = req.body.password
     console.log(`El usuario ${mail} y la contraseña ${password}.`);
