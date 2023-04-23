@@ -6,6 +6,11 @@
   const mail =ref('');
   const password =ref('');
 
+  axios.get('190.191.175.12:5137/usuarios')
+  .then(response => {
+    console.log(response.data)
+  })
+
   function logout(){
     loggedIn.value=false
   }
@@ -15,9 +20,9 @@
         mail: mail.value,
         password: password.value,
       } 
-    axios.post('login/intentoLogin',data)
+      axios.post('190.191.175.12:5137/intentoLogin', data)
       .then(response => {
-        console.log(response.data);
+         console.log(response);
       })
       .catch(error => {
         console.error(error);
