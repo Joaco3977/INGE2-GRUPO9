@@ -1,28 +1,48 @@
 <script setup>
   import {ref, computed } from 'vue'
   import axios from 'axios'
+  
+  var dirBD = 'http://190.191.175.12:5137'
 
   const loggedIn=ref(false)
-  const mail =ref('');
-  const password =ref('');
+  const mail =ref('')
+  const password =ref('')
 
-  axios.get('190.191.175.12:5137/usuarios')
+  const username = ref('')
+
+  axios.get(`${dirBD}/usuarios`)
   .then(response => {
     console.log(response.data)
   })
 
   function logout(){
-    loggedIn.value=false
+    const data = {
+      token: localStorage.getItem('token')
+    }
+    axios.post(`${dirBD}/logout`, data)
+    .then(res => {
+      loggedIn.value = false
+      localStorage.removeItem('token')
+      localStorage.removeItem('username')
+    })
   }
+
   function login(){
     console.log(mail.value, "   ", password.value)
     const data = {
         mail: mail.value,
         password: password.value,
       } 
-      axios.post('190.191.175.12:5137/intentoLogin', data)
+      axios.post(`${dirBD}/intentoLogin`, data)
       .then(response => {
-         console.log(response);
+        if (response.status==200) {
+          console.log(response.data)
+          localStorage.setItem('token',response.data.token);
+          username.value = response.data.username;
+          loggedIn.value = true;
+        } else {
+          console.log(response.data)
+        }
       })
       .catch(error => {
         console.error(error);
