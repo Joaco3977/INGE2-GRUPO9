@@ -1,43 +1,25 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title>
-          Quasar App
-        </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer
+  <!--    <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
       bordered
     >
       <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
+        <q-img
+          src="https://picsum.photos/500/300"
+          :ratio="16/9"
         />
+
+        <MenuItem 
+          v-for= "servicio in servicios"
+          :key="servicio.title"
+          v-bind="servicio"
+        />
+        
       </q-list>
-    </q-drawer>
+    </q-drawer> -->
 
     <q-page-container>
       <router-view />
@@ -47,7 +29,19 @@
 
 <script>
 import { defineComponent, ref } from 'vue'
-import EssentialLink from 'components/EssentialLink.vue'
+//import MenuItem from 'components/MenuItem.vue'
+
+
+const listaServicios = [
+  {
+    title: "Turnos",
+    icon: "calendar",
+    acciones: [
+      {nombre: "Solicitar turno" },
+      {nombre: "Ver turnos"},
+    ]
+  }
+]
 
 const linksList = [
   {
@@ -98,19 +92,20 @@ export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    EssentialLink
+    //MenuItem
   },
 
-  setup () {
+  /* setup () {
     const leftDrawerOpen = ref(false)
 
     return {
+      servicios: listaServicios,
       essentialLinks: linksList,
       leftDrawerOpen,
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
-  }
+  } */
 })
 </script>
