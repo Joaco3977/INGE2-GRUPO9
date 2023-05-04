@@ -67,7 +67,7 @@
     </div>
     <div v-else>
       <h4>Iniciar Sesion</h4>
-      <form @submit.prevent="login">
+      <form @submit.prevent="login, cambiarTexto">
        <label for="mail">Mail:</label>
         <input type="text" id="mail" v-model="mail">
        <label for="password">Contraseña:</label>

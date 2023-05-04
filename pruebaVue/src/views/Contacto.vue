@@ -16,4 +16,13 @@
     <div v-if="rol === 3">
         <h4>ESTAS LOGUEADO COMO CLIENTE</h4>
     </div>
+    <div v-if="rol === 2">
+        <h4>ESTAS LOGUEADO COMO VETERINARIO</h4>
+    </div>
+    <div v-if="rol === 1">
+        <h4>ESTAS LOGUEADO COMO ADMINISTRADOR</h4>
+    </div>
+    <div v-else>
+        <h4>NO ESTAS LOGUEADO</h4>
+    </div>
 </template>
