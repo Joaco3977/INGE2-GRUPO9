@@ -15,7 +15,7 @@
         <q-tab name="Mi Perfil" icon="ion-person"  label="Mi Perfil" />
         <q-tab name="Turnos" icon="ion-calendar"  label="Turnos" />
         <q-tab name="Mis Perros" icon="ion-paw" label="Mis Perros" />
-        <q-tab name="Clientes" icon="ion-person" label="Clientes" />
+        <q-tab name="Clientes" icon="ion-people" label="Clientes" />
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
     </q-tabs>
