@@ -1,11 +1,32 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+<<<<<<< HEAD
   <!--    <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
       bordered
     >
       <q-list>
+=======
+    <q-header elevated>
+      <q-toolbar>
+        <q-btn
+          flat
+          dense
+          round
+          icon="menu"
+          aria-label="Menu"
+          @click="toggleLeftDrawer"
+        />
+
+        <q-toolbar-title> Menu </q-toolbar-title>
+      </q-toolbar>
+    </q-header>
+
+    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
+      <q-list>
+        <q-item-label header> Menu </q-item-label>
+>>>>>>> 2fcc9e89fe72fd86433f8a383c14214d5dac198f
 
         <q-img
           src="https://picsum.photos/500/300"
@@ -28,6 +49,7 @@
 </template>
 
 <script>
+<<<<<<< HEAD
 import { defineComponent, ref } from 'vue'
 //import MenuItem from 'components/MenuItem.vue'
 
@@ -42,70 +64,79 @@ const listaServicios = [
     ]
   }
 ]
+=======
+import { defineComponent, ref } from "vue";
+import EssentialLink from "components/EssentialLink.vue";
+>>>>>>> 2fcc9e89fe72fd86433f8a383c14214d5dac198f
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: "Sobre nosotros",
+    caption: "quasar.dev",
+    icon: "info",
+    link: "https://quasar.dev",
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: "Iniciar Sesion",
+    caption: "github.com/quasarframework",
+    icon: "login",
+    link: "https://github.com/quasarframework",
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    title: "Servicios",
+    caption: "chat.quasar.dev",
+    icon: "medical_information",
+    link: "https://chat.quasar.dev",
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
+    title: "Donar",
+    caption: "forum.quasar.dev",
+    icon: "paid",
+    link: "https://forum.quasar.dev",
   },
   {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
+    title: "Contacto",
+    caption: "@quasarframework",
+    icon: "phone",
+    link: "https://twitter.quasar.dev",
   },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
+];
 
 export default defineComponent({
-  name: 'MainLayout',
+  name: "MainLayout",
 
   components: {
+<<<<<<< HEAD
     //MenuItem
   },
 
   /* setup () {
     const leftDrawerOpen = ref(false)
+=======
+    EssentialLink,
+  },
+
+  setup() {
+    const leftDrawerOpen = ref(false);
+>>>>>>> 2fcc9e89fe72fd86433f8a383c14214d5dac198f
 
     return {
       servicios: listaServicios,
       essentialLinks: linksList,
       leftDrawerOpen,
+<<<<<<< HEAD
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
   } */
 })
+=======
+      toggleLeftDrawer() {
+        leftDrawerOpen.value = !leftDrawerOpen.value;
+      },
+    };
+  },
+});
+>>>>>>> 2fcc9e89fe72fd86433f8a383c14214d5dac198f
 </script>
