@@ -114,7 +114,7 @@ export default defineComponent({
     return {
       tab: ref("Quienes Somos"),
       splitterModel: ref(20),
-      rol: ref(0),
+      rol: ref(2),
     };
   },
 });
