@@ -1,6 +1,6 @@
 <template>
 <!-- Todo el contenido tiene que estar adentro de un div -->
-<!-- Pueden usar componentes dentro de este componente --> 
+<!-- Pueden usar componentes dentro de este componente -->
 <div class="bg-white" style="width: full; max-height: 90vh">
 
     <div class="text-center text-h4 text-primary "> MIS PERROS </div>
@@ -32,7 +32,7 @@ import { defineComponent } from 'vue'
 import { ref } from 'vue'
 
 export default defineComponent({
-name: 'PaginaClientes',
+name: 'PaginaPerros',
 components: {
   },
 })

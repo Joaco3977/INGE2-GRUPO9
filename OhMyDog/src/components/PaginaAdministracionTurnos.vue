@@ -2,10 +2,10 @@
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
   <div class="bg-white" style="width: full; max-height: 90vh">
-    <div class="text-center text-h4 text-primary">MI PERFIL</div>
-    <div class="text-center text-h6 text-primary">
-      Hola! Soy el componente "Página Perfil" EDITAME
+    <div class="text-center text-h4 text-primary">
+      ADMINISTRAR TURNOS DE CLIENTES
     </div>
+    <div class="text-center text-h6 text-primary">TURNOS DE VETS</div>
 
     <q-scroll-area
       :thumb-style="thumbStyle"
@@ -17,10 +17,7 @@
 
       <div>holitas soy un div</div>
 
-      <div>
-        Este estaría visible cuando inició sesión, y los vets tmb tendrían uno
-        :)
-      </div>
+      <div>Soy version de veterinario de turnos</div>
 
       <!-- Hasta acá :)  -->
     </q-scroll-area>
@@ -32,7 +29,7 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 
 export default defineComponent({
-  name: "PaginaPerfil",
+  name: "PaginaAdministracionTurnos",
   components: {},
 });
 </script>

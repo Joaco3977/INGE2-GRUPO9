@@ -2,9 +2,9 @@
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
   <div class="bg-white" style="width: full; max-height: 90vh">
-    <div class="text-center text-h4 text-primary">MI PERFIL</div>
+    <div class="text-center text-h4 text-primary">QUIENES SOMOS</div>
     <div class="text-center text-h6 text-primary">
-      Hola! Soy el componente "Página Perfil" EDITAME
+      Hola! Soy el componente "Página Quienes Somos" EDITAME
     </div>
 
     <q-scroll-area
@@ -32,7 +32,7 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 
 export default defineComponent({
-  name: "PaginaPerfil",
+  name: "PaginaQuienesSomos",
   components: {},
 });
 </script>

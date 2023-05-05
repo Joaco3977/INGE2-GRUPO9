@@ -1,6 +1,6 @@
 <template>
 <!-- Todo el contenido tiene que estar adentro de un div -->
-<!-- Pueden usar componentes dentro de este componente --> 
+<!-- Pueden usar componentes dentro de este componente -->
 <div class="bg-white" style="width: full; max-height: 90vh">
 
     <div class="text-center text-h4 text-primary "> MIS TURNOS </div>
@@ -18,7 +18,7 @@
     <div> holitas soy un div </div>
 
     <div>
-        yo debería tener dos versiones! una para clientes y una para veterinarios! :0 
+      Soy version de cliente de turnos
     </div>
 
     <!-- Hasta acá :)  -->

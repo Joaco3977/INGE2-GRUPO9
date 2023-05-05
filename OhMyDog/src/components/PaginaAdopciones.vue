@@ -44,7 +44,7 @@
                   <div>
                     - Nombre: Nombre <br/>
                     - Raza: raza   <br/>
-                    - Tamanio: tamaño 
+                    - Tamanio: tamaño
                   </div>
                 </q-card-section>
                 <q-separator dark />
@@ -70,7 +70,7 @@
 
       <!-- los veterinarios tendrían una vista, los clientes otras Y LOS VISITANTES OTRAS??
 
-      ahora estoy pensando en texto... 
+      ahora estoy pensando en texto...
       - visitante: ver
       - cliente: ver, subir, ver subidos ( nota: usar dos columnas )
       - vet: ver editar -->
@@ -85,7 +85,7 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 
 export default defineComponent({
-  name: "PaginaClientes",
+  name: "PaginaAdopciones",
   components: {},
   setup() {
     return {
