@@ -15,9 +15,15 @@
     >
       <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
 
-      <div>holitas soy un div</div>
-
       <div>Iniciar sesion</div>
+
+      <div class="q-pa-md">
+        <q-form @submit.prevent="login">
+          <q-input v-model="email" label="Email" type="email" />
+          <q-input v-model="password" label="Password" type="password" />
+          <q-btn type="submit" label="Login" />
+        </q-form>
+      </div>
 
       <!-- Hasta acá :)  -->
     </q-scroll-area>
@@ -27,9 +33,35 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
+//import { data } from "../pages/IndexPage.vue";
 
 export default defineComponent({
   name: "PaginaIniciarSesion",
   components: {},
+  setup() {
+    return {
+      email: ref(""),
+      password: ref(""),
+    };
+  },
+  methods: {
+    /*
+    async login() {
+      try {
+        const response = await axios.post("  ", {
+          email: this.email,
+          password: this.password,
+        });
+        localStorage.setItem("token", response.data.token);
+        rol.value = response.data.rol;
+
+      } catch (error) {
+        console.error(error);
+      }
+    },*/
+    login() {
+      rol.value = 1;
+    },
+  },
 });
 </script>
