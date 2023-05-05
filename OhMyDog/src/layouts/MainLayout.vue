@@ -1,32 +1,11 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-<<<<<<< HEAD
-  <!--    <q-drawer
+    <!--    <q-drawer
       v-model="leftDrawerOpen"
       show-if-above
       bordered
     >
       <q-list>
-=======
-    <q-header elevated>
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        />
-
-        <q-toolbar-title> Menu </q-toolbar-title>
-      </q-toolbar>
-    </q-header>
-
-    <q-drawer v-model="leftDrawerOpen" show-if-above bordered>
-      <q-list>
-        <q-item-label header> Menu </q-item-label>
->>>>>>> 2fcc9e89fe72fd86433f8a383c14214d5dac198f
 
         <q-img
           src="https://picsum.photos/500/300"
@@ -49,25 +28,16 @@
 </template>
 
 <script>
-<<<<<<< HEAD
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref } from "vue";
 //import MenuItem from 'components/MenuItem.vue'
-
 
 const listaServicios = [
   {
     title: "Turnos",
     icon: "calendar",
-    acciones: [
-      {nombre: "Solicitar turno" },
-      {nombre: "Ver turnos"},
-    ]
-  }
-]
-=======
-import { defineComponent, ref } from "vue";
-import EssentialLink from "components/EssentialLink.vue";
->>>>>>> 2fcc9e89fe72fd86433f8a383c14214d5dac198f
+    acciones: [{ nombre: "Solicitar turno" }, { nombre: "Ver turnos" }],
+  },
+];
 
 const linksList = [
   {
@@ -106,37 +76,20 @@ export default defineComponent({
   name: "MainLayout",
 
   components: {
-<<<<<<< HEAD
     //MenuItem
   },
 
   /* setup () {
     const leftDrawerOpen = ref(false)
-=======
-    EssentialLink,
-  },
-
-  setup() {
-    const leftDrawerOpen = ref(false);
->>>>>>> 2fcc9e89fe72fd86433f8a383c14214d5dac198f
 
     return {
       servicios: listaServicios,
       essentialLinks: linksList,
       leftDrawerOpen,
-<<<<<<< HEAD
       toggleLeftDrawer () {
         leftDrawerOpen.value = !leftDrawerOpen.value
       }
     }
   } */
-})
-=======
-      toggleLeftDrawer() {
-        leftDrawerOpen.value = !leftDrawerOpen.value;
-      },
-    };
-  },
 });
->>>>>>> 2fcc9e89fe72fd86433f8a383c14214d5dac198f
 </script>
