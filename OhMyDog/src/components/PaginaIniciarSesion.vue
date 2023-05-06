@@ -33,7 +33,7 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
-//import { data } from "../pages/IndexPage.vue";
+import { useStore } from "../pinia/store.js";
 
 export default defineComponent({
   name: "PaginaIniciarSesion",
@@ -60,7 +60,12 @@ export default defineComponent({
       }
     },*/
     login() {
-      rol.value = 1;
+      if (this.email == "admin@gmail.com" && this.password == "123") {
+        useStore().setRol(-1);
+        useStore().setTab("Quienes Somos");
+      } else {
+        alert("Credenciales no validas");
+      }
     },
   },
 });

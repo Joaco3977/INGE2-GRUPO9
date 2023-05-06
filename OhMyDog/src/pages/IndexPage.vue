@@ -8,7 +8,7 @@
       <q-img src="logotipo" />
 
       <q-tabs
-        v-model="tab"
+        v-model="store.tab"
         inline-label
         vertical
         flat
@@ -60,7 +60,7 @@
     <!-- Secciones -->
     <div class="col-10 bg-secondary">
       <q-tab-panels
-        v-model="tab"
+        v-model="store.tab"
         animated
         swipeable
         vertical
@@ -125,6 +125,7 @@ import PaginaPaseadores from "../components/PaginaPaseadores.vue";
 import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
 import { useStore } from "../pinia/store.js";
+import { checkToken } from "../functions/check.js";
 
 export default defineComponent({
   name: "IndexPage",
@@ -142,11 +143,13 @@ export default defineComponent({
   },
   setup() {
     const data = reactive({
-      tab: ref("Quienes Somos"),
       splitterModel: ref(20),
       store: useStore(),
     });
     return data;
+  },
+  mounted() {
+    checkToken();
   },
 });
 </script>

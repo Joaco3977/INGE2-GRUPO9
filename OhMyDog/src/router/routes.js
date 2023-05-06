@@ -12,16 +12,4 @@ const routes = [
   },
 ];
 
-// ESTO VEREFICARIA EL TOKEN EN EL LOCALSTORAGE, EN CASO DE NO HABER SE VUELVE A SOLICITAR LOGIN
-/*
-router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !LocalStorage.getItem("token")) {
-    rol.value = 0;
-    next("/");
-  } else {
-    next();
-  }
-});
-*/
-
 export default routes;
