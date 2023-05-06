@@ -19,7 +19,7 @@
 
       <div class="q-pa-md">
         <q-form @submit.prevent="login">
-          <q-input v-model="email" label="Email" type="email" />
+          <q-input v-model="mail" label="Email" type="email" />
           <q-input v-model="password" label="Password" type="password" />
           <q-btn type="submit" label="Login" />
         </q-form>
@@ -34,37 +34,30 @@
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useStore } from "../pinia/store.js";
+import axios from 'axios';
 
 export default defineComponent({
   name: "PaginaIniciarSesion",
   components: {},
   setup() {
     return {
-      email: ref(""),
+      store : useStore(),
+      mail: ref(""),
       password: ref(""),
     };
   },
   methods: {
-    /*
     async login() {
       try {
-        const response = await axios.post("  ", {
-          email: this.email,
+        const response = await axios.post(`${this.store.dirBD}/login`, {
+          mail: this.mail,
           password: this.password,
         });
         localStorage.setItem("token", response.data.token);
-        rol.value = response.data.rol;
-
+        this.store.setRol(response.data.rol);
+        this.store.setTab('Quienes Somos');
       } catch (error) {
         console.error(error);
-      }
-    },*/
-    login() {
-      if (this.email == "admin@gmail.com" && this.password == "123") {
-        useStore().setRol(-1);
-        useStore().setTab("Quienes Somos");
-      } else {
-        alert("Credenciales no validas");
       }
     },
   },

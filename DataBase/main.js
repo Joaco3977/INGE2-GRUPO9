@@ -3,6 +3,10 @@ const cors = require("cors");
 const app = express().use(express.json());
 const mysql = require("mysql2");
 
+const { checkAdmin } = require('./admin.js');
+const { checkVeterinario } = require('./veterinario.js');
+const { checkCliente } = require('./cliente.js');
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   next();
@@ -17,6 +21,13 @@ const knex = require("knex")({
     database: "ohmydog",
   },
 });
+
+//Permite conexiones de cualquier origen
+const corsOptions = {
+  origin: "*",
+  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+app.use(cors(corsOptions));
 
 function generarToken() {
   let tamano = 32; /* ES MUCHO? */
@@ -33,77 +44,31 @@ function generarToken() {
   return resultado;
 }
 
-function login(mail, password) {
-  const respuesta = {
-    estado: false,
-    nombre: "",
-    rol: "",
-  };
-  //check admin, rol admin
-  //check veterinario, rol vet
-  return knex("cliente")
-    .where({ mail, password })
-    .select()
-    .then((rows) => {
-      if (rows.length > 0) {
-        console.log(rows);
-        respuesta.estado = true;
-        respuesta.nombre = rows[0].NOMBREAPELLIDO;
-        respuesta.mail = rows[0].MAIL;
-        respuesta.rol = 3;
-        return respuesta;
-      } else {
-        return respuesta;
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-      return respuesta;
-    });
-  return respuesta;
-}
-
-//Permite conexiones de cualquier origen
-const corsOptions = {
-  origin: "*",
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-app.use(cors(corsOptions));
-
-app.post("/intentoLogin", (req, res) => {
-  console.log(
-    "\x1b[32m%s\x1b[0m",
-    req.socket.remoteAddress,
-    " esta intentando loguearse con: "
-  );
+app.post("/login", (req, res) => {
+  console.log("\x1b[32m%s\x1b[0m",req.socket.remoteAddress," esta intentando loguearse con: ");
   console.log(req.body);
-  login(req.body.mail, req.body.password).then((resultado) => {
-    if (resultado.estado) {
-      let token = generarToken();
-      console.log("\x1b[32m%s\x1b[0m", "se le asigna el token: ", token);
-      console.log("\x1b[32m%s\x1b[0m", "sus credenciales son validas!");
-      knex("token")
-        .insert({
-          mail: resultado.mail,
-          token: token,
-          rol: resultado.rol,
-        })
-        .then(() => {
-          console.log("Registro insertado correctamente");
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-      res.status(200).send({ token: token, username: resultado.nombre });
+  let token = generarToken();
+  if (checkAdmin(req.body.mail, req.body.password) != false) {
+    console.log("\x1b[32m%s\x1b[0m", "ADMIN logueado! Se le asigna el token: ", token);
+    res.status(200).send({ rol: -1 , token: token });
+  } else {
+    if (checkVeterinario(req.body.mail, req.body.password) != false) {
+      console.log("\x1b[32m%s\x1b[0m", "VETERINARIO logueado! Se le asigna el token: ", token);
+      res.status(200).send({ rol: 2 , token: token });
     } else {
-      console.log("\x1b[32m%s\x1b[0m", "sus credenciales no son validas!");
-      res.status(401).send("Credenciales incorrectas");
+      if (checkCliente(req.body.mail, req.body.password) != false ) {
+        console.log("\x1b[32m%s\x1b[0m", "CLIENTE logueado! Se le asigna el token: ", token);
+        res.status(200).send({ rol: 1 , token: token });
+      } else {
+        console.log("\x1b[32m%s\x1b[0m", "LAS CREDENCIALES NO COINCIDEN!");
+        res.status(401).send({ rol: 0 });  //credenciales no validas!
+      }
     }
-  });
+  }
 });
 
 app.post("/logout", (req, res) => {
-  knex("token")
+  knex("sesion")
     .where({ token: req.body.token })
     .del()
     .then(function (rowsDeleted) {
@@ -117,7 +82,7 @@ app.post("/logout", (req, res) => {
 });
 
 app.post("/pedirRol", (req, res) => {
-  knex("token")
+  knex("sesion")
     .where({ token: req.body.token })
     .then((rows) => {
       if (rows.length > 0) {

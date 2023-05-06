@@ -55,6 +55,7 @@
         <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
+        <q-tab v-if="store.rol !== 0" name="Cerrar Sesion" icon="ion-heart" label="Cerrar Sesion" />
       </q-tabs>
     </div>
     <!-- Secciones -->
@@ -106,6 +107,11 @@
         <q-tab-panel name="LOG">
           <PaginaLog />
         </q-tab-panel>
+
+        <q-tab-panel name="Cerrar Sesion">
+          <PaginaCerrarSesion />
+        </q-tab-panel>
+
       </q-tab-panels>
     </div>
   </div>
@@ -124,6 +130,7 @@ import PaginaAdopciones from "../components/PaginaAdopciones.vue";
 import PaginaPaseadores from "../components/PaginaPaseadores.vue";
 import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
+import PaginaCerrarSesion from "../components/PaginaCerrarSesion.vue";
 import { useStore } from "../pinia/store.js";
 import { checkToken } from "../functions/check.js";
 
@@ -140,6 +147,7 @@ export default defineComponent({
     PaginaPaseadores,
     PaginaPerfil,
     PaginaLog,
+    PaginaCerrarSesion,
   },
   setup() {
     const data = reactive({

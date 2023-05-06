@@ -5,10 +5,30 @@
 // EDITAR VETERINARIO - POST con datos nuevos, chequear DNI 
                 //DE PERMITIR CAMBIOS EN DNI, TABLAS FORANEAS???
 
-app.post (req, res) {
-    res te llega todo
-    data {
-        dni: null
+const knex = require("knex")({
+    client: "mysql2",
+    connection: {
+      host: "localhost",
+      user: "root",
+      password: "cg7ThKa8Bd@r5zyi",
+      database: "ohmydog",
+    },
+});
+
+function checkVeterinario (mail, pass) {
+  knex.select('PASSWORD')
+  .from('veterinario')
+  .where('MAIL', '=', mail)
+  .then(rows => {
+    if (rows.length > 0 && rows[0].PASSWORD == pass) {
+        return ({ dato : rows[0] });
     }
-    todo lo q no sea null, lo cambias
+    return false;
+  })
+  .catch(error => {
+    console.error(error);
+    return false;
+  });
 }
+
+module.exports = { checkVeterinario };

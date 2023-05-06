@@ -17,3 +17,31 @@ Lautaro Gomez 30987867
 
 // EDITAR CLIENTE - POST con datos nuevos, chequear DNI 
                 //DE PERMITIR CAMBIOS EN DNI, TABLAS FORANEAS???
+
+const knex = require("knex")({
+    client: "mysql2",
+    connection: {
+        host: "localhost",
+        user: "root",
+        password: "cg7ThKa8Bd@r5zyi",
+        database: "ohmydog",
+    },
+});
+
+function checkCliente (mail, pass) {
+   knex.select('PASSWORD')
+  .from('cliente')
+  .where('MAIL', '=', mail)
+  .then(rows => {
+    if (rows.length > 0 && rows[0].PASSWORD == pass) {
+        return ({ dato : rows[0] });
+    }
+    return false;
+  })
+  .catch(error => {
+    console.error(error);
+    return false;
+  });
+} 
+
+module.exports = { checkCliente };
