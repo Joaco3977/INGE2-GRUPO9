@@ -16,7 +16,8 @@
       <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
 
       <div>holitas soy un div</div>
-
+      <q-btn @click="aumentarRol()"> aumentar </q-btn>
+      <q-btn @click="disminuirRol()"> disminuir </q-btn>
       <div>
         Este estaría visible cuando inició sesión, y los vets tmb tendrían uno
         :)
@@ -28,11 +29,25 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { ref } from "vue";
+import { defineComponent, reactive, ref } from "vue";
+import { useStore } from "../pinia/store.js";
 
 export default defineComponent({
   name: "PaginaQuienesSomos",
   components: {},
+  setup() {
+    const data = reactive({
+      store: useStore(),
+    });
+    return data;
+  },
+  methods: {
+    aumentarRol() {
+      this.store.setRol(this.store.rol + 1);
+    },
+    disminuirRol() {
+      this.store.setRol(this.store.rol - 1);
+    },
+  },
 });
 </script>

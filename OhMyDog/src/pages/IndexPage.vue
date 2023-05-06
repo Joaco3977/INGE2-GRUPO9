@@ -17,42 +17,42 @@
       >
         <q-tab name="Quienes Somos" icon="ion-heart" label="Quienes Somos" />
         <q-tab
-          v-if="rol > 0"
+          v-if="store.rol > 0"
           name="Mi Perfil"
           icon="ion-person"
           label="Mi Perfil"
         />
         <q-tab
-          v-if="rol === 0"
+          v-if="store.rol === 0"
           name="Iniciar Sesion"
           icon="ion-person"
           label="Iniciar Sesion"
         />
         <q-tab
-          v-if="rol === 1"
+          v-if="store.rol === 1"
           name="Turnos"
           icon="ion-calendar"
           label="Turnos"
         />
         <q-tab
-          v-if="rol === 2"
+          v-if="store.rol === 2"
           name="Administrar Turnos"
           icon="ion-calendar"
           label="Administrar Turnos"
         />
         <q-tab
-          v-if="rol === 1"
+          v-if="store.rol === 1"
           name="Mis Perros"
           icon="ion-paw"
           label="Mis Perros"
         />
         <q-tab
-          v-if="rol === 2"
+          v-if="store.rol === 2"
           name="Clientes"
           icon="ion-people"
           label="Clientes"
         />
-        <q-tab v-if="rol < 0" name="LOG" icon="ion-people" label="LOG" />
+        <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
       </q-tabs>
@@ -124,6 +124,7 @@ import PaginaAdopciones from "../components/PaginaAdopciones.vue";
 import PaginaPaseadores from "../components/PaginaPaseadores.vue";
 import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
+import { useStore } from "../pinia/store.js";
 
 export default defineComponent({
   name: "IndexPage",
@@ -143,7 +144,7 @@ export default defineComponent({
     const data = reactive({
       tab: ref("Quienes Somos"),
       splitterModel: ref(20),
-      rol: ref(0),
+      store: useStore(),
     });
     return data;
   },
