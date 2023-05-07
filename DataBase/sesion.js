@@ -36,4 +36,15 @@ const validarToken = async (token) => {
       })
 }
 
-module.exports = {generarToken, almacenarToken, validarToken};
+const eliminarToken = async (token) => {
+  return knex('sesion').where('TOKEN', token).del()
+    .then(() => {
+      return true
+    })
+    .catch(() => {
+      return false
+    })
+  }
+
+
+module.exports = {generarToken, almacenarToken, validarToken, eliminarToken};

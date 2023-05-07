@@ -55,18 +55,14 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.post("/logout", (req, res) => {
-  knex("sesion")
-    .where({ token: req.body.token })
-    .del()
-    .then(function (rowsDeleted) {
-      console.log("Rows deleted: " + rowsDeleted);
-      res.status(200).send("Sesion cerrada con exito!");
-    })
-    .catch(function (error) {
-      console.error(error);
-      res.status(404).send("No se encontro esa sesion");
-    })
+app.post("/logout", async (req, res) => {
+  try {
+    const result = await Sesion.eliminarToken(req.body.token)
+    res.status(200).send(result)
+  } catch {
+    console.error(error)
+    res.status(401)
+  }
 });
 
 app.post("/checkToken", async (req, res) => {

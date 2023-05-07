@@ -1,6 +1,4 @@
 <template>
-  <!-- Todo el contenido tiene que estar adentro de un div -->
-  <!-- Pueden usar componentes dentro de este componente -->
   <div class="bg-white" style="width: full; max-height: 90vh">
 
       <div class="text-center text-h4 text-primary "> CERRAR SESION </div>
@@ -13,15 +11,8 @@
         class="bg-white"
       >
 
-      <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
+      <q-btn @click="cerrarSesion()"> Cerrar Sesion </q-btn>
 
-      <div> holitas soy un div </div>
-
-      <div>
-        CERRAR SESION
-      </div>
-
-      <!-- Hasta acá :)  -->
       </q-scroll-area>
   </div>
 
@@ -30,10 +21,33 @@
   <script>
   import { defineComponent } from 'vue'
   import { ref } from 'vue'
+  import { api } from '../boot/axios.js'
+  import { LocalStorage } from 'quasar';
+  import { useStore } from "../pinia/store.js";
 
   export default defineComponent({
-  name: 'PaginaCerrarSesion',
-  components: {
+  name: "PaginaCerrarSesion",
+  components: {},
+  setup() {
+    return {
+      store : useStore(),
+    };
+  },
+  methods: {
+    async cerrarSesion() {
+      try {
+        const response = await api.post("/logout", {
+          token: LocalStorage.getItem('token')
+        });
+        if (response) {
+          this.store.setRol(0);
+          this.store.setTab('Iniciar Sesion');
+          LocalStorage.clear()
+        }
+      } catch (error) {
+        console.error(error);
+      }
     },
-  })
+  },
+});
   </script>
