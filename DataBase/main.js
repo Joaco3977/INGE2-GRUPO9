@@ -5,6 +5,7 @@ const app = express().use(express.json());
 const { checkAdmin } = require('./admin.js');
 const { checkVeterinario } = require('./veterinario.js');
 const { checkCliente } = require('./cliente.js');
+const Sesion = require ('./sesion.js')
 
 const knex = require('../OhMyDog/src/db/knexConfig.js')
 
@@ -20,30 +21,9 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
-function generarToken() {
-  const uuid = require('uuid');
-  const token = uuid.v4(); // Genera un token único aleatorio
-  return token;
-}
-
-const almacenarToken = async (token, mail, rol) => {
-  const nuevoToken = {
-    TOKEN: token,
-    MAIL: mail,
-    ROL: rol
-  }
-  await knex('sesion').insert(nuevoToken)
-    .then (() => {
-      console.log('Token insertado correctamente');
-    })
-    .catch ((error) => {
-      console.error(error)
-    })
-}
-
 app.post("/login", async (req, res) => {
   const admin = checkAdmin(req.body.mail, req.body.password);
-  const token = generarToken();
+  const token = Sesion.generarToken();
   if (admin === false) {
     checkVeterinario(req.body.mail, req.body.password)
       .then((resultVet) => {
@@ -55,13 +35,13 @@ app.post("/login", async (req, res) => {
                 res.status(401).send({ rol: 0 });
               } else {
                 console.log("\x1b[32m%s\x1b[0m", "CLIENTE logueado! Se le asigna el token: ", token);
-                almacenarToken(token, req.body.mail, 1);
+                Sesion.almacenarToken(token, req.body.mail, 1);
                 res.status(200).send({ rol: 1 , token: token });
               }
             });
         } else {
           console.log("\x1b[32m%s\x1b[0m", "VETERINARIO logueado! Se le asigna el token: ", token);
-          almacenarToken(token, req.body.mail, 2);
+          Sesion.almacenarToken(token, req.body.mail, 2);
           res.status(200).send({ rol: 2 , token: token });
         }
       })
@@ -70,7 +50,7 @@ app.post("/login", async (req, res) => {
       })
   } else {
     console.log("\x1b[32m%s\x1b[0m", "ADMIN logueado! Se le asigna el token: ", token);
-    almacenarToken(token, req.body.mail, -1);
+    Sesion.almacenarToken(token, req.body.mail, -1);
     res.status(200).send({ rol: -1 , token: token });
   }
 });
@@ -89,44 +69,15 @@ app.post("/logout", (req, res) => {
     })
 });
 
-/*
 app.post("/checkToken", async (req, res) => {
-  await knex('sesion').select('*').where('TOKEN', '=', req.body.token).first()
-  .then ((resultado) => {
-    if (resultado === false) {
-      res.status(401).send({ rol: 0 , tab : 'Iniciar Sesion' })
-    } else {
-      res.status(200).send({ rol: resultado.ROL })
-    }
-  })
-  .catch ((error) => {
-    console.error(error)
-    res.status(401).send({ rol: 0 , tab : 'Iniciar Sesion' })
-  })
+  try {
+    const result = await Sesion.validarToken(req.body.token);
+    res.status(200).send(result);
+  } catch (error) {
+    console.error(error);
+    res.status(401);
+  }
 });
-*/
-
-const validarToken = async (token) => {
-  await knex('sesion').select('*').where('TOKEN', '=', token).first()
-  .then ((resultado) => {
-    if (resultado === false) {
-      return ({ rol: 0 , tab : 'Iniciar Sesion' })
-    } else {
-      return ({ rol: resultado.ROL })
-    }
-  })
-  .catch ((error) => {
-    console.error(error)
-    return ({ rol: 0 , tab : 'Iniciar Sesion' })
-  })
-}
-
-/*
-app.post("/checkToken", async (req, res) => {
-  const respuestaToken = validarToken(req.headers.aut)
-  res.send(respuestaToken)
-})
-*/
 
 app.listen(5137, function () {
   console.log("\x1b[36m%s\x1b[0m","----------------------------------------------------------------------------");

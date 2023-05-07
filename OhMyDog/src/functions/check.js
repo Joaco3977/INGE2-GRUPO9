@@ -1,16 +1,25 @@
 import { LocalStorage } from "quasar";
 import { useStore } from "../pinia/store.js";
+import { api } from "../boot/axios.js"
 
-const store = useStore();
-
-export const checkToken = () => {
+export const checkToken = async () => {
+  const store = useStore();
   if (LocalStorage.getItem("token") !== undefined) {
-    //consulta por token
-    //reasignar rol
-    //en caso de ser necesario reseteamos localstorage y setrol = 0
-    console.log("checkee token");
-    //store.setRol(1);
+    try {
+      const response = await api.post("/checkToken", {
+        token: LocalStorage.getItem('token'),
+      });
+      store.setRol(response.data.rol);
+      if (response.data.rol === 0) {
+        store.setTab('Iniciar Sesion')
+      }
+    } catch (error) {
+      console.error(error);
+      store.setRol(0);
+      store.setTab('Iniciar Sesion');
+    }
   } else {
     store.setRol(0);
+    store.setTab('Iniciar Sesion');
   }
 };

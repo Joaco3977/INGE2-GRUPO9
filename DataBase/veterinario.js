@@ -5,15 +5,7 @@
 // EDITAR VETERINARIO - POST con datos nuevos, chequear DNI 
                 //DE PERMITIR CAMBIOS EN DNI, TABLAS FORANEAS???
 
-const knex = require("knex")({
-    client: "mysql2",
-    connection: {
-      host: "localhost",
-      user: "root",
-      password: "cg7ThKa8Bd@r5zyi",
-      database: "ohmydog",
-    },
-});
+const knex = require('../OhMyDog/src/db/knexConfig.js')
 
 const checkVeterinario = async (mail, pass) => {
   try {
@@ -24,8 +16,6 @@ const checkVeterinario = async (mail, pass) => {
   } catch (error) {
     console.error(error)
     return false;
-  } finally {
-    knex.destroy();
   }
 };
 
