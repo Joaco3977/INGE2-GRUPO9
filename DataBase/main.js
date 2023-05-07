@@ -30,30 +30,27 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 function generarToken() {
-  let tamano = 32; /* ES MUCHO? */
-  let resultado = "";
-  const caracteres =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-  for (let i = 0; i < tamano; i++) {
-    resultado += caracteres.charAt(
-      Math.floor(Math.random() * caracteres.length)
-    );
-  }
-
-  return resultado;
+  const uuid = require('uuid');
+  const token = uuid.v4(); // Genera un token único aleatorio
+  return token;
 }
 
 function almacenarToken(token, mail, rol) {
-  console.log('token: ', token)
-  console.log('mail: ', mail)
-  console.log('rol: ', rol)
-  knex('sesion').insert({
+  const nuevoToken = {
     TOKEN: token,
     MAIL: mail,
-    ROL: rol,
-  })
-  knex.destroy();
+    ROL: rol
+  }
+  knex('sesion').insert(nuevoToken)
+    .then (() => {
+      console.log('Token insertado correctamente');
+    })
+    .catch ((error) => {
+      console.error(error)
+    })
+    .finally(() => {
+      knex.destroy()
+    });
 }
 
 app.post("/login", async (req, res) => {
