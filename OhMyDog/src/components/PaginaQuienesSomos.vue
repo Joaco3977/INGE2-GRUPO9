@@ -22,6 +22,7 @@
         Este estaría visible cuando inició sesión, y los vets tmb tendrían uno
         :)
       </div>
+      <q-btn @click="checkToken()"> Chequear Token </q-btn>
 
       <div>
         ----------------- <br/>
@@ -43,11 +44,13 @@
  0: Visitante
  1: Cliente
  2: Veterinario
---> 
+-->
 
 <script>
 import { defineComponent, reactive, ref } from "vue";
 import { useStore } from "../pinia/store.js";
+import { api } from '../boot/axios.js';
+import { LocalStorage } from "quasar";
 
 export default defineComponent({
   name: "PaginaQuienesSomos",
@@ -60,16 +63,31 @@ export default defineComponent({
   },
   methods: {
     aumentarRol() {
-      if ( this.store.rol < 4 ){ 
+      if ( this.store.rol < 4 ){
         this.store.setRol(this.store.rol + 1);
       }
     },
     disminuirRol() {
-      // Hasta -1 
-      if ( this.store.rol > -1 ){ 
+      // Hasta -1
+      if ( this.store.rol > -1 ){
         this.store.setRol(this.store.rol - 1);
       }
     },
+    async checkToken() {
+      try {
+        const response = await api.post("/checkToken", {
+          token: LocalStorage.getItem('token'),
+        });
+        this.store.setRol(response.data.rol);
+        if (response.data.rol === 0) {
+          this.store.setTab('Iniciar Sesion')
+        }
+      } catch (error) {
+        console.error(error);
+        this.store.setRol(0);
+        this.store.setTab('Iniciar Sesion');
+      }
+    }
   },
 });
 </script>

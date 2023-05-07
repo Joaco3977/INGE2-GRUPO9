@@ -5,7 +5,6 @@ export const useStore = defineStore("store", {
     return {
       rol: 0,
       tab: "Quienes Somos",
-      dirBD: 'http://localhost:5137',
     };
   },
   actions: {

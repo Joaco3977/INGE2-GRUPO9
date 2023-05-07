@@ -3,9 +3,9 @@
   <!-- Pueden usar componentes dentro de este componente -->
   <div class="bg-white column items-center" style="width: full; max-height: 90vh">
     <div class="text-center text-h4 text-primary q-pt-md"> INICIAR SESIÓN </div>
-    
 
-    
+
+
       <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
 
       <div class="q-pa-xl " style="width:50vw; height:80vh">
@@ -17,7 +17,7 @@
       </div>
 
       <!-- Hasta acá :)  -->
-    
+
   </div>
 </template>
 
@@ -25,7 +25,7 @@
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useStore } from "../pinia/store.js";
-import axios from 'axios';
+import { api } from '../boot/axios.js';
 import { LocalStorage } from "quasar";
 
 export default defineComponent({
@@ -41,7 +41,7 @@ export default defineComponent({
   methods: {
     async login() {
       try {
-        const response = await axios.post(`${this.store.dirBD}/login`, {
+        const response = await api.post("/login", {
           mail: this.mail,
           password: this.password,
         });
@@ -52,21 +52,6 @@ export default defineComponent({
         console.error(error);
       }
     },
-    async pedirRol() {
-      try {
-        const response = await axios.post(`${this.store.dirBD}/checkToken`, {
-          token: LocalStorage.getItem('token'),
-        });
-        this.store.setRol(response.data.rol);
-        if (response.data.rol === 0) {
-          this.store.setTab('Quienes Somos')
-        }
-      } catch (error) {
-        console.error(error);
-        this.store.setRol(response.data.rol);
-        this.store.setTab('Quienes Somos');
-      }
-    }
   },
 });
 </script>

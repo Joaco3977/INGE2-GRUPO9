@@ -37,6 +37,8 @@ const checkCliente = async (mail, pass) => {
   } catch (error) {
     console.error(error)
     return false;
+  } finally {
+    knex.destroy();
   }
 };
 
