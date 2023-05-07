@@ -35,6 +35,7 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useStore } from "../pinia/store.js";
 import axios from 'axios';
+import { LocalStorage } from "quasar";
 
 export default defineComponent({
   name: "PaginaIniciarSesion",
@@ -60,6 +61,21 @@ export default defineComponent({
         console.error(error);
       }
     },
+    async pedirRol() {
+      try {
+        const response = await axios.post(`${this.store.dirBD}/checkToken`, {
+          token: LocalStorage.getItem('token'),
+        });
+        this.store.setRol(response.data.rol);
+        if (response.data.rol === 0) {
+          this.store.setTab('Quienes Somos')
+        }
+      } catch (error) {
+        console.error(error);
+        this.store.setRol(response.data.rol);
+        this.store.setTab('Quienes Somos');
+      }
+    }
   },
 });
 </script>

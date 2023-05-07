@@ -15,20 +15,16 @@ const knex = require("knex")({
     },
 });
 
-function checkVeterinario (mail, pass) {
-  knex.select('PASSWORD')
-  .from('veterinario')
-  .where('MAIL', '=', mail)
-  .then(rows => {
-    if (rows.length > 0 && rows[0].PASSWORD == pass) {
-        return ({ dato : rows[0] });
-    }
+const checkVeterinario = async (mail, pass) => {
+  try {
+    const resultado = await knex('veterinario').select('*').where('MAIL', '=', mail).andWhere('PASSWORD', '=', pass).first();
+    if (resultado === undefined) {
+      return false;
+    } else return resultado;
+  } catch (error) {
+    console.error(error)
     return false;
-  })
-  .catch(error => {
-    console.error(error);
-    return false;
-  });
-}
+  }
+};
 
 module.exports = { checkVeterinario };

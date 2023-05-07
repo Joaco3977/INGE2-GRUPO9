@@ -16,42 +16,12 @@
         style="max-height: 70vh"
       >
         <q-tab name="Quienes Somos" icon="ion-heart" label="Quienes Somos" />
-        <q-tab
-          v-if="store.rol > 0"
-          name="Mi Perfil"
-          icon="ion-person"
-          label="Mi Perfil"
-        />
-        <q-tab
-          v-if="store.rol === 0"
-          name="Iniciar Sesion"
-          icon="ion-person"
-          label="Iniciar Sesion"
-        />
-        <q-tab
-          v-if="store.rol === 1"
-          name="Turnos"
-          icon="ion-calendar"
-          label="Turnos"
-        />
-        <q-tab
-          v-if="store.rol === 2"
-          name="Administrar Turnos"
-          icon="ion-calendar"
-          label="Administrar Turnos"
-        />
-        <q-tab
-          v-if="store.rol === 1"
-          name="Mis Perros"
-          icon="ion-paw"
-          label="Mis Perros"
-        />
-        <q-tab
-          v-if="store.rol === 2"
-          name="Clientes"
-          icon="ion-people"
-          label="Clientes"
-        />
+        <q-tab v-if="store.rol > 0" name="Mi Perfil" icon="ion-person" label="Mi Perfil" />
+        <q-tab v-if="store.rol === 0" name="Iniciar Sesion" icon="ion-person" label="Iniciar Sesion" />
+        <q-tab v-if="store.rol === 1" name="Turnos" icon="ion-calendar" label="Turnos" />
+        <q-tab v-if="store.rol === 2" name="Administrar Turnos" icon="ion-calendar" label="Administrar Turnos" />
+        <q-tab v-if="store.rol === 1" name="Mis Perros" icon="ion-paw" label="Mis Perros" />
+        <q-tab v-if="store.rol === 2" name="Clientes" icon="ion-people" label="Clientes" />
         <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />

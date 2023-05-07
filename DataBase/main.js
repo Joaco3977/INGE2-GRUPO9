@@ -44,26 +44,49 @@ function generarToken() {
   return resultado;
 }
 
-app.post("/login", (req, res) => {
-  console.log("\x1b[32m%s\x1b[0m",req.socket.remoteAddress," esta intentando loguearse con: ");
-  console.log(req.body);
-  let token = generarToken();
-  if (checkAdmin(req.body.mail, req.body.password) != false) {
-    console.log("\x1b[32m%s\x1b[0m", "ADMIN logueado! Se le asigna el token: ", token);
-    res.status(200).send({ rol: -1 , token: token });
+function almacenarToken(token, mail, rol) {
+  console.log('token: ', token)
+  console.log('mail: ', mail)
+  console.log('rol: ', rol)
+  knex('sesion').insert({
+    TOKEN: token,
+    MAIL: mail,
+    ROL: rol,
+  })
+  knex.destroy();
+}
+
+app.post("/login", async (req, res) => {
+  const admin = checkAdmin(req.body.mail, req.body.password);
+  const token = generarToken();
+  if (admin === false) {
+    checkVeterinario(req.body.mail, req.body.password)
+      .then((resultVet) => {
+        if (resultVet === false) {
+          return checkCliente(req.body.mail, req.body.password)
+            .then((resultCli) => {
+              if (resultCli === false) {
+                console.log("\x1b[32m%s\x1b[0m", "LAS CREDENCIALES NO COINCIDEN!");
+                res.status(401).send({ rol: 0 });
+              } else {
+                console.log("\x1b[32m%s\x1b[0m", "CLIENTE logueado! Se le asigna el token: ", token);
+                almacenarToken(token, req.body.mail, 1);
+                res.status(200).send({ rol: 1 , token: token });
+              }
+            });
+        } else {
+          console.log("\x1b[32m%s\x1b[0m", "VETERINARIO logueado! Se le asigna el token: ", token);
+          almacenarToken(token, req.body.mail, 2);
+          res.status(200).send({ rol: 2 , token: token });
+        }
+      })
+      .catch((error) => {
+        console.error(`Error en una de las consultas: ${error.message}`);
+      });
   } else {
-    if (checkVeterinario(req.body.mail, req.body.password) != false) {
-      console.log("\x1b[32m%s\x1b[0m", "VETERINARIO logueado! Se le asigna el token: ", token);
-      res.status(200).send({ rol: 2 , token: token });
-    } else {
-      if (checkCliente(req.body.mail, req.body.password) != false ) {
-        console.log("\x1b[32m%s\x1b[0m", "CLIENTE logueado! Se le asigna el token: ", token);
-        res.status(200).send({ rol: 1 , token: token });
-      } else {
-        console.log("\x1b[32m%s\x1b[0m", "LAS CREDENCIALES NO COINCIDEN!");
-        res.status(401).send({ rol: 0 });  //credenciales no validas!
-      }
-    }
+    console.log("\x1b[32m%s\x1b[0m", "ADMIN logueado! Se le asigna el token: ", token);
+    almacenarToken(token, req.body.mail, -1);
+    res.status(200).send({ rol: -1 , token: token });
   }
 });
 
@@ -74,14 +97,16 @@ app.post("/logout", (req, res) => {
     .then(function (rowsDeleted) {
       console.log("Rows deleted: " + rowsDeleted);
       res.status(200).send("Sesion cerrada con exito!");
+      knex.destroy();
     })
     .catch(function (error) {
       console.error(error);
       res.status(404).send("No se encontro esa sesion");
+      knex.destroy();
     });
 });
 
-app.post("/pedirRol", (req, res) => {
+app.post("/checkToken", (req, res) => {
   knex("sesion")
     .where({ token: req.body.token })
     .then((rows) => {
@@ -91,13 +116,11 @@ app.post("/pedirRol", (req, res) => {
       } else {
         res.status(401).send({ rol: 0 });
       }
+      knex.destroy();
     });
 });
 
 app.listen(5137, function () {
-  console.log(
-    "\x1b[36m%s\x1b[0m",
-    "----------------------------------------------------------------------------"
-  );
+  console.log("\x1b[36m%s\x1b[0m","----------------------------------------------------------------------------");
   console.log("\x1b[36m%s\x1b[0m", "Servidor Back iniciado en el puerto 5137");
 });

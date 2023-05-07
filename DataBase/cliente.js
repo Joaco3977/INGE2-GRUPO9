@@ -28,20 +28,16 @@ const knex = require("knex")({
     },
 });
 
-function checkCliente (mail, pass) {
-   knex.select('PASSWORD')
-  .from('cliente')
-  .where('MAIL', '=', mail)
-  .then(rows => {
-    if (rows.length > 0 && rows[0].PASSWORD == pass) {
-        return ({ dato : rows[0] });
-    }
+const checkCliente = async (mail, pass) => {
+  try {
+    const resultado = await knex('cliente').select('*').where('MAIL', '=', mail).andWhere('PASSWORD', '=', pass).first();
+    if (resultado === undefined) {
+      return false;
+    } else return resultado;
+  } catch (error) {
+    console.error(error)
     return false;
-  })
-  .catch(error => {
-    console.error(error);
-    return false;
-  });
-} 
+  }
+};
 
 module.exports = { checkCliente };
