@@ -15,7 +15,7 @@
         class="q-py-sm bg-primary text-white"
         style="max-height: 70vh"
       >
-        <q-tab name="Quienes Somos" icon="ion-heart" label="Quienes Somos" />
+        <q-tab name="Quienes Somos" icon="ion-home" label="Quienes Somos" />
         <q-tab v-if="store.rol > 0" name="Mi Perfil" icon="ion-person" label="Mi Perfil" />
         <q-tab v-if="store.rol === 0" name="Iniciar Sesion" icon="ion-person" label="Iniciar Sesion" />
         <q-tab v-if="store.rol === 1" name="Turnos" icon="ion-calendar" label="Turnos" />
@@ -67,7 +67,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="Adopciones">
-          <PaginaAdopciones />
+          <PaginaAdopciones :rol='store.rol' />
         </q-tab-panel>
 
         <q-tab-panel name="Paseadores">

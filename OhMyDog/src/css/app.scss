@@ -2,5 +2,28 @@
 
 .textoBoton{
     text-align: center;
-    font-size: medium;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+}
+
+.textoTituloPosteo{
+    font-weight: bold;
+}
+
+.textoComillas{
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.textoComentario{
+    font-size: 1rem;
+    text-align: center;
+    font-weight: bold;
+    color: #FFF;
+}
+
+div{
+    text-align: start;
+    font-size: 0.9rem;
 }

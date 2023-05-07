@@ -2,65 +2,58 @@
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
   <div class="bg-white" style="width: full; max-height: 90vh">
-    <div class="text-center text-h4 text-primary">ADOPCIONES</div>
-    <div class="text-center text-h6 text-primary">
-      Hola! Soy el componente "Página Adopciones" EDITAME
-    </div>
+    <div class="text-center text-h4 text-primary q-pt-md">ADOPCIONES {{rol}}</div>
 
-    <q-scroll-area
-      :thumb-style="thumbStyle"
-      :bar-style="barStyle"
-      style="height: 80vh"
-      class="bg-white"
-    >
-      <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
-
-      <!-- -->
-
-      <q-card flat>
-        <q-tabs
+    
+    <q-tabs
           v-model="tab"
           dense
-          class="text-grey"
+          class="text-grey q-pt-lg"
           active-color="primary"
           indicator-color="primary"
           align="justify"
           narrow-indicator
         >
           <q-tab name="perrosOtros" label="¡Adoptá un perro!" />
-          <q-tab name="perrosPropios" label="Mis perros en adopción" />
-        </q-tabs>
+          <q-tab v-if="rol > 0" name="perrosPropios" label="Mis perros en adopción" />
+    </q-tabs>
+    
+    <q-scroll-area
+      :thumb-style="thumbStyle"
+      :bar-style="barStyle"
+      style="height: 70vh"
+      class="bg-white "
+    >
+      <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
+
+      <!-- -->
+      <q-card flat>
+        
 
         <q-separator />
 
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="perrosOtros">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-
-            <div class="full-width column items-center">
-              <q-card class="my-card bg-secondary text-white">
-                <q-img src="https://media.sketchfab.com/models/060d500bf27a4b9ab242ea67d1baad76/thumbnails/a55c7d7c89ff4725b76be6eb3fe3f1f2/9f9a4b4fba9e40838d0acb8e34773196.jpeg"></q-img>
-                <q-card-section>
-                  <div>
-                    - Nombre: Nombre <br/>
-                    - Raza: raza   <br/>
-                    - Tamanio: tamaño
-                  </div>
-                </q-card-section>
-                <q-separator dark />
-                <q-card-actions>
-                  <q-btn flat> ¡Adoptado! </q-btn>
-                  <q-btn flat> Eliminar perro</q-btn>
-                </q-card-actions>
-              </q-card>
+            <div class="full-width row items-center">
+              <!-- Posteos de perros ACÁ DEBERÍA ENTRAR LA INFO DE PERROS DE LA BASE DE DATOS -->
+              <TarjetaPosteo 
+                v-for="(perro, indice) of perrosDatos" :key="indice"
+                :rol='rol' 
+                :servicio='servicioActual'
+                :nombre='perro.nombre'
+                :edad='perro.edad'
+                :tamanio='perro.tamanio'
+                :raza='perro.raza'
+                :comentario='perro.comentario'
+              />
             </div>
           </q-tab-panel>
 
-          <q-tab-panel name="perrosPropios" style="height: full">
+          <q-tab-panel v-if="rol > 0" name="perrosPropios" style="height: full">
             <div class="full-width column items-center">
               <q-btn color="accent" class="q-ma-md" style="width: 25em">
                 <q-icon left size="3em" name="ion-heart-empty" />
-                <div class="textoBoton">¡Poné un perro en adopción!</div>
+                <div class="textoBoton">¡Poné un perro en adopción! </div>
               </q-btn>
             </div>
           </q-tab-panel>
@@ -83,13 +76,58 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
+import TarjetaPosteo from "./TarjetaPosteo.vue";
 
 export default defineComponent({
   name: "PaginaAdopciones",
-  components: {},
+  components: {
+    TarjetaPosteo,
+  },
+  props: {
+    rol: String,
+  },
   setup() {
     return {
-      tab: ref("mails"),
+      tab: ref("perrosOtros"),
+      servicioActual: "adopciones",
+
+      perrosDatos:[
+        { 
+          nombre: 'Pep',
+          raza: 'Dálmata',
+          edad: '9 meses',
+          tamanio: 'Pequeño',
+          comentario: '',
+        },
+        { 
+          nombre: 'Pulgas',
+          raza: 'Mestizo',
+          edad: '2 meses',
+          tamanio: 'Grande',
+          comentario: 'Es enorme, es el perro más grande del mundo'
+        },
+        { 
+          nombre: 'Machas',
+          raza: 'Mestizo',
+          edad: '3 meses',
+          tamanio: 'Pequeño',
+          comentario: 'Es re buenito'
+        },
+        { 
+          nombre: 'Machas',
+          raza: 'Mestizo',
+          edad: '3 meses',
+          tamanio: 'Pequeño',
+          comentario: 'Es re buenito'
+        },
+        { 
+          nombre: 'Machas',
+          raza: 'Mestizo',
+          edad: '3 meses',
+          tamanio: 'Pequeño',
+          comentario: 'Es re malo! Llevenselo! No lo quiero!'
+        },
+      ]
     };
   },
 });

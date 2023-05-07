@@ -1,32 +1,23 @@
 <template>
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
-  <div class="bg-white" style="width: full; max-height: 90vh">
-    <div class="text-center text-h4 text-primary">Iniciar Sesion</div>
-    <div class="text-center text-h6 text-primary">
-      Hola! Soy el componente "Iniciar sesion" EDITAME
-    </div>
+  <div class="bg-white column items-center" style="width: full; max-height: 90vh">
+    <div class="text-center text-h4 text-primary q-pt-md"> INICIAR SESIÓN </div>
+    
 
-    <q-scroll-area
-      :thumb-style="thumbStyle"
-      :bar-style="barStyle"
-      style="height: 80vh"
-      class="bg-white"
-    >
+    
       <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
 
-      <div>Iniciar sesion</div>
-
-      <div class="q-pa-md">
-        <q-form @submit.prevent="login">
-          <q-input v-model="mail" label="Email" type="email" />
-          <q-input v-model="password" label="Password" type="password" />
-          <q-btn type="submit" label="Login" />
+      <div class="q-pa-xl " style="width:50vw; height:80vh">
+        <q-form class="q-pa-xl" @submit.prevent="login">
+          <q-input class="q-px-xl" v-model="mail" label="Correo electrónico" type="email" />
+          <q-input class="q-px-xl" v-model="password" label="Contraseña" type="password" />
+          <q-btn push class="q-my-md q-mx-xl" color="accent" type="submit" label="Iniciar Sesión" />
         </q-form>
       </div>
 
       <!-- Hasta acá :)  -->
-    </q-scroll-area>
+    
   </div>
 </template>
 

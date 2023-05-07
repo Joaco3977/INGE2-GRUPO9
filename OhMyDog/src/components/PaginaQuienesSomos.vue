@@ -23,10 +23,27 @@
         :)
       </div>
 
+      <div>
+        ----------------- <br/>
+        -1: Administrador <br/>
+        0: Visitante <br/>
+        1: Cliente <br/>
+        2: Veterinario  <br/>
+        ---------------- <br/>
+        El rol actual es {{store.rol}}
+      </div>
+
       <!-- Hasta acá :)  -->
     </q-scroll-area>
   </div>
 </template>
+
+<!-- ROLES
+-1: Administrador
+ 0: Visitante
+ 1: Cliente
+ 2: Veterinario
+--> 
 
 <script>
 import { defineComponent, reactive, ref } from "vue";
@@ -43,10 +60,15 @@ export default defineComponent({
   },
   methods: {
     aumentarRol() {
-      this.store.setRol(this.store.rol + 1);
+      if ( this.store.rol < 4 ){ 
+        this.store.setRol(this.store.rol + 1);
+      }
     },
     disminuirRol() {
-      this.store.setRol(this.store.rol - 1);
+      // Hasta -1 
+      if ( this.store.rol > -1 ){ 
+        this.store.setRol(this.store.rol - 1);
+      }
     },
   },
 });
