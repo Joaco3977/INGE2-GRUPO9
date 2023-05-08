@@ -33,7 +33,7 @@
       </q-tabs>
     </div>
     <!-- Secciones -->
-    <div class="col-10 bg-secondary">
+    <div class="col-10 bg-white">
       <q-tab-panels
         v-model="store.tab"
         animated
@@ -75,7 +75,7 @@
         </q-tab-panel>
 
         <q-tab-panel name="Paseadores">
-          <PaginaPaseadores />
+          <PaginaPaseadores :rol='store.rol' />
         </q-tab-panel>
 
         <q-tab-panel name="LOG">
