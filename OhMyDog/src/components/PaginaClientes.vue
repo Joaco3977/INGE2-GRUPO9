@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white" style="width: full; max-height: 90vh">
-    <div class="text-center text-h4 text-primary q-pt-md">ADOPCIONES {{rol}}</div>
+    <div class="text-center text-h4 text-primary q-pt-md"> ADMINISTRAR CLIENTES </div>
 
 
     <q-tabs
