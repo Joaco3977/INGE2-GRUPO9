@@ -4,6 +4,7 @@
 
 // VER LISTA CLIENTES - GET traer todos los clientes
 
+
 // FILTRAR LISTA CLIENTES - POST con un DNI dado traer todos los matches
 
 /*   buscas el num = 987
@@ -22,9 +23,29 @@ const express = require('express');
 const knex = require('../OhMyDog/src/db/knexConfig.js');
 const router = express.Router();
 
-router.post('/getClientes', (req, res) => {
-    console.log('hola')
-    res.status(200).send({ clientes : [] });
+//MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS HTML POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS
+const getClientes = async () => {
+    try {
+        const resultado = await knex('cliente').select('*')
+        return resultado;
+    } catch (error) {
+        console.error(error)
+        return false;
+    }
+};
+
+router.post('/getClientes', async (req, res) => {
+    getClientes()
+    .then ((resultadoGet) => {
+        if (resultadoGet === undefined || resultadoGet === false) {
+            res.status(401)
+        } else {
+            res.status(200).send(resultadoGet)
+        }
+    })
+    .catch (() => {
+        res.status(401)
+    })
 })
 
 module.exports = router;
