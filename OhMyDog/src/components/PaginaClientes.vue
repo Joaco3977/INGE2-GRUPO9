@@ -32,7 +32,16 @@
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="Agregar Cliente">
             <div class="full-width row items-center">
-              <h3>Agregar Cliente</h3>
+              <div class="q-pa-xl " style="width:50vw; height:80vh">
+                <q-form class="q-pa-xl" @submit.prevent="registrarCliente">
+                  <q-input class="q-px-xl" v-model="clienteAgregar.dni" label="DNI" type="number" />
+                  <q-input class="q-px-xl" v-model="clienteAgregar.nombreApellido" label="Nombre y Apellido" type="text" />
+                  <q-input class="q-px-xl" v-model="clienteAgregar.mail" label="Correo electrónico" type="email" />
+                  <q-input class="q-px-xl" v-model="clienteAgregar.telefono" label="Telefono" type="number" />
+                  <q-input class="q-px-xl" v-model="clienteAgregar.direccion" label="Direccion" type="text" />
+                  <q-btn push class="q-my-md q-mx-xl" color="accent" type="submit" label="Registrar Cliente" />
+                </q-form>
+              </div>
             </div>
           </q-tab-panel>
 
@@ -73,28 +82,50 @@ export default defineComponent({
   setup() {
     const data = reactive({
       store: useStore(),
-      clientes: []
+      clientes: [],
+      clienteAgregar: {
+        dni: 'prueba',
+        nombreApellido: '',
+        mail: '',
+        telefono: '',
+        direccion: '',
+      }
     });
-
     return { data }
   },
   methods: {
     async loadClientes() {
-    try {
-      const response = await api.post("/cliente/getClientes", {
-        token: LocalStorage.getItem('token')
-      });
-      console.log('Response: ', response.data)
-      if (response === false) {
-        this.data.store.setRol(0);
-        this.data.store.setTab('Iniciar Sesion');
-        LocalStorage.clear()
-      } else {
-        this.data.clientes = response.data;
+      try {
+        const response = await api.post("/cliente/getClientes", {
+          token: LocalStorage.getItem('token')
+        });
+        if (response === false) {
+          this.data.store.setRol(0);
+          this.data.store.setTab('Iniciar Sesion');
+          LocalStorage.clear()
+        } else {
+          this.data.clientes = response.data;
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
-    }
+    },
+    async registrarCliente() {
+      try {
+        const response = await api.post("/cliente/addCliente", {
+          cliente: this.clienteAgregar
+        });
+        console.log('Response: ', response.data)
+        if (response === false) {
+          this.data.store.setRol(0);
+          this.data.store.setTab('Iniciar Sesion');
+          LocalStorage.clear();
+        } else {
+          this.data.clientes = response.data;
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
   },
   mounted() {
