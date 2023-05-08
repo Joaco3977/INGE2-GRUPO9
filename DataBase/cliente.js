@@ -20,7 +20,7 @@ Lautaro Gomez 30987867
                 //DE PERMITIR CAMBIOS EN DNI, TABLAS FORANEAS???
 
 const express = require('express');
-const knex = require('../OhMyDog/src/db/knexConfig.js');
+const knex = require('./knexConfig.js');
 const router = express.Router();
 
 //MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS

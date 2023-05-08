@@ -1,4 +1,4 @@
-const knex = require('../OhMyDog/src/db/knexConfig.js')
+const knex = require('./knexConfig.js')
 
 function checkAdmin (mail, pass) {
     if (mail == 'OhMyDog@admin.com' && pass == '357') {
