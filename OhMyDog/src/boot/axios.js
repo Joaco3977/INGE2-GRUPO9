@@ -23,5 +23,3 @@ export default boot(({ app }) => {
 });
 
 export { api };
-
-/* hola esto es un comentario para ver si se actualiza */
