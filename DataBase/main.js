@@ -5,8 +5,6 @@ const app = express().use(express.json());
 const { checkAdmin, checkCliente, checkVeterinario } = require('./loginCheck.js');
 const Sesion = require ('./sesion.js')
 
-const knex = require('./knexConfig.js')
-
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   next();

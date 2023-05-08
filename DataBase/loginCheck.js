@@ -1,4 +1,34 @@
-const knex = require('./knexConfig.js')
+const knex = require('./configs/knexConfig.js')
+const mailSender = require('./configs/mailConfig.js')
+const crypto = require('crypto');
+
+const generarPassword = () => {
+  const longitud = 10;
+  const caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  const password = crypto.randomBytes(longitud)
+  .map((byte) => caracteres[byte % caracteres.length])
+  .join('');
+  return password
+}
+
+const enviarMailPassword = async (destinatario) => {
+  const password = generarPassword();
+
+  const asunto = 'Nueva contraseña!';
+  const mensaje = `Su nueva contraseña es: ${password}`;
+
+  mailSender.sendMail({
+    to: destinatario,
+    subject: asunto,
+    text: mensaje
+  }).then(() => {
+    console.log('Correo electrónico enviado');
+    return true;
+  }).catch((error) => {
+    console.error('Error al enviar el correo electrónico:', error);
+    return false;
+});
+}
 
 function checkAdmin (mail, pass) {
     if (mail == 'OhMyDog@admin.com' && pass == '357') {
@@ -30,4 +60,4 @@ const checkVeterinario = async (mail, pass) => {
     }
   };
 
-module.exports = { checkAdmin, checkCliente, checkVeterinario};
+module.exports = { checkAdmin, checkCliente, checkVeterinario, enviarMailPassword };

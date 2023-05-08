@@ -7,4 +7,3 @@
 // VER LISTA DE ENTRADAS DE HISTORIAL MEDICO - POST segun DNI de cliente y NOMBRE de perro, traer de BD las entradas de historial medico de ese perro
 
 // AGREGAR ENTRADA DE HISTORIAL - POST segun FK id del perro dado, agregar a LISTA DE ENTRADAS DEL HISTORIAL MEDICO, una nueva ENTRADA con los datos brindados y ese id
-

@@ -1,4 +1,4 @@
-// VER PERFIL CLIENTE - POST segun DNI ya obtenido traer el perfil de un cliente existente
+// VER PERFIL CLIENTE - POST segun DNI ya obtenido traer el perfil de un cliente existente SE PODRIA HACER EN FRONT CON EL GET YA AGARRADO
 
 // AGREGAR CLIENTE - POST con datos de cliente, chequear DNI no exista, agregar a BD
 
@@ -20,8 +20,9 @@ Lautaro Gomez 30987867
                 //DE PERMITIR CAMBIOS EN DNI, TABLAS FORANEAS???
 
 const express = require('express');
-const knex = require('./knexConfig.js');
+const knex = require('./configs/knexConfig.js')
 const router = express.Router();
+import { enviarMailPassword } from './loginCheck.js'
 
 //MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS
 const getClientes = async () => {
@@ -34,6 +35,17 @@ const getClientes = async () => {
     }
 };
 
+const addCliente = async (nuevoCliente) => {
+    try {
+        await knex('').insert(nuevoCliente)
+        return true
+    } catch (error) {
+        console.error(error)
+        return false
+    }
+}
+
+// VER LISTA CLIENTES - GET traer todos los clientes
 router.get('/getClientes', async (req, res) => {
     getClientes()
     .then ((resultadoGet) => {
@@ -45,6 +57,41 @@ router.get('/getClientes', async (req, res) => {
         }
     })
     .catch (() => {
+        res.status(401)
+    })
+})
+
+router.post('/addCliente', async (req, res) => {
+    enviarMailPassword(req.data.mail)
+    .then ((resultadoPassword) => {
+        if (resultadoPassword) {
+            const nuevoCliente = {
+                DNI: req.body.clienteAgregar.dni,
+                NOMBREAPELLIDO: req.body.clienteAgregar.nombreApellido,
+                MAIL: req.body.clienteAgregar.mail,
+                TELEFONO: req.body.clienteAgregar.telefono,
+                FECHAREGISTRO: new Date(),
+                DIRECCION: req.body.clienteAgregar.direccion,
+                PASSWORD: resultadoPassword,
+            }
+            addCliente(nuevoCliente)
+            .then ((resultadoAdd) => {
+                if (resultadoAdd) {
+                    res.status(200)
+                } else {
+                    res.status(401)
+                }
+            })
+            .catch((error) => {
+                console.error(error)
+                res.status(401)
+            })
+        } else {
+            res.status(401)
+        }
+    })
+    .catch ((error) => {
+        console.error(error)
         res.status(401)
     })
 })
