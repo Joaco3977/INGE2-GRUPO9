@@ -6,17 +6,3 @@
                 //DE PERMITIR CAMBIOS EN DNI, TABLAS FORANEAS???
 
 const knex = require('../OhMyDog/src/db/knexConfig.js')
-
-const checkVeterinario = async (mail, pass) => {
-  try {
-    const resultado = await knex('veterinario').select('*').where('MAIL', '=', mail).andWhere('PASSWORD', '=', pass).first();
-    if (resultado === undefined) {
-      return false;
-    } else return resultado;
-  } catch (error) {
-    console.error(error)
-    return false;
-  }
-};
-
-module.exports = { checkVeterinario };

@@ -12,14 +12,17 @@ export const checkToken = async () => {
       store.setRol(response.data.rol);
       if (response.data.rol === 0) {
         store.setTab('Iniciar Sesion')
-      }
+        return false;
+      } else return true;
     } catch (error) {
       console.error(error);
       store.setRol(0);
       store.setTab('Iniciar Sesion');
+      return false;
     }
   } else {
     store.setRol(0);
     store.setTab('Iniciar Sesion');
+    return false;
   }
 };

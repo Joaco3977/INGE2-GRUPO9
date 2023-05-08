@@ -44,7 +44,7 @@ const eliminarToken = async (token) => {
     .catch(() => {
       return false
     })
-  }
+}
 
 
 module.exports = {generarToken, almacenarToken, validarToken, eliminarToken};

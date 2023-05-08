@@ -2,9 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const app = express().use(express.json());
 
-const { checkAdmin } = require('./admin.js');
-const { checkVeterinario } = require('./veterinario.js');
-const { checkCliente } = require('./cliente.js');
+const { checkAdmin, checkCliente, checkVeterinario } = require('./loginCheck.js');
 const Sesion = require ('./sesion.js')
 
 const knex = require('../OhMyDog/src/db/knexConfig.js')
@@ -14,12 +12,19 @@ app.use((req, res, next) => {
   next();
 });
 
+
 //Permite conexiones de cualquier origen
 const corsOptions = {
   origin: "*",
   optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
 app.use(cors(corsOptions));
+
+
+const clienteRouter = require ('./cliente.js')
+
+app.use('/cliente', clienteRouter)
+
 
 app.post("/login", async (req, res) => {
   const admin = checkAdmin(req.body.mail, req.body.password);

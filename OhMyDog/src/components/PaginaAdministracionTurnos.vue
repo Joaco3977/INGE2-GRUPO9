@@ -1,35 +1,39 @@
 <template>
-  <!-- Todo el contenido tiene que estar adentro de un div -->
-  <!-- Pueden usar componentes dentro de este componente -->
-  <div class="bg-white" style="width: full; max-height: 90vh">
-    <div class="text-center text-h4 text-primary">
-      ADMINISTRAR TURNOS DE CLIENTES
-    </div>
-    <div class="text-center text-h6 text-primary">TURNOS DE VETS</div>
+<!-- Todo el contenido tiene que estar adentro de un div -->
+<!-- Pueden usar componentes dentro de este componente --> 
+<div class="bg-white" style="width: full; max-height: 90vh">
+
+    <div class="text-center text-h4 text-primary "> CLIENTES </div>
+    <div class="text-center text-h6 text-primary "> Hola! Soy el componente "Pagina Clientes" EDITAME </div>
 
     <q-scroll-area
       :thumb-style="thumbStyle"
       :bar-style="barStyle"
-      style="height: 80vh"
+      style="height: 80vh;"
       class="bg-white"
     >
-      <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
 
-      <div>holitas soy un div</div>
+    <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
 
-      <div>Soy version de veterinario de turnos</div>
+    <div> holitas soy un div </div>
 
-      <!-- Hasta acá :)  -->
+    <div>
+      la idea es que este sea solo visible para los veterinarios uwu
+    </div>
+
+    <!-- Hasta acá :)  -->
     </q-scroll-area>
-  </div>
+</div>
+
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { ref } from "vue";
+import { defineComponent } from 'vue'
+import { ref } from 'vue'
 
 export default defineComponent({
-  name: "PaginaAdministracionTurnos",
-  components: {},
-});
+name: 'PaginaClientes',
+components: {
+  },
+})
 </script>

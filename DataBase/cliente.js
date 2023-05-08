@@ -18,18 +18,13 @@ Lautaro Gomez 30987867
 // EDITAR CLIENTE - POST con datos nuevos, chequear DNI 
                 //DE PERMITIR CAMBIOS EN DNI, TABLAS FORANEAS???
 
-const knex = require('../OhMyDog/src/db/knexConfig.js')
+const express = require('express');
+const knex = require('../OhMyDog/src/db/knexConfig.js');
+const router = express.Router();
 
-const checkCliente = async (mail, pass) => {
-  try {
-    const resultado = await knex('cliente').select('*').where('MAIL', '=', mail).andWhere('PASSWORD', '=', pass).first();
-    if (resultado === undefined) {
-      return false;
-    } else return resultado;
-  } catch (error) {
-    console.error(error)
-    return false;
-  }
-};
+router.post('/getClientes', (req, res) => {
+    console.log('hola')
+    res.status(200).send({ clientes : [] });
+})
 
-module.exports = { checkCliente };
+module.exports = router;

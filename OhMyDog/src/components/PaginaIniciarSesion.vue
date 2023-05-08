@@ -26,7 +26,6 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useStore } from "../pinia/store.js";
 import { api } from '../boot/axios.js';
-import { LocalStorage } from "quasar";
 
 export default defineComponent({
   name: "PaginaIniciarSesion",
