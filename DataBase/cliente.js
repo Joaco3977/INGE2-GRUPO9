@@ -23,7 +23,7 @@ const express = require('express');
 const knex = require('../OhMyDog/src/db/knexConfig.js');
 const router = express.Router();
 
-//MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS HTML POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS
+//MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS
 const getClientes = async () => {
     try {
         const resultado = await knex('cliente').select('*')

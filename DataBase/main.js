@@ -25,7 +25,6 @@ const clienteRouter = require ('./cliente.js')
 
 app.use('/cliente', clienteRouter)
 
-
 app.post("/login", async (req, res) => {
   const admin = checkAdmin(req.body.mail, req.body.password);
   const token = Sesion.generarToken();
