@@ -28,12 +28,16 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
-import { ref } from 'vue'
+import { defineComponent, ref } from 'vue'
+import { checkToken } from "../functions/check.js";
 
 export default defineComponent({
-name: 'PaginaPerros',
-components: {
+  name: 'PaginaPerros',
+  components: {
+
   },
+  mounted() {
+    checkToken()
+  }
 })
 </script>

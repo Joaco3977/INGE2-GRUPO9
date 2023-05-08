@@ -6,8 +6,8 @@
     :label="title"
 >
     <div class="q-pa-sm">
-        <q-btn flat> 
-            dskañdsakda } </q-btn>
+        <q-btn flat>
+            dskañdsakda  </q-btn>
     </div>
 </q-expansion-item>
 </template>
