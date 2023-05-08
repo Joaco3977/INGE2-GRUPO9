@@ -64,7 +64,7 @@ export default defineComponent({
   },
   methods: {
     aumentarRol() {
-      if ( this.store.rol < 4 ){
+      if ( this.store.rol < 2 ){
         this.store.setRol(this.store.rol + 1);
       }
     },

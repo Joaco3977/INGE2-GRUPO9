@@ -2,18 +2,22 @@
   <div class="row" style="height: 100vh; max-height: 100vh">
     <!-- Menú lateral -->
     <div
-      class="col-2 bg-primary shadow-2"
-      style="max-width: 35vh; height: 100vh"
+      class="flex-column col-2 bg-primary shadow-2"
+      style="max-width: 35vh; height: 100vh; max-height: 100vh"
     >
       <q-img src="logotipo" />
+
+      <div class="q-pa-md text-center text-white bg-accent">
+        ROL ACTUAL: {{ roles[store.rol+1]}}
+      </div>
 
       <q-tabs
         v-model="store.tab"
         inline-label
         vertical
         flat
-        class="q-py-sm bg-primary text-white"
-        style="max-height: 70vh"
+        class="q-pt-sm bg-primary text-white"
+        style="max-height: 60vh"
       >
         <q-tab name="Quienes Somos" icon="ion-home" label="Quienes Somos" />
         <q-tab v-if="store.rol > 0" name="Mi Perfil" icon="ion-person" label="Mi Perfil" />
@@ -88,6 +92,9 @@
 </template>
 
 <script>
+
+const listaRoles = ["Administrador","Visitante","Cliente","Veterinario"];
+
 import { defineComponent, reactive } from "vue";
 import { ref } from "vue";
 import PaginaQuienesSomos from "../components/PaginaQuienesSomos.vue";
@@ -123,6 +130,7 @@ export default defineComponent({
     const data = reactive({
       splitterModel: ref(20),
       store: useStore(),
+      roles: listaRoles,
     });
     return data;
   },

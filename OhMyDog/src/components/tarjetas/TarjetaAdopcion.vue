@@ -7,7 +7,7 @@
         src="https://media.sketchfab.com/models/060d500bf27a4b9ab242ea67d1baad76/thumbnails/a55c7d7c89ff4725b76be6eb3fe3f1f2/9f9a4b4fba9e40838d0acb8e34773196.jpeg"
       ></q-img>
       <q-card-section>
-        <!-- Contenido -->
+        <!-- Contenido --> 
         <div class="column">
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Nombre:</div>
@@ -25,16 +25,16 @@
             <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Edad:</div>
             <div>  {{edad}} </div>
           </div>
-
+          
         </div>
       </q-card-section>
       <q-separator dark />
       <q-card-section  v-if="comentario != '' " class="bg-info">
         <div class="column items-center">
-            <div class="textoComentario" >
-              <b class="textoComillas"> " </b>
+            <div class="textoComentario" > 
+              <b class="textoComillas"> " </b> 
               {{ comentario }}
-              <b class="textoComillas"> " </b>
+              <b class="textoComillas"> " </b> 
             </div>
         </div>
       </q-card-section>
@@ -43,7 +43,12 @@
       <q-card-actions class="column items-center">
         <q-btn v-if="servicio == 'adopcionesPropias' " flat> ¡Adoptado! </q-btn>
         <q-btn v-if="servicio == 'adopcionesPropias' " flat> Eliminar perro</q-btn>
-        <q-btn push class="textoBoton" v-if="servicio == 'adopciones' " flat> Contactar dueño </q-btn>
+        <q-btn flat 
+          class="textoBoton" 
+          v-if="servicio == 'adopciones' "
+          :href=convertirContacto()
+          target="_blank"
+          > Contactar dueño </q-btn>
       </q-card-actions>
     </q-card>
   </div>
@@ -54,7 +59,7 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 
 export default defineComponent({
-  name: "TarjetaAdopcion",
+  name: "TarjetaPosteo",
   components: {},
   props: {
     rol: String,
@@ -65,9 +70,27 @@ export default defineComponent({
     edad: String,
     tamanio: String,
     comentario: String,
+    contacto: String,
   },
-  setup() {
-    return {};
+  data(){
+    return{
+      contactoCliente: '',
+    }
   },
+  methods: {
+    convertirContacto(){
+      let cont = ''
+      if(this.contacto.includes("@")){
+        cont = 'mailto:' + this.contacto + '?subject=Contacto%20desde%20OhMyDog%20-%20Adoptar%20' + this.nombre;
+      } else {
+        cont = 'https://api.whatsapp.com/send?phone=' + this.contacto +  '&text=Contacto%20desde%20OhMyDog%20por%20adopción%20de%20' + this.nombre
+      }
+      console.log(cont)
+      return cont;
+    }
+  },
+  mounted(){
+    
+  }, 
 });
 </script>

@@ -45,6 +45,7 @@
                 :tamanio='perro.tamanio'
                 :raza='perro.raza'
                 :comentario='perro.comentario'
+                :contacto='perro.contacto'
               />
             </div>
           </q-tab-panel>
@@ -98,34 +99,39 @@ export default defineComponent({
           edad: '9 meses',
           tamanio: 'Pequeño',
           comentario: '',
+          contacto: 'julisaenz99@gmail.com'
         },
         {
           nombre: 'Pulgas',
           raza: 'Mestizo',
           edad: '2 meses',
           tamanio: 'Grande',
-          comentario: 'Es enorme, es el perro más grande del mundo'
+          comentario: 'Es enorme, es el perro más grande del mundo',
+          contacto: '2215621322'  
         },
         {
           nombre: 'Machas',
           raza: 'Mestizo',
           edad: '3 meses',
           tamanio: 'Pequeño',
-          comentario: 'Es re buenito'
+          comentario: 'Es re buenito',
+          contacto: 'julisaenz99@gmail.com'
         },
         {
           nombre: 'Machas',
           raza: 'Mestizo',
           edad: '3 meses',
           tamanio: 'Pequeño',
-          comentario: 'Es re buenito'
+          comentario: 'Es re buenito',
+          contacto: 'julisaenz99@gmail.com'
         },
         {
           nombre: 'Machas',
           raza: 'Mestizo',
           edad: '3 meses',
           tamanio: 'Pequeño',
-          comentario: 'Es re malo! Llevenselo! No lo quiero!'
+          comentario: 'Es re malo! Llevenselo! No lo quiero!',
+          contacto: 'julisaenz99@gmail.com'
         },
       ]
     };
