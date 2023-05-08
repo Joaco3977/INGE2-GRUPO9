@@ -28,11 +28,14 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { ref } from "vue";
+import { defineComponent, ref } from "vue";
+import { checkToken } from "../functions/check.js";
 
 export default defineComponent({
   name: "PaginaPerfil",
   components: {},
+  mounted() {
+    checkToken()
+  }
 });
 </script>
