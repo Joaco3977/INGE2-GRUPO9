@@ -96,9 +96,7 @@ export default defineComponent({
   methods: {
     async loadClientes() {
       try {
-        const response = await api.post("/cliente/getClientes", {
-          token: LocalStorage.getItem('token')
-        });
+        const response = await api.get("/cliente/getClientes")
         if (response === false) {
           this.data.store.setRol(0);
           this.data.store.setTab('Iniciar Sesion');

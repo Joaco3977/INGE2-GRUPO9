@@ -35,16 +35,16 @@ app.post("/login", async (req, res) => {
           return checkCliente(req.body.mail, req.body.password)
             .then((resultCli) => {
               if (resultCli === false) {
-                console.log("\x1b[32m%s\x1b[0m", "LAS CREDENCIALES NO COINCIDEN!");
+                console.log("\x1b[36m%s\x1b[0m", "LAS CREDENCIALES NO COINCIDEN!");
                 res.status(401).send({ rol: 0 });
               } else {
-                console.log("\x1b[32m%s\x1b[0m", "CLIENTE logueado! Se le asigna el token: ", token);
+                console.log("\x1b[36m%s\x1b[0m", `CLIENTE ${resultCli.NOMBREAPELLIDO} logueado! Se le asigna el token: `, token);
                 Sesion.almacenarToken(token, req.body.mail, 1);
                 res.status(200).send({ rol: 1 , token: token });
               }
             });
         } else {
-          console.log("\x1b[32m%s\x1b[0m", "VETERINARIO logueado! Se le asigna el token: ", token);
+          console.log("\x1b[36m%s\x1b[0m", `VETERINARIO ${resultVet.NOMBREAPELLIDO} logueado! Se le asigna el token: `, token);
           Sesion.almacenarToken(token, req.body.mail, 2);
           res.status(200).send({ rol: 2 , token: token });
         }
@@ -53,7 +53,7 @@ app.post("/login", async (req, res) => {
         console.error(`Error en una de las consultas: ${error.message}`);
       })
   } else {
-    console.log("\x1b[32m%s\x1b[0m", "ADMIN logueado! Se le asigna el token: ", token);
+    console.log("\x1b[36m%s\x1b[0m", "ADMIN logueado! Se le asigna el token: ", token);
     Sesion.almacenarToken(token, req.body.mail, -1);
     res.status(200).send({ rol: -1 , token: token });
   }
@@ -80,27 +80,20 @@ app.post("/checkToken", async (req, res) => {
 });
 
 app.listen(5137, function () {
-  console.log("\x1b[36m%s\x1b[0m","----------------------------------------------------------------------------");
-  console.log("\x1b[36m%s\x1b[0m", "Servidor Back iniciado en el puerto 5137");
+  console.log("\x1b[32m%s\x1b[0m","----------------------------------------------------------------------------");
+  console.log("\x1b[32m%s\x1b[0m", "Servidor BD iniciado en el puerto 5137");
 });
 
-process.on('exit', () => {
-  knex.destroy()
-  console.log('Servidor web apagado, o colapso!')
+process.on('SIGINT', async () => {
+  await Sesion.limpiarTokens()
+  console.log("\x1b[31m%s\x1b[0m", "Servidor BD cerrado con CTRL + C");
+  console.log("\x1b[31m%s\x1b[0m", "----------------------------------------------------------------------------");
+  process.exit()
 })
 
-/*
-process.on('SIGTERM', () => {
-  server.close(() => {
-    knex.destroy()
-    console.log('Servidor web apagado')
-  })
+process.on('exit', async () => {
+  await Sesion.limpiarTokens()
+  console.log("\x1b[31m%s\x1b[0m", "Servidor BD cerrado inesperadamente!");
+  console.log("\x1b[31m%s\x1b[0m", "----------------------------------------------------------------------------");
+  process.exit()
 })
-
-process.on('SIGINT', () => {
-  server.close(() => {
-    knex.destroy()
-    console.log('Servidor web apagado')
-  })
-})
-*/

@@ -14,7 +14,7 @@ const almacenarToken = async (token, mail, rol) => {
     }
     await knex('sesion').insert(nuevoToken)
       .then (() => {
-        console.log('Token insertado correctamente');
+        
       })
       .catch ((error) => {
         console.error(error)
@@ -46,5 +46,18 @@ const eliminarToken = async (token) => {
     })
 }
 
+const limpiarTokens = async () => {
+  return knex('sesion').del()
+    .then(() => {
+      console.log("\x1b[31m%s\x1b[0m", "Tabla de TOKENS eliminada correctamente!")
+    })
+    .catch((error) => {
+      console.error(error)
+    })
+    .finally (() => {
+      knex.destroy()
+    })
+}
 
-module.exports = {generarToken, almacenarToken, validarToken, eliminarToken};
+
+module.exports = {generarToken, almacenarToken, validarToken, eliminarToken, limpiarTokens};

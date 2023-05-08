@@ -34,12 +34,13 @@ const getClientes = async () => {
     }
 };
 
-router.post('/getClientes', async (req, res) => {
+router.get('/getClientes', async (req, res) => {
     getClientes()
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
+            console.log("\x1b[33m%s\x1b[0m", "Un VETERINARIO solicito clientes")
             res.status(200).send(resultadoGet)
         }
     })
