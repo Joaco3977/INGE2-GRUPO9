@@ -109,7 +109,7 @@ import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
 import PaginaCerrarSesion from "../components/PaginaCerrarSesion.vue";
 import { useStore } from "../pinia/store.js";
-import { checkToken } from "../functions/check.js";
+import { checkTokenHome } from "../functions/check.js";
 
 export default defineComponent({
   name: "IndexPage",
@@ -135,7 +135,7 @@ export default defineComponent({
     return data;
   },
   mounted() {
-    checkToken();
+    checkTokenHome();
   },
 });
 </script>

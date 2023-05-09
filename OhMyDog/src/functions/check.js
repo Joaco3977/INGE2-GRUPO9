@@ -26,3 +26,28 @@ export const checkToken = async () => {
     return false;
   }
 };
+
+export const checkTokenHome = async () => {
+  const store = useStore();
+  if (LocalStorage.getItem("token") !== undefined) {
+    try {
+      const response = await api.post("/checkToken", {
+        token: LocalStorage.getItem('token'),
+      });
+      store.setRol(response.data.rol);
+      if (response.data.rol === 0) {
+        store.setTab('Quienes Somos')
+        return false;
+      } else return true;
+    } catch (error) {
+      console.error(error);
+      store.setRol(0);
+      store.setTab('Quienes Somos');
+      return false;
+    }
+  } else {
+    store.setRol(0);
+    store.setTab('Quienes Somos');
+    return false;
+  }
+};

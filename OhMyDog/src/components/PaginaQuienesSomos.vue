@@ -15,23 +15,13 @@
     >
       <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
 
-      <div>holitas soy un div</div>
-      <q-btn @click="aumentarRol()"> aumentar </q-btn>
-      <q-btn @click="disminuirRol()"> disminuir </q-btn>
       <div>
-        Este estaría visible cuando inició sesión, y los vets tmb tendrían uno
-        :)
-      </div>
-      <q-btn @click="validarToken()"> Chequear Token </q-btn>
-
-      <div>
-        ----------------- <br/>
-        -1: Administrador <br/>
-        0: Visitante <br/>
-        1: Cliente <br/>
-        2: Veterinario  <br/>
-        ---------------- <br/>
-        El rol actual es {{store.rol}}
+        <h5>
+          SOBRE NOSOTROS
+        </h5>
+        <p>
+          Aca iria una introduccion sobre quienes son si es que quieren poner :D
+        </p>
       </div>
 
       <!-- Hasta acá :)  -->
