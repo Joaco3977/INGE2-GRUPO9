@@ -17,16 +17,24 @@
             <div>  {{nombre}} </div>
           </div>
           <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Raza:</div>
-            <div> {{raza}} </div>
-          </div>
-          <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Tamaño:</div>
             <div> {{tamanio}} </div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Edad:</div>
             <div>  {{edad}} </div>
+          </div>
+          <div class="row">
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Sexo:</div>
+            <div> {{sexo }} </div>
+          </div>
+          <div class="row">
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Telefono:</div>
+            <div> {{telefono}} </div>
+          </div>
+          <div class="row">
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Tamaño:</div>
+            <div> {{tamanio}} </div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Contacto:</div>
@@ -66,18 +74,18 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 
 export default defineComponent({
-  name: "TarjetaPosteo",
+  name: "TarjetaAdopcion",
   components: {},
   props: {
     rol: String,
     servicio: String,
-
     nombre: String,
-    raza: String,
     edad: String,
     tamanio: String,
+    sexo: String,
+    telefono: String,
+    mail: String,
     comentario: String,
-    contacto: String,
   },
   data(){
     return{
@@ -88,9 +96,9 @@ export default defineComponent({
     convertirContacto(){
       let cont = ''
       if(this.contacto.includes("@")){
-        cont = 'mailto:' + this.contacto + '?subject=Contacto%20desde%20OhMyDog%20-%20Adoptar%20' + this.nombre;
+        cont = 'mailto:' + this.mail + '?subject=Contacto%20desde%20OhMyDog%20-%20Adoptar%20' + this.nombre;
       } else {
-        cont = 'https://api.whatsapp.com/send?phone=' + this.contacto +  '&text=Contacto%20desde%20OhMyDog%20por%20adopción%20de%20' + this.nombre
+        cont = 'https://api.whatsapp.com/send?phone=' + this.telefono +  '&text=Contacto%20desde%20OhMyDog%20por%20adopción%20de%20' + this.nombre
       }
       console.log(cont)
       return cont;

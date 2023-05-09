@@ -17,13 +17,12 @@
       <!-- EN ESTA ETIQUETA VA @click="loadPerros" y a su vez tambien va en el mounted para que cargue de entrada todos los perros disponible ( faltaria agregar un label que informe cuando no hya perros (vectordedatos vuelve vacio de db))-->
         <q-tab name="perrosOtros" label="¡Adoptá un perro!" />
         <q-tab
-          v-if="store.rol > 0"
+          v-if="rol > 0"
           name="perrosPropios"
           label="Mis perros en adopción"
         />
       </q-tabs>
       <q-separator></q-separator>
-
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="perrosOtros">
           <q-scroll-area
@@ -36,20 +35,21 @@
           <div class="full-width row items-justify">
               <TarjetaAdopcion
                 v-for="(perro, indice) of perrosDatos" :key="indice"
-                :rol='store.rol'
-                :servicio='servicioActual'
+                :rol='rol'
+                :servicio='misAdopciones'
                 :nombre='perro.nombre'
                 :edad='perro.edad'
                 :tamanio='perro.tamanio'
-                :raza='perro.raza'
+                :sexo="perro.sexo"
+                :telefono="perro.telefono"
+                :mail="perro.mail"
                 :comentario='perro.comentario'
-                :contacto='perro.contacto'
               />
             </div>
           </q-scroll-area>
         </q-tab-panel>
 
-        <q-tab-panel v-if="store.rol > 0" name="perrosPropios" class="column">
+        <q-tab-panel v-if="rol > 0" name="perrosPropios" class="column">
           <q-btn @click="mostrarPopupM" color="accent" class="q-ma-md q-mr-xl self-end" style="width: 20em">
                 <div class="textoBoton">¡Poné un perro en adopción! </div>
           </q-btn>
@@ -73,18 +73,18 @@
             style="height: 60vh; width:100%"
             class="bg-white full-width"
           >
-
           <div class="full-width row items-justify">
               <TarjetaAdopcion
                 v-for="(perro, indice) of perrosDatos" :key="indice"
-                :rol='store.rol'
+                :rol='rol'
                 :servicio='misAdopciones'
                 :nombre='perro.nombre'
                 :edad='perro.edad'
                 :tamanio='perro.tamanio'
-                :raza='perro.raza'
+                :sexo="perro.sexo"
+                :telefono="perro.telefono"
+                :mail="perro.mail"
                 :comentario='perro.comentario'
-                :contacto='perro.contacto'
               />
             </div>
           </q-scroll-area>
@@ -102,7 +102,7 @@
 
 <script>
 import { defineComponent } from "vue";
-import { ref } from "vue";
+import { ref , reactive} from "vue";
 import { QDialog } from 'quasar'
 import TarjetaAdopcion from "./tarjetas/TarjetaAdopcion.vue";
 import { useStore } from '../pinia/store.js'
@@ -114,16 +114,9 @@ export default defineComponent({
     TarjetaAdopcion,
     QDialog,
   },
-  data(){
-    return{
-      mostrarPopup: false,
-    }
-  },
+
   setup() {
-    const store = useStore();
-
-   // const perrosDatos = reactive([]);
-
+    const perrosDatos = reactive([]);
     const  perroSEXO = ref('')
     const  perroTAMANIO =ref('')
     const  perroEDAD =ref('')
@@ -131,9 +124,10 @@ export default defineComponent({
     const  perroNOMBRE=ref('')
     const  perroMAIL=ref('')
     const  perroCOMENTARIO =ref('')
-    const  perroDNICLIENTE = store.dni;
+    const  perroDNICLIENTE = useStore.dni;
+    const  mostrarPopup = ref('false');
+    const  rol = useStore().rol
 
-    
     const registrarPerro =async  () => {
       try {
         const response = await api.post("/perroAdopcion/addPerroAdopcion", {
@@ -145,27 +139,25 @@ export default defineComponent({
             nombre:perroNOMBRE.value,
             mail:perroMAIL.value,
             comentario:perroCOMENTARIO.value,
-            dnicliente:perroDNICLIENTE.value,
+            dnicliente:perroDNICLIENTE,
           }
         })
       } catch (error) {
-
         console.error(error);
       }
     }
 
-    //
-    /*
     const loadPerros = async () => {
       try {
         const response = await api.get("/perroAdopcion/getPerrosAdopcion")
           perrosDatos.value = response.data;
+          console.log(perrosDatos.value)
       }
       catch (error) {
         console.error(error);
       }
     };
-
+/*
     const loadPerrosPropios = async () => {
       try {
         const response = await api.post("/perroAdopcion/getPerrosAdopcionPropios",{ useStore.dni })
@@ -175,7 +167,11 @@ export default defineComponent({
         console.error(error);
       }
     };
-*/
+
+*/  
+    const mostrarPopupM=()=> {
+      mostrarPopup.value = !mostrarPopup.value;
+    }
 
     return {
       tab: ref("perrosOtros"),
@@ -191,54 +187,15 @@ export default defineComponent({
       perroCOMENTARIO,
       perroDNICLIENTE,
       registrarPerro,
-      perrosDatos: [
-        {
-          nombre: "Pep",
-          raza: "Dálmata",
-          edad: "9 meses",
-          tamanio: "Pequeño",
-          comentario: "",
-          contacto: "julisaenz99@gmail.com",
-        },
-        {
-          nombre: "Pulgas",
-          raza: "Mestizo",
-          edad: "2 meses",
-          tamanio: "Grande",
-          comentario: "Es enorme, es el perro más grande del mundo",
-          contacto: "2215621322",
-        },
-        {
-          nombre: "Machas",
-          raza: "Mestizo",
-          edad: "3 meses",
-          tamanio: "Pequeño",
-          comentario: "Es re buenito",
-          contacto: "julisaenz99@gmail.com",
-        },
-        {
-          nombre: "Machas",
-          raza: "Mestizo",
-          edad: "3 meses",
-          tamanio: "Pequeño",
-          comentario: "Es re buenito",
-          contacto: "julisaenz99@gmail.com",
-        },
-        {
-          nombre: "Machas",
-          raza: "Mestizo",
-          edad: "3 meses",
-          tamanio: "Pequeño",
-          comentario: "Es re malo! Llevenselo! No lo quiero!",
-          contacto: "julisaenz99@gmail.com",
-        },
-      ],
-    }
+      perrosDatos,
+      loadPerros: ref(loadPerros),
+      mostrarPopupM,
+      mostrarPopup,
+      rol
+      }
     },
-  methods : {
-    mostrarPopupM() {
-      this.mostrarPopup= !this.mostrarPopup;
-    }
-  },
+  mounted() {
+    this.loadPerros()
+  }
 });
 </script>
