@@ -111,11 +111,7 @@ export default defineComponent({
     const loadClientes = async () => {
       try {
         const response = await api.get("/cliente/getClientes")
-        if (response === false) {
-          store.setRol(0);
-          store.setTab('Iniciar Sesion');
-          LocalStorage.clear()
-        } else {
+        if (response !== false) {
           clientes.value = response.data;
           clientesFiltrados.value = response.data;
         }

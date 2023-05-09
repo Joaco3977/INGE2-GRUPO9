@@ -23,16 +23,13 @@
               <!-- Posteos de perros ACÁ DEBERÍA ENTRAR LA INFO DE PERROS DE LA BASE DE DATOS -->
 
               <TarjetaPaseador
-                v-for="(pas, indice) of paseadorDatos"
-                :key="indice"
-                :rol="rol"
-                :servicio="servicioActual"
-                :nombre="pas.nombre"
-                :comentario="pas.comentario"
-                :contacto="pas.contacto"
-                :dias="pas.dias"
-                :horario="pas.horario"
-                :zona="pas.zona"
+              v-for="(paseador, zona) in paseadores" :key="zona"
+                :nombre='paseador.NOMBREAPELLIDO'
+                :zona='paseador.ZONA'
+                :dias='paseador.DIAS'
+                :horario='paseador.HORARIO'
+                :contacto='paseador.MAIL'
+                :comentario="paseador.COMENTARIO"
               />
             </div>
           </q-scroll-area>
@@ -51,43 +48,38 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, reactive } from "vue";
 import { ref } from "vue";
 import TarjetaPaseador from "./tarjetas/TarjetaPaseador.vue";
+import { api } from '../boot/axios.js'
 
 export default defineComponent({
-  name: "PaginaAdopciones",
+  name: "PaginaPaseadores",
   components: {
-    TarjetaPaseador,
-  },
-  props: {
-    rol: String,
+    TarjetaPaseador
   },
   setup() {
-    return {
-      tab: ref("paseadores"),
-      servicioActual: "paseadores",
+    const paseadores = reactive([]);
 
-      paseadorDatos: [
-        {
-          nombre: "Juan Peréz",
-          zona: "La Plata",
-          dias: "Lunes a viernes",
-          horario: "9:00 a 13:00",
-          contacto: "julisaenz99@gmail.com",
-          comentario: "Necesitan darme bolsita para los residuos del perro"
-        },
-        {
-          nombre: "Juan Peréz",
-          zona: "La Plata",
-          dias: "Lunes a viernes",
-          horario: "9:00 a 13:00",
-          contacto: "julisaenz99@gmail.com",
-          comentario: "Necesitan darme bolsita para los residuos del perro"
-        },
-        
-      ],
+    const loadPaseadores = async () => {
+      try {
+        const response = await api.get("/paseador/getPaseadores")
+        if (response !== false) {
+          paseadores.value = response.data;
+          console.log('Paseadores: ', paseadores)
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    return {
+      paseadores,
+      loadPaseadores: ref(loadPaseadores),
     };
   },
+  mounted() {
+    this.loadPaseadores()
+  }
 });
 </script>

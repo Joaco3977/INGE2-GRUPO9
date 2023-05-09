@@ -65,7 +65,7 @@ router.post('/getPerrosAdopcionPropios', async (req, res) => {
 
 
 router.post('/addPerroAdopcion', async (req, res) => {
-
+    console.log('datos: ', req.body )
             const nuevoPerroA = {
                 SEXO:req.body.perro.sexo,
                 TAMANIO:req.body.perro.tamanio,
@@ -74,7 +74,7 @@ router.post('/addPerroAdopcion', async (req, res) => {
                 NOMBRE:req.body.perro.nombre,
                 MAIL:req.body.perro.mail,
                 COMENTARIO:req.body.perro.comentario,
-                DNICLIENTE:req.body.perro.dni,
+                DNICLIENTE:req.body.perro.dnicliente,
             }
             addperroAdopcion(nuevoPerroA)
             .then ((resultadoAdd) => {
