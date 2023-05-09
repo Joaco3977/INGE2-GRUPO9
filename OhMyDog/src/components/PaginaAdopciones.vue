@@ -17,7 +17,7 @@
       <!-- EN ESTA ETIQUETA VA @click="loadPerros" y a su vez tambien va en el mounted para que cargue de entrada todos los perros disponible ( faltaria agregar un label que informe cuando no hya perros (vectordedatos vuelve vacio de db))-->
         <q-tab name="perrosOtros" label="¡Adoptá un perro!" />
         <q-tab
-          v-if="rol > 0"
+          v-if="rol === 1"
           name="perrosPropios"
           label="Mis perros en adopción"
         />
@@ -37,7 +37,7 @@
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
                 :rol='rol'
-                :servicio='misAdopciones'
+                :servicio='servicio1'
                 :nombre='perro.NOMBRE'
                 :edad='perro.EDAD'
                 :tamanio='perro.TAMANIO'
@@ -50,7 +50,7 @@
           </q-scroll-area>
         </q-tab-panel>
 
-        <q-tab-panel v-if="rol > 0" name="perrosPropios" class="column">
+        <q-tab-panel v-if="rol === 1" name="perrosPropios" class="column">
           <q-btn @click="mostrarPopupM" color="accent" class="q-ma-md q-mr-xl self-end" style="width: 20em">
                 <div class="textoBoton">¡Poné un perro en adopción! </div>
           </q-btn>
@@ -79,7 +79,7 @@
               v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
                 :rol='rol'
-                :servicio='misAdopciones'
+                :servicio='servicio2'
                 :nombre='perro.NOMBRE'
                 :edad='perro.EDAD'
                 :tamanio='perro.TAMANIO'
@@ -129,6 +129,9 @@ export default defineComponent({
     const perroDNICLIENTE = useStore.dni;
     const mostrarPopup = ref('false');
     const rol = useStore().rol
+
+    const servicio1 = 'perrosOtros'
+    const servicio2 = 'perrosMios'
 
     const registrarPerro =async  () => {
       try {
@@ -193,7 +196,9 @@ export default defineComponent({
       loadPerros: ref(loadPerros),
       mostrarPopupM,
       mostrarPopup,
-      rol
+      rol,
+      servicio1,
+      servicio2
       }
     },
   mounted() {
