@@ -56,12 +56,13 @@ router.get('/getVeterinarios', async (req, res) => {
 });
 
 router.post('/getVeterinario',async (req,res) =>{
-    getVeterinarioPorMail(req.body.data.mail)
+    getVeterinarioPorMail(req.body.mail)
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
             console.log("\x1b[33m%s\x1b[0m", "SISTEMA solicito un Veterinario")
+            console.log('resultado: ', resultadoGet)
             res.status(200).send(resultadoGet)
         }
     })

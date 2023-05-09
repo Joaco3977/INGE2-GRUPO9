@@ -83,7 +83,7 @@ router.get('/getClientes', async (req, res) => {
 })
 
 router.post('/getCliente',async (req,res) =>{
-    getClientePorMail(req.body.data.mail)
+    getClientePorMail(req.body.mail)
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)

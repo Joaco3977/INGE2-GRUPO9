@@ -50,7 +50,7 @@
           </q-scroll-area>
         </q-tab-panel>
 
-        <q-tab-panel v-if="rol === 1" name="perrosPropios" class="column">
+        <q-tab-panel v-if="rol > 0" name="perrosPropios" class="column">
           <q-btn @click="mostrarPopupM" color="accent" class="q-ma-md q-mr-xl self-end" style="width: 20em">
                 <div class="textoBoton">¡Poné un perro en adopción! </div>
           </q-btn>
