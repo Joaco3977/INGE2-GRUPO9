@@ -25,6 +25,9 @@
       <q-separator></q-separator>
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="perrosOtros">
+          <q-btn v-if="rol === 2" @click="mostrarPopupM" color="accent" class="q-ma-md q-mr-xl self-end" style="width: 20em">
+                <div class="textoBoton">¡Poné un perro en adopción! </div>
+          </q-btn>
           <q-scroll-area
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
@@ -52,16 +55,16 @@
 
         <q-tab-panel v-if="rol > 0" name="perrosPropios" class="column">
           <q-btn @click="mostrarPopupM" color="accent" class="q-ma-md q-mr-xl self-end" style="width: 20em">
-                <div class="textoBoton">¡Poné un perro en adopción! </div>
+                <div class="textoBoton">¡Poné un perro en adopción!</div>
           </q-btn>
           <q-dialog v-model="mostrarPopup">
             <div class="paraform" style="width: 50vw; height: 80vh">
               <q-form class="q-pa-xl" @submit.prevent="registrarPerro" >
                 <q-input v-model="perroNOMBRE" clearable class="q-px-xl" label="Nombre" type="text" />
-                <q-input v-model="perroTAMANIO" clearable class="q-px-xl" label="Tamaño" type="text" />
+                <q-select v-model="peroTAMANIO" :options="opcionTamanio" class="q-px-xl" label="Tamaño" />
                 <q-input v-model="perroEDAD" clearable class="q-px-xl" label="Edad Aproximada" type="text" />
-                <q-input v-model="perroSEXO" clearable class="q-px-xl" label="Sexo" type="text" />
-                <q-input v-model="perroTELEFONO" clearable class="q-px-xl" label="Telefono" type="text" />
+                <q-select v-model="peroSEXO" :options="opcionSexo" class="q-px-xl" label="Sexo" />
+                <q-input v-model="perroTELEFONO" clearable class="q-px-xl" label="Telefono" type="number" />
                 <q-input v-model="perroMAIL" clearable class="q-px-xl" label="Mail" type="email" />
                 <q-input v-model="perroCOMENTARIO" clearable class="q-px-xl" label="Comentarios" type="text" />
                 <q-btn push class="q-my-md q-mx-xl" color="accent" type="submit" label="Registrar Perro" />
@@ -133,6 +136,16 @@ export default defineComponent({
     const servicio1 = 'perrosOtros'
     const servicio2 = 'perrosMios'
 
+    const loadPerros = async () => {
+      try {
+        const response = await api.get("/perroAdopcion/getPerrosAdopcion")
+          perrosDatos.value = response.data;
+      }
+      catch (error) {
+        console.error(error);
+      }
+    };
+
     const registrarPerro =async  () => {
       try {
         console.log(useStore().dni)
@@ -146,23 +159,14 @@ export default defineComponent({
             mail:perroMAIL.value,
             comentario:perroCOMENTARIO.value,
             dnicliente:perroDNICLIENTE,
-          } 
+          }
         })
-        loadPerros()
+        await loadPerros()
       } catch (error) {
         console.error(error);
       }
     }
 
-    const loadPerros = async () => {
-      try {
-        const response = await api.get("/perroAdopcion/getPerrosAdopcion")
-          perrosDatos.value = response.data;
-      }
-      catch (error) {
-        console.error(error);
-      }
-    };
 /*
     const loadPerrosPropios = async () => {
       try {
@@ -184,9 +188,18 @@ export default defineComponent({
       store : useStore(),
       servicioActual: "adopciones",
       misAdopciones: "misPerros",
-      perroSEXO,
-      perroTAMANIO,
       perroEDAD,
+      perroSEXO: '',
+      opcionSexo: [
+        { label: 'Macho', value: 'Macho' },
+        { label: 'Hembra', value: 'Hembra' }
+      ],
+      perroTAMANIO: '',
+      opcionTamanio: [
+      { label: 'Pequeño', value: 'Pequeño' },
+      { label: 'Mediano', value: 'Mediano' },
+      { label: 'Grande', value: 'Grande' }
+      ],
       perroTELEFONO,
       perroNOMBRE,
       perroMAIL,
@@ -199,7 +212,8 @@ export default defineComponent({
       mostrarPopup,
       rol,
       servicio1,
-      servicio2
+      servicio2,
+
       }
     },
   mounted() {

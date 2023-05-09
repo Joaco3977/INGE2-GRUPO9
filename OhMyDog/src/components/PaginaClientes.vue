@@ -81,8 +81,8 @@ export default defineComponent({
     TarjetaCliente,
   },
   setup() {
+    const tab = ref('Agregar Cliente')
     const store = useStore();
-    const tab = 'Agregar Cliente'
     const clientes = reactive([]);
     const clientesFiltrados = ref([]);
     const dniFiltrar = ref('');
