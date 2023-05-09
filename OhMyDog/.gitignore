@@ -29,4 +29,5 @@ yarn-error.log*
 *.sln
 
 # DB url
+/src/boot/axios.js
 /src/boot/axios
