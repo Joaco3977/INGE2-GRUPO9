@@ -24,7 +24,7 @@ const getPerrosPerdidosPropios = async (dni) =>{
 
 const addperroPerdido = async (nuevoPerroP) => {
     try {
-        await knex('perroAdopcion').insert(nuevoPerroP)
+        await knex('perroPerdido').insert(nuevoPerroP)
         return true
     } catch (error) {
         console.error(error)
@@ -71,7 +71,7 @@ router.post('/addPerroPerdido', async (req, res) => {
                 NOMBRE:req.body.perro.nombre,
                 MAIL:req.body.perro.mail,
                 COMENTARIO:req.body.perro.comentario,
-                DNI:req.body.perro.dni,
+                DNICLIENTE:req.body.perro.dni,
             }
             addperroAdopcion(nuevoPerroP)
             .then ((resultadoAdd) => {

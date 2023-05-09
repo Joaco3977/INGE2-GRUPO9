@@ -74,7 +74,7 @@ router.post('/addPerroAdopcion', async (req, res) => {
                 NOMBRE:req.body.perro.nombre,
                 MAIL:req.body.perro.mail,
                 COMENTARIO:req.body.perro.comentario,
-                DNI:req.body.perro.dni,
+                DNICLIENTE:req.body.perro.dni,
             }
             addperroAdopcion(nuevoPerroA)
             .then ((resultadoAdd) => {
