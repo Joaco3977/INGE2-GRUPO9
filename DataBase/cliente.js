@@ -36,6 +36,26 @@ const getClientes = async () => {
     }
 };
 
+const getClientePorMail = async (mail) => {
+    try {
+        const resultado = await knex.select('*').from('cliente').where('MAIL', '=', mail)
+        return resultado;
+    } catch (error) {
+        console.error(error)
+        return false;
+    } 
+}
+
+const getClientePorDNI= async (dni) => {
+    try {
+        const resultado = await knex.select('*').from('cliente').where('DNI', '=', dni)
+        return resultado;
+    } catch (error) {
+        console.error(error)
+        return false;
+    } 
+}
+
 const addCliente = async (nuevoCliente) => {
     try {
         await knex('cliente').insert(nuevoCliente)
@@ -54,6 +74,21 @@ router.get('/getClientes', async (req, res) => {
             res.status(401)
         } else {
             console.log("\x1b[33m%s\x1b[0m", "VETERINARIO solicito clientes")
+            res.status(200).send(resultadoGet)
+        }
+    })
+    .catch (() => {
+        res.status(401)
+    })
+})
+
+router.post('/getCliente',async (req,res) =>{
+    getClientePorMail(req.body.data.mail)
+    .then ((resultadoGet) => {
+        if (resultadoGet === undefined || resultadoGet === false) {
+            res.status(401)
+        } else {
+            console.log("\x1b[33m%s\x1b[0m", "SISTEMA solicito un cliente")
             res.status(200).send(resultadoGet)
         }
     })

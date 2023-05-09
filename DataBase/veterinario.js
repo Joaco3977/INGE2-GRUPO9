@@ -20,6 +20,16 @@ const getVeteriano = async () => {
     }
 };
 
+const getVeterinarioPorMail = async (mail) => {
+    try {
+        const resultado = await knex.select('*').from('veterinario').where('MAIL', '=', mail)
+        return resultado;
+    } catch (error) {
+        console.error(error)
+        return false;
+    } 
+}
+
 const addVeterinario = async (nuevoVeterinario) => {
     try {
         await knex('veterinario').insert(nuevoVeterinario)
@@ -44,6 +54,21 @@ router.get('/getVeterinarios', async (req, res) => {
         res.status(401)
     })
 });
+
+router.post('/getVeterinario',async (req,res) =>{
+    getVeterinarioPorMail(req.body.data.mail)
+    .then ((resultadoGet) => {
+        if (resultadoGet === undefined || resultadoGet === false) {
+            res.status(401)
+        } else {
+            console.log("\x1b[33m%s\x1b[0m", "SISTEMA solicito un Veterinario")
+            res.status(200).send(resultadoGet)
+        }
+    })
+    .catch (() => {
+        res.status(401)
+    })
+})
 
 router.post('/addVeterinario', async (req,res)=>{
     enviadorMails.enviarMailPassword(req.body.mail)

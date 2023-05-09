@@ -47,6 +47,18 @@ export default defineComponent({
         localStorage.setItem("token", response.data.token);
         this.store.setRol(response.data.rol);
         this.store.setTab('Quienes Somos');
+        if (this.store.rol == 1){
+          response = await api.post("/cliente/getCliente", {
+            mail: this.mail
+          });
+          this.store.setDni(response.data.dni)
+        }else
+        if (this.store.rol == 2){
+          response = await api.post("/veterinario/getVeterinario", {
+            mail: this.mail
+          });
+          this.store.setDni(response.data.dni)
+        }
       } catch (error) {
         console.error(error);
       }
