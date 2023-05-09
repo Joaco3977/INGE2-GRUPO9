@@ -29,6 +29,8 @@
         <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
+        <q-tab v-if="store.rol === 2" name="Responder Consultas" icon="ion-people" label="Responder Consultas" />
+        <q-tab v-if="store.rol === 1" name="Realizar Consulta" icon="ion-people" label="Realizar Consulta" />
         <q-tab v-if="store.rol !== 0" name="Cerrar Sesion" icon="ion-heart" label="Cerrar Sesion" />
       </q-tabs>
     </div>
@@ -82,6 +84,14 @@
           <PaginaLog />
         </q-tab-panel>
 
+        <q-tab-panel name="Realizar Consuta">
+          <PaginaConsultaCliente />
+        </q-tab-panel>
+
+        <q-tab-panel name="Responder Consultas">
+          <PaginaConsultaVeterinario />
+        </q-tab-panel>
+
         <q-tab-panel name="Cerrar Sesion">
           <PaginaCerrarSesion />
         </q-tab-panel>
@@ -101,6 +111,8 @@ import PaginaQuienesSomos from "../components/PaginaQuienesSomos.vue";
 import PaginaIniciarSesion from "../components/PaginaIniciarSesion.vue";
 import PaginaTurnos from "../components/PaginaTurnos.vue";
 import PaginaAdministracionTurnos from "../components/PaginaAdministracionTurnos.vue";
+import PaginaConsultaCliente from "src/components/PaginaConsultaCliente.vue";
+import PaginaConsultaVeterinario from "src/components/PaginaConsultaVeterinario.vue";
 import PaginaClientes from "../components/PaginaClientes.vue";
 import PaginaPerros from "../components/PaginaPerros.vue";
 import PaginaAdopciones from "../components/PaginaAdopciones.vue";
@@ -118,6 +130,8 @@ export default defineComponent({
     PaginaIniciarSesion,
     PaginaTurnos,
     PaginaAdministracionTurnos,
+    PaginaConsultaCliente,
+    PaginaConsultaVeterinario,
     PaginaClientes,
     PaginaPerros,
     PaginaAdopciones,
