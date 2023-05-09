@@ -14,7 +14,6 @@ const getPaseadores = async () => {
 };
 
 router.get('/getPaseadores', async (req, res) => {
-    console.log('llegue getPaseadores')
     getPaseadores()
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
