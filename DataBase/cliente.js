@@ -23,7 +23,7 @@ const express = require('express');
 const knex = require('./configs/knexConfig.js')
 const router = express.Router();
 const enviadorMails = require('./loginCheck.js');
-const Sesion = require ('./sesion.js')
+const Log = require ('./admin.js')
 
 //MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS
 const getClientes = async () => {
@@ -78,7 +78,7 @@ router.post('/addCliente', async (req, res) => {
             addCliente(nuevoCliente)
             .then ((resultadoAdd) => {
                 if (resultadoAdd !== false) {
-                    //añadir a log
+                    // Log.agregarEntradaLog(req.body.token)
                     console.log("\x1b[35m%s\x1b[0m", `VETERINARIO registro al CLIENTE: ${req.body.cliente.nombreApellido}, DNI: ${req.body.cliente.dni}, Mail: ${req.body.cliente.mail}`)
                     res.status(200)
                 } else {

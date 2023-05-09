@@ -6,8 +6,9 @@ function generarToken() {
     return token;
 }
 
-function getInfoQuien (token) {
-  return knex('sesion')
+/*
+async function getInfoQuien (token) {
+  await knex('sesion')
     .select('sesion.ROL', 'cliente.NOMBREAPELLIDO AS nombre_cliente', 'cliente.DNI AS dni_cliente', 'veterinario.NOMBREAPELLIDO AS nombre_veterinario', 'veterinario.DNI AS dni_veterinario')
     .where('sesion.TOKEN', token)
     .leftJoin('cliente', 'sesion.MAIL', 'cliente.MAIL')
@@ -34,6 +35,7 @@ function getInfoQuien (token) {
       }
     });
 }
+*/
 
 const almacenarToken = async (token, mail, rol) => {
     const nuevoToken = {
@@ -88,4 +90,4 @@ const limpiarTokens = async () => {
     })
 }
 
-module.exports = {generarToken, almacenarToken, validarToken, eliminarToken, limpiarTokens, getInfoQuien};
+module.exports = {generarToken, almacenarToken, validarToken, eliminarToken, limpiarTokens}; //getInfoQuien

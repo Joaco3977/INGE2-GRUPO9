@@ -40,6 +40,7 @@ const sacarTiempo = () => {
     return timestamp
 }
 
+/*
 const agregarEntradaLog = async (tokenQuien, queHizo) => {
     Sesion.getInfoQuien(tokenQuien)
     .then ((resultado) => {
@@ -61,6 +62,7 @@ const agregarEntradaLog = async (tokenQuien, queHizo) => {
         }
     })
 }
+*/
 
 router.get('/getLog', async (req, res) => {
     knex('log').select('*')
@@ -73,4 +75,4 @@ router.get('/getLog', async (req, res) => {
     })
 })
 
-module.exports = router;
+module.exports = router ; //agregarEntradaLog
