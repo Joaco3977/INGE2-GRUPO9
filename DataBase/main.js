@@ -24,10 +24,12 @@ app.use(cors(corsOptions));
 const clienteRouter = require ('./cliente.js')
 const veterinarioRouter = require ('./veterinario.js')
 const adminRouter = require ('./admin.js')
+const perroAdopcionRouter = require ('./perroAdopcion.js')
 
 app.use('/cliente', clienteRouter)
 app.use('/veterinario', veterinarioRouter)
 app.use('/admin', adminRouter)
+app.use('/perroAdopcion', perroAdopcionRouter)
 
 app.post("/login", async (req, res) => {
   const admin = checkAdmin(req.body.mail, req.body.password);

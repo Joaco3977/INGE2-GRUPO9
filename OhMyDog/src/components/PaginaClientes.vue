@@ -103,13 +103,6 @@ export default defineComponent({
             direccion: clienteAgregarDireccion.value,
           }
         });
-        if (response === false) {
-          store.setRol(0);
-          store.setTab('Iniciar Sesion');
-          LocalStorage.clear();
-        } else {
-          clientes.value = response.data;
-        }
       } catch (error) {
         console.error(error);
       }
