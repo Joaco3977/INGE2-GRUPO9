@@ -16,6 +16,7 @@
             <div class="full-width row items-center">
               <TarjetaPaseador
               v-for="paseador in paseadores"
+                :rol="rol"
                 :key="paseador.DNI"
                 :nombre='paseador.NOMBREAPELLIDO'
                 :zona='paseador.ZONA'
@@ -35,6 +36,7 @@ import { defineComponent, reactive } from "vue";
 import { ref } from "vue";
 import TarjetaPaseador from "./tarjetas/TarjetaPaseador.vue";
 import { api } from '../boot/axios.js'
+import { useStore } from '../pinia/store.js'
 
 export default defineComponent({
   name: "PaginaPaseadores",
@@ -43,6 +45,7 @@ export default defineComponent({
   },
   setup() {
     const paseadores = ref ([]);
+    const rol = useStore().rol
 
     const loadPaseadores = async () => {
       try {
@@ -58,6 +61,7 @@ export default defineComponent({
 
     return {
       paseadores,
+      rol,
       loadPaseadores: ref(loadPaseadores),
     };
   },
