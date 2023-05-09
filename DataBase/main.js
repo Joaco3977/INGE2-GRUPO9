@@ -25,11 +25,19 @@ const clienteRouter = require ('./cliente.js')
 const veterinarioRouter = require ('./veterinario.js')
 const adminRouter = require ('./admin.js')
 const perroAdopcionRouter = require ('./perroAdopcion.js')
+<<<<<<< HEAD
+=======
+const paseadorRouter = require ('./paseador.js')
+>>>>>>> 0136e13d78aae111e9f54d72e1548a5dd16e9537
 
 app.use('/cliente', clienteRouter)
 app.use('/veterinario', veterinarioRouter)
 app.use('/admin', adminRouter)
 app.use('/perroAdopcion', perroAdopcionRouter)
+<<<<<<< HEAD
+=======
+app.use('/paseador', paseadorRouter)
+>>>>>>> 0136e13d78aae111e9f54d72e1548a5dd16e9537
 
 app.post("/login", async (req, res) => {
   const admin = checkAdmin(req.body.mail, req.body.password);

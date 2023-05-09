@@ -47,8 +47,9 @@
 
           <q-tab-panel name="Buscar Cliente">
             <div class="full-width row items-center">
+              <q-search v-model="dniFiltrar" placeholder="Buscar Cliente por DNI" ></q-search>
               <TarjetaCliente
-                v-for="(cliente, dni) in data.clientes" :key="dni"
+                v-for="(cliente, dni) in clientesFiltrados" :key="dni"
                 :dni='cliente.DNI'
                 :nombreaApellido='cliente.NOMBREAPELLIDO'
                 :mail='cliente.MAIL'
@@ -67,7 +68,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, reactive, ref, watch } from 'vue';
 import { api } from '../boot/axios.js';
 import { useStore } from '../pinia/store.js'
 import { LocalStorage } from "quasar";
@@ -82,6 +83,8 @@ export default defineComponent({
   setup() {
     const store = useStore();
     const clientes = reactive([]);
+    const clientesFiltrados = ref([]);
+    const dniFiltrar = ref('');
     const clienteAgregarDni = ref('');
     const clienteAgregarNombreApellido = ref('');
     const clienteAgregarMail = ref('');
@@ -89,7 +92,6 @@ export default defineComponent({
     const clienteAgregarDireccion = ref('');
 
     const registrarCliente = async () => {
-      console.log('LLEGUE')
       try {
         const response = await api.post("/cliente/addCliente", {
           token: LocalStorage.getItem('token'),
@@ -101,13 +103,6 @@ export default defineComponent({
             direccion: clienteAgregarDireccion.value,
           }
         });
-        if (response === false) {
-          store.setRol(0);
-          store.setTab('Iniciar Sesion');
-          LocalStorage.clear();
-        } else {
-          clientes.value = response.data;
-        }
       } catch (error) {
         console.error(error);
       }
@@ -116,27 +111,38 @@ export default defineComponent({
     const loadClientes = async () => {
       try {
         const response = await api.get("/cliente/getClientes")
-        if (response === false) {
-          store.setRol(0);
-          store.setTab('Iniciar Sesion');
-          LocalStorage.clear()
-        } else {
+        if (response !== false) {
           clientes.value = response.data;
+          clientesFiltrados.value = response.data;
         }
       } catch (error) {
         console.error(error);
       }
     };
 
+    watch(dniFiltrar, (nuevoValor, valorAnterior) => {
+      this.filtrarClientes(nuevoValor, clientes);
+    });
+
+    const filtrarClientes = () => {
+      const query = dniFiltrar.value
+      clientesFiltrados.value = clientes.value.filter(
+        (cliente) => cliente.dni.includes(query)
+      );
+    };
+
     return {
       clientes,
+      clientesFiltrados,
+      dniFiltrar,
       clienteAgregarDni,
       clienteAgregarNombreApellido,
       clienteAgregarMail,
       clienteAgregarTelefono,
       clienteAgregarDireccion,
       loadClientes,
-      registrarCliente
+      registrarCliente,
+      filtrarClientes
     };
   },
   mounted() {
