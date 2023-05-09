@@ -4,7 +4,36 @@ function generarToken() {
     const uuid = require('uuid');
     const token = uuid.v4(); // Genera un token único aleatorio
     return token;
-  }
+}
+
+function getInfoQuien (token) {
+  return knex('sesion')
+    .select('sesion.ROL', 'cliente.NOMBREAPELLIDO AS nombre_cliente', 'cliente.DNI AS dni_cliente', 'veterinario.NOMBREAPELLIDO AS nombre_veterinario', 'veterinario.DNI AS dni_veterinario')
+    .where('sesion.TOKEN', token)
+    .leftJoin('cliente', 'sesion.MAIL', 'cliente.MAIL')
+    .leftJoin('veterinario', 'sesion.MAIL', 'veterinario.MAIL')
+    .then((rows) => {
+      if (rows.length === 0) {
+        return false;
+      }
+      const rol = rows[0].ROL;
+      if (rol === 1) {
+        return {
+          rol,
+          nombre: rows[0].nombre_cliente,
+          dni: rows[0].dni_cliente,
+        };
+      } else if (rol === 2) {
+        return {
+          rol,
+          nombre: rows[0].nombre_veterinario,
+          dni: rows[0].dni_veterinario,
+        };
+      } else {
+        return false;
+      }
+    });
+}
 
 const almacenarToken = async (token, mail, rol) => {
     const nuevoToken = {
@@ -59,5 +88,4 @@ const limpiarTokens = async () => {
     })
 }
 
-
-module.exports = {generarToken, almacenarToken, validarToken, eliminarToken, limpiarTokens};
+module.exports = {generarToken, almacenarToken, validarToken, eliminarToken, limpiarTokens, getInfoQuien};

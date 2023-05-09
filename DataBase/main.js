@@ -5,6 +5,8 @@ const app = express().use(express.json());
 const { checkAdmin, checkCliente, checkVeterinario } = require('./loginCheck.js');
 const Sesion = require ('./sesion.js')
 
+const transporter = require ('./configs/mailConfig.js')
+
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   next();
@@ -21,9 +23,11 @@ app.use(cors(corsOptions));
 
 const clienteRouter = require ('./cliente.js')
 const veterinarioRouter = require ('./veterinario.js')
+const adminRouter = require ('./admin.js')
 
 app.use('/cliente', clienteRouter)
 app.use('/veterinario', veterinarioRouter)
+app.use('/admin', adminRouter)
 
 app.post("/login", async (req, res) => {
   const admin = checkAdmin(req.body.mail, req.body.password);
@@ -82,6 +86,14 @@ app.post("/checkToken", async (req, res) => {
 app.listen(5137, function () {
   console.log("\x1b[32m%s\x1b[0m","----------------------------------------------------------------------------");
   console.log("\x1b[32m%s\x1b[0m", "Servidor BD iniciado en el puerto 5137");
+  transporter.verify(function (error, success) {
+    if (error) {
+      console.log('------------------------------------------------')
+      console.log(error);
+    } else {
+      console.log("\x1b[32m%s\x1b[0m", "Servidor de Mail esta listo para enviar correos!");
+    }
+  });
 });
 
 process.on('SIGINT', async () => {

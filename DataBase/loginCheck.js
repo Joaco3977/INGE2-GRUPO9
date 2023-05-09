@@ -10,19 +10,11 @@ const generarPassword = () => {
 }
 
 const enviarMailPassword = async (destinatario) => {
+  
   const password = generarPassword();
-
+  
   const asunto = 'Nueva contraseña!';
   const mensaje = `Su nueva contraseña es: ${password}`;
-
-  transporter.verify(function (error, success) {
-    if (error) {
-      console.log('------------------------------------------------')
-      console.log(error);
-    } else {
-      console.log("\x1b[32m%s\x1b[0m", "Servidor de Mail esta listo para enviar correos!");
-    }
-  });
 
   transporter.sendMail({
     from: 'BitBuilders2023@gmail.com',
@@ -35,6 +27,7 @@ const enviarMailPassword = async (destinatario) => {
     console.error('Error al enviar el correo electrónico:', error);
     return false;
 });
+  return password
 }
 
 function checkAdmin (mail, pass) {

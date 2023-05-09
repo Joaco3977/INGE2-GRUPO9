@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive, render } from "vue";
+import { defineComponent, ref, reactive } from "vue";
 import { api } from '../boot/axios.js';
 import { useStore } from '../pinia/store.js'
 import { LocalStorage } from "quasar";
@@ -80,57 +80,66 @@ export default defineComponent({
     TarjetaCliente,
   },
   setup() {
-    const data = reactive({
-      store: useStore(),
-      clientes: [],
-      clienteAgregarDni: '',
-      clienteAgregarNombreApellido: '',
-      clienteAgregarMail: '',
-      clienteAgregarTelefono: '',
-      clienteAgregarDireccion: '',
-    });
-    return { data }
-  },
-  methods: {
-    async loadClientes() {
+    const store = useStore();
+    const clientes = reactive([]);
+    const clienteAgregarDni = ref('');
+    const clienteAgregarNombreApellido = ref('');
+    const clienteAgregarMail = ref('');
+    const clienteAgregarTelefono = ref('');
+    const clienteAgregarDireccion = ref('');
+
+    const registrarCliente = async () => {
+      console.log('LLEGUE')
+      try {
+        const response = await api.post("/cliente/addCliente", {
+          token: LocalStorage.getItem('token'),
+          cliente: {
+            dni: clienteAgregarDni.value,
+            nombreApellido: clienteAgregarNombreApellido.value,
+            mail: clienteAgregarMail.value,
+            telefono: clienteAgregarTelefono.value,
+            direccion: clienteAgregarDireccion.value,
+          }
+        });
+        if (response === false) {
+          store.setRol(0);
+          store.setTab('Iniciar Sesion');
+          LocalStorage.clear();
+        } else {
+          clientes.value = response.data;
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    const loadClientes = async () => {
       try {
         const response = await api.get("/cliente/getClientes")
         if (response === false) {
-          this.data.store.setRol(0);
-          this.data.store.setTab('Iniciar Sesion');
+          store.setRol(0);
+          store.setTab('Iniciar Sesion');
           LocalStorage.clear()
         } else {
-          this.data.clientes = response.data;
+          clientes.value = response.data;
         }
       } catch (error) {
         console.error(error);
       }
-    },
-    async registrarCliente() {
-      try {
-        const response = await api.post("/cliente/addCliente", {
-          cliente: {
-            dni: 223223,
-            nombreaApellido: "fd",
-            mail:"ren.sabee@gmail.com",
-            telefono: 23,
-            direccion: 23,
-          }
-        });
-        console.log('Response: ', response.data)
-        if (response === false) {
-          this.data.store.setRol(0);
-          this.data.store.setTab('Iniciar Sesion');
-          LocalStorage.clear();
-        } else {
-          this.data.clientes = response.data;
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
+    };
+
+    return {
+      clientes,
+      clienteAgregarDni,
+      clienteAgregarNombreApellido,
+      clienteAgregarMail,
+      clienteAgregarTelefono,
+      clienteAgregarDireccion,
+      loadClientes,
+      registrarCliente
+    };
   },
- mounted() {
+  mounted() {
     checkToken()
   }
 });
