@@ -61,7 +61,7 @@
         >
           Contactar dueño
         </q-btn>
-        
+
       </q-card-actions>
     </q-card>
   </div>
@@ -72,12 +72,10 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 
 export default defineComponent({
-  name: "TarjetaPosteo",
+  name: "TarjetaPaseador",
   components: {},
   props: {
     rol: String,
-    servicio: String,
-
     nombre: String,
     zona: String,
     dias: String,
@@ -106,6 +104,5 @@ export default defineComponent({
       return cont;
     },
   },
-  mounted() {},
 });
 </script>

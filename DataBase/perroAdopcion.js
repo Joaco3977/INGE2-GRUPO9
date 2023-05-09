@@ -14,7 +14,7 @@ const getPerrosAdopcion = async () => {
 
 const getPerrosAdopcionPropios = async (dni) =>{
     try {
-        const resultado = await knex('perroAdopcion').select('*').where(perroAdopcion.DNI == dni)
+        const resultado = await knex('perroAdopcion').select('*').where(perroAdopcion.DNI == dni) //esto mal
         return resultado;
     }catch (error){
         console.error(error)
@@ -54,7 +54,7 @@ router.post('/getPerrosAdopcionPropios', async (req, res) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
-            console.log("\x1b[33m%s\x1b[0m", "Usuario solicito perros propios en adopcion")
+            console.log("\x1b[33m%s\x1b[0m", "USUARIO solicito perros propios en adopcion")
             res.status(200).send(resultadoGet)
         }
     })
@@ -80,7 +80,7 @@ router.post('/addPerroAdopcion', async (req, res) => {
             .then ((resultadoAdd) => {
                 if (resultadoAdd !== false) {
                     //añadir a log
-                    console.log("\x1b[35m%s\x1b[0m", `Cliente agrego al perro en Adopcion: ${req.body.perro.nombre}`)
+                    console.log("\x1b[35m%s\x1b[0m", `CLIENTE agrego al perro en Adopcion: ${req.body.perro.nombre}`)
                     res.status(200)
                 } else {
                     res.status(401)
