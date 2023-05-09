@@ -62,7 +62,6 @@ router.post('/getVeterinario',async (req,res) =>{
             res.status(401)
         } else {
             console.log("\x1b[33m%s\x1b[0m", "SISTEMA solicito un Veterinario")
-            console.log('resultado: ', resultadoGet)
             res.status(200).send(resultadoGet)
         }
     })

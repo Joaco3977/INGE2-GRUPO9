@@ -39,7 +39,7 @@ router.get('/getPerrosAdopcion', async (req, res) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
-            console.log("\x1b[33m%s\x1b[0m", "Usuario solicito perros en adopcion")
+            console.log("\x1b[33m%s\x1b[0m", "USUARIO solicito perros en adopcion")
             res.status(200).send(resultadoGet)
         }
     })
