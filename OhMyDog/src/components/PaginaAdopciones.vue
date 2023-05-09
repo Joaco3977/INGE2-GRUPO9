@@ -34,16 +34,17 @@
 
           <div class="full-width row items-justify">
               <TarjetaAdopcion
-                v-for="(perro, indice) of perrosDatos" :key="indice"
+                v-for="perro of perrosDatos"
+                :key="perro.IDPERROADOPCION"
                 :rol='rol'
                 :servicio='misAdopciones'
-                :nombre='perro.nombre'
-                :edad='perro.edad'
-                :tamanio='perro.tamanio'
-                :sexo="perro.sexo"
-                :telefono="perro.telefono"
-                :mail="perro.mail"
-                :comentario='perro.comentario'
+                :nombre='perro.NOMBRE'
+                :edad='perro.EDAD'
+                :tamanio='perro.TAMANIO'
+                :sexo="perro.SEXO"
+                :telefono="perro.TELEFONO"
+                :mail="perro.MAIL"
+                :comentario='perro.COMENTARIO'
               />
             </div>
           </q-scroll-area>
@@ -75,16 +76,17 @@
           >
           <div class="full-width row items-justify">
               <TarjetaAdopcion
-                v-for="(perro, indice) of perrosDatos" :key="indice"
+              v-for="perro of perrosDatos"
+                :key="perro.IDPERROADOPCION"
                 :rol='rol'
                 :servicio='misAdopciones'
-                :nombre='perro.nombre'
-                :edad='perro.edad'
-                :tamanio='perro.tamanio'
-                :sexo="perro.sexo"
-                :telefono="perro.telefono"
-                :mail="perro.mail"
-                :comentario='perro.comentario'
+                :nombre='perro.NOMBRE'
+                :edad='perro.EDAD'
+                :tamanio='perro.TAMANIO'
+                :sexo="perro.SEXO"
+                :telefono="perro.TELEFONO"
+                :mail="perro.MAIL"
+                :comentario='perro.COMENTARIO'
               />
             </div>
           </q-scroll-area>
@@ -116,17 +118,17 @@ export default defineComponent({
   },
 
   setup() {
-    const perrosDatos = reactive([]);
-    const  perroSEXO = ref('')
-    const  perroTAMANIO =ref('')
-    const  perroEDAD =ref('')
-    const  perroTELEFONO =ref('')
-    const  perroNOMBRE=ref('')
-    const  perroMAIL=ref('')
-    const  perroCOMENTARIO =ref('')
-    const  perroDNICLIENTE = useStore.dni;
-    const  mostrarPopup = ref('false');
-    const  rol = useStore().rol
+    const perrosDatos = ref ([]);
+    const perroSEXO = ref('')
+    const perroTAMANIO =ref('')
+    const perroEDAD =ref('')
+    const perroTELEFONO =ref('')
+    const perroNOMBRE=ref('')
+    const perroMAIL=ref('')
+    const perroCOMENTARIO =ref('')
+    const perroDNICLIENTE = useStore.dni;
+    const mostrarPopup = ref('false');
+    const rol = useStore().rol
 
     const registrarPerro =async  () => {
       try {
@@ -168,7 +170,7 @@ export default defineComponent({
       }
     };
 
-*/  
+*/
     const mostrarPopupM=()=> {
       mostrarPopup.value = !mostrarPopup.value;
     }

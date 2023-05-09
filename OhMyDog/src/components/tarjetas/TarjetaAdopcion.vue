@@ -6,11 +6,11 @@
       <q-card-section v-if="servicio == 'misPerros' || rol == 2">
          <div class="row justify-end full-width">
           <q-btn v-if="servicio == 'misPerros'" class="" color="accent" >  <div>Editar datos</div> </q-btn>
-          <q-btn  class="q-ml-sm" color="accent" >  <div>Eliminar</div> </q-btn>
+          <q-btn class="q-ml-sm" color="accent" >  <div>Eliminar</div> </q-btn>
         </div>
       </q-card-section>
       <q-card-section>
-        <!-- Contenido --> 
+        <!-- Contenido -->
         <div class="column">
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Nombre:</div>
@@ -29,27 +29,27 @@
             <div> {{sexo }} </div>
           </div>
           <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Telefono:</div>
-            <div> {{telefono}} </div>
-          </div>
-          <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Tamaño:</div>
             <div> {{tamanio}} </div>
           </div>
           <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Contacto:</div>
-            <div>  {{contacto}} </div>
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Tefefono:</div>
+            <div> {{telefono}} </div>
           </div>
-          
+          <div class="row">
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Mail:</div>
+            <div>  {{mail}} </div>
+          </div>
+
         </div>
       </q-card-section>
       <q-separator dark />
       <q-card-section  v-if="comentario != '' " class="bg-info">
         <div class="column items-center">
-            <div class="textoComentario" > 
-              <b class="textoComillas"> " </b> 
+            <div class="textoComentario" >
+              <b class="textoComillas"> " </b>
               {{ comentario }}
-              <b class="textoComillas"> " </b> 
+              <b class="textoComillas"> " </b>
             </div>
         </div>
       </q-card-section>
@@ -57,10 +57,10 @@
       <q-separator dark />
       <q-card-actions class="column items-center">
         <q-btn flat v-if="servicio == 'misPerros' "
-          class="textoBoton" 
+          class="textoBoton"
           > Marcar como adoptado </q-btn>
         <q-btn flat v-else
-          class="textoBoton" 
+          class="textoBoton"
           :href=convertirContacto()
           target="_blank"
           > Contactar dueño </q-btn>
@@ -105,7 +105,7 @@ export default defineComponent({
     }
   },
   mounted(){
-    
-  }, 
+
+  },
 });
 </script>

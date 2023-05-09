@@ -72,7 +72,6 @@ export default defineComponent({
 </script>
 
 
-
     <!-- -->
 
     <!-- los veterinarios tendrían una vista, los clientes otras Y LOS VISITANTES OTRAS??
