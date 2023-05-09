@@ -126,7 +126,7 @@ export default defineComponent({
     const perroNOMBRE=ref('')
     const perroMAIL=ref('')
     const perroCOMENTARIO =ref('')
-    const perroDNICLIENTE = useStore.dni;
+    const perroDNICLIENTE = useStore().dni;
     const mostrarPopup = ref('false');
     const rol = useStore().rol
 
@@ -135,6 +135,7 @@ export default defineComponent({
 
     const registrarPerro =async  () => {
       try {
+        console.log(useStore().dni)
         const response = await api.post("/perroAdopcion/addPerroAdopcion", {
           perro: {
             sexo:perroSEXO.value,
@@ -145,8 +146,9 @@ export default defineComponent({
             mail:perroMAIL.value,
             comentario:perroCOMENTARIO.value,
             dnicliente:perroDNICLIENTE,
-          }
+          } 
         })
+        loadPerros()
       } catch (error) {
         console.error(error);
       }
@@ -156,7 +158,6 @@ export default defineComponent({
       try {
         const response = await api.get("/perroAdopcion/getPerrosAdopcion")
           perrosDatos.value = response.data;
-          console.log(perrosDatos.value)
       }
       catch (error) {
         console.error(error);
@@ -193,7 +194,7 @@ export default defineComponent({
       perroDNICLIENTE,
       registrarPerro,
       perrosDatos,
-      loadPerros: ref(loadPerros),
+      loadPerros,
       mostrarPopupM,
       mostrarPopup,
       rol,
@@ -203,6 +204,7 @@ export default defineComponent({
     },
   mounted() {
     this.loadPerros()
+    this.mostrarPopupM();
   }
 });
 </script>

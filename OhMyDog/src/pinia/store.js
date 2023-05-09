@@ -5,7 +5,7 @@ export const useStore = defineStore("store", {
     return {
       rol: 0,
       tab: "Quienes Somos",
-      dni: 44,
+      dni: 0,
     };
   },
   actions: {

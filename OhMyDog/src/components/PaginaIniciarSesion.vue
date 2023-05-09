@@ -40,7 +40,7 @@ export default defineComponent({
   methods: {
     async login() {
       try {
-        const response = await api.post("/login", {
+        var response = await api.post("/login", {
           mail: this.mail,
           password: this.password,
         });
@@ -51,13 +51,13 @@ export default defineComponent({
           response = await api.post("/cliente/getCliente", {
             mail: this.mail
           });
-          this.store.setDni(response.data.dni)
+          this.store.setDni(response.data[0].DNI)
         }else
         if (this.store.rol == 2){
           response = await api.post("/veterinario/getVeterinario", {
             mail: this.mail
           });
-          this.store.setDni(response.data.dni)
+          this.store.setDni(response.data[0].DNI)
         }
       } catch (error) {
         console.error(error);

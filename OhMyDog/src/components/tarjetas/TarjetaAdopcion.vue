@@ -33,7 +33,7 @@
             <div> {{tamanio}} </div>
           </div>
           <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Tefefono:</div>
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Telefono:</div>
             <div> {{telefono}} </div>
           </div>
           <div class="row">
