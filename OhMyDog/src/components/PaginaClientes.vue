@@ -82,6 +82,7 @@ export default defineComponent({
   },
   setup() {
     const store = useStore();
+    const tab = 'Agregar Cliente'
     const clientes = reactive([]);
     const clientesFiltrados = ref([]);
     const dniFiltrar = ref('');
@@ -132,6 +133,7 @@ export default defineComponent({
     };
 
     return {
+      tab,
       clientes,
       clientesFiltrados,
       dniFiltrar,
