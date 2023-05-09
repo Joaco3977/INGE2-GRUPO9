@@ -14,6 +14,7 @@
         align="justify"
         narrow-indicator
       >
+      <!-- EN ESTA ETIQUETA VA @click="loadPerros" y a su vez tambien va en el mounted para que cargue de entrada todos los perros disponible ( faltaria agregar un label que informe cuando no hya perros (vectordedatos vuelve vacio de db))-->
         <q-tab name="perrosOtros" label="¡Adoptá un perro!" />
         <q-tab
           v-if="rol > 0"
@@ -83,6 +84,7 @@
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import TarjetaAdopcion from "./tarjetas/TarjetaAdopcion.vue";
+import { useStore } from '../pinia/store.js'
 
 export default defineComponent({
   name: "PaginaAdopciones",
@@ -92,7 +94,32 @@ export default defineComponent({
   props: {
     rol: String,
   },
+
   setup() {
+    //
+    /*
+    const store = useStore();
+
+    const loadPerros = async () => {
+      try {
+        const response = await api.get("/perroAdopcion/getPerrosAdopcion")
+          perrosDatos.value = response.data;
+      }
+      catch (error) {
+        console.error(error);
+      }
+    };
+
+    const loadPerrosPropios = async () => {
+      try {
+        const response = await api.post("/perroAdopcion/getPerrosAdopcionPropios",{ useStore.dni })
+          perrosDatos.value = response.data;
+      }
+      catch (error) {
+        console.error(error);
+      }
+    };
+*/
     return {
       tab: ref("perrosOtros"),
       servicioActual: "adopciones",
@@ -142,5 +169,8 @@ export default defineComponent({
       ],
     };
   },
+  mounted : {
+   // loadPerros
+  }
 });
 </script>
