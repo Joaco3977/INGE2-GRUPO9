@@ -34,11 +34,11 @@
             <div class="full-width row items-center">
               <div class="q-pa-xl " style="width:50vw; height:80vh">
                 <q-form class="q-pa-xl" @submit.prevent="registrarCliente">
-                  <q-input class="q-px-xl" v-model="clienteAgregar.dni" label="DNI" type="number" />
-                  <q-input class="q-px-xl" v-model="clienteAgregar.nombreApellido" label="Nombre y Apellido" type="text" />
-                  <q-input class="q-px-xl" v-model="clienteAgregar.mail" label="Correo electrónico" type="email" />
-                  <q-input class="q-px-xl" v-model="clienteAgregar.telefono" label="Telefono" type="number" />
-                  <q-input class="q-px-xl" v-model="clienteAgregar.direccion" label="Direccion" type="text" />
+                  <q-input class="q-px-xl" v-model="clienteAgregarDni" label="DNI" type="number" />
+                  <q-input class="q-px-xl" v-model="clienteAgregarNombreApellido" label="Nombre y Apellido" type="text" />
+                  <q-input class="q-px-xl" v-model="clienteAgregarMail" label="Correo electrónico" type="email" />
+                  <q-input class="q-px-xl" v-model="clienteAgregarTelefono" label="Telefono" type="number" />
+                  <q-input class="q-px-xl" v-model="clienteAgregarDireccion" label="Direccion" type="text" />
                   <q-btn push class="q-my-md q-mx-xl" color="accent" type="submit" label="Registrar Cliente" />
                 </q-form>
               </div>
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, ref, reactive, render } from "vue";
 import { api } from '../boot/axios.js';
 import { useStore } from '../pinia/store.js'
 import { LocalStorage } from "quasar";
@@ -83,13 +83,11 @@ export default defineComponent({
     const data = reactive({
       store: useStore(),
       clientes: [],
-      clienteAgregar: {
-        dni: 'prueba',
-        nombreApellido: '',
-        mail: '',
-        telefono: '',
-        direccion: '',
-      }
+      clienteAgregarDni: '',
+      clienteAgregarNombreApellido: '',
+      clienteAgregarMail: '',
+      clienteAgregarTelefono: '',
+      clienteAgregarDireccion: '',
     });
     return { data }
   },
@@ -111,7 +109,13 @@ export default defineComponent({
     async registrarCliente() {
       try {
         const response = await api.post("/cliente/addCliente", {
-          cliente: this.clienteAgregar
+          cliente: {
+            dni: 223223,
+            nombreaApellido: "fd",
+            mail:"ren.sabee@gmail.com",
+            telefono: 23,
+            direccion: 23,
+          }
         });
         console.log('Response: ', response.data)
         if (response === false) {
@@ -126,7 +130,7 @@ export default defineComponent({
       }
     }
   },
-  mounted() {
+ mounted() {
     checkToken()
   }
 });

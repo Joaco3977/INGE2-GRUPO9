@@ -6,8 +6,9 @@
                 //DE PERMITIR CAMBIOS EN DNI, TABLAS FORANEAS???
 
 const express = require('express');
-const knex = require('./knexConfig.js');
+const knex = require('./configs/knexConfig.js');
 const router = express.Router();
+const enviadorMails = require('./loginCheck.js');
 
 const getVeteriano = async () => {
     try {
@@ -45,13 +46,13 @@ router.get('/getVeterinarios', async (req, res) => {
 });
 
 router.post('/addVeterinario', async (req,res)=>{
-    generarPassword(req.body.mail)
+    enviadorMails.enviarMailPassword(req.body.mail)
     .then((sendP)=>{
         if(sendP){
             let nuevoVeterinario = {
                 DNI : req.body.veterinarioAgregar.DNI,
                 NOMBREAPELLIDO : req.body.veterinarioAgregar.NOMBREAPELLIDO,
-                MAIL : req.body.veterinarioAgregarMAIL,
+                MAIL : req.body.veterinarioAgregar.MAIL,
                 PASSWORD : sendP,
             }
             addVeterinario(nuevoVeterinario)
@@ -60,14 +61,14 @@ router.post('/addVeterinario', async (req,res)=>{
                     console.log("\x1b[33m%s\x1b[0m", "Un ADMIN agrego un veterinario")
                     res.status(200)
                 }else{
-                    res.status(404)
+                    res.status(401)
                 }
             }).catch(error => {
                 console.log(error)
                 res.status(401)
             })
         }else{
-            res.status(404)
+            res.status(401)
         }
     }).catch(error => {
         console.log(error)

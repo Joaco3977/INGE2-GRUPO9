@@ -22,7 +22,7 @@ Lautaro Gomez 30987867
 const express = require('express');
 const knex = require('./configs/knexConfig.js')
 const router = express.Router();
-import { enviarMailPassword } from './loginCheck.js'
+const enviadorMails = require('./loginCheck.js');
 
 //MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS
 const getClientes = async () => {
@@ -62,16 +62,16 @@ router.get('/getClientes', async (req, res) => {
 })
 
 router.post('/addCliente', async (req, res) => {
-    enviarMailPassword(req.data.mail)
+    enviadorMails.enviarMailPassword(req.body.cliente.mail)
     .then ((resultadoPassword) => {
         if (resultadoPassword) {
             const nuevoCliente = {
-                DNI: req.body.clienteAgregar.dni,
-                NOMBREAPELLIDO: req.body.clienteAgregar.nombreApellido,
-                MAIL: req.body.clienteAgregar.mail,
-                TELEFONO: req.body.clienteAgregar.telefono,
+                DNI: req.body.cliente.dni,
+                NOMBREAPELLIDO: req.body.cliente.nombreApellido,
+                MAIL: req.body.cliente.mail,
+                TELEFONO: req.body.cliente.telefono,
                 FECHAREGISTRO: new Date(),
-                DIRECCION: req.body.clienteAgregar.direccion,
+                DIRECCION: req.body.cliente.direccion,
                 PASSWORD: resultadoPassword,
             }
             addCliente(nuevoCliente)

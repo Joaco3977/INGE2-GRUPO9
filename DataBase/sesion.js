@@ -1,4 +1,4 @@
-const knex = require('./knexConfig.js')
+const knex = require('./configs/knexConfig.js')
 
 function generarToken() {
     const uuid = require('uuid');

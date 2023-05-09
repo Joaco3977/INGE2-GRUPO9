@@ -1,14 +1,12 @@
 const knex = require('./configs/knexConfig.js')
-const mailSender = require('./configs/mailConfig.js')
 const crypto = require('crypto');
+const transporter = require('./configs/mailConfig.js')
 
 const generarPassword = () => {
-  const longitud = 10;
-  const caracteres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  const password = crypto.randomBytes(longitud)
-  .map((byte) => caracteres[byte % caracteres.length])
-  .join('');
-  return password
+  longitud = 10
+  const buffer = crypto.randomBytes(longitud);
+  const password = buffer.toString('base64').slice(0, longitud);
+  return password;
 }
 
 const enviarMailPassword = async (destinatario) => {
@@ -17,13 +15,22 @@ const enviarMailPassword = async (destinatario) => {
   const asunto = 'Nueva contraseña!';
   const mensaje = `Su nueva contraseña es: ${password}`;
 
-  mailSender.sendMail({
+  transporter.verify(function (error, success) {
+    if (error) {
+      console.log('------------------------------------------------')
+      console.log(error);
+    } else {
+      console.log("\x1b[32m%s\x1b[0m", "Servidor de Mail esta listo para enviar correos!");
+    }
+  });
+
+  transporter.sendMail({
+    from: 'BitBuilders2023@gmail.com',
     to: destinatario,
     subject: asunto,
-    text: mensaje
+    text: mensaje,
   }).then(() => {
-    console.log('Correo electrónico enviado');
-    return true;
+    return password;
   }).catch((error) => {
     console.error('Error al enviar el correo electrónico:', error);
     return false;
@@ -60,4 +67,4 @@ const checkVeterinario = async (mail, pass) => {
     }
   };
 
-module.exports = { checkAdmin, checkCliente, checkVeterinario, enviarMailPassword };
+module.exports = { checkAdmin, checkCliente, checkVeterinario, generarPassword , enviarMailPassword};
