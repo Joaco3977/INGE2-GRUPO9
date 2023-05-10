@@ -13,7 +13,7 @@
             style="height: 82vh"
             class="bg-white"
           >
-            <div class="full-width row wrap justify-start">
+            <div class="full-width row wrap justify-center">
               <TarjetaPaseador class="q-px-sm "
               v-for="paseador in paseadores"
                 :rol="rol"

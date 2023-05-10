@@ -84,7 +84,7 @@
       <q-tab-panels
         v-model="store.tab"
         animated
-        swipeable
+        
         vertical
         transition-prev="jump-up"
         transition-next="jump-up"
