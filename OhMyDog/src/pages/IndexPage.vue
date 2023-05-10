@@ -75,8 +75,8 @@
       </q-tabs>
     </div>
     <!-- Secciones -->
-    <div class=" col-10 bg-white">
-      <q-tab-panels
+    <div class=" col-10 bg-white full-height">
+      <q-tab-panels class="full-height"
         v-model="store.tab"
         animated
         
@@ -88,7 +88,7 @@
           <PaginaQuienesSomos />
         </q-tab-panel>
 
-        <q-tab-panel name="Mi Perfil">
+        <q-tab-panel name="Mi Perfil" >
           <PaginaPerfil />
         </q-tab-panel>
 
