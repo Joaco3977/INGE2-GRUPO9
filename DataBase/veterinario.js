@@ -30,6 +30,16 @@ const getVeterinarioPorMail = async (mail) => {
     } 
 }
 
+const getVeterinarioPorDNI= async (dni) => {
+    try {
+        const resultado = await knex.select('*').from('veterinario').where('DNI', '=', dni).first()
+        return resultado;
+    } catch (error) {
+        console.error(error)
+        return false;
+    } 
+}
+
 const addVeterinario = async (nuevoVeterinario) => {
     try {
         await knex('veterinario').insert(nuevoVeterinario)
@@ -46,7 +56,7 @@ router.get('/getVeterinarios', async (req, res) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
-            console.log("\x1b[33m%s\x1b[0m", "Un ADMIN solicito veterinarios")
+            console.log("\x1b[33m%s\x1b[0m", "ADMIN solicito veterinarios")
             res.status(200).send(resultadoGet)
         }
     })
@@ -56,7 +66,7 @@ router.get('/getVeterinarios', async (req, res) => {
 });
 
 router.post('/getVeterinario',async (req,res) =>{
-    getVeterinarioPorMail(req.body.mail)
+    getVeterinarioPorDNI(req.body.dni)
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
@@ -83,7 +93,7 @@ router.post('/addVeterinario', async (req,res)=>{
             addVeterinario(nuevoVeterinario)
             .then((resultadoAdd)=>{
                 if(resultadoAdd){
-                    console.log("\x1b[33m%s\x1b[0m", "Un ADMIN agrego un veterinario")
+                    console.log("\x1b[33m%s\x1b[0m", "ADMIN agrego un veterinario")
                     res.status(200)
                 }else{
                     res.status(401)

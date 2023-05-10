@@ -37,10 +37,11 @@ async function getInfoQuien (token) {
 }
 */
 
-const almacenarToken = async (token, mail, rol) => {
+const almacenarToken = async (token, mail, dni, rol) => {
     const nuevoToken = {
       TOKEN: token,
       MAIL: mail,
+      DNI: dni,
       ROL: rol
     }
     await knex('sesion').insert(nuevoToken)
@@ -56,7 +57,7 @@ const validarToken = async (token) => {
     return knex('sesion').select('*').where('TOKEN', '=', token).first()
       .then((resultado) => {
         if (resultado !== undefined) {
-          return ({ rol: resultado.ROL })
+          return ({ rol: resultado.ROL , dni: resultado.DNI })
         } else {
           return ({ rol: 0, tab: 'Iniciar Sesion' })
         }

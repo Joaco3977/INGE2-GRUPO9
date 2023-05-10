@@ -48,7 +48,7 @@ const getClientePorMail = async (mail) => {
 
 const getClientePorDNI= async (dni) => {
     try {
-        const resultado = await knex.select('*').from('cliente').where('DNI', '=', dni)
+        const resultado = await knex.select('*').from('cliente').where('DNI', '=', dni).first()
         return resultado;
     } catch (error) {
         console.error(error)
@@ -83,7 +83,7 @@ router.get('/getClientes', async (req, res) => {
 })
 
 router.post('/getCliente',async (req,res) =>{
-    getClientePorMail(req.body.mail)
+    getClientePorDNI(req.body.dni)
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
