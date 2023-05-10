@@ -182,7 +182,6 @@ export default defineComponent({
     QDialog,
     //formAdopcion,
   },
-
   setup() {
     const perrosDatos = ref([]);
     const perroSEXO = ref("");
