@@ -15,11 +15,13 @@
     >
       <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
 
-      <div>holitas soy un div</div>
-
       <div>
-        Este estaría visible cuando inició sesión, y los vets tmb tendrían uno
-        :)
+        <h6> Nombre y Apellido: {{ misDatos.NOMBREAPELLIDO }} </h6>
+        <p> DNI: {{ misDatos.DNI }} </p>
+        <p> Mail: {{ misDatos.MAIL }} </p>
+        <p> Telefono: {{ misDatos.TELEFONO }} </p>
+        <p v-if="rol ===  1"> Direccion: {{ misDatos.DIRECCION }} </p>
+        <p> Fecha de registro: {{ misDatos.FECHAREGISTRO }} </p>
       </div>
 
       <!-- Hasta acá :)  -->
@@ -30,12 +32,41 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { checkToken } from "../functions/check.js";
+import { useStore } from '../pinia/store.js'
+import { api } from '../boot/axios.js'
 
 export default defineComponent({
   name: "PaginaPerfil",
   components: {},
+  setup() {
+    const rol = useStore().rol
+    const misDatos = ref ({})
+
+    const traerDatos = async () => {
+      let url = ''
+      if (rol === 1) {
+        url = "/cliente/getCliente"
+      } else url = "/veterinario/getVeterinario"
+      try {
+        const response = await api.post(`${url}`, {
+          dni: useStore().dni,
+        });
+        misDatos.value = response.data;
+        console.log(misDatos.value)
+      } catch {
+        console.log('No se pudo solicitar la operacion correspondiente')
+      }
+    }
+
+    return {
+      rol,
+      misDatos,
+      traerDatos: ref(traerDatos),
+    }
+  },
   mounted() {
     checkToken()
+    this.traerDatos()
   }
 });
 </script>

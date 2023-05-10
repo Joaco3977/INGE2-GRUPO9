@@ -46,18 +46,9 @@ export default defineComponent({
         });
         localStorage.setItem("token", response.data.token);
         this.store.setRol(response.data.rol);
-        this.store.setTab('Quienes Somos');
-        if (this.store.rol == 1){
-          response = await api.post("/cliente/getCliente", {
-            mail: this.mail
-          });
-          this.store.setDni(response.data[0].DNI)
-        }else
-        if (this.store.rol == 2){
-          response = await api.post("/veterinario/getVeterinario", {
-            mail: this.mail
-          });
-          this.store.setDni(response.data[0].DNI)
+        if (response.data.rol > 0) {
+          this.store.setDni(response.data.dni);
+          this.store.setTab('Mi Perfil');
         }
       } catch (error) {
         console.error(error);

@@ -11,17 +11,24 @@ export const checkToken = async () => {
       });
       store.setRol(response.data.rol);
       if (response.data.rol === 0) {
+        store.setRol(0);
+        store.setDni(0);
         store.setTab('Iniciar Sesion')
         return false;
-      } else return true;
+      } else {
+        store.setDni(response.data.dni)
+        return true
+      }
     } catch (error) {
       console.error(error);
       store.setRol(0);
+      store.setDni(0);
       store.setTab('Iniciar Sesion');
       return false;
     }
   } else {
     store.setRol(0);
+    store.setDni(0);
     store.setTab('Iniciar Sesion');
     return false;
   }
@@ -38,15 +45,20 @@ export const checkTokenHome = async () => {
       if (response.data.rol === 0) {
         store.setTab('Quienes Somos')
         return false;
-      } else return true;
+      } else {
+        store.setDni(response.data.dni)
+        return true
+      }
     } catch (error) {
       console.error(error);
       store.setRol(0);
+      store.setDni(0);
       store.setTab('Quienes Somos');
       return false;
     }
   } else {
     store.setRol(0);
+    store.setDni(0);
     store.setTab('Quienes Somos');
     return false;
   }
