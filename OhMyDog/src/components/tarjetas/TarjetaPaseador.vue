@@ -5,18 +5,18 @@
     <q-card
       flat
       class="my-card bg-primary text-white q-ma-md full-width"
-      
+
     >
 
     <!-- style="min-width: 20rem; max-width: 25rem" -->
 
-    
+
       <q-card-section v-if="rol == 2">
         <div class="row justify-end full-width">
           <q-btn class="q-ml-md" color="accent">
             <div>Editar datos</div>
           </q-btn>
-          <q-btn class="q-ml-md" color="accent">
+          <q-btn @click="eliminarPaseador(dni)" class="q-ml-md" color="accent">
             <div>Eliminar paseador</div>
           </q-btn>
         </div>
@@ -78,20 +78,25 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import { ref } from "vue";
+import { defineComponent, ref } from "vue";
+import { api } from '../../boot/axios.js'
 
 export default defineComponent({
   name: "TarjetaPaseador",
   components: {},
   props: {
     rol: String,
+    dni: String,
     nombre: String,
     zona: String,
     dias: String,
     horario: String,
     contacto: String,
     comentario: String,
+    loadPaseadores: {
+      type: Function,
+      required: true
+    }
   },
   data() {
     return {};
@@ -113,6 +118,18 @@ export default defineComponent({
       console.log(cont);
       return cont;
     },
-  },
+    async eliminarPaseador(dni) {
+      try {
+        const response = await api.post("/paseador/delPaseador", {
+          dni: this.dni
+        });
+        if (response !== false) {
+          this.loadPaseadores()
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  }
 });
 </script>
