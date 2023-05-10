@@ -1,8 +1,6 @@
 const express = require('express');
 const knex = require ('./configs/knexConfig')
-
 const Consola = require ('./serverFunctions.js')
-
 const router = express.Router();
 
 const getPaseadores = async () => {
@@ -26,6 +24,16 @@ router.get('/getPaseadores', async (req, res) => {
         }
     })
     .catch (() => {
+        res.status(401)
+    })
+})
+
+router.post('/deletePaseador', async (req,res) =>{
+    knex('paseador').where(req.body.dni).del()
+    .then((resultado) =>{
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino paseador con dni: ${req.body.dni}`)
+        res.status(200)
+    }).catch((error)=>{
         res.status(401)
     })
 })

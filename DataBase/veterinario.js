@@ -67,6 +67,16 @@ router.get('/getVeterinarios', async (req, res) => {
     })
 });
 
+router.post('/deleteVeterinario', async (req,res) =>{
+    knex('Veterinario').where(req.body.dni).del()
+    .then((resultado) =>{
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`ADMIN elimino veterinario con dni: ${req.body.dni}`)
+        res.status(200)
+    }).catch((error)=>{
+        res.status(401)
+    })
+})
+
 router.post('/getVeterinario',async (req,res) =>{
     getVeterinarioPorDNI(req.body.dni)
     .then ((resultadoGet) => {

@@ -99,6 +99,16 @@ router.post('/getCliente',async (req,res) =>{
     })
 })
 
+router.post('/deleteCliente', async (req,res) =>{
+    knex('cliente').where(req.body.dni).del()
+    .then((resultado) =>{
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino cliente con dni: ${req.body.dni}`)
+        res.status(200)
+    }).catch((error)=>{
+        res.status(401)
+    })
+})
+
 router.post('/addCliente', async (req, res) => {
     enviadorMails.enviarMailPassword(req.body.cliente.mail)
     .then ((resultadoPassword) => {
