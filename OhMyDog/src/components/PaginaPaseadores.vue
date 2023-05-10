@@ -33,18 +33,7 @@
           :comentario="paseador.COMENTARIO"
         />
 
-        <TarjetaPaseador
-          class="q-px-sm col-stretch"
-          v-for="paseador in paseadores"
-          :rol="rol"
-          :key="paseador.DNI"
-          :nombre="paseador.NOMBREAPELLIDO"
-          :zona="paseador.ZONA"
-          :dias="paseador.DIAS"
-          :horario="paseador.HORARIO"
-          :contacto="paseador.MAIL"
-          :comentario="paseador.COMENTARIO"
-        />
+        
       </div>
     </q-scroll-area>
 
