@@ -48,13 +48,13 @@ app.post("/login", async (req, res) => {
                 Consola.mensaje("\x1b[36m%s\x1b[0m", "LAS CREDENCIALES NO COINCIDEN!");
                 res.status(401).send({ rol: 0 });
               } else {
-                Consola.mensaje("\x1b[36m%s\x1b[0m", `CLIENTE ${resultCli.NOMBREAPELLIDO} logueado! Se le asigna el token: `, token);
+                Consola.mensaje("\x1b[36m%s\x1b[0m", `CLIENTE ${resultCli.NOMBREAPELLIDO} logueado! Se le asigna el token: ${token}`);
                 Sesion.almacenarToken(token, req.body.mail, resultCli.DNI , 1);
                 res.status(200).send({ rol: 1 , token: token , dni: resultCli.DNI });
               }
             });
         } else {
-          Consola.mensaje("\x1b[36m%s\x1b[0m", `VETERINARIO ${resultVet.NOMBREAPELLIDO} logueado! Se le asigna el token: `, token);
+          Consola.mensaje("\x1b[36m%s\x1b[0m", `VETERINARIO ${resultVet.NOMBREAPELLIDO} logueado! Se le asigna el token: ${token}`);
           Sesion.almacenarToken(token, req.body.mail, resultVet.DNI, 2);
           res.status(200).send({ rol: 2 , token: token , dni: resultVet.DNI });
         }
@@ -63,7 +63,7 @@ app.post("/login", async (req, res) => {
         console.error(`Error en una de las consultas: ${error.message}`);
       })
   } else {
-    Consola.mensaje("\x1b[36m%s\x1b[0m", "ADMIN logueado! Se le asigna el token: ", token);
+    Consola.mensaje("\x1b[36m%s\x1b[0m", `ADMIN logueado! Se le asigna el token: ${token}`)
     Sesion.almacenarToken(token, req.body.mail, -1 , -1);
     res.status(200).send({ rol: -1 , token: token });
   }
