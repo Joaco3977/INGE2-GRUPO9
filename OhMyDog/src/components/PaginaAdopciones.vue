@@ -3,10 +3,20 @@
   <!-- Pueden usar componentes dentro de este componente -->
 
   <div class="bg-white full-height full-width" style="height: 97vh">
-    <div class="titulo text-center text-h4 text-primary q-pt-md">
+    <div class="titulo text-center text-h4 text-bold text-primary q-pt-md">
       ADOPCIONES
     </div>
-    <q-card stretch flat class="bg-white full-width full-height">
+    <q-card stretch flat class="bg-white full-width full-height column">
+      <q-btn
+        v-if="rol > 0"
+        @click="mostrarPopupM"
+        color="accent"
+        class="q-ma-md q-mr-xl self-end"
+        style="width: 20em"
+      >
+        <div class="textoBoton">Agregar perro para adopción</div>
+      </q-btn>
+
       <q-tabs
         v-model="tab"
         dense
@@ -27,7 +37,7 @@
       <q-separator></q-separator>
       <q-tab-panels v-model="tab" animated>
         <q-tab-panel name="perrosOtros">
-          <q-btn
+          <!-- <q-btn
             v-if="rol === 2"
             @click="mostrarPopupM"
             color="accent"
@@ -35,7 +45,7 @@
             style="width: 20em"
           >
             <div class="textoBoton">¡Poné un perro en adopción!</div>
-          </q-btn>
+          </q-btn> -->
           <q-scroll-area
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
@@ -61,74 +71,6 @@
         </q-tab-panel>
 
         <q-tab-panel v-if="rol > 0" name="perrosPropios" class="column">
-          <q-btn
-            @click="mostrarPopupM"
-            color="accent"
-            class="q-ma-md q-mr-xl self-end"
-            style="width: 20em"
-          >
-            <div class="textoBoton">¡Poné un perro en adopción!</div>
-          </q-btn>
-          <q-dialog v-model="mostrarPopup">
-            <div class="paraform" style="width: 50vw; height: 80vh">
-              <q-form class="q-pa-xl" @submit.prevent="registrarPerro">
-                <q-input
-                  v-model="perroNOMBRE"
-                  clearable
-                  class="q-px-xl"
-                  label="Nombre"
-                  type="text"
-                />
-                <q-select
-                  v-model="peroTAMANIO"
-                  :options="opcionTamanio"
-                  class="q-px-xl"
-                  label="Tamaño"
-                />
-                <q-input
-                  v-model="perroEDAD"
-                  clearable
-                  class="q-px-xl"
-                  label="Edad Aproximada"
-                  type="text"
-                />
-                <q-select
-                  v-model="peroSEXO"
-                  :options="opcionSexo"
-                  class="q-px-xl"
-                  label="Sexo"
-                />
-                <q-input
-                  v-model="perroTELEFONO"
-                  clearable
-                  class="q-px-xl"
-                  label="Telefono"
-                  type="number"
-                />
-                <q-input
-                  v-model="perroMAIL"
-                  clearable
-                  class="q-px-xl"
-                  label="Mail"
-                  type="email"
-                />
-                <q-input
-                  v-model="perroCOMENTARIO"
-                  clearable
-                  class="q-px-xl"
-                  label="Comentarios"
-                  type="text"
-                />
-                <q-btn
-                  push
-                  class="q-my-md q-mx-xl"
-                  color="accent"
-                  type="submit"
-                  label="Registrar Perro"
-                />
-              </q-form>
-            </div>
-          </q-dialog>
           <q-scroll-area
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
@@ -154,6 +96,67 @@
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
+
+    <q-dialog v-model="mostrarPopup">
+      <div class="paraform" style="width: 50vw; height: 80vh">
+        <q-form class="q-pa-xl" @submit.prevent="registrarPerro">
+          <q-input
+            v-model="perroNOMBRE"
+            clearable
+            class="q-px-xl"
+            label="Nombre"
+            type="text"
+          />
+          <q-select
+            v-model="peroTAMANIO"
+            :options="opcionTamanio"
+            class="q-px-xl"
+            label="Tamaño"
+          />
+          <q-input
+            v-model="perroEDAD"
+            clearable
+            class="q-px-xl"
+            label="Edad Aproximada"
+            type="text"
+          />
+          <q-select
+            v-model="peroSEXO"
+            :options="opcionSexo"
+            class="q-px-xl"
+            label="Sexo"
+          />
+          <q-input
+            v-model="perroTELEFONO"
+            clearable
+            class="q-px-xl"
+            label="Telefono"
+            type="number"
+          />
+          <q-input
+            v-model="perroMAIL"
+            clearable
+            class="q-px-xl"
+            label="Mail"
+            type="email"
+          />
+          <q-input
+            v-model="perroCOMENTARIO"
+            clearable
+            class="q-px-xl"
+            label="Comentarios"
+            type="text"
+          />
+          <q-btn
+            push
+            class="q-my-md q-mx-xl"
+            color="accent"
+            type="submit"
+            label="Registrar Perro"
+          />
+        </q-form>
+      </div>
+    </q-dialog>
   </div>
 </template>
 
@@ -170,12 +173,14 @@ import { QDialog } from "quasar";
 import TarjetaAdopcion from "./tarjetas/TarjetaAdopcion.vue";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
+import formAdopcion from "./formularios/formPerroAdopcion.vue";
 
 export default defineComponent({
   name: "PaginaAdopciones",
   components: {
     TarjetaAdopcion,
     QDialog,
+    //formAdopcion,
   },
 
   setup() {
