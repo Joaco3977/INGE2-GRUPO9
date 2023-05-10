@@ -2,8 +2,8 @@
   <div class="row" style="height: 100vh; max-height: 100vh">
     <!-- Menú lateral -->
     <div
-      class="flex-column col-2 bg-primary shadow-2"
-      style="max-width: 35vh; height: 100vh; max-height: 100vh"
+      class="column col-2 bg-primary shadow-2"
+      style="max-width:40vw; height: 100vh; max-height: 100vh"
     >
       <q-img src="logotipo" />
 
@@ -71,16 +71,11 @@
           icon="ion-people"
           label="Consultas"
         />
-        <q-tab
-          v-if="store.rol !== 0"
-          name="Cerrar Sesion"
-          icon="ion-heart"
-          label="Cerrar Sesion"
-        />
+
       </q-tabs>
     </div>
     <!-- Secciones -->
-    <div class="col-10 bg-white">
+    <div class=" col-10 bg-white">
       <q-tab-panels
         v-model="store.tab"
         animated
@@ -136,10 +131,6 @@
         <q-tab-panel v-if="store.rol === 2" name="Responder Consultas">
           <PaginaConsultaVeterinario />
         </q-tab-panel>
-
-        <q-tab-panel name="Cerrar Sesion">
-          <PaginaCerrarSesion />
-        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
@@ -162,7 +153,6 @@ import PaginaAdopciones from "../components/PaginaAdopciones.vue";
 import PaginaPaseadores from "../components/PaginaPaseadores.vue";
 import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
-import PaginaCerrarSesion from "../components/PaginaCerrarSesion.vue";
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
 
@@ -181,7 +171,6 @@ export default defineComponent({
     PaginaPaseadores,
     PaginaPerfil,
     PaginaLog,
-    PaginaCerrarSesion,
   },
   setup() {
     const data = reactive({

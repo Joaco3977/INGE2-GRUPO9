@@ -24,6 +24,8 @@
         <p> Fecha de registro: {{ misDatos.FECHAREGISTRO }} </p>
       </div>
 
+      <q-btn @click="cerrarSesion()"> Cerrar Sesion </q-btn>
+
       <!-- Hasta acá :)  -->
     </q-scroll-area>
   </div>
@@ -34,6 +36,8 @@ import { defineComponent, ref } from "vue";
 import { checkToken } from "../functions/check.js";
 import { useStore } from '../pinia/store.js'
 import { api } from '../boot/axios.js'
+import { LocalStorage } from 'quasar';
+
 
 export default defineComponent({
   name: "PaginaPerfil",
@@ -62,7 +66,24 @@ export default defineComponent({
       rol,
       misDatos,
       traerDatos: ref(traerDatos),
+      store : useStore(),
     }
+  },
+  methods: {
+    async cerrarSesion() {
+      try {
+        const response = await api.post("/logout", {
+          token: LocalStorage.getItem('token')
+        });
+        if (response) {
+          this.store.setRol(0);
+          this.store.setTab('Iniciar Sesion');
+          LocalStorage.clear()
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   mounted() {
     checkToken()
