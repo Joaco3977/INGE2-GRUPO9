@@ -14,7 +14,7 @@
             class="bg-white"
           >
             <div class="full-width row wrap justify-start">
-              <TarjetaPaseador class="q-px-sm col-grow"
+              <TarjetaPaseador class="q-px-sm "
               v-for="paseador in paseadores"
                 :rol="rol"
                 :key="paseador.DNI"
