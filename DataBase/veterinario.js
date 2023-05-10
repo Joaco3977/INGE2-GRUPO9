@@ -10,6 +10,8 @@ const knex = require('./configs/knexConfig.js');
 const router = express.Router();
 const enviadorMails = require('./loginCheck.js');
 
+const Consola = require ('./serverFunctions.js')
+
 const getVeteriano = async () => {
     try {
         const resultado = await knex('veterinario').select('*')
@@ -56,7 +58,7 @@ router.get('/getVeterinarios', async (req, res) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
-            console.log("\x1b[33m%s\x1b[0m", "ADMIN solicito veterinarios")
+            Consola.mensaje("\x1b[33m%s\x1b[0m", "ADMIN solicito veterinarios")
             res.status(200).send(resultadoGet)
         }
     })
@@ -71,7 +73,7 @@ router.post('/getVeterinario',async (req,res) =>{
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
-            console.log("\x1b[33m%s\x1b[0m", "SISTEMA solicito un Veterinario")
+            Consola.mensaje("\x1b[33m%s\x1b[0m", "SISTEMA solicito un Veterinario")
             res.status(200).send(resultadoGet)
         }
     })
@@ -93,7 +95,7 @@ router.post('/addVeterinario', async (req,res)=>{
             addVeterinario(nuevoVeterinario)
             .then((resultadoAdd)=>{
                 if(resultadoAdd){
-                    console.log("\x1b[33m%s\x1b[0m", "ADMIN agrego un veterinario")
+                    Consola.mensaje("\x1b[33m%s\x1b[0m", "ADMIN agrego un veterinario")
                     res.status(200)
                 }else{
                     res.status(401)

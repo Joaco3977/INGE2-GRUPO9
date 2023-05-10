@@ -2,6 +2,8 @@ const express = require('express');
 const knex = require('./configs/knexConfig.js')
 const router = express.Router();
 
+const Consola = require ('./serverFunctions.js')
+
 const getPerrosAdopcion = async () => {
     try {
         const resultado = await knex('perroAdopcion').select('*')
@@ -39,7 +41,7 @@ router.get('/getPerrosAdopcion', async (req, res) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
-            console.log("\x1b[33m%s\x1b[0m", "USUARIO solicito perros en adopcion")
+            Consola.mensaje("\x1b[33m%s\x1b[0m", "USUARIO solicito perros en adopcion")
             res.status(200).send(resultadoGet)
         }
     })
@@ -54,7 +56,7 @@ router.post('/getPerrosAdopcionPropios', async (req, res) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
-            console.log("\x1b[33m%s\x1b[0m", "USUARIO solicito perros propios en adopcion")
+            Consola.mensaje("\x1b[33m%s\x1b[0m", "USUARIO solicito perros propios en adopcion")
             res.status(200).send(resultadoGet)
         }
     })
@@ -65,7 +67,6 @@ router.post('/getPerrosAdopcionPropios', async (req, res) => {
 
 
 router.post('/addPerroAdopcion', async (req, res) => {
-    console.log('datos: ', req.body )
             const nuevoPerroA = {
                 SEXO:req.body.perro.sexo,
                 TAMANIO:req.body.perro.tamanio,
@@ -80,7 +81,7 @@ router.post('/addPerroAdopcion', async (req, res) => {
             .then ((resultadoAdd) => {
                 if (resultadoAdd !== false) {
                     //añadir a log
-                    console.log("\x1b[35m%s\x1b[0m", `CLIENTE agrego al perro en Adopcion: ${req.body.perro.nombre}`)
+                    Consola.mensaje("\x1b[35m%s\x1b[0m", `CLIENTE agrego al perro en Adopcion: ${req.body.perro.nombre}`)
                     res.status(200)
                 } else {
                     res.status(401)

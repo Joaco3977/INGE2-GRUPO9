@@ -25,6 +25,8 @@ const router = express.Router();
 const enviadorMails = require('./loginCheck.js');
 const Log = require ('./admin.js')
 
+const Consola = require ('./serverFunctions.js')
+
 //MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS
 const getClientes = async () => {
     try {
@@ -73,7 +75,7 @@ router.get('/getClientes', async (req, res) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
-            console.log("\x1b[33m%s\x1b[0m", "VETERINARIO solicito clientes")
+            Consola.mensaje("\x1b[33m%s\x1b[0m", "VETERINARIO solicito clientes")
             res.status(200).send(resultadoGet)
         }
     })
@@ -88,7 +90,7 @@ router.post('/getCliente',async (req,res) =>{
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
-            console.log("\x1b[33m%s\x1b[0m", "SISTEMA solicito un cliente")
+            Consola.mensaje("\x1b[33m%s\x1b[0m", "SISTEMA solicito un cliente")
             res.status(200).send(resultadoGet)
         }
     })
@@ -114,7 +116,7 @@ router.post('/addCliente', async (req, res) => {
             .then ((resultadoAdd) => {
                 if (resultadoAdd !== false) {
                     // Log.agregarEntradaLog(req.body.token)
-                    console.log("\x1b[35m%s\x1b[0m", `VETERINARIO registro al CLIENTE: ${req.body.cliente.nombreApellido}, DNI: ${req.body.cliente.dni}, Mail: ${req.body.cliente.mail}`)
+                    Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO registro al CLIENTE: ${req.body.cliente.nombreApellido}, DNI: ${req.body.cliente.dni}, Mail: ${req.body.cliente.mail}`)
                     res.status(200)
                 } else {
                     res.status(401)

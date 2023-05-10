@@ -1,5 +1,7 @@
 const knex = require('./configs/knexConfig.js')
 
+const Consola = require ('./serverFunctions.js')
+
 function generarToken() {
     const uuid = require('uuid');
     const token = uuid.v4(); // Genera un token único aleatorio
@@ -81,7 +83,7 @@ const eliminarToken = async (token) => {
 const limpiarTokens = async () => {
   return knex('sesion').del()
     .then(() => {
-      console.log("\x1b[31m%s\x1b[0m", "Tabla de TOKENS eliminada correctamente!")
+      Consola.mensaje("\x1b[31m%s\x1b[0m", "Tabla de TOKENS eliminada correctamente!")
     })
     .catch((error) => {
       console.error(error)
