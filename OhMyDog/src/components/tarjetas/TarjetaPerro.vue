@@ -5,13 +5,14 @@
     <q-card
       flat
       class="my-card bg-primary text-white q-ma-md"
-      style="width: 50rem"
+      style="width: 60rem"
     >
       <q-card-section horizontal>
-        <q-img class="col-5 q-pb-none" fit="cover" src="https://cdn.quasar.dev/img/parallax2.jpg" />
+        <q-img class="col-5 q-pb-none" fit="cover" src="https://www.giantfreakinrobot.com/wp-content/uploads/2021/12/scoob.jpeg" />
 
-        <q-card-section class="column col-7 justify-start">
-          <div class="text-h6 text-uppercase text-bold q-pr-sm q-pb-xs">
+        <q-card-section class="column col-7 justify-between">
+          <div class="">
+            <div class="text-h6 text-uppercase text-bold q-pr-sm q-pb-xs">
             {{ nombre }}
           </div>
           <div class="row">
@@ -31,7 +32,9 @@
             <div>{{ sexo }}</div>
           </div>
           <q-separator class="q-mt-xs" dark />
-          <q-card-actions class="row justify-end items-center">
+          </div>
+          
+          <q-card-actions class="row justify-end items-center self-end">
             <q-btn flat v-if="rol >= 1" class="textoBoton">
               Ver historial
             </q-btn>
