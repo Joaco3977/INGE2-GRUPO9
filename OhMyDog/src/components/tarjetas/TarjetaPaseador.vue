@@ -1,8 +1,8 @@
 <template>
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
-  <div class="bg-white" style="width: full; max-height: 90vh">
-    <q-card flat class="my-card bg-primary text-white q-ma-md" style="width: 38vw">
+  <div class="bg-white" style="width: full; max-height: 97vh">
+    <q-card flat class="my-card bg-primary text-white q-ma-md full-width" style="min-width:20rem; max-width: 25rem" >
       <q-card-section v-if="rol == 2 ">
          <div class="row justify-end full-width">
           <q-btn class="q-ml-md" color="accent" >  <div> Editar datos  </div> </q-btn>
@@ -55,7 +55,6 @@
         <q-btn
           flat
           class="textoBoton"
-          v-if="servicio == 'paseadores'"
           :href="convertirContacto()"
           target="_blank"
         >
