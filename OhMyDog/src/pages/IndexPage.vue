@@ -30,7 +30,7 @@
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
         <q-tab v-if="store.rol === 2" name="Responder Consultas" icon="ion-people" label="Responder Consultas" />
-        <q-tab v-if="store.rol === 1" name="Realizar Consulta" icon="ion-people" label="Realizar Consulta" />
+        <q-tab v-if="store.rol === 1" name="Consultas" icon="ion-people" label="Consultas" />
         <q-tab v-if="store.rol !== 0" name="Cerrar Sesion" icon="ion-heart" label="Cerrar Sesion" />
       </q-tabs>
     </div>
@@ -52,23 +52,23 @@
           <PaginaPerfil />
         </q-tab-panel>
 
-        <q-tab-panel name="Iniciar Sesion">
+        <q-tab-panel v-if="store.rol === 0" name="Iniciar Sesion">
           <PaginaIniciarSesion />
         </q-tab-panel>
 
-        <q-tab-panel name="Turnos">
+        <q-tab-panel v-if="store.rol === 1" name="Turnos">
           <PaginaTurnos />
         </q-tab-panel>
 
-        <q-tab-panel name="Administrar Turnos">
+        <q-tab-panel v-if="store.rol === 2" name="Administrar Turnos">
           <PaginaAdministracionTurnos />
         </q-tab-panel>
 
-        <q-tab-panel name="Mis Perros">
+        <q-tab-panel v-if="store.rol === 1" name="Mis Perros">
           <PaginaPerros />
         </q-tab-panel>
 
-        <q-tab-panel name="Clientes">
+        <q-tab-panel v-if="store.rol === 2" name="Clientes">
           <PaginaClientes />
         </q-tab-panel>
 
@@ -80,15 +80,15 @@
           <PaginaPaseadores :rol='store.rol' />
         </q-tab-panel>
 
-        <q-tab-panel name="LOG">
+        <q-tab-panel v-if="store.rol === -1" name="LOG">
           <PaginaLog />
         </q-tab-panel>
 
-        <q-tab-panel name="Realizar Consuta">
+        <q-tab-panel v-if="store.rol === 1" name="Consultas">
           <PaginaConsultaCliente />
         </q-tab-panel>
 
-        <q-tab-panel name="Responder Consultas">
+        <q-tab-panel v-if="store.rol === 2" name="Responder Consultas">
           <PaginaConsultaVeterinario />
         </q-tab-panel>
 

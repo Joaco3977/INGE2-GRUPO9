@@ -10,11 +10,11 @@
           <q-scroll-area
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
-            style="height: 70vh"
+            style="height: 82vh"
             class="bg-white"
           >
-            <div class="full-width row items-center">
-              <TarjetaPaseador
+            <div class="full-width row wrap justify-start">
+              <TarjetaPaseador class="q-px-sm col-grow"
               v-for="paseador in paseadores"
                 :rol="rol"
                 :key="paseador.DNI"
