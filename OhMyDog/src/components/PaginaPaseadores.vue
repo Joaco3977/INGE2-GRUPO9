@@ -2,7 +2,7 @@
   <div class="bg-white" style="width: full; max-height: 90vh">
     <div class="text-center text-h4 text-primary q-py-md">PASEADORES</div>
     <q-card flat class="column">
-      <q-btn v-if="rol == 2 " color="accent" class="q-ma-md self-end" style="width: 15em">
+      <q-btn v-if="rol == 2 " color="accent" @click="abrirForm = true" class="q-ma-md self-end" style="width: 15em">
         <div class="textoBoton">Agregar paseador</div>
       </q-btn>
       <q-separator />
@@ -28,6 +28,10 @@
             </div>
           </q-scroll-area>
     </q-card>
+
+    <q-dialog persistent v-model="abrirForm" class="">
+       <formPaseador /> 
+    </q-dialog>
   </div>
 </template>
 
@@ -35,13 +39,15 @@
 import { defineComponent, reactive } from "vue";
 import { ref } from "vue";
 import TarjetaPaseador from "./tarjetas/TarjetaPaseador.vue";
-import { api } from '../boot/axios.js'
-import { useStore } from '../pinia/store.js'
+import { api } from '../boot/axios.js';
+import { useStore } from '../pinia/store.js';
+import formPaseador from './formularios/formPaseador.vue'
 
 export default defineComponent({
   name: "PaginaPaseadores",
   components: {
-    TarjetaPaseador
+    TarjetaPaseador,
+    formPaseador,
   },
   setup() {
     const paseadores = ref ([]);
@@ -63,6 +69,8 @@ export default defineComponent({
       paseadores,
       rol,
       loadPaseadores: ref(loadPaseadores),
+
+      abrirForm: ref(false),
     };
   },
   mounted() {
@@ -72,13 +80,4 @@ export default defineComponent({
 </script>
 
 
-    <!-- -->
-
-    <!-- los veterinarios tendrían una vista, los clientes otras Y LOS VISITANTES OTRAS??
-
-      ahora estoy pensando en texto...
-      - visitante: ver
-      - cliente: ver, subir, ver subidos ( nota: usar dos columnas )
-      - vet: ver editar -->
-
-    <!-- Hasta acá :)  -->
+  
