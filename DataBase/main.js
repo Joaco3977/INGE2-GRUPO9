@@ -2,6 +2,8 @@ const express = require("express");
 const cors = require("cors");
 const app = express().use(express.json());
 
+const Consola = require ('./serverFunctions.js')
+
 const { checkAdmin, checkCliente, checkVeterinario } = require('./loginCheck.js');
 const Sesion = require ('./sesion.js')
 
@@ -43,16 +45,16 @@ app.post("/login", async (req, res) => {
           return checkCliente(req.body.mail, req.body.password)
             .then((resultCli) => {
               if (resultCli === false) {
-                console.log("\x1b[36m%s\x1b[0m", "LAS CREDENCIALES NO COINCIDEN!");
+                Consola.mensaje("\x1b[36m%s\x1b[0m", "LAS CREDENCIALES NO COINCIDEN!");
                 res.status(401).send({ rol: 0 });
               } else {
-                console.log("\x1b[36m%s\x1b[0m", `CLIENTE ${resultCli.NOMBREAPELLIDO} logueado! Se le asigna el token: `, token);
+                Consola.mensaje("\x1b[36m%s\x1b[0m", `CLIENTE ${resultCli.NOMBREAPELLIDO} logueado! Se le asigna el token: `, token);
                 Sesion.almacenarToken(token, req.body.mail, resultCli.DNI , 1);
                 res.status(200).send({ rol: 1 , token: token , dni: resultCli.DNI });
               }
             });
         } else {
-          console.log("\x1b[36m%s\x1b[0m", `VETERINARIO ${resultVet.NOMBREAPELLIDO} logueado! Se le asigna el token: `, token);
+          Consola.mensaje("\x1b[36m%s\x1b[0m", `VETERINARIO ${resultVet.NOMBREAPELLIDO} logueado! Se le asigna el token: `, token);
           Sesion.almacenarToken(token, req.body.mail, resultVet.DNI, 2);
           res.status(200).send({ rol: 2 , token: token , dni: resultVet.DNI });
         }
@@ -61,7 +63,7 @@ app.post("/login", async (req, res) => {
         console.error(`Error en una de las consultas: ${error.message}`);
       })
   } else {
-    console.log("\x1b[36m%s\x1b[0m", "ADMIN logueado! Se le asigna el token: ", token);
+    Consola.mensaje("\x1b[36m%s\x1b[0m", "ADMIN logueado! Se le asigna el token: ", token);
     Sesion.almacenarToken(token, req.body.mail, -1 , -1);
     res.status(200).send({ rol: -1 , token: token });
   }
@@ -88,28 +90,28 @@ app.post("/checkToken", async (req, res) => {
 });
 
 app.listen(5137, function () {
-  console.log("\x1b[32m%s\x1b[0m","----------------------------------------------------------------------------");
-  console.log("\x1b[32m%s\x1b[0m", "Servidor BD iniciado en el puerto 5137");
+  Consola.mensaje("\x1b[32m%s\x1b[0m","----------------------------------------------------------------------------");
+  Consola.mensaje("\x1b[32m%s\x1b[0m", "Servidor BD iniciado en el puerto 5137");
   transporter.verify(function (error, success) {
     if (error) {
-      console.log('------------------------------------------------')
+      Consola.mensaje("\x1b[31m%s\x1b[0m",'------------------------------------------------')
       console.log(error);
     } else {
-      console.log("\x1b[32m%s\x1b[0m", "Servidor de Mail esta listo para enviar correos!");
+      Consola.mensaje("\x1b[32m%s\x1b[0m", "Servidor de Mail esta listo para enviar correos!");
     }
   });
 });
 
 process.on('SIGINT', async () => {
   await Sesion.limpiarTokens()
-  console.log("\x1b[31m%s\x1b[0m", "Servidor BD cerrado con CTRL + C");
-  console.log("\x1b[31m%s\x1b[0m", "----------------------------------------------------------------------------");
+  Consola.mensaje("\x1b[31m%s\x1b[0m", "Servidor BD cerrado con CTRL + C");
+  Consola.mensaje("\x1b[31m%s\x1b[0m", "----------------------------------------------------------------------------");
   process.exit()
 })
 
 process.on('exit', async () => {
   await Sesion.limpiarTokens()
-  console.log("\x1b[31m%s\x1b[0m", "Servidor BD cerrado inesperadamente!");
-  console.log("\x1b[31m%s\x1b[0m", "----------------------------------------------------------------------------");
+  Consola.mensaje("\x1b[31m%s\x1b[0m", "Servidor BD cerrado inesperadamente!");
+  Consola.mensaje("\x1b[31m%s\x1b[0m", "----------------------------------------------------------------------------");
   process.exit()
 })

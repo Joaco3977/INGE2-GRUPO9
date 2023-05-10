@@ -1,6 +1,8 @@
 const express = require('express');
 const knex = require ('./configs/knexConfig')
 
+const Consola = require ('./serverFunctions.js')
+
 const router = express.Router();
 
 const getPaseadores = async () => {
@@ -19,7 +21,7 @@ router.get('/getPaseadores', async (req, res) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
         } else {
-            console.log("\x1b[33m%s\x1b[0m", "USUARIO solicito paseadores")
+            Consola.mensaje("\x1b[33m%s\x1b[0m", "USUARIO solicito paseadores")
             res.status(200).send(resultadoGet)
         }
     })
