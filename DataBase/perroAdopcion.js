@@ -92,6 +92,28 @@ router.post('/addPerroAdopcion', async (req, res) => {
                 res.status(401).send('No fue posible conectar con la base de datos');
             })
 
-    });
+});
+
+router.post('/deletePerroAdopcion', async (req,res) =>{
+    console.log('req: ', req.body)
+    let quien = ''
+    if (req.body.rol === 1) {
+        quien = 'CLIENTE'
+    } else {
+        quien = 'VETERINARIO'
+    }
+    knex('perroAdopcion').where({
+        DNICLIENTE: req.body.dnicliente,
+        NOMBRE: req.body.nombre
+    }).del()
+    .then(() =>{
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`${quien} ${req.body.dniQuien} elimino al perro en adopcion ${req.body.nombre} del cliente con DNI ${req.body.dnicliente}`)
+        //iria a logs
+        res.status(200).send({})
+    }).catch(()=>{
+        res.status(401).send('No fue posible conectar con la base de datos');
+    })
+})
+
 
 module.exports = router;

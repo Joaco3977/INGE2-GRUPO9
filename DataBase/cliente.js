@@ -88,7 +88,7 @@ router.post('/getCliente',async (req,res) =>{
     getClientePorDNI(req.body.dni)
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
-            res.status(401)
+            res.status(401).send('No fue posible conectar con la base de datos');
         } else {
             Consola.mensaje("\x1b[33m%s\x1b[0m", "SISTEMA solicito un cliente")
             res.status(200).send(resultadoGet)
@@ -100,10 +100,10 @@ router.post('/getCliente',async (req,res) =>{
 })
 
 router.post('/deleteCliente', async (req,res) =>{
-    knex('cliente').where(req.body.dni).del()
-    .then((resultado) =>{
+    knex('cliente').where('DNI', req.body.dni).del()
+    .then(() =>{
         Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino cliente con dni: ${req.body.dni}`)
-        res.status(200)
+        res.status(200).send({})
     }).catch((error)=>{
         res.status(401).send('No fue posible conectar con la base de datos');
     })
