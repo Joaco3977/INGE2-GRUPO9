@@ -53,10 +53,11 @@
             class="bg-white full-width"
           >
             <div class="full-width row items-justify">
-              <TarjetaAdopcion
+              <TarjetaAdopcion @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
                 :rol="rol"
+                :dnicliente="perro.DNICLIENTE"
                 :servicio="servicio1"
                 :nombre="perro.NOMBRE"
                 :edad="perro.EDAD"
@@ -78,10 +79,11 @@
             class="bg-white full-width"
           >
             <div class="full-width row items-justify">
-              <TarjetaAdopcion
+              <TarjetaAdopcion @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
                 :rol="rol"
+                :dnicliente="perro.DNICLIENTE"
                 :servicio="servicio2"
                 :nombre="perro.NOMBRE"
                 :edad="perro.EDAD"
@@ -202,6 +204,7 @@ export default defineComponent({
       try {
         const response = await api.get("/perroAdopcion/getPerrosAdopcion");
         perrosDatos.value = response.data;
+        console.log(perrosDatos.value[0])
       } catch (error) {
         console.error(error);
       }
@@ -227,6 +230,20 @@ export default defineComponent({
         console.error(error);
       }
     };
+
+    async function eliminarPerroAdopcion (data) {
+      try {
+        await api.post("perroAdopcion/deletePerroAdopcion", {
+          dniQuien: useStore().dni,
+          dnicliente: data.dnicliente,
+          nombre: data.nombre,
+          rol: useStore().rol
+        })
+        loadPerros()
+      } catch {
+        console.error('No es posible eliminar al perro en adopcion')
+      }
+    }
 
     /*
     const loadPerrosPropios = async () => {
@@ -274,6 +291,7 @@ export default defineComponent({
       rol,
       servicio1,
       servicio2,
+      eliminarPerroAdopcion
     };
   },
   mounted() {

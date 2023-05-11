@@ -52,15 +52,18 @@ app.post("/login", async (req, res) => {
                 Sesion.almacenarToken(token, req.body.mail, resultCli.DNI , 1);
                 res.status(200).send({ rol: 1 , token: token , dni: resultCli.DNI });
               }
-            });
+            })
+            .catch(() => {
+              res.status(401).send('No fue posible conectar con la base de datos')
+            })
         } else {
           Consola.mensaje("\x1b[36m%s\x1b[0m", `VETERINARIO ${resultVet.NOMBREAPELLIDO} logueado! Se le asigna el token: ${token}`);
           Sesion.almacenarToken(token, req.body.mail, resultVet.DNI, 2);
           res.status(200).send({ rol: 2 , token: token , dni: resultVet.DNI });
         }
       })
-      .catch((error) => {
-        console.error(`Error en una de las consultas: ${error.message}`);
+      .catch(() => {
+        res.status(401).send('No fue posible conectar con la base de datos');
       })
   } else {
     Consola.mensaje("\x1b[36m%s\x1b[0m", `ADMIN logueado! Se le asigna el token: ${token}`)
@@ -75,7 +78,7 @@ app.post("/logout", async (req, res) => {
     res.status(200).send(result)
   } catch {
     console.error(error)
-    res.status(401)
+    res.status(401).send('No fue posible conectar con la base de datos');
   }
 });
 
@@ -85,7 +88,7 @@ app.post("/checkToken", async (req, res) => {
     res.status(200).send(result);
   } catch (error) {
     console.error(error);
-    res.status(401);
+    res.status(401).send('No fue posible conectar con la base de datos');
   }
 });
 

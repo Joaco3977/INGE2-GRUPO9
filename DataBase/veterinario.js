@@ -63,17 +63,17 @@ router.get('/getVeterinarios', async (req, res) => {
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 });
 
 router.post('/deleteVeterinario', async (req,res) =>{
-    knex('Veterinario').where(req.body.dni).del()
+    knex('Veterinario').where('DNI', req.body.dni).del()
     .then((resultado) =>{
         Consola.mensaje("\x1b[35m%s\x1b[0m",`ADMIN elimino veterinario con dni: ${req.body.dni}`)
         res.status(200)
     }).catch((error)=>{
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
@@ -88,7 +88,7 @@ router.post('/getVeterinario',async (req,res) =>{
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
@@ -112,14 +112,14 @@ router.post('/addVeterinario', async (req,res)=>{
                 }
             }).catch(error => {
                 console.log(error)
-                res.status(401)
+                res.status(401).send('No fue posible agregar al nuevo veterinario');
             })
         }else{
             res.status(401)
         }
     }).catch(error => {
         console.log(error)
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 

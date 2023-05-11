@@ -6,7 +6,7 @@
       <q-card-section v-if="servicio === 'perrosMios' || rol === 2">
          <div class="row justify-end full-width">
           <q-btn v-if="servicio === 'perrosMios' || rol === 2" class="" color="accent" >  <div>Editar datos</div> </q-btn>
-          <q-btn class="q-ml-sm" color="accent" >  <div>Eliminar</div> </q-btn>
+          <q-btn @click="ejecutarFuncionPadre(dnicliente, nombre)" class="q-ml-sm" color="accent" >  <div>Eliminar</div> </q-btn>
         </div>
       </q-card-section>
       <q-card-section>
@@ -86,6 +86,7 @@ export default defineComponent({
     telefono: String,
     mail: String,
     comentario: String,
+    dnicliente: String
   },
   data(){
     return{
@@ -100,8 +101,14 @@ export default defineComponent({
       } else {
         cont = 'https://api.whatsapp.com/send?phone=' + this.telefono +  '&text=Contacto%20desde%20OhMyDog%20por%20adopción%20de%20' + this.nombre
       }
-      console.log(cont)
       return cont;
+    },
+    ejecutarFuncionPadre(dnicliente, nombre) {
+      const data = {
+        dnicliente: dnicliente,
+        nombre: nombre
+      }
+      this.$emit('eliminarPerroAdopcion', data);
     }
   },
   mounted(){

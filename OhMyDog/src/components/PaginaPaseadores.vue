@@ -67,7 +67,6 @@ export default defineComponent({
         const response = await api.get("/paseador/getPaseadores");
         if (response !== false) {
           paseadores.value = response.data;
-          console.log("Paseadores: ", paseadores.value);
         }
       } catch (error) {
         console.error(error);
@@ -87,10 +86,9 @@ export default defineComponent({
 
     return {
       eliminarPaseador,
-      actualizar,
       paseadores,
       rol,
-      loadPaseadores: ref(loadPaseadores),
+      loadPaseadores,
       abrirForm: ref(false),
     };
   },

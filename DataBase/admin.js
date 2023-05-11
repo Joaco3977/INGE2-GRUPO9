@@ -70,7 +70,7 @@ router.get('/getLog', async (req, res) => {
         res.status(200).send(resultado)
     })
     .catch((error) => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar a la Base de Datos')
         console.error(error)
     })
 })

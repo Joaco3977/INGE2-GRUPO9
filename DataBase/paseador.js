@@ -24,17 +24,17 @@ router.get('/getPaseadores', async (req, res) => {
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
 router.post('/deletePaseador', async (req,res) =>{
     knex('paseador').where('DNI', req.body.dni).del()
-    .then((resultado) =>{
+    .then(() =>{
         Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino paseador con dni: ${req.body.dni}`)
         res.status(200).send({})
-    }).catch((error)=>{
-        res.status(401)
+    }).catch(()=>{
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
