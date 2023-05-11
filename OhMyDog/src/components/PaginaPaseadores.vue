@@ -39,7 +39,7 @@
     </q-scroll-area>
 
     <q-dialog persistent v-model="abrirForm" class="">
-      <formPaseador />
+      <formPaseador @loadPaseadores="loadPaseadores" />
     </q-dialog>
   </div>
 </template>

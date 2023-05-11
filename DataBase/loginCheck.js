@@ -30,6 +30,26 @@ const enviarMailPassword = async (destinatario) => {
   return password
 }
 
+const enviarMailPaseador = async (nombre, destinatario) => {
+  const asunto = 'Bienvenido Paseador!';
+  const mensaje = `Hola ${nombre}, te comunicamos que ya estas registrado como paseador en OhMyDog!`;
+
+  let pude = false
+
+  transporter.sendMail({
+    from: 'BitBuilders2023@gmail.com',
+    to: destinatario,
+    subject: asunto,
+    text: mensaje,
+  }).then(() => {
+    pude = true;
+  }).catch((error) => {
+    console.error('Error al enviar el correo electrónico:', error);
+    return false;
+  })
+  return true
+}
+
 function checkAdmin (mail, pass) {
     if (mail == 'OhMyDog@admin.com' && pass == '357') {
         return true;
@@ -60,4 +80,4 @@ const checkVeterinario = async (mail, pass) => {
     }
   };
 
-module.exports = { checkAdmin, checkCliente, checkVeterinario, generarPassword , enviarMailPassword};
+module.exports = { checkAdmin, checkCliente, checkVeterinario, generarPassword , enviarMailPassword, enviarMailPaseador };

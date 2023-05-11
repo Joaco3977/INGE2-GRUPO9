@@ -16,7 +16,19 @@
             hint="Nombre y apellido"
             lazy-rules
             :rules="[
-              (val) => (val && val.length > 0) || 'Please type something',
+              (val) => (val && val.length > 0) || 'No te olvides del nombre!',
+            ]"
+          />
+
+          <q-input
+            class="q-px-lg"
+            filled
+            type="number"
+            v-model="dni"
+            label="DNI"
+            lazy-rules
+            :rules="[
+              (val) => (val !== null) || 'No te olvides del DNI!',
             ]"
           />
 
@@ -28,7 +40,18 @@
             label="Mail de contacto"
             lazy-rules
             :rules="[
-              (val) => (val !== null && val !== '') || 'Please type your mail',
+              (val) => (val !== null && val !== '') || 'No te olvides del mail!',
+            ]"
+          />
+
+          <q-input
+            class="q-px-lg"
+            filled
+            v-model="zona"
+            label="Zona"
+            lazy-rules
+            :rules="[
+              (val) => (val && val.length > 0) || 'No te olvides de la zona!',
             ]"
           />
 
@@ -37,7 +60,7 @@
             <div
               v-for="sem of semana"
               :key="sem.nombre"
-              class="separadorFormulario row no-wrap full-width justify-around items-center q-py-xs" 
+              class="separadorFormulario row no-wrap full-width justify-around items-center q-py-xs"
             >
               <div class="textoTituloPosteo" style="width: 5em">
                 {{ sem.nombre }}
@@ -77,49 +100,58 @@
 
 <script>
 import { defineComponent, ref } from "vue";
+import { api } from '../../boot/axios.js'
+import { data } from "autoprefixer";
 
 const semana = [
   {
+    num: 0,
     nombre: "Lunes",
-    manana: "lunManana",
-    tarde: "lunTarde",
-    noche: "lunNoche",
+    manana: "0 0",
+    tarde: "0 1",
+    noche: "0 2",
   },
   {
+    num: 1,
     nombre: "Martes",
-    manana: "marManana",
-    tarde: "marTarde",
-    noche: "marNoche",
+    manana: "1 0",
+    tarde: "1 1",
+    noche: "1 2",
   },
   {
+    num: 2,
     nombre: "Miércoles",
-    manana: "mieManana",
-    tarde: "mieTarde",
-    noche: "mieNoche",
+    manana: "2 0",
+    tarde: "2 1",
+    noche: "2 2",
   },
   {
+    num: 3,
     nombre: "Jueves",
-    manana: "jueManana",
-    tarde: "jueTarde",
-    noche: "jueNoche",
+    manana: "3 0",
+    tarde: "3 1",
+    noche: "3 2",
   },
   {
+    num: 4,
     nombre: "Viernes",
-    manana: "vieManana",
-    tarde: "vieTarde",
-    noche: "vieNoche",
+    manana: "4 0",
+    tarde: "4 1",
+    noche: "4 2",
   },
   {
+    num: 5,
     nombre: "Sábado",
-    manana: "sabManana",
-    tarde: "sabTarde",
-    noche: "sabNoche",
+    manana: "5 0",
+    tarde: "5 1",
+    noche: "5 2",
   },
   {
+    num: 6,
     nombre: "Domingo",
-    manana: "domManana",
-    tarde: "domTarde",
-    noche: "domNoche",
+    manana: "6 0",
+    tarde: "6 1",
+    noche: "6 2",
   },
 ];
 
@@ -127,31 +159,66 @@ export default defineComponent({
   name: "formPaseador",
   setup() {
     const name = ref(null);
+    const dni = ref(null);
     const mail = ref(null);
+    const zona = ref(null);
     const info = ref(null);
 
     const dias = ref([]);
+
+    const getDatosPaseador = () => {
+      console.log('llegue getDatos')
+      var disponibilidad = [[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false]]
+      dias.value.forEach(element => {
+        let partes = element.split(' ')
+        let dia = parseInt(partes[0]);
+        let numero = parseInt(partes[1]);
+        disponibilidad[dia][numero] = true;
+      })
+      const disponibilidadJSON = JSON.stringify(disponibilidad);
+      const datos = {
+        nombre: name.value,
+        dni: dni.value,
+        mail: mail.value,
+        zona: zona.value,
+        disponibilidadJSON: disponibilidadJSON,
+        comentario: info.value,
+      }
+      return datos
+    }
 
     return {
       name,
       mail,
       info,
+      zona,
+      dni,
       dias,
-
+      getDatosPaseador,
       semana,
-
-      onSubmit() {
-        /* Acá que pasa cuando toco "registrar" */
-        /* acá podemos validar todos los campos y si no valida no se manda a la bd */
-      },
 
       onReset() {
         name.value = null;
         mail.value = null;
+        zona.value = null;
         info.value = null;
         dias.value = null;
       },
     };
   },
+  methods: {
+    async onSubmit () {
+      try {
+        const data = this.getDatosPaseador()
+        await api.post('/paseador/addPaseador', {
+          paseador: data,
+        })
+        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
+        this.$emit('loadPaseadores', data);
+      } catch {
+
+      }
+    }
+  }
 });
 </script>

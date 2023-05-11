@@ -16,7 +16,7 @@ const getPerrosAdopcion = async () => {
 
 const getPerrosAdopcionPropios = async (dni) =>{
     try {
-        const resultado = await knex('perroAdopcion').select('*').where(perroAdopcion.DNI == dni) //esto mal
+        const resultado = await knex('perroAdopcion').select('*').where('DNICLIENTE', dni)
         return resultado;
     }catch (error){
         console.error(error)
@@ -34,7 +34,6 @@ const addperroAdopcion = async (nuevoPerroA) => {
     }
 }
 
-// VER LISTA PERRO ADOPCION - GET traer todos los perros adopcion
 router.get('/getPerrosAdopcion', async (req, res) => {
     getPerrosAdopcion()
     .then ((resultadoGet) => {
@@ -51,7 +50,7 @@ router.get('/getPerrosAdopcion', async (req, res) => {
 })
 
 router.post('/getPerrosAdopcionPropios', async (req, res) => {
-    getPerrosAdopcionPropios(req.body.data.dni)
+    getPerrosAdopcionPropios(req.body.dni)
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
@@ -67,6 +66,7 @@ router.post('/getPerrosAdopcionPropios', async (req, res) => {
 
 
 router.post('/addPerroAdopcion', async (req, res) => {
+    console.log(req.body)
             const nuevoPerroA = {
                 SEXO:req.body.perro.sexo,
                 TAMANIO:req.body.perro.tamanio,
