@@ -1,72 +1,109 @@
 <template>
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
-  <div class="bg-white" style="width: full; max-height: 90vh">
-    <div class="text-center text-h4 text-primary">MI PERFIL</div>
-    <div class="text-center text-h6 text-primary">
-      Hola! Soy el componente "Página Perfil" EDITAME
+  <div
+    class="bg-white column no-wrap col-10 items-center full-height full-width"
+  >
+    <div class="titulo text-center text-h4 text-bold text-primary q-pt-md">
+      MI PERFIL
     </div>
-
-    <q-scroll-area
-      :thumb-style="thumbStyle"
-      :bar-style="barStyle"
-      style="height: 80vh"
-      class="bg-white"
-    >
-      <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
-
-      <div>
-        <h6> Nombre y Apellido: {{ misDatos.NOMBREAPELLIDO }} </h6>
-        <p> DNI: {{ misDatos.DNI }} </p>
-        <p> Mail: {{ misDatos.MAIL }} </p>
-        <p> Telefono: {{ misDatos.TELEFONO }} </p>
-        <p v-if="rol ===  1"> Direccion: {{ misDatos.DIRECCION }} </p>
-        <p> Fecha de registro: {{ misDatos.FECHAREGISTRO }} </p>
-      </div>
-
-      <!-- Hasta acá :)  -->
-    </q-scroll-area>
+    <q-card class="my-card q-mt-lg" style="width: 90%; height: max-content">
+      <q-separator />
+      <q-card-section class="row justify-between bg-secondary">
+        <div class="textoPerfil q-px-xl">{{ misDatos.NOMBREAPELLIDO }}</div>
+        <div class="text-overline text-white q-px-xl">
+          Cliente desde: {{ misDatos.FECHAREGISTRO }}
+        </div>
+      </q-card-section>
+      <q-card-section class="column justify-start">
+        <div class="textoTituloPerfil q-pb-sm">Mis datos</div>
+        <div class="row q-py-sm">
+          <div class="textoTituloPosteo q-pl-lg">Nombre y apellido:</div>
+          <div class="q-px-md">{{ misDatos.NOMBREAPELLIDO }}</div>
+        </div>
+        <div class="row q-py-sm">
+          <div class="textoTituloPosteo q-pl-lg">DNI:</div>
+          <div class="q-px-md">{{ misDatos.DNI }}</div>
+        </div>
+        <div class="row q-py-sm">
+          <div class="textoTituloPosteo q-pl-lg">Dirección:</div>
+          <div class="q-px-md">{{ misDatos.DIRECCION }}</div>
+        </div>
+        <div class="textoTituloPerfil q-py-sm">Contacto</div>
+        <div class="row q-py-sm">
+          <div class="textoTituloPosteo q-pl-lg">Mail:</div>
+          <div class="q-px-md">{{ misDatos.MAIL }}</div>
+        </div>
+        <div class="row q-py-sm">
+          <div class="textoTituloPosteo q-pl-lg">Teléfono:</div>
+          <div class="q-px-md">{{ misDatos.TELEFONO }}</div>
+        </div>
+      </q-card-section>
+      <q-separator />
+      <q-card-actions class="q-py-lg row justify-end q-px-xl">
+        <q-btn class="textoBoton q-mx-md" > Editar perfil </q-btn>
+        <q-btn class="textoBoton" @click="cerrarSesion()"> Cerrar Sesion </q-btn>
+      </q-card-actions>
+    </q-card>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
 import { checkToken } from "../functions/check.js";
-import { useStore } from '../pinia/store.js'
-import { api } from '../boot/axios.js'
+import { useStore } from "../pinia/store.js";
+import { api } from "../boot/axios.js";
+import { LocalStorage } from "quasar";
 
 export default defineComponent({
   name: "PaginaPerfil",
   components: {},
   setup() {
-    const rol = useStore().rol
-    const misDatos = ref ({})
+    const rol = useStore().rol;
+    const misDatos = ref({});
 
     const traerDatos = async () => {
-      let url = ''
+      let url = "";
       if (rol === 1) {
-        url = "/cliente/getCliente"
-      } else url = "/veterinario/getVeterinario"
+        url = "/cliente/getCliente";
+      } else url = "/veterinario/getVeterinario";
       try {
         const response = await api.post(`${url}`, {
           dni: useStore().dni,
         });
         misDatos.value = response.data;
-        console.log(misDatos.value)
+        console.log(misDatos.value);
       } catch {
-        console.log('No se pudo solicitar la operacion correspondiente')
+        console.log("No se pudo solicitar la operacion correspondiente");
       }
-    }
+    };
 
     return {
       rol,
       misDatos,
       traerDatos: ref(traerDatos),
-    }
+      store: useStore(),
+    };
+  },
+  methods: {
+    async cerrarSesion() {
+      try {
+        const response = await api.post("/logout", {
+          token: LocalStorage.getItem("token"),
+        });
+        if (response) {
+          this.store.setRol(0);
+          this.store.setTab("Iniciar Sesion");
+          LocalStorage.clear();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   mounted() {
-    checkToken()
-    this.traerDatos()
-  }
+    checkToken();
+    this.traerDatos();
+  },
 });
 </script>

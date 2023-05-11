@@ -2,7 +2,7 @@
   <div class="bg-white" style="width: full; max-height: 99vh">
     <div class="text-center text-h4 text-primary q-py-md">PASEADORES</div>
 
-      <q-btn 
+      <q-btn
         v-show="rol == 2"
         color="accent"
         @click="abrirForm = true"
@@ -20,11 +20,12 @@
       class="bg-white"
     >
       <div class="full-width row wrap justify-center">
-        <TarjetaPaseador
+        <TarjetaPaseador :loadPaseadores="loadPaseadores"
           class="q-px-sm col-stretch"
           v-for="paseador in paseadores"
           :rol="rol"
           :key="paseador.DNI"
+          :dni="paseador.DNI"
           :nombre="paseador.NOMBREAPELLIDO"
           :zona="paseador.ZONA"
           :dias="paseador.DIAS"
@@ -33,7 +34,7 @@
           :comentario="paseador.COMENTARIO"
         />
 
-        
+
       </div>
     </q-scroll-area>
 
@@ -77,7 +78,6 @@ export default defineComponent({
       paseadores,
       rol,
       loadPaseadores: ref(loadPaseadores),
-
       abrirForm: ref(false),
     };
   },
