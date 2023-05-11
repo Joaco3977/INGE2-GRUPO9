@@ -51,7 +51,6 @@ import TarjetaPaseador from "./tarjetas/TarjetaPaseador.vue";
 import { api } from "../boot/axios.js";
 import { useStore } from "../pinia/store.js";
 import formPaseador from "./formularios/formPaseador.vue";
-import { store } from "quasar/wrappers";
 
 export default defineComponent({
   name: "PaginaPaseadores",

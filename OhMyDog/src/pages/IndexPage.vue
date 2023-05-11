@@ -56,6 +56,8 @@
           icon="ion-people"
           label="Clientes"
         />
+        <q-tab v-if="store.rol < 0" name="Veterinarios" icon="ion-people" label="Veterinarios" />
+        
         <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
@@ -112,6 +114,10 @@
           <PaginaClientes />
         </q-tab-panel>
 
+        <q-tab-panel v-if="store.rol === -1" name="Veterinarios">
+          <PaginaVeterinarios />
+        </q-tab-panel>
+
         <q-tab-panel name="Adopciones">
           <PaginaAdopciones :rol="store.rol" />
         </q-tab-panel>
@@ -153,6 +159,7 @@ import PaginaAdopciones from "../components/PaginaAdopciones.vue";
 import PaginaPaseadores from "../components/PaginaPaseadores.vue";
 import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
+import PaginaVeterinarios from "src/components/PaginaVeterinarios.vue";
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
 
@@ -171,6 +178,7 @@ export default defineComponent({
     PaginaPaseadores,
     PaginaPerfil,
     PaginaLog,
+    PaginaVeterinarios,
   },
   setup() {
     const data = reactive({
