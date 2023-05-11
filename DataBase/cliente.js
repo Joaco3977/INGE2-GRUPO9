@@ -80,7 +80,7 @@ router.get('/getClientes', async (req, res) => {
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
@@ -95,7 +95,7 @@ router.post('/getCliente',async (req,res) =>{
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
@@ -105,7 +105,7 @@ router.post('/deleteCliente', async (req,res) =>{
         Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino cliente con dni: ${req.body.dni}`)
         res.status(200)
     }).catch((error)=>{
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
@@ -129,20 +129,20 @@ router.post('/addCliente', async (req, res) => {
                     Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO registro al CLIENTE: ${req.body.cliente.nombreApellido}, DNI: ${req.body.cliente.dni}, Mail: ${req.body.cliente.mail}`)
                     res.status(200)
                 } else {
-                    res.status(401)
+                    res.status(401).send('No se pudo insertar al nuevo cliente');
                 }
             })
             .catch((error) => {
                 console.error(error)
-                res.status(401)
+                res.status(401).send('No fue posible conectar con la base de datos');
             })
         } else {
-            res.status(401)
+            res.status(401).send('No fue posible conectar con la base de datos');
         }
     })
     .catch ((error) => {
         console.error(error)
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 

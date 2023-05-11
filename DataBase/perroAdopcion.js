@@ -46,7 +46,7 @@ router.get('/getPerrosAdopcion', async (req, res) => {
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
@@ -61,7 +61,7 @@ router.post('/getPerrosAdopcionPropios', async (req, res) => {
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
@@ -84,12 +84,12 @@ router.post('/addPerroAdopcion', async (req, res) => {
                     Consola.mensaje("\x1b[35m%s\x1b[0m", `CLIENTE agrego al perro en Adopcion: ${req.body.perro.nombre}`)
                     res.status(200)
                 } else {
-                    res.status(401)
+                    res.status(401).send('No fue posible agregar al perro en adopcion');
                 }
             })
             .catch((error) => {
                 console.error(error)
-                res.status(401)
+                res.status(401).send('No fue posible conectar con la base de datos');
             })
 
     });
