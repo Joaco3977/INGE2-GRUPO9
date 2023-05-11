@@ -29,10 +29,10 @@ router.get('/getPaseadores', async (req, res) => {
 })
 
 router.post('/deletePaseador', async (req,res) =>{
-    knex('paseador').where(req.body.dni).del()
+    knex('paseador').where('DNI', req.body.dni).del()
     .then((resultado) =>{
         Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino paseador con dni: ${req.body.dni}`)
-        res.status(200)
+        res.status(200).send({})
     }).catch((error)=>{
         res.status(401)
     })

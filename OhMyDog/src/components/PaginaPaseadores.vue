@@ -20,7 +20,7 @@
       class="bg-white"
     >
       <div class="full-width row wrap justify-center">
-        <TarjetaPaseador :loadPaseadores="loadPaseadores"
+        <TarjetaPaseador @ejecutarFuncion="eliminarPaseador"
           class="q-px-sm col-stretch"
           v-for="paseador in paseadores"
           :rol="rol"
@@ -45,12 +45,13 @@
 </template>
 
 <script>
-import { defineComponent, reactive } from "vue";
+import { defineComponent, watch } from "vue";
 import { ref } from "vue";
 import TarjetaPaseador from "./tarjetas/TarjetaPaseador.vue";
 import { api } from "../boot/axios.js";
 import { useStore } from "../pinia/store.js";
 import formPaseador from "./formularios/formPaseador.vue";
+import { store } from "quasar/wrappers";
 
 export default defineComponent({
   name: "PaginaPaseadores",
@@ -74,7 +75,20 @@ export default defineComponent({
       }
     };
 
+    async function eliminarPaseador (dni) {
+      try {
+        await api.post("paseador/deletePaseador", {
+          dni: dni
+        })
+        loadPaseadores()
+      } catch {
+        console.error('NO SE PUDO ELIMINAR PASEADOR')
+      }
+    }
+
     return {
+      eliminarPaseador,
+      actualizar,
       paseadores,
       rol,
       loadPaseadores: ref(loadPaseadores),

@@ -16,7 +16,7 @@
           <q-btn class="q-ml-md" color="accent">
             <div>Editar datos</div>
           </q-btn>
-          <q-btn @click="eliminarPaseador(dni)" class="q-ml-md" color="accent">
+          <q-btn @click="ejecutarFuncionPadre(dni)" class="q-ml-md" color="accent">
             <div>Eliminar paseador</div>
           </q-btn>
         </div>
@@ -79,11 +79,12 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { api } from '../../boot/axios.js'
+import { api } from '../../boot/axios.js';
+import { useStore  } from '../../pinia/store.js'
 
 export default defineComponent({
   name: "TarjetaPaseador",
-  components: {},
+  components: { },
   props: {
     rol: String,
     dni: String,
@@ -93,10 +94,6 @@ export default defineComponent({
     horario: String,
     contacto: String,
     comentario: String,
-    loadPaseadores: {
-      type: Function,
-      required: true
-    }
   },
   data() {
     return {};
@@ -115,20 +112,10 @@ export default defineComponent({
           this.contacto +
           "&text=Contacto%20desde%20OhMyDog%20por%20paseador20de%20perro";
       }
-      console.log(cont);
       return cont;
     },
-    async eliminarPaseador(dni) {
-      try {
-        const response = await api.post("/paseador/delPaseador", {
-          dni: this.dni
-        });
-        if (response !== false) {
-          this.loadPaseadores()
-        }
-      } catch (error) {
-        console.error(error);
-      }
+    ejecutarFuncionPadre(dni) {
+      this.$emit('ejecutarFuncion', dni);
     }
   }
 });
