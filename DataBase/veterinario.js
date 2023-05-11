@@ -12,7 +12,7 @@ const enviadorMails = require('./loginCheck.js');
 
 const Consola = require ('./serverFunctions.js')
 
-const getVeteriano = async () => {
+const getVeterianos = async () => {
     try {
         const resultado = await knex('veterinario').select('*')
         return resultado;
@@ -53,7 +53,7 @@ const addVeterinario = async (nuevoVeterinario) => {
 }
 
 router.get('/getVeterinarios', async (req, res) => {
-    getVeteriano()
+    getVeterianos()
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
@@ -71,7 +71,7 @@ router.post('/deleteVeterinario', async (req,res) =>{
     knex('Veterinario').where('DNI', req.body.dni).del()
     .then((resultado) =>{
         Consola.mensaje("\x1b[35m%s\x1b[0m",`ADMIN elimino veterinario con dni: ${req.body.dni}`)
-        res.status(200)
+        res.status(200).send({})
     }).catch((error)=>{
         res.status(401).send('No fue posible conectar con la base de datos');
     })
@@ -93,20 +93,22 @@ router.post('/getVeterinario',async (req,res) =>{
 })
 
 router.post('/addVeterinario', async (req,res)=>{
-    enviadorMails.enviarMailPassword(req.body.mail)
+    enviadorMails.enviarMailPassword(req.body.veterinario.mail)
     .then((sendP)=>{
         if(sendP){
             let nuevoVeterinario = {
-                DNI : req.body.veterinarioAgregar.DNI,
-                NOMBREAPELLIDO : req.body.veterinarioAgregar.NOMBREAPELLIDO,
-                MAIL : req.body.veterinarioAgregar.MAIL,
+                DNI : req.body.veterinario.dni,
+                NOMBREAPELLIDO : req.body.veterinario.nombreApellido,
+                MAIL : req.body.veterinario.mail,
+                TELEFONO : req.body.veterinario.telefono,
                 PASSWORD : sendP,
+                FECHAREGISTRO: new Date()
             }
             addVeterinario(nuevoVeterinario)
             .then((resultadoAdd)=>{
                 if(resultadoAdd){
                     Consola.mensaje("\x1b[33m%s\x1b[0m", "ADMIN agrego un veterinario")
-                    res.status(200)
+                    res.status(200).send({})
                 }else{
                     res.status(401)
                 }
