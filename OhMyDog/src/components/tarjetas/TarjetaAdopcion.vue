@@ -3,10 +3,11 @@
   <!-- Pueden usar componentes dentro de este componente -->
   <div class="bg-white" style="width: full; max-height: 90vh">
     <q-card flat class="my-card bg-primary text-white q-ma-md" style="width: 20rem">
+      <q-banner v-if="adoptado == 1" inline-actions class="bg-primary text-white">ADOPTADO</q-banner>
       <q-card-section v-if="servicio === 'perrosMios' || rol === 2">
          <div class="row justify-end full-width">
-          <q-btn v-if="servicio === 'perrosMios' || rol === 2" class="" color="accent" >  <div>Editar datos</div> </q-btn>
-          <q-btn @click="ejecutarFuncionPadre(dnicliente, nombre)" class="q-ml-sm" color="accent" >  <div>Eliminar</div> </q-btn>
+          <q-btn v-if="servicio === 'perrosMios' || rol === 2 || adoptado == 0"  class="" color="accent" >  <div>Editar datos</div> </q-btn>
+          <q-btn v-if="servicio === 'perrosMios' || rol === 2 || adoptado == 0" @click="ejecutarFuncionPadre(dnicliente, nombre)" class="q-ml-sm" color="accent" >  <div>Eliminar</div> </q-btn>
         </div>
       </q-card-section>
       <q-card-section>
@@ -27,10 +28,6 @@
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Sexo:</div>
             <div> {{sexo }} </div>
-          </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Tamaño:</div>
-            <div> {{tamanio}} </div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Telefono:</div>
@@ -86,6 +83,7 @@ export default defineComponent({
     telefono: String,
     mail: String,
     comentario: String,
+    adoptado:String,
     dnicliente: String
   },
   data(){

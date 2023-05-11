@@ -27,8 +27,8 @@
         narrow-indicator
       >
         <!-- EN ESTA ETIQUETA VA @click="loadPerros" y a su vez tambien va en el mounted para que cargue de entrada todos los perros disponible ( faltaria agregar un label que informe cuando no hya perros (vectordedatos vuelve vacio de db))-->
-        <q-tab name="perrosOtros" label="¡Adoptá un perro!" />
-        <q-tab
+        <q-tab @click="loadPerros" name="perrosOtros" label="¡Adoptá un perro!" />
+        <q-tab @click="loadPerrosPropios"
           v-if="rol === 1"
           name="perrosPropios"
           label="Mis perros en adopción"
@@ -92,6 +92,7 @@
                 :telefono="perro.TELEFONO"
                 :mail="perro.MAIL"
                 :comentario="perro.COMENTARIO"
+                :adoptado ="perro.ADOPTADO"
               />
             </div>
           </q-scroll-area>
@@ -100,73 +101,10 @@
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      <div class="paraform" style="width: 50vw; height: 80vh">
-        <q-form class="q-pa-xl" @submit.prevent="registrarPerro">
-          <q-input
-            v-model="perroNOMBRE"
-            clearable
-            class="q-px-xl"
-            label="Nombre"
-            type="text"
-          />
-          <q-select
-            v-model="peroTAMANIO"
-            :options="opcionTamanio"
-            class="q-px-xl"
-            label="Tamaño"
-          />
-          <q-input
-            v-model="perroEDAD"
-            clearable
-            class="q-px-xl"
-            label="Edad Aproximada"
-            type="text"
-          />
-          <q-select
-            v-model="peroSEXO"
-            :options="opcionSexo"
-            class="q-px-xl"
-            label="Sexo"
-          />
-          <q-input
-            v-model="perroTELEFONO"
-            clearable
-            class="q-px-xl"
-            label="Telefono"
-            type="number"
-          />
-          <q-input
-            v-model="perroMAIL"
-            clearable
-            class="q-px-xl"
-            label="Mail"
-            type="email"
-          />
-          <q-input
-            v-model="perroCOMENTARIO"
-            clearable
-            class="q-px-xl"
-            label="Comentarios"
-            type="text"
-          />
-          <q-btn
-            push
-            class="q-my-md q-mx-xl"
-            color="accent"
-            type="submit"
-            label="Registrar Perro"
-          />
-        </q-form>
-      </div>
+      <formAdopcion @registrarPerro="registrarPerro"/>
     </q-dialog>
   </div>
 </template>
-
-<style>
-.paraform {
-  background-color: #fff;
-}
-</style>
 
 <script>
 import { defineComponent } from "vue";
@@ -176,27 +114,18 @@ import TarjetaAdopcion from "./tarjetas/TarjetaAdopcion.vue";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
 import formAdopcion from "./formularios/formPerroAdopcion.vue";
-
 export default defineComponent({
   name: "PaginaAdopciones",
   components: {
     TarjetaAdopcion,
     QDialog,
-    //formAdopcion,
+    formAdopcion,
   },
   setup() {
     const perrosDatos = ref([]);
-    const perroSEXO = ref("");
-    const perroTAMANIO = ref("");
-    const perroEDAD = ref("");
-    const perroTELEFONO = ref("");
-    const perroNOMBRE = ref("");
-    const perroMAIL = ref("");
-    const perroCOMENTARIO = ref("");
-    const perroDNICLIENTE = useStore().dni;
     const mostrarPopup = ref("false");
     const rol = useStore().rol;
-
+    const tab = ref("perrosOtros");
     const servicio1 = "perrosOtros";
     const servicio2 = "perrosMios";
 
@@ -210,22 +139,17 @@ export default defineComponent({
       }
     };
 
-    const registrarPerro = async () => {
+    const registrarPerro = async (perro) => {
       try {
         console.log(useStore().dni);
         const response = await api.post("/perroAdopcion/addPerroAdopcion", {
-          perro: {
-            sexo: perroSEXO.value,
-            tamanio: perroTAMANIO.value,
-            edad: perroEDAD.value,
-            telefono: perroTELEFONO.value,
-            nombre: perroNOMBRE.value,
-            mail: perroMAIL.value,
-            comentario: perroCOMENTARIO.value,
-            dnicliente: perroDNICLIENTE,
-          },
+          perro
         });
-        await loadPerros();
+        if(tab.value == "perrosOtros"){
+          loadPerros();
+        }else{
+          loadPerrosPropios();
+        }
       } catch (error) {
         console.error(error);
       }
@@ -239,53 +163,39 @@ export default defineComponent({
           nombre: data.nombre,
           rol: useStore().rol
         })
-        loadPerros()
+        if(tab.value == "perrosOtros"){
+          loadPerros();
+        }else{
+          loadPerrosPropios();
+        }
       } catch {
         console.error('No es posible eliminar al perro en adopcion')
       }
     }
 
-    /*
     const loadPerrosPropios = async () => {
       try {
-        const response = await api.post("/perroAdopcion/getPerrosAdopcionPropios",{ useStore.dni })
-          perrosDatos.value = response.data;
+        const response = await api.post("/perroAdopcion/getPerrosAdopcionPropios",{ dni : useStore().dni })
+        perrosDatos.value = response.data;
       }
       catch (error) {
         console.error(error);
       }
     };
 
-*/
     const mostrarPopupM = () => {
       mostrarPopup.value = !mostrarPopup.value;
     };
 
     return {
-      tab: ref("perrosOtros"),
+      tab,
       store: useStore(),
       servicioActual: "adopciones",
       misAdopciones: "misPerros",
-      perroEDAD,
-      perroSEXO: "",
-      opcionSexo: [
-        { label: "Macho", value: "Macho" },
-        { label: "Hembra", value: "Hembra" },
-      ],
-      perroTAMANIO: "",
-      opcionTamanio: [
-        { label: "Pequeño", value: "Pequeño" },
-        { label: "Mediano", value: "Mediano" },
-        { label: "Grande", value: "Grande" },
-      ],
-      perroTELEFONO,
-      perroNOMBRE,
-      perroMAIL,
-      perroCOMENTARIO,
-      perroDNICLIENTE,
       registrarPerro,
       perrosDatos,
       loadPerros,
+      loadPerrosPropios,
       mostrarPopupM,
       mostrarPopup,
       rol,
