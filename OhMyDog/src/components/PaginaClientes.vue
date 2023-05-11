@@ -145,6 +145,7 @@ export default defineComponent({
     const clientesFiltrados = ref([]);
     const dniFiltrar = ref("");
 
+    const clienteAgregarDni = ref('')
     const clienteAgregarNombreApellido = ref("");
     const clienteAgregarMail = ref("");
     const clienteAgregarTelefono = ref("");
@@ -153,7 +154,7 @@ export default defineComponent({
     const registrarCliente = async () => {
       try {
         const response = await api.post("/cliente/addCliente", {
-          token: LocalStorage.getItem("token"),
+          dni: useStore().dni,
           cliente: {
             dni: clienteAgregarDni.value,
             nombreApellido: clienteAgregarNombreApellido.value,
@@ -206,7 +207,7 @@ export default defineComponent({
       clientes,
       clientesFiltrados,
       dniFiltrar,
-      clienteAgregarDni: ref(""),
+      clienteAgregarDni,
       clienteAgregarNombreApellido,
       clienteAgregarMail,
       clienteAgregarTelefono,
