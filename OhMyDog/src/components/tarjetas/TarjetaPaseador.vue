@@ -34,16 +34,7 @@
             </div>
             <div>{{ zona }}</div>
           </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">
-              Días disponibles:
-            </div>
-            <div>{{ dias }}</div>
-          </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Horarios:</div>
-            <div>{{ horario }}</div>
-          </div>
+          <!--ACA IRIA LA TABLA DE LOS DIAS Y LOS HORARIOS-->
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Contacto:</div>
             <div>{{ contacto }}</div>
@@ -90,8 +81,7 @@ export default defineComponent({
     dni: String,
     nombre: String,
     zona: String,
-    dias: String,
-    horario: String,
+    disponibilidad: String,
     contacto: String,
     comentario: String,
   },

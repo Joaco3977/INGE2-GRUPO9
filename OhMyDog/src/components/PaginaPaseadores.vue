@@ -28,8 +28,7 @@
           :dni="paseador.DNI"
           :nombre="paseador.NOMBREAPELLIDO"
           :zona="paseador.ZONA"
-          :dias="paseador.DIAS"
-          :horario="paseador.HORARIO"
+          :disponibilidad="paseador.DISPONIBILIDAD"
           :contacto="paseador.MAIL"
           :comentario="paseador.COMENTARIO"
         />
