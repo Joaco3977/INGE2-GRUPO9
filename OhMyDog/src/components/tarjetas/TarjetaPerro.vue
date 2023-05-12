@@ -24,6 +24,10 @@
             <div>{{ tamanio }}</div>
           </div>
           <div class="row">
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Peso:</div>
+            <div>{{ peso }} kg</div>
+          </div>
+          <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Edad:</div>
             <div>{{ edad }}</div>
           </div>
@@ -69,6 +73,7 @@ export default defineComponent({
     tamanio: String,
     sexo: String,
     raza: String,
+    peso: String,
     color: String,
     linkImg: String,
     foto: Image,

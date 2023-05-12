@@ -23,6 +23,7 @@
                 :foto="perro.FOTO"
                 :nombre="perro.NOMBRE"
                 :nacimiento="perro.NACIMIENTO"
+                :peso="perro.PESO"
                 :tamanio="perro.TAMANIO"
                 :sexo="perro.SEXO"
                 :raza="perro.RAZA"
