@@ -75,6 +75,7 @@ export default defineComponent({
     async function eliminarPaseador (dni) {
       try {
         await api.post("paseador/deletePaseador", {
+          dniVet: useStore().dni,
           dni: dni
         })
         loadPaseadores()

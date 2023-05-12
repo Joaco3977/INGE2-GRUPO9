@@ -2,6 +2,9 @@ const express = require('express');
 const knex = require('./configs/knexConfig.js')
 const router = express.Router();
 
+const Consola = require ('./serverFunctions.js')
+const Log = require ('./log.js')
+
 const getPerrosPerdidos = async () => {
     try {
         const resultado = await knex('perroPerdido').select('*')
@@ -73,11 +76,12 @@ router.post('/addPerroPerdido', async (req, res) => {
                 COMENTARIO:req.body.perro.comentario,
                 DNICLIENTE:req.body.perro.dni,
             }
-            addperroAdopcion(nuevoPerroP)
+            addperroPerdido(nuevoPerroP)
             .then ((resultadoAdd) => {
                 if (resultadoAdd !== false) {
                     //añadir a log
                     console.log("\x1b[35m%s\x1b[0m", `Cliente agrego al perro perdido: ${req.body.perro.nombre}`)
+                    Log.agregarEntradaLog(req.body.rol, req.body.dni, `agrego al PERRO PERDIDO ${req.body.perro.nombre}`)
                     res.status(200)
                 } else {
                     res.status(401)

@@ -143,8 +143,10 @@ export default defineComponent({
       try {
         console.log(useStore().dni);
         const response = await api.post("/perroAdopcion/addPerroAdopcion", {
-          perro
-        });
+          rol: useStore().rol,
+          dni: useStore().dni,
+                                            //esto iria en el form!
+        });                                       //esto esta roto!!
         if(tab.value == "perrosOtros"){
           loadPerros();
         }else{
@@ -158,12 +160,12 @@ export default defineComponent({
     async function eliminarPerroAdopcion (data) {
       try {
         await api.post("perroAdopcion/deletePerroAdopcion", {
-          dniQuien: useStore().dni,
+          rol: useStore().rol,
+          dni: useStore().dni,
           dnicliente: data.dnicliente,
           nombre: data.nombre,
-          rol: useStore().rol
         })
-        if(tab.value == "perrosOtros"){
+        if(tab.value === "perrosOtros"){
           loadPerros();
         }else{
           loadPerrosPropios();

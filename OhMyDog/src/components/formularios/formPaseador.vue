@@ -100,7 +100,8 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { api } from '../../boot/axios.js'
+import { api } from '../../boot/axios.js';
+import { useStore } from '../../pinia/store.js'
 import { data } from "autoprefixer";
 
 const semana = [
@@ -211,6 +212,7 @@ export default defineComponent({
       try {
         const data = this.getDatosPaseador()
         await api.post('/paseador/addPaseador', {
+          dniVet: useStore().dni,
           paseador: data,
         })
         console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')

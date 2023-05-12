@@ -13,6 +13,7 @@ const knex = require('./configs/knexConfig.js')
 const router = express.Router();
 
 const Consola = require ('./serverFunctions.js')
+const Log = require ('./log.js')
 
 const getPerrosPropios = async (dni) => {
     try {
@@ -39,14 +40,14 @@ router.post('/getPerrosPropios', async (req, res) => {
     })
 })
 
-router.post('/deletePerro', async (req, res) => { 
+router.post('/deletePerroPropio', async (req, res) => { 
     knex('perro').where({
         DNICLIENTE: req.body.dnicliente,
         NOMBRE: req.body.nombre
     }).del()
     .then(() =>{
-        Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.dnicliente} elimino a su propio perro: ${req.body.nombre}`)
-        //iria a logs
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.dnicliente} elimino a su perro: ${req.body.nombre}`)
+        Log.agregarEntradaLog(1, req.body.dnicliente, `elimino a su PERRO ${req.body.nombre}`)
         res.status(200).send({})
     }).catch(()=>{
         res.status(401).send('No fue posible conectar con la base de datos');

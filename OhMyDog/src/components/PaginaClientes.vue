@@ -154,7 +154,7 @@ export default defineComponent({
     const registrarCliente = async () => {
       try {
         const response = await api.post("/cliente/addCliente", {
-          dni: useStore().dni,
+          dniVet: useStore().dni,
           cliente: {
             dni: clienteAgregarDni.value,
             nombreApellido: clienteAgregarNombreApellido.value,
@@ -170,7 +170,10 @@ export default defineComponent({
 
     const loadClientes = async () => {
       try {
-        const response = await api.get("/cliente/getClientes");
+        const response = await api.post("/cliente/getClientes", {
+          dni: useStore().dni,
+          rol: useStore().rol
+        });
         if (response !== false) {
           clientes.value = response.data;
           clientesFiltrados.value = response.data;
@@ -194,6 +197,7 @@ export default defineComponent({
     async function eliminarCliente (dni) {
       try {
         await api.post("cliente/deleteCliente", {
+          dniVet: useStore().dni,
           dni: dni
         })
         loadClientes()
