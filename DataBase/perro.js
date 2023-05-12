@@ -14,6 +14,43 @@ const router = express.Router();
 
 const Consola = require ('./serverFunctions.js')
 
+const getPerrosPropios = async (dni) => {
+    try {
+        const resultado = await knex('perro').select('*').where('DNICLIENTE', dni)
+        return resultado;
+    }catch (error){
+        console.error(error)
+        return false;
+    }
+}
 
+router.post('/getPerrosPropios', async (req, res) => {
+    getPerrosPropios(req.body.dni)
+    .then ((resultadoGet) => {
+        if (resultadoGet === undefined || resultadoGet === false) {
+            res.status(401)
+        } else {
+            Consola.mensaje("\x1b[33m%s\x1b[0m", "USUARIO solicito perros propios")
+            res.status(200).send(resultadoGet)
+        }
+    })
+    .catch (() => {
+        res.status(401).send('No fue posible conectar con la base de datos');
+    })
+})
+
+router.post('/deletePerro', async (req, res) => { 
+    knex('perro').where({
+        DNICLIENTE: req.body.dnicliente,
+        NOMBRE: req.body.nombre
+    }).del()
+    .then(() =>{
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.dnicliente} elimino a su propio perro: ${req.body.nombre}`)
+        //iria a logs
+        res.status(200).send({})
+    }).catch(()=>{
+        res.status(401).send('No fue posible conectar con la base de datos');
+    })
+})
 
 module.exports = router;

@@ -95,7 +95,6 @@ router.post('/addPerroAdopcion', async (req, res) => {
 });
 
 router.post('/deletePerroAdopcion', async (req,res) =>{
-    console.log('req: ', req.body)
     let quien = ''
     if (req.body.rol === 1) {
         quien = 'CLIENTE'

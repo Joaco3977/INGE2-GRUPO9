@@ -27,12 +27,14 @@ const clienteRouter = require ('./cliente.js')
 const veterinarioRouter = require ('./veterinario.js')
 const adminRouter = require ('./admin.js')
 const perroAdopcionRouter = require ('./perroAdopcion.js')
+const perroRouter = require ('./perro.js')
 const paseadorRouter = require ('./paseador.js')
 
 app.use('/cliente', clienteRouter)
 app.use('/veterinario', veterinarioRouter)
 app.use('/admin', adminRouter)
 app.use('/perroAdopcion', perroAdopcionRouter)
+app.use('/perro', perroRouter)
 app.use('/paseador', paseadorRouter)
 
 app.post("/login", async (req, res) => {

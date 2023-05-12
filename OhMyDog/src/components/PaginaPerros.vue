@@ -8,7 +8,7 @@
     </div>
     <q-card stretch flat class="bg-white full-width full-height column">
       <q-separator></q-separator>
-        
+
           <q-scroll-area
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
@@ -16,15 +16,17 @@
             class="bg-white full-width"
           >
             <div class="full-width row items-justify justify-center">
-              <TarjetaPerro class="q-py-sm"
+              <TarjetaPerro @eliminarPerro="eliminarPerro" class="q-py-sm"
                 v-for="perro of perrosDatos"
-                :key="perro.IDPERROADOPCION"
+                :key="perro.ID"
                 :rol="rol"
+                :foto="perro.FOTO"
                 :nombre="perro.NOMBRE"
-                :edad="perro.EDAD"
+                :nacimiento="perro.NACIMIENTO"
                 :tamanio="perro.TAMANIO"
                 :sexo="perro.SEXO"
                 :raza="perro.RAZA"
+                :color="perro.COLOR"
                 linkImg="https://cdn.quasar.dev/img/parallax2.jpg"
               />
             </div>
@@ -32,7 +34,7 @@
 
     </q-card>
 
-    
+
   </div>
 </template>
 
@@ -43,11 +45,11 @@
 </style>
 
 <script>
-import { defineComponent } from "vue";
-import { ref, reactive } from "vue";
+import { defineComponent, ref } from "vue";
 import TarjetaPerro from "./tarjetas/TarjetaPerro.vue";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
+import { checkToken } from "../functions/check.js"
 
 export default defineComponent({
   name: "PaginaPerros",
@@ -56,101 +58,40 @@ export default defineComponent({
   },
   setup() {
     const perrosDatos = ref([]);
-    const perroSEXO = ref("");
-    const perroTAMANIO = ref("");
-    const perroEDAD = ref("");
-    const perroTELEFONO = ref("");
-    const perroNOMBRE = ref("");
-    const perroMAIL = ref("");
-    const perroCOMENTARIO = ref("");
-    const perroDNICLIENTE = useStore().dni;
-    const mostrarPopup = ref("false");
-    const rol = useStore().rol;
+    const rol = useStore().rol
 
-    const servicio1 = "perrosOtros";
-    const servicio2 = "perrosMios";
-
-    const loadPerros = async () => {
-      try {
-        const response = await api.get("/perroAdopcion/getPerrosAdopcion");
-        perrosDatos.value = response.data;
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    const registrarPerro = async () => {
-      try {
-        console.log(useStore().dni);
-        const response = await api.post("/perroAdopcion/addPerroAdopcion", {
-          perro: {
-            sexo: perroSEXO.value,
-            tamanio: perroTAMANIO.value,
-            edad: perroEDAD.value,
-            telefono: perroTELEFONO.value,
-            nombre: perroNOMBRE.value,
-            mail: perroMAIL.value,
-            comentario: perroCOMENTARIO.value,
-            dnicliente: perroDNICLIENTE,
-          },
-        });
-        await loadPerros();
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    /*
     const loadPerrosPropios = async () => {
       try {
-        const response = await api.post("/perroAdopcion/getPerrosAdopcionPropios",{ useStore.dni })
-          perrosDatos.value = response.data;
+        const response = await api.post("/perro/getPerrosPropios",{ dni : useStore().dni })
+        perrosDatos.value = response.data;{}
       }
       catch (error) {
         console.error(error);
       }
     };
 
-*/
-    const mostrarPopupM = () => {
-      mostrarPopup.value = !mostrarPopup.value;
-    };
+    async function eliminarPerro (nombre) {
+      try {
+        await api.post("/perro/deletePerro", {
+          dnicliente: useStore().dni,
+          nombre: nombre
+        })
+        loadPerrosPropios()
+      } catch {
+        console.error('NO SE PUDO ELIMINAR PERRO')
+      }
+    }
 
     return {
-      tab: ref("perrosOtros"),
-      store: useStore(),
-      servicioActual: "adopciones",
-      misAdopciones: "misPerros",
-      perroEDAD,
-      perroSEXO: "",
-      opcionSexo: [
-        { label: "Macho", value: "Macho" },
-        { label: "Hembra", value: "Hembra" },
-      ],
-      perroTAMANIO: "",
-      opcionTamanio: [
-        { label: "Pequeño", value: "Pequeño" },
-        { label: "Mediano", value: "Mediano" },
-        { label: "Grande", value: "Grande" },
-      ],
-      perroTELEFONO,
-      perroNOMBRE,
-      perroMAIL,
-      perroCOMENTARIO,
-      perroDNICLIENTE,
-      registrarPerro,
-      perrosDatos,
-      loadPerros,
-      mostrarPopupM,
-      mostrarPopup,
+      loadPerrosPropios,
       rol,
-      servicio1,
-      servicio2,
+      perrosDatos,
+      eliminarPerro
     };
   },
   mounted() {
-    this.loadPerros();
-    this.mostrarPopupM();
+    checkToken()
+    this.loadPerrosPropios()
   },
 });
 </script>

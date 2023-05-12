@@ -51,7 +51,7 @@ const enviarMailPaseador = async (nombre, destinatario) => {
 }
 
 function checkAdmin (mail, pass) {
-    if (mail == 'OhMyDog@admin.com' && pass == '357') {
+    if (mail == 'admin@admin' && pass == '357') {
         return true;
     } return false;
 }
