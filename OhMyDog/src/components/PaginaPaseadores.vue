@@ -38,13 +38,13 @@
     </q-scroll-area>
 
     <q-dialog persistent v-model="abrirForm" class="">
-      <formPaseador @loadPaseadores="loadPaseadores" />
+      <formPaseador @registrarPaseador="registrarPaseador" />
     </q-dialog>
   </div>
 </template>
 
 <script>
-import { defineComponent, watch } from "vue";
+import { defineComponent } from "vue";
 import { ref } from "vue";
 import TarjetaPaseador from "./tarjetas/TarjetaPaseador.vue";
 import { api } from "../boot/axios.js";
@@ -60,6 +60,7 @@ export default defineComponent({
   setup() {
     const paseadores = ref([]);
     const rol = useStore().rol;
+    const abrirForm = ref(false)
 
     const loadPaseadores = async () => {
       try {
@@ -69,6 +70,19 @@ export default defineComponent({
         }
       } catch (error) {
         console.error(error);
+      }
+    };
+
+    const registrarPaseador = async (paseador) => {
+      try {
+        await api.post('/paseador/addPaseador', {
+          dniVet: useStore().dni,
+          paseador: paseador,
+        })
+        abrirForm.value = false
+        loadPaseadores()
+      } catch (error) {
+        console.error(error)
       }
     };
 
@@ -89,7 +103,8 @@ export default defineComponent({
       paseadores,
       rol,
       loadPaseadores,
-      abrirForm: ref(false),
+      registrarPaseador,
+      abrirForm,
     };
   },
   mounted() {

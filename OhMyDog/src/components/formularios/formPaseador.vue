@@ -100,8 +100,6 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { api } from '../../boot/axios.js';
-import { useStore } from '../../pinia/store.js'
 import { data } from "autoprefixer";
 
 const semana = [
@@ -168,7 +166,6 @@ export default defineComponent({
     const dias = ref([]);
 
     const getDatosPaseador = () => {
-      console.log('llegue getDatos')
       var disponibilidad = [[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false]]
       dias.value.forEach(element => {
         let partes = element.split(' ')
@@ -211,14 +208,9 @@ export default defineComponent({
     async onSubmit () {
       try {
         const data = this.getDatosPaseador()
-        await api.post('/paseador/addPaseador', {
-          dniVet: useStore().dni,
-          paseador: data,
-        })
-        console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA')
-        this.$emit('loadPaseadores', data);
-      } catch {
-
+        this.$emit('registrarPaseador', data);
+      } catch (error){
+        console.error(error)
       }
     }
   }

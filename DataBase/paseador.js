@@ -50,7 +50,6 @@ router.get('/getPaseadores', async (req, res) => {
 
 router.post('/addPaseador', async (req,res) => {
     const paseador = req.body.paseador;
-    console.log(paseador)
     enviadorMails.enviarMailPaseador(paseador.nombre, paseador.mail)
     .then((respuesta) => {
         if (respuesta) {

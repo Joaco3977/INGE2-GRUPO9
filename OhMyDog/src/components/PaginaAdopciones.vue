@@ -133,7 +133,6 @@ export default defineComponent({
       try {
         const response = await api.get("/perroAdopcion/getPerrosAdopcion");
         perrosDatos.value = response.data;
-        console.log(perrosDatos.value[0])
       } catch (error) {
         console.error(error);
       }
@@ -141,13 +140,13 @@ export default defineComponent({
 
     const registrarPerro = async (perro) => {
       try {
-        console.log(useStore().dni);
-        const response = await api.post("/perroAdopcion/addPerroAdopcion", {
+        await api.post("/perroAdopcion/addPerroAdopcion", {
+          perro,
           rol: useStore().rol,
           dni: useStore().dni,
-                                            //esto iria en el form!
-        });                                       //esto esta roto!!
-        if(tab.value == "perrosOtros"){
+        })
+        mostrarPopupM()
+        if(tab.value === "perrosOtros"){
           loadPerros();
         }else{
           loadPerrosPropios();
