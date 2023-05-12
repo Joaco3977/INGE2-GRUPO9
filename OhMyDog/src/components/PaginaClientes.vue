@@ -35,14 +35,9 @@
       >
         <q-card flat>
           <q-separator />
-
           <q-tab-panels v-model="tab" animated>
             <q-tab-panel name="Buscar Cliente">
               <div class="full-width row items-center">
-                <q-search
-                  v-model="dniFiltrar"
-                  placeholder="Buscar Cliente por DNI"
-                ></q-search>
                 <TarjetaCliente
                   @ejecutarFuncion="eliminarCliente"
                   v-for="(cliente, dni) in clientesFiltrados"
@@ -176,7 +171,7 @@ export default defineComponent({
         });
         if (response !== false) {
           clientes.value = response.data;
-          clientesFiltrados.value = response.data;
+          clientesFiltrados.value = response.data; // en clientes mantendria todos, mientras que los q se muestran en pantalla los tengo el el clientesFiltrados!
         }
       } catch (error) {
         console.error(error);
