@@ -5,7 +5,7 @@
     <q-card
       flat
       class="my-card bg-primary text-white q-ma-md full-width"
-
+      style="min-width: 20rem; max-width: 25rem"
     >
 
     <!-- style="min-width: 20rem; max-width: 25rem" -->

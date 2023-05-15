@@ -6,21 +6,21 @@
     <div class="titulo text-center text-h4 text-bold text-primary q-pt-md">
       ADOPCIONES
     </div>
-    <q-card stretch flat class="bg-white full-width full-height column">
+    <q-card stretch flat class="bg-white full-width full-height column no-wrap">
       <q-btn
         v-if="rol > 0"
         @click="mostrarPopupM"
         color="accent"
-        class="q-ma-md q-mr-xl self-end"
-        style="width: 20em"
+        class="self-end q-mr-md fixed-top-right q-mt-xl q-mr-lg"
+        style="width: max-content"
       >
-        <div class="textoBoton">Agregar perro para adopción</div>
+        <div class="textoBoton" s>Agregar perro para adopción</div>
       </q-btn>
 
       <q-tabs
         v-model="tab"
         dense
-        class="text-grey q-pt-md"
+        class="text-grey q-pt-md full-width"
         active-color="primary"
         indicator-color="primary"
         align="justify"
@@ -35,17 +35,9 @@
         />
       </q-tabs>
       <q-separator></q-separator>
-      <q-tab-panels v-model="tab" animated>
+      <q-tab-panels v-model="tab" animated class="full-width">
         <q-tab-panel name="perrosOtros">
-          <!-- <q-btn
-            v-if="rol === 2"
-            @click="mostrarPopupM"
-            color="accent"
-            class="q-ma-md q-mr-xl self-end"
-            style="width: 20em"
-          >
-            <div class="textoBoton">¡Poné un perro en adopción!</div>
-          </q-btn> -->
+
           <q-scroll-area
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
@@ -74,7 +66,7 @@
           <q-scroll-area
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
-            style="height: 60vh; width: 100%"
+            style="height: 75vh; width: 100%"
             class="bg-white full-width"
           >
             <div class="full-width row items-justify">
