@@ -35,7 +35,7 @@
       <q-card-actions class="column items-center">
         <q-btn push class="textoBoton"  flat> Contactar </q-btn>
         <q-btn push class="textoBoton"  flat> Editar </q-btn>
-        <q-btn push class="textoBoton"  flat> Eliminar </q-btn>
+        <q-btn @click="ejecutarFuncionPadre(dni)" push class="textoBoton"  flat> Eliminar </q-btn>
       </q-card-actions>
     </q-card>
   </div>
@@ -58,5 +58,10 @@ export default defineComponent({
   setup() {
     return {};
   },
+  methods: {
+    ejecutarFuncionPadre(dni) {
+      this.$emit('ejecutarFuncion', dni);
+    }
+  }
 });
 </script>

@@ -23,9 +23,9 @@ const express = require('express');
 const knex = require('./configs/knexConfig.js')
 const router = express.Router();
 const enviadorMails = require('./loginCheck.js');
-const Log = require ('./admin.js')
 
 const Consola = require ('./serverFunctions.js')
+const Log = require ('./log.js')
 
 //MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS
 const getClientes = async () => {
@@ -69,7 +69,7 @@ const addCliente = async (nuevoCliente) => {
 }
 
 // VER LISTA CLIENTES - GET traer todos los clientes
-router.get('/getClientes', async (req, res) => {
+router.post('/getClientes', async (req, res) => {
     getClientes()
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
@@ -80,7 +80,7 @@ router.get('/getClientes', async (req, res) => {
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
@@ -88,24 +88,25 @@ router.post('/getCliente',async (req,res) =>{
     getClientePorDNI(req.body.dni)
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
-            res.status(401)
+            res.status(401).send('No fue posible conectar con la base de datos');
         } else {
             Consola.mensaje("\x1b[33m%s\x1b[0m", "SISTEMA solicito un cliente")
             res.status(200).send(resultadoGet)
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
 router.post('/deleteCliente', async (req,res) =>{
-    knex('cliente').where(req.body.dni).del()
-    .then((resultado) =>{
+    knex('cliente').where('DNI', req.body.dni).del()
+    .then(() =>{
+        Log.agregarEntradaLog(2, req.body.dniVet, `elimino al cliente ${req.body.dni}`)
         Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino cliente con dni: ${req.body.dni}`)
-        res.status(200)
+        res.status(200).send({})
     }).catch((error)=>{
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
@@ -125,24 +126,24 @@ router.post('/addCliente', async (req, res) => {
             addCliente(nuevoCliente)
             .then ((resultadoAdd) => {
                 if (resultadoAdd !== false) {
-                    // Log.agregarEntradaLog(req.body.token)
+                    Log.agregarEntradaLog(2, req.body.dniVet, `registro al CLIENTE ${req.body.cliente.dni}`)
                     Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO registro al CLIENTE: ${req.body.cliente.nombreApellido}, DNI: ${req.body.cliente.dni}, Mail: ${req.body.cliente.mail}`)
                     res.status(200)
                 } else {
-                    res.status(401)
+                    res.status(401).send('No se pudo insertar al nuevo cliente');
                 }
             })
             .catch((error) => {
                 console.error(error)
-                res.status(401)
+                res.status(401).send('No fue posible conectar con la base de datos');
             })
         } else {
-            res.status(401)
+            res.status(401).send('No fue posible conectar con la base de datos');
         }
     })
     .catch ((error) => {
         console.error(error)
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 

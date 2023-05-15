@@ -20,7 +20,7 @@
       class="bg-white"
     >
       <div class="full-width row wrap justify-center">
-        <TarjetaPaseador :loadPaseadores="loadPaseadores"
+        <TarjetaPaseador @ejecutarFuncion="eliminarPaseador"
           class="q-px-sm col-stretch"
           v-for="paseador in paseadores"
           :rol="rol"
@@ -28,8 +28,7 @@
           :dni="paseador.DNI"
           :nombre="paseador.NOMBREAPELLIDO"
           :zona="paseador.ZONA"
-          :dias="paseador.DIAS"
-          :horario="paseador.HORARIO"
+          :disponibilidad="paseador.DISPONIBILIDAD"
           :contacto="paseador.MAIL"
           :comentario="paseador.COMENTARIO"
         />
@@ -39,13 +38,13 @@
     </q-scroll-area>
 
     <q-dialog persistent v-model="abrirForm" class="">
-      <formPaseador />
+      <formPaseador @registrarPaseador="registrarPaseador" />
     </q-dialog>
   </div>
 </template>
 
 <script>
-import { defineComponent, reactive } from "vue";
+import { defineComponent } from "vue";
 import { ref } from "vue";
 import TarjetaPaseador from "./tarjetas/TarjetaPaseador.vue";
 import { api } from "../boot/axios.js";
@@ -61,24 +60,51 @@ export default defineComponent({
   setup() {
     const paseadores = ref([]);
     const rol = useStore().rol;
+    const abrirForm = ref(false)
 
     const loadPaseadores = async () => {
       try {
         const response = await api.get("/paseador/getPaseadores");
         if (response !== false) {
           paseadores.value = response.data;
-          console.log("Paseadores: ", paseadores.value);
         }
       } catch (error) {
         console.error(error);
       }
     };
 
+    const registrarPaseador = async (paseador) => {
+      try {
+        await api.post('/paseador/addPaseador', {
+          dniVet: useStore().dni,
+          paseador: paseador,
+        })
+        abrirForm.value = false
+        loadPaseadores()
+      } catch (error) {
+        console.error(error)
+      }
+    };
+
+    async function eliminarPaseador (dni) {
+      try {
+        await api.post("paseador/deletePaseador", {
+          dniVet: useStore().dni,
+          dni: dni
+        })
+        loadPaseadores()
+      } catch {
+        console.error('NO SE PUDO ELIMINAR PASEADOR')
+      }
+    }
+
     return {
+      eliminarPaseador,
       paseadores,
       rol,
-      loadPaseadores: ref(loadPaseadores),
-      abrirForm: ref(false),
+      loadPaseadores,
+      registrarPaseador,
+      abrirForm,
     };
   },
   mounted() {

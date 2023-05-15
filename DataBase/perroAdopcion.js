@@ -3,6 +3,7 @@ const knex = require('./configs/knexConfig.js')
 const router = express.Router();
 
 const Consola = require ('./serverFunctions.js')
+const Log = require ('./log.js')
 
 const getPerrosAdopcion = async () => {
     try {
@@ -16,7 +17,7 @@ const getPerrosAdopcion = async () => {
 
 const getPerrosAdopcionPropios = async (dni) =>{
     try {
-        const resultado = await knex('perroAdopcion').select('*').where(perroAdopcion.DNI == dni) //esto mal
+        const resultado = await knex('perroAdopcion').select('*').where('DNICLIENTE', dni)
         return resultado;
     }catch (error){
         console.error(error)
@@ -34,7 +35,6 @@ const addperroAdopcion = async (nuevoPerroA) => {
     }
 }
 
-// VER LISTA PERRO ADOPCION - GET traer todos los perros adopcion
 router.get('/getPerrosAdopcion', async (req, res) => {
     getPerrosAdopcion()
     .then ((resultadoGet) => {
@@ -46,12 +46,12 @@ router.get('/getPerrosAdopcion', async (req, res) => {
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
 router.post('/getPerrosAdopcionPropios', async (req, res) => {
-    getPerrosAdopcionPropios(req.body.data.dni)
+    getPerrosAdopcionPropios(req.body.dni)
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)
@@ -61,7 +61,7 @@ router.post('/getPerrosAdopcionPropios', async (req, res) => {
         }
     })
     .catch (() => {
-        res.status(401)
+        res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
 
@@ -80,18 +80,40 @@ router.post('/addPerroAdopcion', async (req, res) => {
             addperroAdopcion(nuevoPerroA)
             .then ((resultadoAdd) => {
                 if (resultadoAdd !== false) {
-                    //añadir a log
+                    Log.agregarEntradaLog(req.body.rol, req.body.dni, `agrego al PERRO EN ADOPCION ${req.body.perro.nombre}`)
                     Consola.mensaje("\x1b[35m%s\x1b[0m", `CLIENTE agrego al perro en Adopcion: ${req.body.perro.nombre}`)
-                    res.status(200)
+                    res.status(200).send({})
                 } else {
-                    res.status(401)
+                    res.status(401).send('No fue posible agregar al perro en adopcion');
                 }
             })
             .catch((error) => {
                 console.error(error)
-                res.status(401)
+                res.status(401).send('No fue posible conectar con la base de datos');
             })
 
-    });
+});
+
+router.post('/deletePerroAdopcion', async (req,res) =>{
+    let quien = ''
+    if (req.body.rol === 1) {
+        quien = 'CLIENTE'
+    } else {
+        quien = 'VETERINARIO'
+    }
+    knex('perroAdopcion').where({
+        DNICLIENTE: req.body.dnicliente,
+        NOMBRE: req.body.nombre
+    }).del()
+    .then(() =>{
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`${quien} ${req.body.dni} elimino al perro en adopcion ${req.body.nombre} del cliente con DNI ${req.body.dnicliente}`)
+        Log.agregarEntradaLog(req.body.rol, req.body.dni, `elimino al PERRO EN ADOPCION ${req.body.nombre} del cliente ${req.body.dnicliente}`)
+        res.status(200).send({})
+    }).catch((error)=>{
+        console.log(error)
+        res.status(401).send('No fue posible conectar con la base de datos');
+    })
+})
+
 
 module.exports = router;

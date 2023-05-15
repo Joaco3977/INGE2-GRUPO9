@@ -16,7 +16,7 @@
           <q-btn class="q-ml-md" color="accent">
             <div>Editar datos</div>
           </q-btn>
-          <q-btn @click="eliminarPaseador(dni)" class="q-ml-md" color="accent">
+          <q-btn @click="ejecutarFuncionPadre(dni)" class="q-ml-md" color="accent">
             <div>Eliminar paseador</div>
           </q-btn>
         </div>
@@ -34,16 +34,7 @@
             </div>
             <div>{{ zona }}</div>
           </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">
-              Días disponibles:
-            </div>
-            <div>{{ dias }}</div>
-          </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Horarios:</div>
-            <div>{{ horario }}</div>
-          </div>
+          <!--ACA IRIA LA TABLA DE LOS DIAS Y LOS HORARIOS-->
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Contacto:</div>
             <div>{{ contacto }}</div>
@@ -79,24 +70,20 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { api } from '../../boot/axios.js'
+import { api } from '../../boot/axios.js';
+import { useStore  } from '../../pinia/store.js'
 
 export default defineComponent({
   name: "TarjetaPaseador",
-  components: {},
+  components: { },
   props: {
     rol: String,
     dni: String,
     nombre: String,
     zona: String,
-    dias: String,
-    horario: String,
+    disponibilidad: String,
     contacto: String,
     comentario: String,
-    loadPaseadores: {
-      type: Function,
-      required: true
-    }
   },
   data() {
     return {};
@@ -115,20 +102,10 @@ export default defineComponent({
           this.contacto +
           "&text=Contacto%20desde%20OhMyDog%20por%20paseador20de%20perro";
       }
-      console.log(cont);
       return cont;
     },
-    async eliminarPaseador(dni) {
-      try {
-        const response = await api.post("/paseador/delPaseador", {
-          dni: this.dni
-        });
-        if (response !== false) {
-          this.loadPaseadores()
-        }
-      } catch (error) {
-        console.error(error);
-      }
+    ejecutarFuncionPadre(dni) {
+      this.$emit('ejecutarFuncion', dni);
     }
   }
 });

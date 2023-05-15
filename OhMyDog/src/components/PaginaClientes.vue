@@ -20,7 +20,6 @@
         align="justify"
         narrow-indicator
       >
-        <q-tab name="Agregar Cliente" label="Agregar Cliente" />
         <q-tab
           @click="loadClientes"
           name="Buscar Cliente"
@@ -36,30 +35,11 @@
       >
         <q-card flat>
           <q-separator />
-
           <q-tab-panels v-model="tab" animated>
-            <q-tab-panel name="Agregar Cliente">
-              <div class="full-width row items-center">
-                <div class="q-pa-xl" style="width: 50vw; height: 80vh">
-                  <!-- <q-form class="q-pa-xl" @submit.prevent="registrarCliente">
-                  <q-input class="q-px-xl" v-model="clienteAgregarDni" label="DNI" type="number" />
-                  <q-input class="q-px-xl" v-model="clienteAgregarNombreApellido" label="Nombre y Apellido" type="text" />
-                  <q-input class="q-px-xl" v-model="clienteAgregarMail" label="Correo electrónico" type="email" />
-                  <q-input class="q-px-xl" v-model="clienteAgregarTelefono" label="Telefono" type="number" />
-                  <q-input class="q-px-xl" v-model="clienteAgregarDireccion" label="Direccion" type="text" />
-                  <q-btn push class="q-my-md q-mx-xl" color="accent" type="submit" label="Registrar Cliente" />
-                </q-form> -->
-                </div>
-              </div>
-            </q-tab-panel>
-
             <q-tab-panel name="Buscar Cliente">
               <div class="full-width row items-center">
-                <q-search
-                  v-model="dniFiltrar"
-                  placeholder="Buscar Cliente por DNI"
-                ></q-search>
                 <TarjetaCliente
+                  @ejecutarFuncion="eliminarCliente"
                   v-for="(cliente, dni) in clientesFiltrados"
                   :key="dni"
                   :dni="cliente.DNI"
@@ -154,12 +134,13 @@ export default defineComponent({
   setup() {
     const inputRef = ref(null);
 
-    const tab = ref("Agregar Cliente");
+    const tab = ref("Buscar Cliente");
     const store = useStore();
     const clientes = reactive([]);
     const clientesFiltrados = ref([]);
     const dniFiltrar = ref("");
 
+    const clienteAgregarDni = ref('')
     const clienteAgregarNombreApellido = ref("");
     const clienteAgregarMail = ref("");
     const clienteAgregarTelefono = ref("");
@@ -168,7 +149,7 @@ export default defineComponent({
     const registrarCliente = async () => {
       try {
         const response = await api.post("/cliente/addCliente", {
-          token: LocalStorage.getItem("token"),
+          dniVet: useStore().dni,
           cliente: {
             dni: clienteAgregarDni.value,
             nombreApellido: clienteAgregarNombreApellido.value,
@@ -184,10 +165,13 @@ export default defineComponent({
 
     const loadClientes = async () => {
       try {
-        const response = await api.get("/cliente/getClientes");
+        const response = await api.post("/cliente/getClientes", {
+          dni: useStore().dni,
+          rol: useStore().rol
+        });
         if (response !== false) {
           clientes.value = response.data;
-          clientesFiltrados.value = response.data;
+          clientesFiltrados.value = response.data; // en clientes mantendria todos, mientras que los q se muestran en pantalla los tengo el el clientesFiltrados!
         }
       } catch (error) {
         console.error(error);
@@ -205,12 +189,24 @@ export default defineComponent({
       );
     };
 
+    async function eliminarCliente (dni) {
+      try {
+        await api.post("cliente/deleteCliente", {
+          dniVet: useStore().dni,
+          dni: dni
+        })
+        loadClientes()
+      } catch {
+        console.error('NO SE PUDO ELIMINAR CLIENTE')
+      }
+    }
+
     return {
       tab,
       clientes,
       clientesFiltrados,
       dniFiltrar,
-      clienteAgregarDni: ref(""),
+      clienteAgregarDni,
       clienteAgregarNombreApellido,
       clienteAgregarMail,
       clienteAgregarTelefono,
@@ -218,6 +214,7 @@ export default defineComponent({
       loadClientes,
       registrarCliente,
       filtrarClientes,
+      eliminarCliente,
 
       mostrarPopup: ref(false),
       inputRef,
@@ -225,6 +222,7 @@ export default defineComponent({
   },
   mounted() {
     checkToken();
+    this.loadClientes();
   },
 });
 </script>

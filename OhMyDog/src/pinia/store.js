@@ -17,6 +17,6 @@ export const useStore = defineStore("store", {
     },
     setDni(nuevoValor) {
       this.dni = nuevoValor;
-    }
+    },
   },
 });
