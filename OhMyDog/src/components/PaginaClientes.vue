@@ -127,7 +127,6 @@
 import { defineComponent, reactive, ref, watch } from "vue";
 import { api } from "../boot/axios.js";
 import { useStore } from "../pinia/store.js";
-import { LocalStorage } from "quasar";
 import TarjetaCliente from "./tarjetas/TarjetaCliente.vue";
 import { checkToken } from "../functions/check.js";
 import { QDialog } from "quasar";
@@ -142,7 +141,6 @@ export default defineComponent({
     const inputRef = ref(null);
 
     const tab = ref("Buscar Cliente");
-    const store = useStore();
     const clientes = reactive([]);
     const clientesFiltrados = ref([]);
     const dniFiltrar = ref("");
@@ -186,13 +184,12 @@ export default defineComponent({
     };
 
     watch(dniFiltrar, (nuevoValor, valorAnterior) => {
-      this.filtrarClientes(nuevoValor, clientes);
+      filtrarClientes(nuevoValor);
     });
 
-    const filtrarClientes = () => {
-      const query = dniFiltrar.value;
+    const filtrarClientes = (dni) => {
       clientesFiltrados.value = clientes.value.filter((cliente) =>
-        cliente.dni.includes(query)
+        cliente.DNI.toString().includes(dni.toString())
       );
     };
 
