@@ -3,20 +3,25 @@
   <!-- Pueden usar componentes dentro de este componente -->
 
   <div class="bg-white full-height full-width" style="height: 97vh">
-    <div class="titulo text-center text-h4 text-bold text-primary q-pt-md">
-      ADOPCIONES
-    </div>
-    <q-card stretch flat class="bg-white full-width full-height column no-wrap">
+    <div
+      class="flex row q-mx-xl justify-between items-center"
+      style="height: 4em"
+    >
+      <div class="titulo text-center text-h4 text-bold text-primary">
+        ADOPCIONES
+      </div>
       <q-btn
         v-if="rol > 0"
         @click="mostrarPopupM"
         color="accent"
-        class="self-end q-mr-md fixed-top-right q-mt-xl q-mr-lg"
-        style="width: max-content"
+        class=""
+        style="width: max-content; height: max-content"
       >
         <div class="textoBoton" s>Agregar perro para adopción</div>
       </q-btn>
+    </div>
 
+    <q-card stretch flat class="bg-white full-width full-height column no-wrap">
       <q-tabs
         v-model="tab"
         dense
@@ -27,8 +32,13 @@
         narrow-indicator
       >
         <!-- EN ESTA ETIQUETA VA @click="loadPerros" y a su vez tambien va en el mounted para que cargue de entrada todos los perros disponible ( faltaria agregar un label que informe cuando no hya perros (vectordedatos vuelve vacio de db))-->
-        <q-tab @click="loadPerros" name="perrosOtros" label="¡Adoptá un perro!" />
-        <q-tab @click="loadPerrosPropios"
+        <q-tab
+          @click="loadPerros"
+          name="perrosOtros"
+          label="¡Adoptá un perro!"
+        />
+        <q-tab
+          @click="loadPerrosPropios"
           v-if="rol === 1"
           name="perrosPropios"
           label="Mis perros en adopción"
@@ -37,7 +47,6 @@
       <q-separator></q-separator>
       <q-tab-panels v-model="tab" animated class="full-width">
         <q-tab-panel name="perrosOtros">
-
           <q-scroll-area
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
@@ -45,7 +54,8 @@
             class="bg-white full-width"
           >
             <div class="full-width row items-justify">
-              <TarjetaAdopcion @eliminarPerroAdopcion="eliminarPerroAdopcion"
+              <TarjetaAdopcion
+                @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
                 :rol="rol"
@@ -70,8 +80,12 @@
             style="height: 75vh; width: 100%"
             class="bg-white full-width"
           >
-            <div class="full-width row items-justify">
-              <TarjetaAdopcion @eliminarPerroAdopcion="eliminarPerroAdopcion"
+            <div
+              v-if="perrosDatos.length > 0"
+              class="full-width row items-justify"
+            >
+              <TarjetaAdopcion
+                @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
                 :rol="rol"
@@ -84,8 +98,14 @@
                 :telefono="perro.TELEFONO"
                 :mail="perro.MAIL"
                 :comentario="perro.COMENTARIO"
-                :adoptado ="perro.ADOPTADO"
+                :adoptado="perro.ADOPTADO"
               />
+            </div>
+            <div
+              class="row textoNoItems justify-center full-height content-center q-pa-xl"
+              v-else
+            >
+              ¡No tenés ningún perro en adopción!
             </div>
           </q-scroll-area>
         </q-tab-panel>
@@ -93,7 +113,7 @@
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      <formAdopcion @registrarPerro="registrarPerro"/>
+      <formAdopcion @registrarPerro="registrarPerro" />
     </q-dialog>
   </div>
 </template>
@@ -136,11 +156,11 @@ export default defineComponent({
           perro,
           rol: useStore().rol,
           dni: useStore().dni,
-        })
-        mostrarPopupM()
-        if(tab.value === "perrosOtros"){
+        });
+        mostrarPopupM();
+        if (tab.value === "perrosOtros") {
           loadPerros();
-        }else{
+        } else {
           loadPerrosPropios();
         }
       } catch (error) {
@@ -148,30 +168,32 @@ export default defineComponent({
       }
     };
 
-    async function eliminarPerroAdopcion (data) {
+    async function eliminarPerroAdopcion(data) {
       try {
         await api.post("perroAdopcion/deletePerroAdopcion", {
           rol: useStore().rol,
           dni: useStore().dni,
           dnicliente: data.dnicliente,
           nombre: data.nombre,
-        })
-        if(tab.value === "perrosOtros"){
+        });
+        if (tab.value === "perrosOtros") {
           loadPerros();
-        }else{
+        } else {
           loadPerrosPropios();
         }
       } catch {
-        console.error('No es posible eliminar al perro en adopcion')
+        console.error("No es posible eliminar al perro en adopcion");
       }
     }
 
     const loadPerrosPropios = async () => {
       try {
-        const response = await api.post("/perroAdopcion/getPerrosAdopcionPropios",{ dni : useStore().dni })
+        const response = await api.post(
+          "/perroAdopcion/getPerrosAdopcionPropios",
+          { dni: useStore().dni }
+        );
         perrosDatos.value = response.data;
-      }
-      catch (error) {
+      } catch (error) {
         console.error(error);
       }
     };
@@ -194,7 +216,7 @@ export default defineComponent({
       rol,
       servicio1,
       servicio2,
-      eliminarPerroAdopcion
+      eliminarPerroAdopcion,
     };
   },
   mounted() {

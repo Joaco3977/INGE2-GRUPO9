@@ -4,6 +4,13 @@ body {
     font-family: 'Poppins', sans-serif;
 }
 
+.textoNoItems{
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: $secondary;
+}
+
 /* Perfil */
 .textoTituloPerfil{
     text-align: start;
