@@ -1,16 +1,23 @@
 <template>
   <div class="bg-white" style="width: full; max-height: 99vh">
-    <div class="text-center text-h4 text-primary q-py-md">PASEADORES</div>
-
+    <div
+      class="flex row q-mx-xl justify-between items-center"
+      style="height: 4em"
+    >
+      <div class="titulo text-center text-h4 text-bold text-primary">
+        PASEADORES
+      </div>
       <q-btn
-        v-show="rol == 2"
-        color="accent"
+        v-if="rol == 2"
         @click="abrirForm = true"
-        class="self-end q-mr-md fixed-top-right q-mt-xl q-mr-lg "
-        style="width: 15em"
+        color="accent"
+        class=""
+        style="width: max-content; height: max-content"
       >
-        <div class="textoBoton">Agregar paseador</div>
+        <div class="textoBoton" s>Agregar paseador</div>
       </q-btn>
+    </div>
+
     <q-separator />
 
     <q-scroll-area
@@ -19,22 +26,27 @@
       style="height: 86vh"
       class="bg-white"
     >
-      <div class="full-width row wrap justify-center">
-        <TarjetaPaseador @ejecutarFuncion="eliminarPaseador"
-          class="q-px-sm col-stretch"
-          v-for="paseador in paseadores"
-          :rol="rol"
-          :key="paseador.DNI"
-          :dni="paseador.DNI"
-          :nombre="paseador.NOMBREAPELLIDO"
-          :zona="paseador.ZONA"
-          :disponibilidad="paseador.DISPONIBILIDAD"
-          :contacto="paseador.MAIL"
-          :comentario="paseador.COMENTARIO"
-        />
-
-
-      </div>
+      <div v-if="paseadores.length > 0" class="full-width row wrap justify-center">
+          <TarjetaPaseador
+            @ejecutarFuncion="eliminarPaseador"
+            class="q-px-sm col-stretch"
+            v-for="paseador in paseadores"
+            :rol="rol"
+            :key="paseador.DNI"
+            :dni="paseador.DNI"
+            :nombre="paseador.NOMBREAPELLIDO"
+            :zona="paseador.ZONA"
+            :disponibilidad="paseador.DISPONIBILIDAD"
+            :contacto="paseador.MAIL"
+            :comentario="paseador.COMENTARIO"
+          />
+        </div>
+        <div
+          class="row textoNoItems justify-center full-height content-center q-pa-xl"
+          v-else
+        >
+          ¡Todavía no tenemos ningún paseador en el sitio!
+        </div>
     </q-scroll-area>
 
     <q-dialog persistent v-model="abrirForm" class="">
@@ -60,7 +72,7 @@ export default defineComponent({
   setup() {
     const paseadores = ref([]);
     const rol = useStore().rol;
-    const abrirForm = ref(false)
+    const abrirForm = ref(false);
 
     const loadPaseadores = async () => {
       try {
@@ -75,26 +87,26 @@ export default defineComponent({
 
     const registrarPaseador = async (paseador) => {
       try {
-        await api.post('/paseador/addPaseador', {
+        await api.post("/paseador/addPaseador", {
           dniVet: useStore().dni,
           paseador: paseador,
-        })
-        abrirForm.value = false
-        loadPaseadores()
+        });
+        abrirForm.value = false;
+        loadPaseadores();
       } catch (error) {
-        console.error(error)
+        console.error(error);
       }
     };
 
-    async function eliminarPaseador (dni) {
+    async function eliminarPaseador(dni) {
       try {
         await api.post("paseador/deletePaseador", {
           dniVet: useStore().dni,
-          dni: dni
-        })
-        loadPaseadores()
+          dni: dni,
+        });
+        loadPaseadores();
       } catch {
-        console.error('NO SE PUDO ELIMINAR PASEADOR')
+        console.error("NO SE PUDO ELIMINAR PASEADOR");
       }
     }
 

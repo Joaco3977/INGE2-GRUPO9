@@ -78,7 +78,7 @@
       <!-- Acciones -->
       <q-separator dark />
       <q-card-actions class="column items-center">
-        <q-btn flat v-if="servicio === 'perrosMios'" class="textoBoton">
+        <q-btn flat v-if="servicio === 'perrosMios' || rol == 2" class="textoBoton">
           Marcar como adoptado
         </q-btn>
         <q-btn
