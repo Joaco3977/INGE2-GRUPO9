@@ -29,7 +29,7 @@
           class="q-pl-sm q-pr-xl"
           v-model="dniFiltrar"
           :dense="dense"
-          placeholder="Ingresá el DNI del cliente"
+          placeholder="n° DNI"
           style="width: 20rem"
         >
           <template v-slot:append>
@@ -42,7 +42,7 @@
         :thumb-style="thumbStyle"
         :bar-style="barStyle"
         style="height: 87vh"
-        class="bg-primary"
+        class="bg-white"
       >
         <q-card flat>
           <div class="full-width row items-center q-py-md">
