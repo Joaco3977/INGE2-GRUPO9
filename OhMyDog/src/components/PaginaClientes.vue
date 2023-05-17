@@ -1,60 +1,67 @@
 <template>
-  <div class="bg-white" style="width: full; max-height: 90vh">
-    <div class="text-center text-h4 text-primary q-pt-md">CLIENTES</div>
-    <q-card flat class="column">
+  <div class="bg-white" style="width: full; max-height: 97vh">
+    <div
+      class="flex row q-mx-xl justify-between items-center"
+      style="height: 4em"
+    >
+      <!-- titulo -->
+      <div class="titulo text-center text-h4 text-bold text-primary">
+        CLIENTES
+      </div>
+      <!-- botón agregar cliente -->
       <q-btn
-        color="accent"
         @click="mostrarPopup = true"
-        class="q-ma-md self-end"
-        style="width: 15em"
+        color="accent"
+        class=""
+        style="width: max-content; height: max-content"
       >
-        <div class="textoBoton">Agregar cliente</div>
+        <div class="textoBoton" s>Agregar cliente</div>
       </q-btn>
+    </div>
 
-      <q-tabs
-        v-model="tab"
-        dense
-        class="text-grey q-pt-lg"
-        active-color="primary"
-        indicator-color="primary"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab
-          @click="loadClientes"
-          name="Buscar Cliente"
-          label="Buscar Cliente"
-        />
-      </q-tabs>
+    <q-card flat stretch class="column">
+      <div class="row q-mx-lg q-py-sm justify-start items-center" style="width: max-content">
+        <div class="">
+          Ingresar el DNI del cliente:
+        </div>
+        <q-input
+        filled
+          class="q-pl-sm q-pr-xl"
+          v-model="dniFiltrar"
+          :dense="dense"
+          placeholder="Ingresá el DNI del cliente"
+          style="width: 20rem"
+        >
+          <template v-slot:append>
+            <q-icon name="ion-search" />
+          </template>
+        </q-input>
+      </div>
 
       <q-scroll-area
         :thumb-style="thumbStyle"
         :bar-style="barStyle"
-        style="height: 70vh"
-        class="bg-white"
+        style="height: 87vh"
+        class="bg-primary"
       >
         <q-card flat>
-          <q-separator />
-          <q-tab-panels v-model="tab" animated>
-            <q-tab-panel name="Buscar Cliente">
-              <div class="full-width row items-center">
-                <TarjetaCliente
-                  @ejecutarFuncion="eliminarCliente"
-                  v-for="(cliente, dni) in clientesFiltrados"
-                  :key="dni"
-                  :dni="cliente.DNI"
-                  :nombreaApellido="cliente.NOMBREAPELLIDO"
-                  :mail="cliente.MAIL"
-                  :telefono="cliente.TELEFONO"
-                  :direccion="cliente.DIRECCION"
-                />
-              </div>
-            </q-tab-panel>
-          </q-tab-panels>
+          <div class="full-width row items-center q-py-md">
+            <TarjetaCliente
+              @ejecutarFuncion="eliminarCliente"
+              v-for="(cliente, dni) in clientesFiltrados"
+              :key="dni"
+              :dni="cliente.DNI"
+              :nombreaApellido="cliente.NOMBREAPELLIDO"
+              :mail="cliente.MAIL"
+              :telefono="cliente.TELEFONO"
+              :direccion="cliente.DIRECCION"
+            />
+          </div>
         </q-card>
       </q-scroll-area>
     </q-card>
 
+    <!-- ESTE FORMULARO NO DEBERÍA ESTAR ACÁ -->
     <q-dialog v-model="mostrarPopup">
       <div class="full-width row items-center bg-white">
         <div class="q-pa-md" style="width: 50rem">
@@ -140,7 +147,7 @@ export default defineComponent({
     const clientesFiltrados = ref([]);
     const dniFiltrar = ref("");
 
-    const clienteAgregarDni = ref('')
+    const clienteAgregarDni = ref("");
     const clienteAgregarNombreApellido = ref("");
     const clienteAgregarMail = ref("");
     const clienteAgregarTelefono = ref("");
@@ -167,7 +174,7 @@ export default defineComponent({
       try {
         const response = await api.post("/cliente/getClientes", {
           dni: useStore().dni,
-          rol: useStore().rol
+          rol: useStore().rol,
         });
         if (response !== false) {
           clientes.value = response.data;
@@ -189,15 +196,15 @@ export default defineComponent({
       );
     };
 
-    async function eliminarCliente (dni) {
+    async function eliminarCliente(dni) {
       try {
         await api.post("cliente/deleteCliente", {
           dniVet: useStore().dni,
-          dni: dni
-        })
-        loadClientes()
+          dni: dni,
+        });
+        loadClientes();
       } catch {
-        console.error('NO SE PUDO ELIMINAR CLIENTE')
+        console.error("NO SE PUDO ELIMINAR CLIENTE");
       }
     }
 
