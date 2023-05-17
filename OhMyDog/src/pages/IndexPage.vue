@@ -3,7 +3,7 @@
     <!-- Menú lateral -->
     <div
       class="column col-2 bg-primary shadow-2"
-      style="max-width:40vw; height: 100vh; max-height: 100vh"
+      style="max-width: 40vw; height: 100vh; max-height: 100vh"
     >
       <q-img src="logotipo" />
 
@@ -56,32 +56,36 @@
           icon="ion-people"
           label="Clientes"
         />
-        <q-tab v-if="store.rol < 0" name="Veterinarios" icon="ion-people" label="Veterinarios" />
-        
-       <!-- <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
+        <q-tab
+          v-if="store.rol < 0"
+          name="Veterinarios"
+          icon="ion-people"
+          label="Veterinarios"
+        />
+
+        <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
-        <q-tab
+        <!-- <q-tab
           v-if="store.rol === 2"
           name="Responder Consultas"
           icon="ion-people"
           label="Responder Consultas"
         />
-         <q-tab
+        <q-tab
           v-if="store.rol === 1"
           name="Consultas"
           icon="ion-people"
           label="Consultas"
         /> -->
-
-      </q-tabs>
+      </q-tabs> 
     </div>
     <!-- Secciones -->
-    <div class=" col-10 bg-white full-height">
-      <q-tab-panels class="full-height"
+    <div class="col-10 bg-white full-height">
+      <q-tab-panels
+        class="full-height"
         v-model="store.tab"
         animated
-        
         vertical
         transition-prev="jump-up"
         transition-next="jump-up"
@@ -90,7 +94,7 @@
           <PaginaQuienesSomos />
         </q-tab-panel>
 
-        <q-tab-panel name="Mi Perfil" >
+        <q-tab-panel name="Mi Perfil">
           <PaginaPerfil />
         </q-tab-panel>
 
@@ -136,7 +140,7 @@
 
         <q-tab-panel v-if="store.rol === 2" name="Responder Consultas">
           <PaginaConsultaVeterinario />
-        </q-tab-panel> 
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
