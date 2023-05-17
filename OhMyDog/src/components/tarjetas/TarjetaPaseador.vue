@@ -86,7 +86,7 @@
             </div>
             <div class="row no-wrap q-py-md">
               <q-icon class="q-pr-sm" name="ion-information-circle-outline" size="1.4rem" />
-              <div> Definir los horarios con el paseador  </div>
+              <div> Definir los horarios con el paseador {{ disponibilidad }} </div>
             </div>
           </div>
         </div>
@@ -175,5 +175,9 @@ export default defineComponent({
       this.$emit("ejecutarFuncion", dni);
     },
   },
+  mounted(){
+     let disp_json = JSON.parse(this.disponibilidad);
+     console.log(disp_json);
+  }
 });
 </script>

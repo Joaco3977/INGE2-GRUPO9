@@ -58,7 +58,7 @@
         />
         <q-tab v-if="store.rol < 0" name="Veterinarios" icon="ion-people" label="Veterinarios" />
         
-        <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
+       <!-- <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
         <q-tab
@@ -67,12 +67,12 @@
           icon="ion-people"
           label="Responder Consultas"
         />
-        <q-tab
+         <q-tab
           v-if="store.rol === 1"
           name="Consultas"
           icon="ion-people"
           label="Consultas"
-        />
+        /> -->
 
       </q-tabs>
     </div>
@@ -136,7 +136,7 @@
 
         <q-tab-panel v-if="store.rol === 2" name="Responder Consultas">
           <PaginaConsultaVeterinario />
-        </q-tab-panel>
+        </q-tab-panel> 
       </q-tab-panels>
     </div>
   </div>

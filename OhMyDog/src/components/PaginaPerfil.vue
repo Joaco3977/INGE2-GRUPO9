@@ -41,7 +41,7 @@
       </q-card-section>
       <q-separator />
       <q-card-actions class="q-py-lg row justify-end q-px-xl">
-        <q-btn class="textoBoton q-mx-md" > Editar perfil </q-btn>
+        <!-- <q-btn class="textoBoton q-mx-md" > Editar perfil </q-btn> -->
         <q-btn class="textoBoton" @click="cerrarSesion()"> Cerrar Sesion </q-btn>
       </q-card-actions>
     </q-card>
