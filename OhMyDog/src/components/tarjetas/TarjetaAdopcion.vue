@@ -27,9 +27,9 @@
             @click="confirmar = true"
             class="q-ml-sm"
             color="accent"
-          > 
+          >
             <div>Eliminar</div>
-          </q-btn> 
+          </q-btn>
 
 <!-- @click="ejecutarFuncionPadre(dnicliente, nombre)" -->
 

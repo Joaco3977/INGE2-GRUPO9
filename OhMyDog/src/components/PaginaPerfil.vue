@@ -25,7 +25,7 @@
           <div class="textoTituloPosteo q-pl-lg">DNI:</div>
           <div class="q-px-md">{{ misDatos.DNI }}</div>
         </div>
-        <div class="row q-py-sm">
+        <div v-if="rol === 1" class="row q-py-sm">
           <div class="textoTituloPosteo q-pl-lg">Dirección:</div>
           <div class="q-px-md">{{ misDatos.DIRECCION }}</div>
         </div>

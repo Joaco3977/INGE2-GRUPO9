@@ -48,7 +48,7 @@
               <div>{{ direccion }}</div>
             </div>
           </div>
-          
+
           <div class="column col-5">
             <q-expansion-item
               expand-separator
@@ -67,7 +67,7 @@
                     </q-btn>
                   </div>
                 </q-card-section>
-                
+
               </q-card>
             </q-expansion-item>
           </div>
@@ -81,6 +81,24 @@
         <!-- <q-btn push class="textoBoton"  flat> Editar </q-btn> -->
       </q-card-actions>
     </q-card>
+
+    <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary"> ¿Eliminar cliente? </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Esta acción no puede deshacerse
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Eliminar" @click="ejecutarFuncionPadre(dni)" color="primary" v-close-popup />
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </div>
 </template>
 
@@ -99,7 +117,9 @@ export default defineComponent({
     direccion: String,
   },
   setup() {
-    return {};
+    return {
+      confirmar: ref(false),
+    };
   },
   methods: {
     ejecutarFuncionPadre(dni) {
