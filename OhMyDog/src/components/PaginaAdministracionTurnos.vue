@@ -95,11 +95,12 @@
     },
     setup(){
       const tab = ref("turnosConfirmados");
-      const store = useStore();
+      const listaTurnos = ref([])
       const rol =useStore().rol;
       return{
         tab,
         rol,
+        listaTurnos,
       }
     },
     methods: {
@@ -109,6 +110,7 @@
         })
         .then((response) => {
           console.log(response.data)
+          this.listaTurnos.value = response.data
         })
         .catch((error) => {
           console.log(error)

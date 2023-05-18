@@ -50,7 +50,7 @@
           </div>
 
           <div class="column col-5">
-            <q-expansion-item
+            <q-expansion-item @click="loadPerrosCliente(dni)"
               expand-separator
               icon="ion-paw"
               label="Ver perros del cliente"
@@ -103,6 +103,7 @@
 </template>
 
 <script>
+import { api } from "src/boot/axios";
 import { defineComponent } from "vue";
 import { ref } from "vue";
 
@@ -117,14 +118,29 @@ export default defineComponent({
     direccion: String,
   },
   setup() {
+    const perrosCliente = ref([])
+
     return {
       confirmar: ref(false),
+      perrosCliente
     };
   },
   methods: {
     ejecutarFuncionPadre(dni) {
       this.$emit("ejecutarFuncion", dni);
     },
+    async loadPerrosCliente(dni) {         //YA FUNCIONAL
+      await api.post('/perro/getPerrosPropios', {
+        dni: dni,
+      })
+      .then ((response) => {
+        this.perrosCliente.value = response.data
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+    }
   },
 });
 </script>
