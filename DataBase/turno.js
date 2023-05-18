@@ -30,7 +30,6 @@ router.post('/getTurnosEstado', async (req, res) => {
     await knex('turno').select('*').where('ESTADO', req.body.estado)
     .then ((resultado) => {
         Consola.mensaje("\x1b[33m%s\x1b[0m", `VETERINARIO solicito todos los turnos`)
-        console.log(resultado)
         res.status(200).send(resultado)
     })
     .catch((error) => {
