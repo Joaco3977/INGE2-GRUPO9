@@ -30,42 +30,14 @@
   </div>
 </template>
 
-<!-- ROLES
--1: Administrador
- 0: Visitante
- 1: Cliente
- 2: Veterinario
--->
-
 <script>
-import { defineComponent, reactive, ref } from "vue";
-import { useStore } from "../pinia/store.js";
-import { checkToken } from "../functions/check.js"
+import { defineComponent, reactive } from "vue";
 
 export default defineComponent({
   name: "PaginaQuienesSomos",
   components: {},
   setup() {
-    const data = reactive({
-      store: useStore(),
-    });
-    return data;
-  },
-  methods: {
-    aumentarRol() {
-      if ( this.store.rol < 2 ){
-        this.store.setRol(this.store.rol + 1);
-      }
-    },
-    disminuirRol() {
-      // Hasta -1
-      if ( this.store.rol > -1 ){
-        this.store.setRol(this.store.rol - 1);
-      }
-    },
-    validarToken() {
-      checkToken();
-    }
+    return {}
   },
 });
 </script>
