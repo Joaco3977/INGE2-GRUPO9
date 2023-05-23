@@ -70,7 +70,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'Julia Saenz','julia@gmail.com','2215621322','2023-05-08','5 n719','julia',0),(2,'Renzo Gigena','renzogigena1@gmail.com','2213176664','2023-05-08','5 y 80','123',0),(546546,'renzo','ren.sabee@gmail.com','(676) 474 - 5555','2023-05-11','80','L4UzuYG/ya',0),(1234567,'Pedro Pala','Joaco3977@yahoo.com','23456782','2023-05-08','78 y 2','hBcRTma/ph',0),(4458888,'Mauricio','mauricocella@gmail.com','5656546','2023-05-10','Dkfjsj','KvlKAyVu9R',0),(43178686,'Joaquin Diez','JoaquinDiez3977@gmail.com','2352463977','2023-04-21','56 586 3ero 5to','cisco',0),(44130440,'Manuel Rubiano','manurubiano@hotmail.com','(221) 608 - 2268','2023-05-11','82 n363','ehRkiNpnUX',0);
+INSERT INTO `cliente` VALUES (1,'Julia Saenz','julia@gmail.com','2215621322','2023-05-08','5 n719','julia',0),(2,'Renzo Gigena','renzogigena1@gmail.com','2213176664','2023-05-08','5 y 80','123',0),(4458888,'Mauricio','mauricocella@gmail.com','5656546','2023-05-10','Dkfjsj','KvlKAyVu9R',0),(43178686,'Joaquin Diez','JoaquinDiez3977@gmail.com','2352463977','2023-04-21','56 586 3ero 5to','cisco',0),(44130440,'Manuel Rubiano','manurubiano@hotmail.com','(221) 608 - 2268','2023-05-11','82 n363','ehRkiNpnUX',0);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +140,7 @@ CREATE TABLE `log` (
   `DESCRIPCION` varchar(120) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -149,7 +149,7 @@ CREATE TABLE `log` (
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
-INSERT INTO `log` VALUES (1,'2023-05-12','VETERINARIO 43178686 -- SOLICITO CLIENTES'),(2,'2023-05-12','[VETERINARIO 43178686] -- SOLICITO CLIENTES'),(3,'2023-05-12','[VETERINARIO 43178686] -- SOLICITO CLIENTES'),(4,'2023-05-12','[VETERINARIO 43178686] -- agrego al PASEADOR 12414'),(5,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION adad del cliente 1241'),(6,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION eliminar'),(7,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION eliminar del cliente 43178686'),(8,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION daelaead'),(9,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION daelaead del cliente 43178686'),(10,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION 14124sdad'),(11,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION 14124sdad del cliente 43178686'),(12,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION add'),(13,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION add del cliente 43178686'),(14,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION eliminar'),(15,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION daelaead'),(16,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION eliminar'),(17,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION 14124sdad'),(18,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION eliminar'),(19,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION add'),(20,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION daelaead del cliente 43178686'),(21,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION eliminar del cliente 43178686'),(22,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION add del cliente 43178686'),(23,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION 14124sdad del cliente 43178686'),(24,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION eliminar'),(25,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION eliminar del cliente 43178686'),(26,'2023-05-12','[VETERINARIO 43178686] -- agrego al PASEADOR undefined'),(27,'2023-05-12','[VETERINARIO 43178686] -- elimino al PASEADOR 45241414'),(28,'2023-05-12','[VETERINARIO 43178686] -- agrego al PASEADOR undefined'),(29,'2023-05-12','[VETERINARIO 43178686] -- elimino al PASEADOR 2144141'),(30,'2023-05-12','[VETERINARIO 43178686] -- agrego al PASEADOR undefined'),(31,'2023-05-12','[VETERINARIO 43178686] -- elimino al PASEADOR 124441');
+INSERT INTO `log` VALUES (1,'2023-05-12','VETERINARIO 43178686 -- SOLICITO CLIENTES'),(2,'2023-05-12','[VETERINARIO 43178686] -- SOLICITO CLIENTES'),(3,'2023-05-12','[VETERINARIO 43178686] -- SOLICITO CLIENTES'),(4,'2023-05-12','[VETERINARIO 43178686] -- agrego al PASEADOR 12414'),(5,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION adad del cliente 1241'),(6,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION eliminar'),(7,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION eliminar del cliente 43178686'),(8,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION daelaead'),(9,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION daelaead del cliente 43178686'),(10,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION 14124sdad'),(11,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION 14124sdad del cliente 43178686'),(12,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION add'),(13,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION add del cliente 43178686'),(14,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION eliminar'),(15,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION daelaead'),(16,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION eliminar'),(17,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION 14124sdad'),(18,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION eliminar'),(19,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION add'),(20,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION daelaead del cliente 43178686'),(21,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION eliminar del cliente 43178686'),(22,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION add del cliente 43178686'),(23,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION 14124sdad del cliente 43178686'),(24,'2023-05-12','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION eliminar'),(25,'2023-05-12','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION eliminar del cliente 43178686'),(26,'2023-05-12','[VETERINARIO 43178686] -- agrego al PASEADOR undefined'),(27,'2023-05-12','[VETERINARIO 43178686] -- elimino al PASEADOR 45241414'),(28,'2023-05-12','[VETERINARIO 43178686] -- agrego al PASEADOR undefined'),(29,'2023-05-12','[VETERINARIO 43178686] -- elimino al PASEADOR 2144141'),(30,'2023-05-12','[VETERINARIO 43178686] -- agrego al PASEADOR undefined'),(31,'2023-05-12','[VETERINARIO 43178686] -- elimino al PASEADOR 124441'),(32,'2023-05-16','[CLIENTE 1] -- agrego al PERRO EN ADOPCION Rocco'),(33,'2023-05-16','[CLIENTE 1] -- elimino al PERRO EN ADOPCION Rocco del cliente 1'),(34,'2023-05-16','[CLIENTE 1] -- agrego al PERRO EN ADOPCION Rocco'),(35,'2023-05-17','[CLIENTE 1] -- elimino al PERRO EN ADOPCION Rocco del cliente 1'),(36,'2023-05-17','[CLIENTE 1] -- agrego al PERRO EN ADOPCION Rocco'),(37,'2023-05-17','[CLIENTE 1] -- elimino al PERRO EN ADOPCION Rocco del cliente 1'),(38,'2023-05-17','[CLIENTE 1] -- agrego al PERRO EN ADOPCION fsd43'),(39,'2023-05-17','[CLIENTE 1] -- agrego al PERRO EN ADOPCION julia'),(40,'2023-05-17','[CLIENTE 1] -- agrego al PERRO EN ADOPCION julis'),(41,'2023-05-17','[CLIENTE 1] -- elimino al PERRO EN ADOPCION fsd43 del cliente 1'),(42,'2023-05-17','[CLIENTE 1] -- elimino al PERRO EN ADOPCION julia del cliente 1'),(43,'2023-05-17','[CLIENTE 1] -- elimino al PERRO EN ADOPCION julis del cliente 1'),(44,'2023-05-17','[CLIENTE 1] -- agrego al PERRO EN ADOPCION Julia'),(45,'2023-05-17','[CLIENTE 1] -- elimino al PERRO EN ADOPCION Julia del cliente 1'),(46,'2023-05-17','[VETERINARIO 6] -- agrego al PASEADOR undefined'),(47,'2023-05-17','[VETERINARIO 6] -- elimino al PASEADOR 34031120'),(48,'2023-05-17','[VETERINARIO 6] -- elimino al PASEADOR 37890167'),(49,'2023-05-17','[VETERINARIO 6] -- elimino al PASEADOR 37890876'),(50,'2023-05-17','[VETERINARIO 6] -- elimino al PASEADOR 42042669'),(51,'2023-05-17','[VETERINARIO 6] -- agrego al PASEADOR undefined'),(52,'2023-05-17','[VETERINARIO 6] -- agrego al PASEADOR undefined'),(53,'2023-05-17','[VETERINARIO 6] -- agrego al PASEADOR undefined'),(54,'2023-05-17','[CLIENTE 1] -- agrego al PERRO EN ADOPCION Juani'),(55,'2023-05-18','[VETERINARIO 43178686] -- agrego al PERRO EN ADOPCION Quien'),(56,'2023-05-18','[VETERINARIO 43178686] -- elimino al PERRO EN ADOPCION Quien del cliente 43178686'),(57,'2023-05-18','[VETERINARIO 43178686] -- elimino al cliente 1234567'),(58,'2023-05-18','[VETERINARIO 5] -- elimino al cliente 546546');
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -179,7 +179,7 @@ CREATE TABLE `paseador` (
 
 LOCK TABLES `paseador` WRITE;
 /*!40000 ALTER TABLE `paseador` DISABLE KEYS */;
-INSERT INTO `paseador` VALUES (34031120,'Camila Ramirez','CamiRamirez98@gmail.com','Catedral','Hola soy Camila',NULL),(37890167,'Juan Martin Gutierrez','JuanMa18@yahoo.com','Plaza Yrigoyen','Buenas soy Juanma!',NULL),(37890876,'Damian Flores','DamianSape@yahoo.com','Plaza Italia','Hola soy Damian',NULL);
+INSERT INTO `paseador` VALUES (2,'ju','j@adada','mi casita',NULL,'[[false, false, false], [false, false, false], [false, false, false], [false, false, false], [false, false, false], [false, false, false], [true, false, false]]'),(2424332,'ju','dsa@gmail.com','darear','ewqewqaddads addasd adajdasd alndal fr','[[true, false, false], [false, false, false], [false, false, false], [false, false, false], [false, false, false], [false, true, true], [false, false, false]]'),(42042669,'Julia Saenz','julia@gmail.com','Plaza Paso',NULL,'[[true, false, false], [false, true, false], [false, false, true], [true, false, false], [false, true, false], [false, false, true], [false, false, false]]');
 /*!40000 ALTER TABLE `paseador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,10 +197,10 @@ CREATE TABLE `perro` (
   `COLOR` varchar(45) DEFAULT NULL,
   `NACIMIENTO` date DEFAULT NULL,
   `SEXO` varchar(10) DEFAULT NULL,
-  `FOTO` blob,
   `RAZA` varchar(45) DEFAULT NULL,
   `DNICLIENTE` int NOT NULL,
   `PESO` float DEFAULT NULL,
+  `FOTO` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -212,7 +212,7 @@ CREATE TABLE `perro` (
 
 LOCK TABLES `perro` WRITE;
 /*!40000 ALTER TABLE `perro` DISABLE KEYS */;
-INSERT INTO `perro` VALUES (1,'Donna','Mediano','Marron y Negro','2019-12-21','Hembra',NULL,'Mestizo',43178686,27.4);
+INSERT INTO `perro` VALUES (1,'Donna','Mediano','Marron y Negro','2019-12-21','Hembra','Mestizo',43178686,27.4,0);
 /*!40000 ALTER TABLE `perro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,7 +236,7 @@ CREATE TABLE `perroadopcion` (
   `ADOPTADO` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`IDPERROADOPCION`),
   UNIQUE KEY `IDPERROADOPCION_UNIQUE` (`IDPERROADOPCION`)
-) ENGINE=InnoDB AUTO_INCREMENT=223 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=232 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `perroadopcion` (
 
 LOCK TABLES `perroadopcion` WRITE;
 /*!40000 ALTER TABLE `perroadopcion` DISABLE KEYS */;
-INSERT INTO `perroadopcion` VALUES (2,'Macho','Grande','7 meses','1212315352','Rocco','julio24@gmail.com','Me mude y no tengo espacio! Es un excelente perro',30987560,0),(3,'Macho','Pequeño','2 meses','3242321313','Capitan','renzo@gmail.com','Cachorro muy jugueton',32678901,0),(4,'Hembra','Mediano','8 años','324234123','Luz','renzo@gmail.com','Gordita hermosa',42190651,0);
+INSERT INTO `perroadopcion` VALUES (2,'Macho','Grande','7 meses','1212315352','Rocco','julio24@gmail.com','Me mude y no tengo espacio! Es un excelente perro',30987560,0),(3,'Macho','Pequeño','2 meses','3242321313','Capitan','renzo@gmail.com','Cachorro muy jugueton',32678901,0),(4,'Hembra','Mediano','8 años','324234123','Luz','renzo@gmail.com','Gordita hermosa',42190651,0),(230,'Macho','Grande','36','2215622333','Juani','julia@gmail.com','habla un montón, se porta mal, saquenlo',1,0);
 /*!40000 ALTER TABLE `perroadopcion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -349,12 +349,15 @@ DROP TABLE IF EXISTS `turno`;
 CREATE TABLE `turno` (
   `ID` int NOT NULL,
   `IDPERRO` int NOT NULL,
-  `DNIVETERINARIO` int NOT NULL,
+  `DNIVETERINARIO` int DEFAULT NULL,
   `DNICLIENTE` int NOT NULL,
   `FECHA` date NOT NULL,
   `ESTADO` varchar(20) NOT NULL,
   `IDSERVICIO` int NOT NULL,
   `IDVACUNA` int DEFAULT NULL,
+  `NOMBRESERVICIO` varchar(200) NOT NULL,
+  `NOMBREVETERINARIO` varchar(60) DEFAULT NULL,
+  `NOMBRECLIENTE` varchar(60) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -366,6 +369,7 @@ CREATE TABLE `turno` (
 
 LOCK TABLES `turno` WRITE;
 /*!40000 ALTER TABLE `turno` DISABLE KEYS */;
+INSERT INTO `turno` VALUES (1,1,213,23,'2023-05-17','Confirmado',2,NULL,'Chequeo','Joaco','Pedro'),(2,2,213,23,'2023-09-18','Pendiente',3,NULL,'Peluqueria','Renzo','Camila'),(3,5,213,43178686,'2023-05-18','Solicitado',5,NULL,'Desparacitacion','Juan','Joaquin Diez'),(4,124,213,43178686,'2023-05-18','Confirmado',1,2,'Vacunacion','Lucia','Joaquin Diez'),(5,142,213,124,'2023-05-18','Confirmado',7,1,'Vacunacion','Federico','Hernan');
 /*!40000 ALTER TABLE `turno` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -460,4 +464,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-12 13:00:20
+-- Dump completed on 2023-05-23  9:52:41
