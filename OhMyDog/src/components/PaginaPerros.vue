@@ -3,8 +3,13 @@
   <!-- Pueden usar componentes dentro de este componente -->
 
   <div class="bg-white full-height full-width" style="height: 97vh">
-    <div class="titulo text-center text-h4 text-bold text-primary q-pt-md">
-      MIS PERROS
+    <div
+      class="flex row q-mx-xl justify-between items-center"
+      style="height: 4em"
+    >
+      <div class="titulo text-center text-h4 text-bold text-primary">
+        MIS PERROS
+      </div>
     </div>
     <q-card stretch flat class="bg-white full-width full-height column">
       <q-separator></q-separator>

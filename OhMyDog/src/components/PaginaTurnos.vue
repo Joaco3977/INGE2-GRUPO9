@@ -1,63 +1,115 @@
 <template>
 <!-- Todo el contenido tiene que estar adentro de un div -->
 <!-- Pueden usar componentes dentro de este componente -->
-<div class="bg-white" style="width: full; max-height: 90vh">
-
-    <div class="text-center text-h4 text-primary "> MIS TURNOS </div>
-  <q-card>
-    <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
-    <q-btn
+<div class="bg-white full-height full-width" style="height: 97vh">
+    <div
+      class="flex row q-mx-xl justify-between items-center"
+      style="height: 4em"
+    >
+      <div class="titulo text-center text-h4 text-bold text-primary">
+        TURNOS
+      </div>
+      <q-btn
+        v-if="rol > 0"
+        @click="mostrarPopupM"
         color="accent"
-        class="q-ma-md q-mr-xl self-end"
-        style="width: 20em"
+        class=""
+        style="width: max-content; height: max-content"
       >
-        <div class="textoBoton">Pedir Turno</div>
+        <div class="textoBoton" s>Pedir turno</div>
       </q-btn>
+    </div>
+
+  <q-card flat>
+
 
     <q-tabs
         v-model="tab"
-        dense
+        dense flat
         class="text-grey q-pt-md"
         active-color="primary"
         indicator-color="primary"
         align="justify"
         narrow-indicator
     >
+      <q-tab @click="loadTurnosPropios('Cancelados')"
+        name="turnosCancelados"
+        label="Cancelados"/>
+      <q-tab @click="loadTurnosPropios('Pasados')"
+        name="turnosPasados"
+        label="Pasados"/>
       <q-tab @click="loadTurnosPropios('Solicitado')"
         name="turnosSolicitados"
-        label="Turnos Solicitados" />
+        label="Solicitados" />
       <q-tab @click="loadTurnosPropios('Confirmado')"
         name="turnosConfirmados"
-        label="Turnos Confirmados"/>
+        label="Confirmados"/>
+      
     </q-tabs>
 
       <q-separator></q-separator>
-      <q-tab-panels v-model="tab" animated>
-        <q-tab-panel name="turnos">
-          <q-scroll-area
+
+      <q-scroll-area
             :thumb-style="thumbStyle"
             :bar-style="barStyle"
             style="height: 75vh; width: 100%"
             class="bg-white full-width"
           >
-          <!--
-            <div class="full-width row items-justify">
-              <TarjetaTurno
 
-              />-->
-          </q-scroll-area>
+      <q-tab-panels v-model="tab" animated>
+        <q-tab-panel name="turnosCancelados">
+          <TarjetaTurnoCancelado
+            v-for="item in 5" :key="item"
+            :nombrePerro= 'como'
+            :fecha= 'fecha'
+            :hora='hora'
+            :nombreServicio='Consulta' />
+        </q-tab-panel>
+        <q-tab-panel name="turnosPasados">
+          <TarjetaTurno
+            v-for="item in 5" :key="item"
+            :rol="rol"
+            :state="state"
+            :nombrePerro= 'como'
+            :fecha= 'fecha'
+            :hora='hora'
+            :nombreServicio='Consulta' />
+        </q-tab-panel>
+        <q-tab-panel name="turnosSolicitados">
+          <TarjetaTurno
+            v-for="item in 5" :key="item"
+            :rol="rol"
+            :state="state"
+            :nombrePerro= 'como'
+            :fecha= 'fecha'
+            :hora='hora'
+            :nombreServicio='Consulta' />
+        </q-tab-panel>
+        <q-tab-panel name="turnosConfirmados">
+          <TarjetaTurno
+            v-for="item in 5" :key="item"
+            :rol="rol"
+            :state="state"
+            :nombrePerro= 'como'
+            :fecha= 'fecha'
+            :hora='hora'
+            :nombreServicio='Consulta' />
         </q-tab-panel>
 
       </q-tab-panels>
+
+      </q-scroll-area>
   </q-card>
 </div>
 
 </template>
 
 <script>
+
   import { defineComponent } from 'vue'
   import { ref } from 'vue'
   import TarjetaTurno from './tarjetas/TarjetaTurno.vue';
+    import TarjetaTurnoCancelado from './tarjetas/TarjetaTurnoCancelado.vue';
   import { useStore } from "../pinia/store.js";
   import { checkToken } from 'src/functions/check.js';
   import { api } from 'src/boot/axios';
@@ -66,10 +118,11 @@
   export default defineComponent({
   name: 'PaginaTurnos',
   components: {
-    //TarjetaTurno,
+    TarjetaTurno,
+    TarjetaTurnoCancelado,
     },
     setup(){
-      const tab = ref("turnosSolicitados");
+      const tab = ref("turnosConfirmados");
       const listaTurnos = ref ([])
       const rol =useStore().rol;
       return{
