@@ -23,10 +23,10 @@
         align="justify"
         narrow-indicator
     >
-      <q-tab 
-        name="turnosSolicitados" 
+      <q-tab @click="loadTurnosPropios('Solicitado')"
+        name="turnosSolicitados"
         label="Turnos Solicitados" />
-      <q-tab
+      <q-tab @click="loadTurnosPropios('Confirmado')"
         name="turnosConfirmados"
         label="Turnos Confirmados"/>
     </q-tabs>
@@ -59,6 +59,10 @@
   import { ref } from 'vue'
   import TarjetaTurno from './tarjetas/TarjetaTurno.vue';
   import { useStore } from "../pinia/store.js";
+  import { checkToken } from 'src/functions/check.js';
+  import { api } from 'src/boot/axios';
+
+
   export default defineComponent({
   name: 'PaginaTurnos',
   components: {
@@ -66,12 +70,32 @@
     },
     setup(){
       const tab = ref("turnosSolicitados");
-      const store = useStore();
+      const listaTurnos = ref ([])
       const rol =useStore().rol;
       return{
         tab,
         rol,
+        listaTurnos,
       }
+    },
+    methods: {
+      async loadTurnosPropios(estado) {
+        await api.post('/turno/getTurnosDni', {
+          dni: useStore().dni,
+          estado: estado,
+        })
+        .then((response) => {
+          console.log(response.data)
+          this.listaTurnos.value = response.data
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+      }
+    },
+    mounted() {
+      checkToken()
+      this.loadTurnosPropios('Solicitado')
     }
   })
 </script>

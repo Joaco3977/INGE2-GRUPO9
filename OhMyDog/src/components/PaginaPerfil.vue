@@ -12,7 +12,7 @@
       <q-card-section class="row justify-between bg-secondary">
         <div class="textoPerfil q-px-xl">{{ misDatos.NOMBREAPELLIDO }}</div>
         <div class="text-overline text-white q-px-xl">
-          Cliente desde: {{ misDatos.FECHAREGISTRO }}
+          Registrado desde: {{ fechaRegistro }}
         </div>
       </q-card-section>
       <q-card-section class="column justify-start">
@@ -25,7 +25,7 @@
           <div class="textoTituloPosteo q-pl-lg">DNI:</div>
           <div class="q-px-md">{{ misDatos.DNI }}</div>
         </div>
-        <div class="row q-py-sm">
+        <div v-if="rol === 1" class="row q-py-sm">
           <div class="textoTituloPosteo q-pl-lg">Dirección:</div>
           <div class="q-px-md">{{ misDatos.DIRECCION }}</div>
         </div>
@@ -61,6 +61,7 @@ export default defineComponent({
   setup() {
     const rol = useStore().rol;
     const misDatos = ref({});
+    const fechaRegistro = ref('')
 
     const traerDatos = async () => {
       let url = "";
@@ -72,7 +73,9 @@ export default defineComponent({
           dni: useStore().dni,
         });
         misDatos.value = response.data;
-        console.log(misDatos.value);
+        let regDate = new Date(response.data.FECHAREGISTRO)
+        console.log('date:', regDate)
+        fechaRegistro.value = `${regDate.getDate()}-${regDate.getMonth() + 1}-${regDate.getFullYear()}`
       } catch {
         console.log("No se pudo solicitar la operacion correspondiente");
       }
@@ -82,6 +85,7 @@ export default defineComponent({
       rol,
       misDatos,
       traerDatos: ref(traerDatos),
+      fechaRegistro,
       store: useStore(),
     };
   },

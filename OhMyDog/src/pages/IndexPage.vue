@@ -66,6 +66,7 @@
         <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
+        <q-tab name="TESTING" icon="ion-walk" label="TESTING" />
         <!-- <q-tab
           v-if="store.rol === 2"
           name="Responder Consultas"
@@ -78,7 +79,7 @@
           icon="ion-people"
           label="Consultas"
         /> -->
-      </q-tabs> 
+      </q-tabs>
     </div>
     <!-- Secciones -->
     <div class="col-10 bg-white full-height">
@@ -141,6 +142,10 @@
         <q-tab-panel v-if="store.rol === 2" name="Responder Consultas">
           <PaginaConsultaVeterinario />
         </q-tab-panel>
+
+        <q-tab-panel name="TESTING">
+          <PaginaTesting />
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
@@ -167,6 +172,8 @@ import PaginaVeterinarios from "src/components/PaginaVeterinarios.vue";
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
 
+import PaginaTesting from '../components/PaginaTesting.vue' //SACAR DESPUES
+
 export default defineComponent({
   name: "IndexPage",
   components: {
@@ -183,6 +190,7 @@ export default defineComponent({
     PaginaPerfil,
     PaginaLog,
     PaginaVeterinarios,
+    PaginaTesting, //SACAR DESPUES
   },
   setup() {
     const data = reactive({

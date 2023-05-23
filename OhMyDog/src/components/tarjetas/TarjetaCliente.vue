@@ -48,9 +48,9 @@
               <div>{{ direccion }}</div>
             </div>
           </div>
-          
+
           <div class="column col-5">
-            <q-expansion-item
+            <q-expansion-item @click="loadPerrosCliente(dni)"
               expand-separator
               icon="ion-paw"
               label="Ver perros del cliente"
@@ -68,7 +68,7 @@
                     
                   </div>
                 </q-card-section>
-                
+
               </q-card>
             </q-expansion-item>
           </div>
@@ -82,10 +82,29 @@
         <!-- <q-btn push class="textoBoton"  flat> Editar </q-btn> -->
       </q-card-actions>
     </q-card>
+
+    <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary"> ¿Eliminar cliente? </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Esta acción no puede deshacerse
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Eliminar" @click="ejecutarFuncionPadre(dni)" color="primary" v-close-popup />
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </div>
 </template>
 
 <script>
+import { api } from "src/boot/axios";
 import { defineComponent } from "vue";
 import { ref } from "vue";
 
@@ -100,12 +119,29 @@ export default defineComponent({
     direccion: String,
   },
   setup() {
-    return {};
+    const perrosCliente = ref([])
+
+    return {
+      confirmar: ref(false),
+      perrosCliente
+    };
   },
   methods: {
     ejecutarFuncionPadre(dni) {
       this.$emit("ejecutarFuncion", dni);
     },
+    async loadPerrosCliente(dni) {         //YA FUNCIONAL
+      await api.post('/perro/getPerrosPropios', {
+        dni: dni,
+      })
+      .then ((response) => {
+        this.perrosCliente.value = response.data
+        console.log(response.data)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+    }
   },
 });
 </script>
