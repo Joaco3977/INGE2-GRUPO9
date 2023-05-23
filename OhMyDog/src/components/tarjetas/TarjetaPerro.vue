@@ -43,9 +43,9 @@
           </div>
 
           <q-card-actions class="row justify-end items-center self-end">
-            <q-btn flat v-if="rol >= 1" class="textoBoton">
+            <!-- <q-btn flat v-if="rol >= 1" class="textoBoton">
               Ver historial
-            </q-btn>
+            </q-btn> -->
             <q-btn flat v-if="rol > 1" class="textoBoton">
               Editar datos
             </q-btn>

@@ -1,84 +1,108 @@
 <template>
-  <!-- Todo el contenido tiene que estar adentro de un div -->
-  <!-- Pueden usar componentes dentro de este componente -->
-  <div class="bg-white" style="width: full; max-height: 90vh">
-
-      <div class="text-center text-h4 text-primary "> ADMINISTRAR TURNOS </div>
-      <div class="text-center text-h6 text-primary "> Hola! Soy el componente "ADMINISTRAR TURNOS" EDITAME </div>
-    <q-card flat class="column">
-      <!-- ACÁ VAN TODAS LAS COSAS QUE QUIERAN PONER -->
+<!-- Todo el contenido tiene que estar adentro de un div -->
+<!-- Pueden usar componentes dentro de este componente -->
+<div class="bg-white full-height full-width" style="height: 97vh">
+    <div
+      class="flex row q-mx-xl justify-between items-center"
+      style="height: 4em"
+    >
+      <div class="titulo text-center text-h4 text-bold text-primary">
+        ADMINISTRACIÓN TURNOS
+      </div>
       <q-btn
-          v-if="rol === 2"
-          color="accent"
-          class="q-ma-md q-mr-xl self-end"
-          style="width: 20em"
-        >
-          <div class="textoBoton">Crear Turno</div>
-        </q-btn>
+        v-if="rol > 0"
+        @click="mostrarPopupM"
+        color="accent"
+        class=""
+        style="width: max-content; height: max-content"
+      >
+        <div class="textoBoton" s>Crear turno</div>
+      </q-btn>
+    </div>
 
-      <q-tabs
-          v-model="tab"
-          dense
-          class="text-grey q-pt-md"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
-        >
-        <q-tab @click="loadTurnos('Confirmado')"
-            name="turnosConfirmados"
-            label="Turnos Confirmados"
-          />
-        <q-tab @click="loadTurnos('Pendiente')"
-            name="turnosPendientes"
-            label="Turnos Pendientes"
-          />
-        </q-tabs>
-        <q-scroll-area
-        :thumb-style="thumbStyle"
-        :bar-style="barStyle"
-        style="height: 70vh"
-        class="bg-white"
-        >
-        <q-separator/>
-        <q-card flat>
-          <q-tab-panels v-model="tab" animated>
-            <q-tab-panel name="turnosConfirmados">
-              <q-scroll-area
-                :thumb-style="thumbStyle"
-                :bar-style="barStyle"
-                style="height: 75vh; width: 100%"
-                class="bg-white full-width"
-              >
-              <!--
-                <div class="full-width row items-justify">
-                  <TarjetaTurno
+  <q-card flat>
 
-                  />-->
-              </q-scroll-area>
-            </q-tab-panel>
 
-            <q-tab-panel name="turnosPendientes">
-              <q-scroll-area
-                :thumb-style="thumbStyle"
-                :bar-style="barStyle"
-                style="height: 75vh; width: 100%"
-                class="bg-white full-width"
-              >
-              <!--
-                <div class="full-width row items-justify">
-                  <TarjetaTurno
+    <q-tabs
+        v-model="tab"
+        dense flat
+        class="text-grey q-pt-md"
+        active-color="primary"
+        indicator-color="primary"
+        align="justify"
+        narrow-indicator
+    >
+      <q-tab @click="loadTurnos('Cancelados')"
+        name="turnosCancelados"
+        label="Cancelados"/>
+      <q-tab @click="loadTurnos('Pasados')"
+        name="turnosPasados"
+        label="Pasados"/>
+      <q-tab @click="loadTurnos('Solicitado')"
+        name="turnosSolicitados"
+        label="Solicitados" />
+      <q-tab @click="loadTurnos('Confirmado')"
+        name="turnosConfirmados"
+        label="Confirmados"/>
+      
+    </q-tabs>
 
-                  />-->
-              </q-scroll-area>
-            </q-tab-panel>
-          </q-tab-panels>
-        </q-card>
+      <q-separator></q-separator>
+
+      <q-scroll-area
+            :thumb-style="thumbStyle"
+            :bar-style="barStyle"
+            style="height: 75vh; width: 100%"
+            class="bg-white full-width"
+          >
+
+      <q-tab-panels v-model="tab" animated>
+        <q-tab-panel name="turnosCancelados">
+          <TarjetaTurnoCancelado
+            v-for="item in 5" :key="item"
+            :nombrePerro= 'como'
+            :fecha= 'fecha'
+            :hora='hora'
+            :nombreServicio='Consulta' />
+        </q-tab-panel>
+        <q-tab-panel name="turnosPasados">
+          <TarjetaTurno
+            v-for="item in 5" :key="item"
+            :rol="rol"
+            :state="state"
+            :nombrePerro= 'como'
+            :fecha= 'fecha'
+            :hora='hora'
+            :nombreServicio='Consulta' />
+        </q-tab-panel>
+        <q-tab-panel name="turnosSolicitados">
+          <TarjetaTurno
+            v-for="item in 5" :key="item"
+            :rol="rol"
+            :state="state"
+            :nombrePerro= 'como'
+            :fecha= 'fecha'
+            :hora='hora'
+            :nombreServicio='Consulta' />
+        </q-tab-panel>
+        <q-tab-panel name="turnosConfirmados">
+          <TarjetaTurno
+            v-for="item in 5" :key="item"
+            :rol="rol"
+            :state="state"
+            :nombrePerro= 'como'
+            :fecha= 'fecha'
+            :hora='hora'
+            :nombreServicio='Consulta' />
+        </q-tab-panel>
+
+      </q-tab-panels>
+
       </q-scroll-area>
-    </q-card>
-  </div>
+  </q-card>
+</div>
 
-  </template>
+</template>
 
   <script>
   import { defineComponent } from 'vue'

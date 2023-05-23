@@ -60,11 +60,12 @@
                   <div class="column justify-center">
                     <q-btn
                       @click="confirmar = true"
-                      class="q-mx-lg"
+                      class="q-mx-lg q-mb-sm" 
                       color="secondary"
                     >
                       <div class="textoBoton text-bold">Mike Wasowski</div>
                     </q-btn>
+                    
                   </div>
                 </q-card-section>
 
