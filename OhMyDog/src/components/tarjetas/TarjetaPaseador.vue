@@ -73,20 +73,23 @@
               <div class="text-end">Noche</div>
             </div>
             <div
-              v-for="sem of semana"
-              :key="sem"
+              v-for="i in 7"
+              :key="i"
               class="separadorFormulario row no-wrap full-width justify-between items-center q-py-xs q-pr-md"
             >
               <div class="text-white text-start" style="width: 5rem">
-                {{ sem }}
+                {{ semana[i-1] }}
               </div>
-              <q-icon class="q-py-xs" name="ion-checkmark" size="1.3rem" />
-              <q-icon class="q-py-xs" name="ion-checkmark" size="1.3rem" />
-              <q-icon class="q-py-xs" name="ion-checkmark" size="1.3rem" />
+              <q-icon v-if="disponibilidad[i-1][0] == true " class="q-py-xs" name="ion-checkmark" size="1.3rem" />
+              <q-icon v-else class="q-py-xs" name="ion-close" size="1.3rem" />
+              <q-icon v-if="disponibilidad[i-1][1] == true " class="q-py-xs" name="ion-checkmark" size="1.3rem" />
+              <q-icon v-else class="q-py-xs" name="ion-close" size="1.3rem" />
+              <q-icon v-if="disponibilidad[i-1][2] == true " class="q-py-xs" name="ion-checkmark" size="1.3rem" />
+              <q-icon v-else class="q-py-xs" name="ion-close" size="1.3rem" />
             </div>
             <div class="row no-wrap q-py-md">
               <q-icon class="q-pr-sm" name="ion-information-circle-outline" size="1.4rem" />
-              <div> Definir los horarios con el paseador {{ disponibilidad }} </div>
+              <div> Definir los horarios con el paseador</div>
             </div>
           </div>
         </div>
@@ -176,8 +179,6 @@ export default defineComponent({
     },
   },
   mounted(){
-     let disp_json = JSON.parse(this.disponibilidad);
-     console.log(disp_json);
   }
 });
 </script>
