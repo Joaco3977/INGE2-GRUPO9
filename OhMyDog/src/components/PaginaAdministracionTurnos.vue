@@ -11,7 +11,7 @@
       </div>
       <q-btn
         v-if="rol > 0"
-        @click="mostrarPopupM"
+        @click="mostrarPopup = true"
         color="accent"
         class=""
         style="width: max-content; height: max-content"
@@ -100,6 +100,10 @@
 
       </q-scroll-area>
   </q-card>
+
+  <q-dialog v-model="mostrarPopup">
+      <FormTurnoVet @registrarPerro="registrarPerro" />
+    </q-dialog>
 </div>
 
 </template>
@@ -108,6 +112,8 @@
   import { defineComponent } from 'vue'
   import { ref } from 'vue'
   import TarjetaTurno from './tarjetas/TarjetaTurno.vue';
+    import TarjetaTurnoCancelado from './tarjetas/TarjetaTurnoCancelado.vue';
+  import FormTurnoVet from './formularios/formTurnoVeterinario.vue'
   import { useStore } from "../pinia/store.js";
   import { api } from 'src/boot/axios';
   import { checkToken } from 'src/functions/check.js';
@@ -115,9 +121,12 @@
   export default defineComponent({
   name: 'PaginaAdministrarTurnos',
   components: {
-    //TarjetaTurno,
+    TarjetaTurno,
+    TarjetaTurnoCancelado,
+    FormTurnoVet,
     },
     setup(){
+      const mostrarPopup = ref("false");
       const tab = ref("turnosConfirmados");
       const listaTurnos = ref([])
       const rol =useStore().rol;
@@ -125,6 +134,7 @@
         tab,
         rol,
         listaTurnos,
+        mostrarPopup
       }
     },
     methods: {
