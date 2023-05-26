@@ -58,12 +58,12 @@
               <q-card>
                 <q-card-section>
                   <div class="column justify-center">
-                    <q-btn
-                      @click="confirmar = true"
+                    <q-btn v-for="perro in perrosCliente.value" :key="perro"
+                      @click="verPerro = true; perroElegido = perro"
                       class="q-mx-lg q-mb-sm" 
                       color="secondary"
                     >
-                      <div class="textoBoton text-bold">Mike Wasowski</div>
+                      <div class="textoBoton text-bold"> {{ perro.NOMBRE }}</div>
                     </q-btn>
                     
                   </div>
@@ -82,6 +82,10 @@
         <!-- <q-btn push class="textoBoton"  flat> Editar </q-btn> -->
       </q-card-actions>
     </q-card>
+
+    <q-dialog  v-model="verPerro" >
+      <TarjetaPerroVet :perro="perroElegido"/>
+    </q-dialog> 
 
     <q-dialog v-model="confirmar">
       <q-card>
@@ -107,10 +111,13 @@
 import { api } from "src/boot/axios";
 import { defineComponent } from "vue";
 import { ref } from "vue";
+import TarjetaPerroVet from "./TarjetaPerroVet.vue"
 
 export default defineComponent({
   name: "TarjetaCliente",
-  components: {},
+  components: {
+    TarjetaPerroVet,
+  },
   props: {
     dni: String,
     nombreaApellido: String,
@@ -121,9 +128,13 @@ export default defineComponent({
   setup() {
     const perrosCliente = ref([])
 
+    const perroElegido = ref("");
+
     return {
       confirmar: ref(false),
-      perrosCliente
+      verPerro: ref(false),
+      perrosCliente,
+      perroElegido,
     };
   },
   methods: {
@@ -136,7 +147,7 @@ export default defineComponent({
       })
       .then ((response) => {
         this.perrosCliente.value = response.data
-        console.log(response.data)
+        //console.log(response.data)
       })
       .catch((error) => {
         console.error(error)

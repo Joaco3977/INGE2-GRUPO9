@@ -79,23 +79,42 @@ export default defineComponent({
     foto: Image,
   },
   setup(props) {
-    const fechaNacimiento = new Date(props.nacimiento)
-    const fechaHoy = new Date()
+    
+    const fechaNacimiento = new Date(props.nacimiento);
+    const fechaHoy = new Date();
 
-    var diferenciaEnAnios = fechaHoy.getFullYear() - fechaNacimiento.getFullYear();
+    const anios = fechaHoy.getFullYear() - fechaNacimiento.getFullYear();
+    const meses = fechaHoy.getMonth() - fechaNacimiento.getMonth();
+    const dias = fechaHoy.getDate() - fechaNacimiento.getDate();
 
-    // Ajustar la diferencia en años si la fecha actual aún no ha alcanzado el mes y el día de la fecha de referencia.
-    if (fechaHoy.getMonth() < fechaNacimiento.getMonth() || (fechaHoy.getMonth() === fechaNacimiento.getMonth() && fechaHoy.getDate() < fechaNacimiento.getDate())) {
-      diferenciaEnAnios--;
+    // Adjust for negative values
+    if (meses < 0 || (meses === 0 && dias < 0)) {
+      anios--;
     }
 
-    // Calcular la fecha de referencia para el año actual
-    const fechaDeReferencia = new Date(fechaNacimiento.getFullYear() + diferenciaEnAnios, fechaNacimiento.getMonth(), fechaNacimiento.getDate());
+    // Calculate the difference in months
+    const mesesAbs =
+      fechaHoy.getFullYear() * 12 +
+      fechaHoy.getMonth() -
+      (fechaNacimiento.getFullYear() * 12 + fechaNacimiento.getMonth());
+    const aniosMeses = Math.floor(mesesAbs / 12);
+    const mesesRestantes = mesesAbs % 12;
 
-    // Obtener la diferencia en días
-    const diferenciaEnDias = Math.floor((fechaHoy - fechaDeReferencia) / (24 * 60 * 60 * 1000));
+    // Calculate the remaining days
+    const fechaDeReferencia = new Date(
+      fechaNacimiento.getFullYear() + aniosMeses,
+      fechaNacimiento.getMonth() + mesesRestantes,
+      fechaNacimiento.getDate()
+    );
+    const diferenciaEnDias = Math.floor(
+      (fechaHoy - fechaDeReferencia) / (24 * 60 * 60 * 1000)
+    );
 
-    const edad = `${diferenciaEnAnios} años y ${diferenciaEnDias} días`;
+    const edadAnios = anios > 0 ? `${anios} años` : "";
+    const edadMeses = aniosMeses > 0 ? `${aniosMeses} meses` : "";
+    const edadDias = diferenciaEnDias > 0 ? `${diferenciaEnDias} días` : "";
+
+    const edad = `${edadAnios} ${edadMeses} ${edadDias}`.trim();
 
     return {
       edad
