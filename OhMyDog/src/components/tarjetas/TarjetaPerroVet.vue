@@ -70,7 +70,7 @@ import { defineComponent, ref } from "vue";
 import { api } from "../../boot/axios.js";
 
 export default defineComponent({
-  name: "TarjetaPerro",
+  name: "TarjetaPerroVet",
   components: {},
   props: {
     rol: String,
