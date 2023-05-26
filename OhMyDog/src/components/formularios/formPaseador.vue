@@ -13,11 +13,6 @@
             filled
             v-model="name"
             label="Nombre y apellido"
-            hint="Nombre y apellido"
-            lazy-rules
-            :rules="[
-              (val) => (val && val.length > 0) || 'No te olvides del nombre!',
-            ]"
           />
 
           <q-input
@@ -26,10 +21,6 @@
             type="number"
             v-model="dni"
             label="DNI"
-            lazy-rules
-            :rules="[
-              (val) => (val !== null) || 'No te olvides del DNI!',
-            ]"
           />
 
           <q-input
@@ -38,10 +29,6 @@
             type="email"
             v-model="mail"
             label="Mail de contacto"
-            lazy-rules
-            :rules="[
-              (val) => (val !== null && val !== '') || 'No te olvides del mail!',
-            ]"
           />
 
           <q-input
@@ -50,9 +37,6 @@
             v-model="zona"
             label="Zona"
             lazy-rules
-            :rules="[
-              (val) => (val && val.length > 0) || 'No te olvides de la zona!',
-            ]"
           />
 
           <div class="column q-px-lg bg-white">
@@ -80,9 +64,13 @@
             placeholder="Información adicional"
             type="textarea"
           />
-
+          <ul class="q-mx-md q-py-xs">
+          <li v-for="mnsj in mensajeError" :key="mnsj" class="bg-white text-accent text-bold">
+            {{ mnsj }}
+          </li>
+          </ul>
           <div class="row justify-end">
-            <q-btn label="Registrar paseador" type="submit" color="accent" />
+            <q-btn label="Registrar paseador" :disabled="!camposValidos" type="submit" color="accent" />
             <q-btn
               label="Cancelar"
               type="reset"
@@ -157,11 +145,12 @@ const semana = [
 export default defineComponent({
   name: "formPaseador",
   setup() {
-    const name = ref(null);
-    const dni = ref(null);
-    const mail = ref(null);
-    const zona = ref(null);
-    const info = ref(null);
+
+    const name = ref("");
+    const dni = ref("");
+    const mail = ref("");
+    const zona = ref("");
+    const info = ref("");
 
     const dias = ref([]);
 
@@ -213,6 +202,46 @@ export default defineComponent({
         console.error(error)
       }
     }
+  },
+  computed: {
+    mensajeError(){
+      let sError = [];
+      if (!this.nombreValido ){
+        sError.push( " El nombre no es correcto" )
+      }
+      if (!this.dniValido ){
+        sError.push("El DNI no es correcto")
+      }
+      if (!this.mailValido ){
+        sError.push("El mail no es correcto")
+      }
+      if (!this.zonaValida ){
+        sError.push("La zona no es correcta")
+      }
+      if (!this.diasValidos ){
+        sError.push("Seleccione por lo menos un horario")
+      }
+      return sError
+    },
+    nombreValido(){
+      return this.name.length > 0 && /^[A-Za-z\s]+$/.test(this.name);;
+    },
+    dniValido(){
+      return this.dni.length == 8 && /^\d+$/.test(this.dni);;
+    },
+    mailValido(){
+      return this.mail.length > 5 && this.mail.includes('@') && this.mail.includes('.')
+    },
+    zonaValida(){
+      return this.zona.length > 0
+    },
+    diasValidos(){
+      return this.dias.length > 0;
+    },
+    camposValidos(){
+      return this.nombreValido && this.dniValido && this.mailValido && this.zonaValida && this.diasValidos;
+    },
+    
   }
 });
 </script>

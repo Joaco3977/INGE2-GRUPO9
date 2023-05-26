@@ -7,9 +7,9 @@
     >
       <q-img src="logotipo" />
 
-      <div class="q-pa-md text-center text-white bg-accent">
+      <!-- <div class="q-pa-md text-center text-white bg-accent">
         ROL ACTUAL: {{ roles[store.rol + 1] }}
-      </div>
+      </div> -->
 
       <q-tabs
         v-model="store.tab"
@@ -19,7 +19,7 @@
         class="q-pt-sm bg-primary text-white"
         style="max-height: 60vh"
       >
-        <q-tab name="Quienes Somos" icon="ion-home" label="Quienes Somos" />
+        <!-- <q-tab name="Quienes Somos" icon="ion-home" label="Quienes Somos" /> -->
         <q-tab
           v-if="store.rol > 0"
           name="Mi Perfil"
@@ -42,7 +42,7 @@
           v-if="store.rol === 2"
           name="Administrar Turnos"
           icon="ion-calendar"
-          label="Administrar Turnos"
+          label="Turnos"
         />
         <q-tab
           v-if="store.rol === 1"
@@ -66,7 +66,7 @@
         <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
         <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
-        <q-tab name="TESTING" icon="ion-walk" label="TESTING" />
+        <!-- <q-tab name="TESTING" icon="ion-walk" label="TESTING" /> -->
         <!-- <q-tab
           v-if="store.rol === 2"
           name="Responder Consultas"
