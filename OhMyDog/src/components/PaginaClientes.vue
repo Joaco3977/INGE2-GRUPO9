@@ -62,7 +62,7 @@
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      <FormCliente @registrarCliente="registrarCliente" />
+      <FormCliente @registrarCliente="registrarCliente" :mailsClientes="mailsClientes" />
     </q-dialog>
   </div>
 </template>
@@ -87,8 +87,10 @@ export default defineComponent({
     const inputRef = ref(null);
 
     const tab = ref("Buscar Cliente");
+
     const clientes = reactive([]);
     const clientesFiltrados = ref([]);
+    const mailsClientes = ref([]);
     const dniFiltrar = ref("");
 
     const registrarCliente = async (cliente) => {
@@ -117,6 +119,8 @@ export default defineComponent({
         if (response !== false) {
           clientes.value = response.data;
           clientesFiltrados.value = response.data; // en clientes mantendria todos, mientras que los q se muestran en pantalla los tengo el el clientesFiltrados!
+          mailsClientes.value = response.data.map((cliente) => cliente.MAIL);
+          console.log("Los mails: ", mailsClientes.value)
         }
       } catch (error) {
         console.error(error);
@@ -149,6 +153,7 @@ export default defineComponent({
       tab,
       clientes,
       clientesFiltrados,
+      mailsClientes,
       dniFiltrar,
       loadClientes,
       registrarCliente,
