@@ -56,10 +56,6 @@
             <div>{{ sexo }}</div>
           </div>
           <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Teléfono:</div>
-            <div>{{ telefono }}</div>
-          </div>
-          <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Mail:</div>
             <div>{{ mail }}</div>
           </div>

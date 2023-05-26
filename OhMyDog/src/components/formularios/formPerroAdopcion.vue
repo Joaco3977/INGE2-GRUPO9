@@ -33,23 +33,23 @@
             class="q-px-xl"
             label="Sexo"
           />
-          <q-input v-model="perroTELEFONO" class="q-px-xl" label="Teléfono celular" />
-          <q-input
-            v-model="perroMAIL"
-            class="q-px-xl"
-            label="Mail"
-            type="email"
-          />
+
           <q-input
             v-model="perroCOMENTARIO"
             class="q-px-xl"
             label="Comentarios"
             type="text"
           />
+          <ul class="q-mx-md q-py-xs">
+          <li v-for="mnsj in mensajeError" :key="mnsj" class="bg-white text-accent text-bold">
+            {{ mnsj }}
+          </li>
+          </ul>
           <div class="row justify-end q-pt-lg">
             <q-btn
               label="Registrar Adopción"
-              @click="chequearSubmit()"
+              @click="this.ejecutarFuncionPadre();"
+              :disabled="!camposValidos"
               color="accent"
             />
             <q-btn
@@ -80,7 +80,6 @@ export default defineComponent({
     const perroSEXO = ref("");
     const perroTAMANIO = ref("");
     const perroEDAD = ref("");
-    const perroTELEFONO = ref("");
     const perroNOMBRE = ref("");
     const perroMAIL = ref("");
     const perroCOMENTARIO = ref("");
@@ -91,7 +90,7 @@ export default defineComponent({
         sexo: perroSEXO.value.value,
         tamanio: perroTAMANIO.value.value,
         edad: perroEDAD.value,
-        telefono: perroTELEFONO.value,
+        telefono: "0",
         nombre: perroNOMBRE.value,
         mail: perroMAIL.value,
         comentario: perroCOMENTARIO.value,
@@ -105,7 +104,6 @@ export default defineComponent({
       perroSEXO.value = "";
       perroTAMANIO.value = "";
       perroEDAD.value = "";
-      perroTELEFONO.value = "";
       perroNOMBRE.value = "";
       perroMAIL.value = "";
       perroCOMENTARIO.value = "";
@@ -115,7 +113,6 @@ export default defineComponent({
     return {
       perroEDAD,
       perroSEXO,
-      perroTELEFONO,
       perroNOMBRE,
       perroMAIL,
       perroCOMENTARIO,
@@ -139,33 +136,44 @@ export default defineComponent({
       const perro = this.getDatosAdopcion();
       this.$emit("registrarPerro", perro);
     },
-
-    chequearSubmit() {
-      /* esto está horrible */
-
-      let nombreValido = this.perroNOMBRE.length > 0;
-      let tamanioValido = this.perroTAMANIO.label != undefined
-      let sexoValido = this.perroSEXO.label != undefined
-      let edadValido = this.perroEDAD.length > 0 && /^\d+$/.test(this.perroEDAD) ;
-      let telefonoValido = /^\d+$/.test(this.perroTELEFONO) && 
-        ( this.perroTELEFONO.length >=  7 ||
-          this.perroTELEFONO.length <= 12 )
-      let mailValido = this.perroMAIL.includes("@")
-      
-      if ( nombreValido && tamanioValido && edadValido && telefonoValido && sexoValido && mailValido) { 
-        this.ejecutarFuncionPadre();
-      } else {
-
-        this.$q.notify({
-          message: 'Los datos son incorrectos',
-          icon: 'warning',
-          color: 'accent',
-          position: 'center',
-          timeout:'1500',
-        });
-        this.onReset();
-      }
-    },
   },
+   computed: {
+    mensajeError(){
+      let sError = [];
+      /*if (!this.nombreValido ){
+        sError.push( " El nombre no es correcto" )
+      }
+      if (!this.dniValido ){
+        sError.push("El DNI no es correcto")
+      }
+      if (!this.mailValido ){
+        sError.push("El mail no es correcto")
+      }
+      if (!this.zonaValida ){
+        sError.push("La zona no es correcta")
+      }
+      if (!this.diasValidos ){
+        sError.push("Seleccione por lo menos un horario")
+      }*/
+      return sError
+    },
+    nombreValido(){
+      return this.perroNOMBRE.length > 0 && /^[A-Za-z\s]+$/.test(this.perroNOMBRE);;
+    },
+    tamanioValido(){
+      return this.perroTAMANIO.value != undefined;
+    },
+    sexoValido(){
+      return this.perroSEXO.value != undefined;
+    },
+    edadValida(){
+      return this.perroEDAD.length >= 0 && this.perroEDAD.length < 3 && /^\d+$/.test(this.perroEDAD);
+    },
+    camposValidos(){
+      console.log(this.perroTAMANIO.value)
+      return this.nombreValido && this.tamanioValido && this.edadValida && this.sexoValido;
+    },
+    
+  }
 });
 </script>

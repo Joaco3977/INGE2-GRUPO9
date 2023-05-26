@@ -227,7 +227,7 @@ export default defineComponent({
       return this.name.length > 0 && /^[A-Za-z\s]+$/.test(this.name);;
     },
     dniValido(){
-      return this.dni.length == 8 && /^\d+$/.test(this.dni);;
+      return this.dni.length == 8 && /^\d+$/.test(this.dni);
     },
     mailValido(){
       return this.mail.length > 5 && this.mail.includes('@') && this.mail.includes('.')
