@@ -61,64 +61,8 @@
       </q-scroll-area>
     </q-card>
 
-    <!-- ESTE FORMULARO NO DEBERÍA ESTAR ACÁ -->
     <q-dialog v-model="mostrarPopup">
-      <div class="full-width row items-center bg-white">
-        <div class="q-pa-md" style="width: 50rem">
-          <div class="textoTituloTarjeta text-accent q-pt-md">
-            Agregar Cliente
-          </div>
-          <q-form class="q-pa-md" @submit.prevent="registrarCliente">
-            <q-input
-              ref="inputRef"
-              class="q-px-xl"
-              label="DNI"
-              v-model="clienteAgregarDni"
-              maxlength="8"
-              reactive-rules
-              hide-bottom-space="true"
-              :rules="[
-                (val) => !!val | 'Es necesario completar este campo',
-                (val) => /^\d+$/.test(val) == true,
-              ]"
-            />
-            <q-input
-              class="q-px-xl"
-              v-model="clienteAgregarNombreApellido"
-              label="Nombre y Apellido"
-              type="text"
-              hide-bottom-space="true"
-              :rules="[(val) => !!val | 'Es necesario completar este campo']"
-            />
-            <q-input
-              class="q-px-xl"
-              v-model="clienteAgregarMail"
-              label="Correo electrónico"
-              type="email"
-            />
-            <q-input
-              class="q-px-xl"
-              v-model="clienteAgregarTelefono"
-              label="Telefono"
-              type="tel"
-              mask="(###) ### - ####"
-            />
-            <q-input
-              class="q-px-xl"
-              v-model="clienteAgregarDireccion"
-              label="Direccion"
-              type="text"
-            />
-            <q-btn
-              push
-              class="q-mt-lg q-mx-xl"
-              color="accent"
-              type="submit"
-              label="Registrar Cliente"
-            />
-          </q-form>
-        </div>
-      </div>
+      <FormCliente @registrarCliente="registrarCliente" />
     </q-dialog>
   </div>
 </template>
@@ -130,12 +74,14 @@ import { useStore } from "../pinia/store.js";
 import TarjetaCliente from "./tarjetas/TarjetaCliente.vue";
 import { checkToken } from "../functions/check.js";
 import { QDialog } from "quasar";
+import FormCliente from "./formularios/formCliente.vue"
 
 export default defineComponent({
   name: "PaginaClientes",
   components: {
     TarjetaCliente,
     QDialog,
+    FormCliente,
   },
   setup() {
     const inputRef = ref(null);
@@ -145,22 +91,16 @@ export default defineComponent({
     const clientesFiltrados = ref([]);
     const dniFiltrar = ref("");
 
-    const clienteAgregarDni = ref("");
-    const clienteAgregarNombreApellido = ref("");
-    const clienteAgregarMail = ref("");
-    const clienteAgregarTelefono = ref("");
-    const clienteAgregarDireccion = ref("");
-
-    const registrarCliente = async () => {
+    const registrarCliente = async (cliente) => {
       try {
         const response = await api.post("/cliente/addCliente", {
           dniVet: useStore().dni,
           cliente: {
-            dni: clienteAgregarDni.value,
-            nombreApellido: clienteAgregarNombreApellido.value,
-            mail: clienteAgregarMail.value,
-            telefono: clienteAgregarTelefono.value,
-            direccion: clienteAgregarDireccion.value,
+            dni: cliente.dni,
+            nombreApellido: cliente.nombreApellido,
+            mail: cliente.mail,
+            telefono: cliente.telefono,
+            direccion: cliente.direccion,
           },
         });
       } catch (error) {
@@ -210,11 +150,6 @@ export default defineComponent({
       clientes,
       clientesFiltrados,
       dniFiltrar,
-      clienteAgregarDni,
-      clienteAgregarNombreApellido,
-      clienteAgregarMail,
-      clienteAgregarTelefono,
-      clienteAgregarDireccion,
       loadClientes,
       registrarCliente,
       filtrarClientes,
