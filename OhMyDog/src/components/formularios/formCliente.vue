@@ -49,7 +49,7 @@
               :disabled="!camposValidos"
               type="submit"
               color="accent"
-              v-close-popup
+              @click="agregarPerro = true"
             />
             <q-btn
               label="Cancelar"
@@ -58,20 +58,29 @@
               flat
               class="q-ml-sm"
               v-close-popup
+              
             />
           </div>
         </q-form>
       </q-card-section>
     </q-card>
+
+    <q-dialog v-model="agregarPerro">
+      <FormPerro />
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import { defineComponent, reactive, ref, watch } from "vue";
+import FormPerro from './formPerro.vue'
 
 export default {
   name: "FormCliente",
   emits: ["registrarCliente"],
+  components:{
+    FormPerro,
+  },
    props: {
     mailsClientes: {
       type: Array,
@@ -94,6 +103,7 @@ export default {
     return {
       cliente,
       submitForm,
+      agregarPerro: ref(false),
     };
   },
   computed: {
