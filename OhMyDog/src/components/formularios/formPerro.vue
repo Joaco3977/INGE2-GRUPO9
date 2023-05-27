@@ -3,7 +3,7 @@
     <q-card style="width: 40rem">
       <q-card-section class="bg-secondary">
         <div class="text-h5 text-uppercase text-white text-center text-bold">
-          Agregar perro
+          Agregar perro a cliente
         </div>
       </q-card-section>
 
@@ -21,42 +21,44 @@
             class="q-px-xl"
             label="Tamaño"
           />
-          <q-input
-            v-model="perroCOLOR"
-            class="q-px-xl"
-            label="Color"
-            type="text"
-          />
-          <q-input
-            v-model="perroNACIMIENTO"
-            class="q-px-xl"
-            label="Fecha de nacimiento"
-            type="text"
-          />
+          <div class="column items-center bg-white q-pa-sm">
+            <div class="q-px-xl q-py-sm text-start self-start color-grey">
+              Fecha de nacimiento:
+            </div>
+            <q-date
+              v-model="perroNACIMIENTO"
+              minimal
+              :options="opcionesFecha"
+            />
+          </div>
           <q-select
             v-model="perroSEXO"
             :options="opcionSexo"
             class="q-px-xl"
             label="Sexo"
           />
-          <q-input v-model="perroTELEFONO" class="q-px-xl" label="Teléfono celular" />
           <q-input
-            v-model="perroMAIL"
+            v-model="perroCOLOR"
             class="q-px-xl"
-            label="Mail"
-            type="email"
-          />
-          <q-input
-            v-model="perroCOMENTARIO"
-            class="q-px-xl"
-            label="Comentarios"
+            label="Color del perro"
             type="text"
           />
+          <ul class="q-mx-md q-py-xs">
+            <li
+              v-for="mnsj in mensajeError"
+              :key="mnsj"
+              class="bg-white text-accent text-bold"
+            >
+              {{ mnsj }}
+            </li>
+          </ul>
           <div class="row justify-end q-pt-lg">
             <q-btn
-              label="Registrar Adopción"
-              @click="chequearSubmit()"
+              label="Registrar perro"
+              @click="this.ejecutarFuncionPadre()"
+              :disabled="!camposValidos"
               color="accent"
+              v-close-popup
             />
             <q-btn
               label="Cancelar"
@@ -76,31 +78,30 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useStore } from "src/pinia/store";
-import { useQuasar } from 'quasar'
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "formAdopcion",
   setup() {
-    const $q = useQuasar()
+    const $q = useQuasar();
 
     const perroSEXO = ref("");
     const perroTAMANIO = ref("");
-    const perroEDAD = ref("");
-    const perroTELEFONO = ref("");
+    const perroNACIMIENTO = ref("");
     const perroNOMBRE = ref("");
     const perroMAIL = ref("");
-    const perroCOMENTARIO = ref("");
+    const perroCOLOR = ref("");
     const perroDNICLIENTE = useStore().dni;
 
-    const getDatosAdopcion = () => {
+    const getDatosPerro = () => {
       const perro = {
         sexo: perroSEXO.value.value,
         tamanio: perroTAMANIO.value.value,
-        edad: perroEDAD.value,
-        telefono: perroTELEFONO.value,
+        edad: perroNACIMIENTO.value,
+        telefono: "0",
+        color: perroCOLOR.value,
         nombre: perroNOMBRE.value,
         mail: perroMAIL.value,
-        comentario: perroCOMENTARIO.value,
         dnicliente: perroDNICLIENTE,
       };
       return perro;
@@ -110,21 +111,38 @@ export default defineComponent({
       console.log("Los datos están mal!");
       perroSEXO.value = "";
       perroTAMANIO.value = "";
-      perroEDAD.value = "";
-      perroTELEFONO.value = "";
+      perroNACIMIENTO.value = "";
       perroNOMBRE.value = "";
       perroMAIL.value = "";
-      perroCOMENTARIO.value = "";
+      perroCOLOR.value = "";
       return false;
     };
 
+    const opcionesFecha = (date) => {
+      const hoy = new Date().toLocaleDateString('zh-Hans-CN', {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+
+      const fechaHace25Anios = new Date()
+      fechaHace25Anios.setFullYear(fechaHace25Anios.getFullYear() - 25);
+      const fechaStr = fechaHace25Anios.toLocaleDateString('zh-Hans-CN', {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+
+      //console.log(date, hoy, fechaStr);
+      return date <= hoy && date >= fechaStr;
+    };
+
     return {
-      perroEDAD,
+      perroNACIMIENTO,
       perroSEXO,
-      perroTELEFONO,
       perroNOMBRE,
       perroMAIL,
-      perroCOMENTARIO,
+      perroCOLOR,
       perroDNICLIENTE,
       opcionSexo: [
         { label: "Macho", value: "Macho" },
@@ -136,41 +154,69 @@ export default defineComponent({
         { label: "Mediano", value: "Mediano" },
         { label: "Grande", value: "Grande" },
       ],
-      getDatosAdopcion,
+      getDatosPerro,
       onReset,
+      opcionesFecha,
     };
   },
   methods: {
     ejecutarFuncionPadre() {
-      const perro = this.getDatosAdopcion();
+      const perro = this.getDatosPerro();
       this.$emit("registrarPerro", perro);
     },
-
-    chequearSubmit() {
-      /* esto está horrible */
-
-      let nombreValido = this.perroNOMBRE.length > 0;
-      let tamanioValido = this.perroTAMANIO.label != undefined
-      let sexoValido = this.perroSEXO.label != undefined
-      let edadValido = this.perroEDAD.length > 0 && /^\d+$/.test(this.perroEDAD) ;
-      let telefonoValido = /^\d+$/.test(this.perroTELEFONO) &&
-        ( this.perroTELEFONO.length >=  7 ||
-          this.perroTELEFONO.length <= 12 )
-      let mailValido = this.perroMAIL.includes("@")
-
-      if ( nombreValido && tamanioValido && edadValido && telefonoValido && sexoValido && mailValido) {
-        this.ejecutarFuncionPadre();
-      } else {
-
-        this.$q.notify({
-          message: 'Los datos son incorrectos',
-          icon: 'warning',
-          color: 'accent',
-          position: 'center',
-          timeout:'1500',
-        });
-        this.onReset();
+  },
+  computed: {
+    mensajeError() {
+      let sError = [];
+      if (!this.nombreValido) {
+        sError.push(" El nombre no es correcto");
       }
+      if (!this.tamanioValido) {
+        sError.push("El tamaño debe completarse");
+      }
+      if (!this.edadValida) {
+        sError.push("El nacimiento no es correcto");
+      }
+      if (!this.sexoValido) {
+        sError.push("El sexo debe completarse");
+      }
+      if (!this.colorValido) {
+        sError.push("El color no es correcto");
+      }
+      return sError;
+    },
+    nombreValido() {
+      return (
+        this.perroNOMBRE.length > 0 && /^[A-Za-z\s]+$/.test(this.perroNOMBRE)
+      );
+    },
+    colorValido() {
+      return (
+        this.perroCOLOR.length > 0 && /^[A-Za-z\s]+$/.test(this.perroCOLOR)
+      );
+    },
+    tamanioValido() {
+      return this.perroTAMANIO.value != undefined;
+    },
+    sexoValido() {
+      return this.perroSEXO.value != undefined;
+    },
+    edadValida() {
+      console.log(this.perroNACIMIENTO);
+      return (
+        
+        this.perroNACIMIENTO.length >= 0
+      );
+    },
+    camposValidos() {
+      console.log(this.perroTAMANIO.value);
+      return (
+        this.nombreValido &&
+        this.tamanioValido &&
+        this.edadValida &&
+        this.sexoValido &&
+        this.colorValido
+      );
     },
   },
 });

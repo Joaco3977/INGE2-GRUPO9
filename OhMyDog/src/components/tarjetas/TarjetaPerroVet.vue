@@ -76,7 +76,7 @@
 
       <q-tab-panel name="turnos" class="bg-primary">
         <div horizontal style="width: 55rem; max-width: 55rem; max-height: 40rem">
-              holaa
+          <SubPaginaTurnos :nombrePerro="perro.NOMBRE" />
         </div>
       </q-tab-panel>
       
@@ -87,10 +87,13 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { api } from "../../boot/axios.js";
+import SubPaginaTurnos from "../subPaginas/SubPaginaTurnos.vue";
 
 export default defineComponent({
   name: "TarjetaPerroVet",
-  components: {},
+  components: {
+    SubPaginaTurnos,
+  },
   props: {
     rol: String,
     perro: {

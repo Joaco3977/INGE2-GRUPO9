@@ -74,7 +74,7 @@
           </div>
 
           <div class="column col-3 justify-center content-end">
-                  <q-btn class="textoBoton q-ml-lg" color="accent"> Agregar perro </q-btn>
+                  <q-btn class="textoBoton q-ml-lg" color="accent" @click="agregarPerro = true"> Agregar perro </q-btn>
           </div>
         </div>
       </q-card-section>
@@ -104,6 +104,10 @@
       </q-card>
     </q-dialog>
 
+    <q-dialog v-model="agregarPerro">
+      <FormPerro />
+    </q-dialog>
+
   </div>
 </template>
 
@@ -112,11 +116,13 @@ import { api } from "src/boot/axios";
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import TarjetaPerroVet from "./TarjetaPerroVet.vue"
+import FormPerro from "../formularios/formPerro.vue"
 
 export default defineComponent({
   name: "TarjetaCliente",
   components: {
     TarjetaPerroVet,
+    FormPerro,
   },
   props: {
     dni: String,
@@ -133,6 +139,7 @@ export default defineComponent({
     return {
       confirmar: ref(false),
       verPerro: ref(false),
+      agregarPerro: ref(false),
       perrosCliente,
       perroElegido,
     };

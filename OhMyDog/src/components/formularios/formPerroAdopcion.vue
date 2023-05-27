@@ -140,21 +140,19 @@ export default defineComponent({
    computed: {
     mensajeError(){
       let sError = [];
-      /*if (!this.nombreValido ){
+      if (!this.nombreValido ){
         sError.push( " El nombre no es correcto" )
       }
-      if (!this.dniValido ){
-        sError.push("El DNI no es correcto")
+      if (!this.tamanioValido ){
+        sError.push("Seleccione un tamaño")
       }
-      if (!this.mailValido ){
-        sError.push("El mail no es correcto")
+      if (!this.sexoValido ){
+        sError.push("Seleccione un sexo")
       }
-      if (!this.zonaValida ){
-        sError.push("La zona no es correcta")
+      if (!this.edadValida ){
+        sError.push("La edad no es correcta")
       }
-      if (!this.diasValidos ){
-        sError.push("Seleccione por lo menos un horario")
-      }*/
+      
       return sError
     },
     nombreValido(){

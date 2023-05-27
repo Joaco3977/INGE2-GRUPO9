@@ -22,14 +22,14 @@
     <q-card flat stretch class="column">
       <div class="row q-mx-lg q-py-sm justify-start items-center" style="width: max-content">
         <div class="">
-          Ingresar el DNI del cliente:
+          Ingresar el DNI o nombre del cliente:
         </div>
         <q-input
         filled
           class="q-pl-sm q-pr-xl"
           v-model="dniFiltrar"
           :dense="dense"
-          placeholder="n° DNI"
+          placeholder="n° DNI o nombre"
           style="width: 20rem"
         >
           <template v-slot:append>
