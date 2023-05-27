@@ -32,19 +32,19 @@
         narrow-indicator
       >
         <q-tab
-          @click="loadTurnosPropios('Cancelados')"
+          @click="loadTurnosPropios('Cancelado')"
           name="turnosCancelados"
           label="Cancelados"
         />
         <q-tab
-          @click="loadTurnosPropios('Pasados')"
+          @click="loadTurnosPropios('Pasado')"
           name="turnosPasados"
           label="Pasados"
         />
         <q-tab
-          @click="loadTurnosPropios('Solicitado')"
+          @click="loadTurnosPropios('Pendiente')"
           name="turnosSolicitados"
-          label="Solicitados"
+          label="Pendientes"
         />
         <q-tab
           @click="loadTurnosPropios('Confirmado')"
@@ -63,50 +63,77 @@
       >
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="turnosCancelados">
-            <TarjetaTurnoCancelado
-              v-for="item in 5"
-              :key="item"
-              :nombrePerro="como"
-              :fecha="fecha"
-              :hora="hora"
-              :nombreServicio="Consulta"
+            <div></div>
+            <TarjetaTurno
+              v-for="turno in listaTurnos"
+              :key="turno.ID"
+              :rol="rol"
+              :state="turno.ESTADO"
+              :cliente="turno.DNICLIENTE"
+              :nombrePerro="turno.IDPERRO"
+              :fecha="turno.FECHA"
+              :nombreServicio="turno.IDSERVICIO"
             />
+            <div
+              class="row textoNoItems justify-center full-height content-center q-pa-xl"
+              v-if="listaTurnos.length == 0"
+            >
+              ¡No tenés ningún turno cancelado!
+            </div>
           </q-tab-panel>
           <q-tab-panel name="turnosPasados">
             <TarjetaTurno
-              v-for="item in 5"
-              :key="item"
+              v-for="turno in listaTurnos"
+              :key="turno.ID"
               :rol="rol"
-              :state="state"
-              :nombrePerro="como"
-              :fecha="fecha"
-              :hora="hora"
-              :nombreServicio="Consulta"
+              :state="turno.ESTADO"
+              :cliente="turno.DNICLIENTE"
+              :nombrePerro="turno.IDPERRO"
+              :fecha="turno.FECHA"
+              :nombreServicio="turno.IDSERVICIO"
             />
+            <div
+              class="row textoNoItems justify-center full-height content-center q-pa-xl"
+              v-if="listaTurnos.length == 0"
+            >
+              ¡No tenés ningún turno pasado!
+            </div>
           </q-tab-panel>
           <q-tab-panel name="turnosSolicitados">
             <TarjetaTurno
-              v-for="item in 5"
-              :key="item"
+              v-for="turno in listaTurnos"
+              :key="turno.ID"
               :rol="rol"
-              :state="state"
-              :nombrePerro="como"
-              :fecha="fecha"
-              :hora="hora"
-              :nombreServicio="Consulta"
+              :state="turno.ESTADO"
+              :cliente="turno.DNICLIENTE"
+              :nombrePerro="turno.IDPERRO"
+              :fecha="turno.FECHA"
+              :nombreServicio="turno.IDSERVICIO"
             />
+            <div
+              class="row textoNoItems justify-center full-height content-center q-pa-xl"
+              v-if="listaTurnos.length == 0"
+            >
+              ¡No tenés ningún turno pendiente!
+            </div>
           </q-tab-panel>
           <q-tab-panel name="turnosConfirmados">
             <TarjetaTurno
-              v-for="item in 5"
-              :key="item"
+              v-for="turno in listaTurnos"
+              :key="turno.ID"
               :rol="rol"
-              :state="state"
-              :nombrePerro="como"
-              :fecha="fecha"
-              :hora="hora"
-              :nombreServicio="Consulta"
+              :state="turno.ESTADO"
+              :cliente="turno.DNICLIENTE"
+              :nombrePerro="turno.IDPERRO"
+              :fecha="turno.FECHA"
+              :nombreServicio="turno.IDSERVICIO"
             />
+            <div
+              class="row textoNoItems justify-center full-height content-center q-pa-xl"
+              v-if="listaTurnos.length == 0"
+            >
+              ¡No tenés ningún turno Confirmado!
+            </div>
           </q-tab-panel>
         </q-tab-panels>
       </q-scroll-area>
@@ -132,7 +159,6 @@ export default defineComponent({
   name: "PaginaTurnos",
   components: {
     TarjetaTurno,
-    TarjetaTurnoCancelado,
     FormTurno,
   },
   setup() {
@@ -161,7 +187,7 @@ export default defineComponent({
         })
         .then((response) => {
           console.log(response.data);
-          this.listaTurnos.value = response.data;
+          this.listaTurnos = response.data;
         })
         .catch((error) => {
           console.log(error);
@@ -170,7 +196,7 @@ export default defineComponent({
   },
   mounted() {
     checkToken();
-    this.loadTurnosPropios("Solicitado");
+    this.loadTurnosPropios("Confirmado");
   },
 });
 </script>
