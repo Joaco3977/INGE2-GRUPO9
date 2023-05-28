@@ -82,7 +82,7 @@ router.post('/addPerroPerdido', async (req, res) => {
                     //añadir a log
                     console.log("\x1b[35m%s\x1b[0m", `Cliente agrego al perro perdido: ${req.body.perro.nombre}`)
                     Log.agregarEntradaLog(req.body.rol, req.body.dni, `agrego al PERRO PERDIDO ${req.body.perro.nombre}`)
-                    res.status(200)
+                    res.status(200).send({})
                 } else {
                     res.status(401)
                 }

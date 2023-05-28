@@ -64,6 +64,8 @@
     <q-dialog v-model="mostrarPopup">
       <FormCliente @registrarCliente="registrarCliente" :mailsClientes="mailsClientes" />
     </q-dialog>
+    
+
   </div>
 </template>
 
@@ -105,6 +107,7 @@ export default defineComponent({
             direccion: cliente.direccion,
           },
         });
+        loadClientes();
       } catch (error) {
         console.error(error);
       }

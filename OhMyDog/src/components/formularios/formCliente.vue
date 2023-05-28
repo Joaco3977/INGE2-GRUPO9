@@ -45,11 +45,11 @@
           </ul>
           <div class="row justify-end q-pt-lg">
             <q-btn
-              label="Registrar paseador"
+              label="Registrar cliente"
               :disabled="!camposValidos"
               type="submit"
               color="accent"
-              @click="agregarPerro = true"
+              v-close-popup
             />
             <q-btn
               label="Cancelar"
@@ -58,28 +58,23 @@
               flat
               class="q-ml-sm"
               v-close-popup
-              
             />
           </div>
         </q-form>
       </q-card-section>
     </q-card>
 
-    <q-dialog v-model="agregarPerro">
-      <FormPerro />
-    </q-dialog>
+
   </div>
 </template>
 
 <script>
 import { defineComponent, reactive, ref, watch } from "vue";
-import FormPerro from './formPerro.vue'
 
 export default {
-  name: "FormCliente",
+  name: "formCliente",
   emits: ["registrarCliente"],
   components:{
-    FormPerro,
   },
    props: {
     mailsClientes: {
@@ -96,6 +91,7 @@ export default {
       direccion: "",
     });
 
+   
     const submitForm = () => {
       emit("registrarCliente", cliente.value);
     };
@@ -103,8 +99,7 @@ export default {
     return {
       cliente,
       submitForm,
-      agregarPerro: ref(false),
-    };
+    }
   },
   computed: {
     mensajeError() {

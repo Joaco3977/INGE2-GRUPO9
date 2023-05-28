@@ -83,7 +83,7 @@ import { useStore } from "src/pinia/store";
 import { useQuasar } from "quasar";
 
 export default defineComponent({
-  name: "formAdopcion",
+  name: "formTurnoVeterinario",
   setup() {
     const $q = useQuasar();
     const nombreCliente = ref("");

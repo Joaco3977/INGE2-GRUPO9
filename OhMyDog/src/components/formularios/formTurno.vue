@@ -55,7 +55,7 @@ import { useStore } from "src/pinia/store";
 import { useQuasar } from 'quasar'
 
 export default defineComponent({
-  name: "formAdopcion",
+  name: "formTurno",
   setup() {
     const $q = useQuasar()
 

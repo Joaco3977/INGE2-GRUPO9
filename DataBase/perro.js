@@ -24,6 +24,15 @@ const getPerrosPropios = async (dni) => {
         return false;
     }
 }
+const addPerro = async (nuevoPerro) => {
+    try {
+        await knex('perro').insert(nuevoPerro)
+        return true
+    } catch (error) {
+        console.error(error)
+        return false
+    }
+}
 
 router.post('/getPerrosPropios', async (req, res) => {
     getPerrosPropios(req.body.dni)
@@ -39,6 +48,35 @@ router.post('/getPerrosPropios', async (req, res) => {
         res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
+
+router.post('/addPerro', async (req, res) => {
+    console.log(req.body.perro)
+    const nuevoPerro = {
+        SEXO:req.body.perro.sexo,
+        TAMANIO:req.body.perro.tamanio,
+        NACIMIENTO:req.body.perro.nacimiento,
+        RAZA:req.body.perro.raza,
+        NOMBRE:req.body.perro.nombre,
+        PESO:req.body.perro.peso,
+        COLOR:req.body.perro.color,
+        DNICLIENTE:req.body.perro.dnicliente,
+    }
+    addPerro(nuevoPerro)
+    .then ((resultadoAdd) => {
+        if (resultadoAdd !== false) {
+            Log.agregarEntradaLog(req.body.rol, req.body.dni, `agrego al PERRO  ${req.body.perro.nombre} al cliente con dni ${req.body.perro.dnicliente}`)
+            Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO agrego al perro: ${req.body.perro.nombre} al cliente con dni ${req.body.perro.dnicliente}`)
+            res.status(200).send({})
+        } else {
+            res.status(401).send('No fue posible agregar al perro');
+        }
+    })
+    .catch((error) => {
+        console.error(error)
+        res.status(401).send('No fue posible conectar con la base de datos');
+    })
+
+});
 
 router.post('/deletePerroPropio', async (req, res) => { 
     knex('perro').where({

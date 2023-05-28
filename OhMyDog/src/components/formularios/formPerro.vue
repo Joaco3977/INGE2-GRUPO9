@@ -43,6 +43,18 @@
             label="Color del perro"
             type="text"
           />
+          <q-input
+            v-model="perroRAZA"
+            class="q-px-xl"
+            label="Raza del perro"
+            type="text"
+          />
+          <q-input
+            v-model="perroPESO"
+            class="q-px-xl"
+            label="Peso del perro"
+            type="number"
+          />
           <ul class="q-mx-md q-py-xs">
             <li
               v-for="mnsj in mensajeError"
@@ -81,7 +93,7 @@ import { useStore } from "src/pinia/store";
 import { useQuasar } from "quasar";
 
 export default defineComponent({
-  name: "formAdopcion",
+  name: "formPerro",
   setup() {
     const $q = useQuasar();
 
@@ -89,20 +101,19 @@ export default defineComponent({
     const perroTAMANIO = ref("");
     const perroNACIMIENTO = ref("");
     const perroNOMBRE = ref("");
-    const perroMAIL = ref("");
+    const perroRAZA = ref("");
     const perroCOLOR = ref("");
-    const perroDNICLIENTE = useStore().dni;
+    const perroPESO = ref("");
 
     const getDatosPerro = () => {
       const perro = {
         sexo: perroSEXO.value.value,
         tamanio: perroTAMANIO.value.value,
-        edad: perroNACIMIENTO.value,
-        telefono: "0",
+        nacimiento: perroNACIMIENTO.value,
+        raza: perroRAZA.value,
         color: perroCOLOR.value,
         nombre: perroNOMBRE.value,
-        mail: perroMAIL.value,
-        dnicliente: perroDNICLIENTE,
+        peso: perroPESO.value,
       };
       return perro;
     };
@@ -113,8 +124,9 @@ export default defineComponent({
       perroTAMANIO.value = "";
       perroNACIMIENTO.value = "";
       perroNOMBRE.value = "";
-      perroMAIL.value = "";
+      perroRAZA.value = "";
       perroCOLOR.value = "";
+      perroPESO.value = "";
       return false;
     };
 
@@ -141,9 +153,9 @@ export default defineComponent({
       perroNACIMIENTO,
       perroSEXO,
       perroNOMBRE,
-      perroMAIL,
+      perroRAZA,
       perroCOLOR,
-      perroDNICLIENTE,
+      perroPESO,
       opcionSexo: [
         { label: "Macho", value: "Macho" },
         { label: "Hembra", value: "Hembra" },
@@ -183,6 +195,12 @@ export default defineComponent({
       if (!this.colorValido) {
         sError.push("El color no es correcto");
       }
+      if (!this.razaValido) {
+        sError.push("La raza no es valida");
+      }
+      if (!this.pesoValido) {
+        sError.push("El peso no es correcto");
+      }
       return sError;
     },
     nombreValido() {
@@ -195,8 +213,14 @@ export default defineComponent({
         this.perroCOLOR.length > 0 && /^[A-Za-z\s]+$/.test(this.perroCOLOR)
       );
     },
+    razaValido() {
+      return this.perroRAZA.length > 0 && /^[A-Za-z\s]+$/.test(this.perroRAZA)
+    },
     tamanioValido() {
       return this.perroTAMANIO.value != undefined;
+    },
+    pesoValido(){
+      return this.perroPESO.length > 0;
     },
     sexoValido() {
       return this.perroSEXO.value != undefined;
@@ -215,7 +239,9 @@ export default defineComponent({
         this.tamanioValido &&
         this.edadValida &&
         this.sexoValido &&
-        this.colorValido
+        this.colorValido &&
+        this.pesoValido &&
+        this.razaValido
       );
     },
   },

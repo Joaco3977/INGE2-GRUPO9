@@ -105,7 +105,7 @@
     </q-dialog>
 
     <q-dialog v-model="agregarPerro">
-      <FormPerro />
+      <FormPerro @registrarPerro= "registrarPerro" />
     </q-dialog>
 
   </div>
@@ -131,10 +131,29 @@ export default defineComponent({
     telefono: String,
     direccion: String,
   },
-  setup() {
+  setup(props) {
     const perrosCliente = ref([])
 
     const perroElegido = ref("");
+
+    const registrarPerro = async (perroAdd) => {
+      try {
+        const response = await api.post("/perro/addPerro", {
+          perro: {
+            nombre:perroAdd.nombre,
+            tamanio:perroAdd.tamanio,
+            color:perroAdd.color,
+            nacimiento:perroAdd.nacimiento,
+            sexo:perroAdd.sexo,
+            raza:perroAdd.raza,
+            peso:perroAdd.peso,
+            dnicliente: props.dni,
+          },
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    };
 
     return {
       confirmar: ref(false),
@@ -142,6 +161,7 @@ export default defineComponent({
       agregarPerro: ref(false),
       perrosCliente,
       perroElegido,
+      registrarPerro,
     };
   },
   methods: {

@@ -128,7 +128,7 @@ router.post('/addCliente', async (req, res) => {
                 if (resultadoAdd !== false) {
                     Log.agregarEntradaLog(2, req.body.dniVet, `registro al CLIENTE ${req.body.cliente.dni}`)
                     Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO registro al CLIENTE: ${req.body.cliente.nombreApellido}, DNI: ${req.body.cliente.dni}, Mail: ${req.body.cliente.mail}`)
-                    res.status(200)
+                    res.status(200).send({})
                 } else {
                     res.status(401).send('No se pudo insertar al nuevo cliente');
                 }

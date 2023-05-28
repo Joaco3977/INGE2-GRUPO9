@@ -27,6 +27,12 @@
             label="Edad aproximada en meses"
             type="text"
           />
+          <q-input
+            v-model="perroMAIL"
+            class="q-px-xl"
+            label="Mail de contacto"
+            type="email"
+          />
           <q-select
             v-model="perroSEXO"
             :options="opcionSexo"
