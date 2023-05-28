@@ -12,7 +12,7 @@
           <!-- las opciones deberian ser los perros de cliente -->
           <q-select
             v-model="nombrePerro"
-            :options="opcionTamanio"
+            :options="opcionPerros"
             class="q-px-xl"
             label="Perro"
           />
@@ -22,18 +22,23 @@
             class="q-px-xl"
             label="Servicio"
           />
-          <q-select  v-if="esVacuna"
-            v-model="vacuna"
-            :options="opcion"
+          <q-select
+            v-if="esVacuna"
+            v-model="nombreVacuna"
+            :options="opcionVacuna"
             class="q-px-xl"
             label="Vacuna"
           />
+          <ul class="q-mx-md q-py-xs">
+            <li
+              v-for="mnsj in mensajeError"
+              :key="mnsj"
+              class="bg-white text-accent text-bold"
+            >
+              {{ mnsj }}
+            </li>
+          </ul>
           <div class="row justify-end q-pt-xl">
-            <q-btn
-              label="Pedir turno"
-              @click="chequearSubmit()"
-              color="accent"
-            />
             <q-btn
               label="Cancelar"
               type="reset"
@@ -42,6 +47,7 @@
               class="q-ml-sm"
               v-close-popup
             />
+            <q-btn label="Pedir turno" color="accent" v-close-popup />
           </div>
         </q-form>
       </q-card-section>
@@ -50,25 +56,31 @@
 </template>
 
 <script>
-import { defineComponent, ref } from "vue";
+import { defineComponent, ref, watch } from "vue";
 import { useStore } from "src/pinia/store";
-import { useQuasar } from 'quasar'
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "formTurno",
-  setup() {
-    const $q = useQuasar()
+  props: {
+    misPerros: {
+      type: Array,
+      default: () => [], // Set the default value as an empty array
+    },
+  },
+  setup(props) {
+    const $q = useQuasar();
 
     const nombrePerro = ref("");
     const nombreServicio = ref("");
-    const vacuna = ref("");
+    const nombreVacuna = ref("");
     const clienteDNI = useStore().dni;
 
     const getDatosTurno = () => {
       const perro = {
         nombre: nombrePerro.value.value,
         servicio: nombreServicio.value.value,
-        vacuna: vacuna.value,
+        vacuna: nombreVacuna.value,
         nombre: perroNOMBRE.value,
         dnicliente: clienteDNI,
       };
@@ -79,14 +91,22 @@ export default defineComponent({
       console.log("Los datos están mal!");
       nombrePerro.value = "";
       nombreServicio.value = "";
-      vacuna.value = "";
+      nombreVacuna.value = "";
       return false;
     };
+
+    watch(nombreServicio, (newNombreServicio) => {
+      // Update nombreVacuna based on the value of nombreServicio
+      if (newNombreServicio != "Vacunación") {
+        nombreVacuna.value = ""; // Update nombreVacuna to an empty string
+      }
+      // Add other conditions or update logic as needed
+    });
 
     return {
       nombrePerro,
       nombreServicio,
-      vacuna,
+      nombreVacuna,
       clienteDNI,
       opcionServicio: [
         { label: "Consulta", value: "Consulta" },
@@ -94,52 +114,58 @@ export default defineComponent({
         { label: "Desparacitación", value: "Desparacitación" },
         { label: "Castración", value: "Castración" },
       ],
-      opcionTamanio: [
-        { label: "Pequeño", value: "Pequeño" },
-        { label: "Mediano", value: "Mediano" },
-        { label: "Grande", value: "Grande" },
+      opcionVacuna: [
+        { label: "Rabia", value: "Rabiea" },
+        { label: "Parvovirus canino", value: "Parvovirus canino" },
+        { label: "Moquillo", value: "Moquillo" },
+        { label: "Hepatitis canina", value: "Hepatitis canina" },
       ],
       getDatosTurno,
       onReset,
+
+      opcionPerros: props.misPerros.map((perro) => {
+        console.log("este es el perro:", perro.NOMBRE); // Log the perro object
+        return { label: perro.NOMBRE, value: perro.NOMBRE };
+      }),
     };
-  },
-  computed:{
-    esVacuna(){
-      console.log("El nombre servicio ess: ", this.nombreServicio.value)
-      return this.nombreServicio.value === "Vacunación"
-    }
   },
   methods: {
     ejecutarFuncionPadre() {
       const turno = this.getDatosTurno();
       this.$emit("registrarTurno", turno);
     },
-
-    chequearSubmit() {
-      /* esto está horrible */
-
-      let nombreValido = this.perroNOMBRE.length > 0;
-      let tamanioValido = this.perroTAMANIO.label != undefined
-      let sexoValido = this.perroSEXO.label != undefined
-      let edadValido = this.perroEDAD.length > 0 && /^\d+$/.test(this.perroEDAD) ;
-      let telefonoValido = /^\d+$/.test(this.perroTELEFONO) && 
-        ( this.perroTELEFONO.length >=  7 ||
-          this.perroTELEFONO.length <= 12 )
-      let mailValido = this.perroMAIL.includes("@")
-      
-      if ( nombreValido && tamanioValido && edadValido && telefonoValido && sexoValido && mailValido) { 
-        this.ejecutarFuncionPadre();
-      } else {
-
-        this.$q.notify({
-          message: 'Los datos son incorrectos',
-          icon: 'warning',
-          color: 'accent',
-          position: 'center',
-          timeout:'1500',
-        });
-        this.onReset();
+  },
+  computed: {
+    esVacuna() {
+      return this.nombreServicio.value === "Vacunación";
+    },
+    mensajeError() {
+      let sError = [];
+      if (!this.perroValido) {
+        sError.push("Elija un perro");
       }
+      if (!this.servicioValido) {
+        sError.push("Elija un sevicio");
+      }
+      if (!this.vacunaValida) {
+        sError.push("Elija una vacuna");
+      }
+      return sError;
+    },
+    perroValido() {
+      return this.nombrePerro.value != undefined;
+    },
+    servicioValido() {
+      return this.nombreServicio.value != undefined;
+    },
+    vacunaValida() {
+      return (
+        this.nombreServicio.value != "Vacunación" ||
+        this.nombreVacuna.value != undefined
+      );
+    },
+    camposValidos() {
+      return this.perroValido && this.servicioValido && this.vacunaValida;
     },
   },
 });

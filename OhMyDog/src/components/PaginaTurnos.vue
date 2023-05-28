@@ -140,7 +140,7 @@
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      <FormTurno @registrarPerro="registrarPerro" />
+      <FormTurno @registrarPerro="registrarPerro" :misPerros="misPerros" />
     </q-dialog>
   </div>
 </template>
@@ -162,6 +162,8 @@ export default defineComponent({
     FormTurno,
   },
   setup() {
+    const misPerros = ref([]);
+
     const mostrarPopup = ref("false");
     const tab = ref("turnosConfirmados");
     const listaTurnos = ref([]);
@@ -176,6 +178,7 @@ export default defineComponent({
       rol,
       listaTurnos,
       mostrarPopup,
+      misPerros,
     };
   },
   methods: {
@@ -193,10 +196,22 @@ export default defineComponent({
           console.log(error);
         });
     },
+
+    async loadPerrosPropios() {
+      try {
+        const response = await api.post("/perro/getPerrosPropios",{ dni : useStore().dni })
+        this.misPerros = response.data
+        console.log("mis perros: ", this.misPerros)
+      }
+      catch (error) {
+        console.error(error);
+      }
+    },
   },
   mounted() {
     checkToken();
     this.loadTurnosPropios("Confirmado");
+    this.loadPerrosPropios();
   },
 });
 </script>
