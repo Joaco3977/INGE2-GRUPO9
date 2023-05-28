@@ -66,7 +66,8 @@
               Ver historial
             </q-btn> 
           <q-btn flat class="textoBoton"> Editar datos </q-btn> -->
-              <q-btn @click="eliminarPerro(nombre)" flat class="textoBoton">
+              <q-btn @click="eliminarPerro(nombre)" flat class="textoBoton"
+              v-close-popup>
                 Eliminar
               </q-btn>
             </q-card-actions>
@@ -95,6 +96,7 @@ export default defineComponent({
     SubPaginaTurnos,
   },
   props: {
+    dni:String,
     rol: String,
     perro: {
       type: Object,
@@ -104,13 +106,12 @@ export default defineComponent({
   },
   setup(props) {
     const tab = ref("datos");
-
     const fechaNacimiento = new Date(props.perro.NACIMIENTO);
     const fechaHoy = new Date();
 
-    const anios = fechaHoy.getFullYear() - fechaNacimiento.getFullYear();
-    const meses = fechaHoy.getMonth() - fechaNacimiento.getMonth();
-    const dias = fechaHoy.getDate() - fechaNacimiento.getDate();
+    var anios = fechaHoy.getFullYear() - fechaNacimiento.getFullYear();
+    var meses = fechaHoy.getMonth() - fechaNacimiento.getMonth();
+    var dias = fechaHoy.getDate() - fechaNacimiento.getDate();
 
     // Adjust for negative values
     if (meses < 0 || (meses === 0 && dias < 0)) {
@@ -118,28 +119,28 @@ export default defineComponent({
     }
 
     // Calculate the difference in months
-    const mesesAbs =
+    var mesesAbs =
       fechaHoy.getFullYear() * 12 +
       fechaHoy.getMonth() -
       (fechaNacimiento.getFullYear() * 12 + fechaNacimiento.getMonth());
-    const aniosMeses = Math.floor(mesesAbs / 12);
-    const mesesRestantes = mesesAbs % 12;
+    var aniosMeses = Math.floor(mesesAbs / 12);
+    var mesesRestantes = mesesAbs % 12;
 
     // Calculate the remaining days
-    const fechaDeReferencia = new Date(
+    var fechaDeReferencia = new Date(
       fechaNacimiento.getFullYear() + aniosMeses,
       fechaNacimiento.getMonth() + mesesRestantes,
       fechaNacimiento.getDate()
     );
-    const diferenciaEnDias = Math.floor(
+    var diferenciaEnDias = Math.floor(
       (fechaHoy - fechaDeReferencia) / (24 * 60 * 60 * 1000)
     );
 
-    const edadAnios = anios > 0 ? `${anios} años` : "";
-    const edadMeses = aniosMeses > 0 ? `${aniosMeses} meses` : "";
-    const edadDias = diferenciaEnDias > 0 ? `${diferenciaEnDias} días` : "";
+    var edadAnios = anios > 0 ? `${anios} años` : "";
+    var edadMeses = aniosMeses > 0 ? `${aniosMeses} meses` : "";
+    var edadDias = diferenciaEnDias > 0 ? `${diferenciaEnDias} días` : "";
 
-    const edad = `${edadAnios} ${edadMeses} ${edadDias}`.trim();
+    var edad = `${edadAnios} ${edadMeses} ${edadDias}`.trim();
 
     return {
       edad,
@@ -147,8 +148,10 @@ export default defineComponent({
     };
   },
   methods: {
-    eliminarPerro(nombre) {
-      this.$emit("eliminarPerro", nombre);
+    eliminarPerro() {
+      console.log('entre')
+      this.$emit("eliminarPerro",this.perro.NOMBRE);
+      this.$emit("loadPerrosCliente",this.dni)
     },
   },
   mounted() {},

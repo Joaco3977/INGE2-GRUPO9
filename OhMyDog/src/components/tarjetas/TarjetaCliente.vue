@@ -84,7 +84,10 @@
     </q-card>
 
     <q-dialog  v-model="verPerro" >
-      <TarjetaPerroVet :perro="perroElegido"/>
+      <TarjetaPerroVet :perro="perroElegido" 
+      @eliminarPerro="eliminarPerro"
+      @loadPerrosCliente="loadPerrosCliente"
+      :dni="dni"/>
     </q-dialog> 
 
     <q-dialog v-model="confirmar">
@@ -155,6 +158,21 @@ export default defineComponent({
       }
     };
 
+    const eliminarPerro = async (nombre) => {
+      console.log(nombre)
+      try {
+        const response = await api.post("/perro/deletePerroPropio", {
+          datos: {
+            nombre:nombre,
+            dnicliente: props.dni,
+          }
+        });
+        loadPerrosCliente()
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     return {
       confirmar: ref(false),
       verPerro: ref(false),
@@ -162,6 +180,7 @@ export default defineComponent({
       perrosCliente,
       perroElegido,
       registrarPerro,
+      eliminarPerro,
     };
   },
   methods: {

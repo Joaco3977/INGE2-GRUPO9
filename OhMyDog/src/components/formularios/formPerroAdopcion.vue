@@ -158,7 +158,9 @@ export default defineComponent({
       if (!this.edadValida ){
         sError.push("La edad no es correcta")
       }
-      
+      if (!this.mailValido){
+        sError.push("Mail invalido")
+      }
       return sError
     },
     nombreValido(){
@@ -167,6 +169,13 @@ export default defineComponent({
     tamanioValido(){
       return this.perroTAMANIO.value != undefined;
     },
+    mailValido() {
+      return (
+        this.perroMAIL.length > 5 &&
+        this.perroMAIL.includes("@") &&
+        this.perroMAIL.includes(".") 
+      );
+    },
     sexoValido(){
       return this.perroSEXO.value != undefined;
     },
@@ -174,8 +183,7 @@ export default defineComponent({
       return this.perroEDAD.length >= 0 && this.perroEDAD.length < 3 && /^\d+$/.test(this.perroEDAD);
     },
     camposValidos(){
-      console.log(this.perroTAMANIO.value)
-      return this.nombreValido && this.tamanioValido && this.edadValida && this.sexoValido;
+      return this.nombreValido && this.tamanioValido && this.edadValida && this.sexoValido && this.mailValido;
     },
     
   }

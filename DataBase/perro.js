@@ -34,6 +34,7 @@ const addPerro = async (nuevoPerro) => {
     }
 }
 
+
 router.post('/getPerrosPropios', async (req, res) => {
     getPerrosPropios(req.body.dni)
     .then ((resultadoGet) => {
@@ -79,15 +80,17 @@ router.post('/addPerro', async (req, res) => {
 });
 
 router.post('/deletePerroPropio', async (req, res) => { 
+    console.log(req.body)
     knex('perro').where({
-        DNICLIENTE: req.body.dnicliente,
-        NOMBRE: req.body.nombre
+        DNICLIENTE: req.body.datos.dnicliente,
+        NOMBRE: req.body.datos.nombre
     }).del()
     .then(() =>{
-        Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.dnicliente} elimino a su perro: ${req.body.nombre}`)
-        Log.agregarEntradaLog(1, req.body.dnicliente, `elimino a su PERRO ${req.body.nombre}`)
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.datos.dnicliente} elimino a su perro: ${req.body.datos.nombre}`)
+        Log.agregarEntradaLog(1, req.body.datos.dnicliente, `elimino a su PERRO ${req.body.datos.nombre}`)
         res.status(200).send({})
     }).catch(()=>{
+        console.log('fallo')
         res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
