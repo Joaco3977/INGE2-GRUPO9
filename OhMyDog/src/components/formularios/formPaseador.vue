@@ -18,7 +18,6 @@
           <q-input
             class="q-px-lg"
             filled
-            type="number"
             v-model="dni"
             label="DNI"
           />
@@ -144,6 +143,12 @@ const semana = [
 
 export default defineComponent({
   name: "formPaseador",
+  props: {
+    dniPaseadores: {
+      type: Array,
+      required: true,
+    },
+  },
   setup() {
 
     const name = ref("");
@@ -208,10 +213,14 @@ export default defineComponent({
       let sError = [];
       if (!this.nombreValido ){
         sError.push( " El nombre no es correcto" )
-      }
+      } 
       if (!this.dniValido ){
         sError.push("El DNI no es correcto")
-      }
+        
+      } 
+      if ( this.dniExiste) {
+        sError.push( " Un paseador con este DNI ya está registrado" )
+      } 
       if (!this.mailValido ){
         sError.push("El mail no es correcto")
       }
@@ -224,10 +233,13 @@ export default defineComponent({
       return sError
     },
     nombreValido(){
-      return this.name.length > 0 && /^[A-Za-z\s]+$/.test(this.name);;
+      return this.name.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.name);
     },
     dniValido(){
       return this.dni.length == 8 && /^\d+$/.test(this.dni);
+    },
+    dniExiste(){
+      return this.dniPaseadores.includes(parseInt(this.dni));
     },
     mailValido(){
       return this.mail.length > 5 && this.mail.includes('@') && this.mail.includes('.')
@@ -239,7 +251,7 @@ export default defineComponent({
       return this.dias.length > 0;
     },
     camposValidos(){
-      return this.nombreValido && this.dniValido && this.mailValido && this.zonaValida && this.diasValidos;
+      return this.nombreValido && !this.dniExiste && this.dniValido && this.mailValido && this.zonaValida && this.diasValidos;
     },
     
   }

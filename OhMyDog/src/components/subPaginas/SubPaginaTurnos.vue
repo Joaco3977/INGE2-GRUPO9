@@ -1,24 +1,7 @@
 <template>
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
-  <div class="bg-white full-height full-width" style="height: 97vh">
-    <div
-      class="flex row q-mx-xl justify-between items-center"
-      style="height: 4em"
-    >
-      <div class="titulo text-center text-h4 text-bold text-primary">
-        TURNOS
-      </div>
-      <q-btn
-        v-if="rol > 0"
-        @click="mostrarPopup = true"
-        color="accent"
-        class=""
-        style="width: max-content; height: max-content"
-      >
-        <div class="textoBoton" s>Pedir turno</div>
-      </q-btn>
-    </div>
+  <div class="bg-white full-height" style="width:96%; height: 27vh">
 
     <q-card flat>
       <q-tabs
@@ -58,7 +41,7 @@
       <q-scroll-area
         :thumb-style="thumbStyle"
         :bar-style="barStyle"
-        style="height: 75vh; width: 100%"
+        style="height: 50vh; width: 100%"
         class="bg-white full-width"
       >
         <q-tab-panels v-model="tab" animated>

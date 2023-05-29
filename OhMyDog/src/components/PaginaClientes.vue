@@ -20,16 +20,31 @@
     </div>
 
     <q-card flat stretch class="column">
-      <div class="row q-mx-lg q-py-sm justify-start items-center" style="width: max-content">
-        <div class="">
-          Ingresar el DNI o nombre del cliente:
-        </div>
+      <div
+        class="row q-mx-lg q-py-sm justify-start items-center"
+        style="width: max-content"
+      >
+        <div class="">Buscar por DNI:</div>
         <q-input
-        filled
+          filled
           class="q-pl-sm q-pr-xl"
           v-model="dniFiltrar"
           :dense="dense"
-          placeholder="n° DNI o nombre"
+          placeholder="n° DNI"
+          style="width: 20rem"
+        >
+          <template v-slot:append>
+            <q-icon name="ion-search" />
+          </template>
+        </q-input>
+
+        <div class="">Buscar por nombre:</div>
+        <q-input
+          filled
+          class="q-pl-sm q-pr-xl"
+          v-model="dniFiltrar"
+          :dense="dense"
+          placeholder="Nombre o apellido"
           style="width: 20rem"
         >
           <template v-slot:append>
@@ -38,10 +53,12 @@
         </q-input>
       </div>
 
+      
+
       <q-scroll-area
         :thumb-style="thumbStyle"
         :bar-style="barStyle"
-        style="height: 87vh"
+        style="height: 78vh"
         class="bg-white"
       >
         <q-card flat>
@@ -57,15 +74,22 @@
               :direccion="cliente.DIRECCION"
             />
           </div>
+          <div
+            class="row textoNoItems justify-center full-height content-center q-pa-xl"
+            v-if="clientesFiltrados.length === 0"
+          >
+            ¡No encontramos ningún cliente!
+          </div>
         </q-card>
       </q-scroll-area>
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      <FormCliente @registrarCliente="registrarCliente" :mailsClientes="mailsClientes" />
+      <FormCliente
+        @registrarCliente="registrarCliente"
+        :mailsClientes="mailsClientes"
+      />
     </q-dialog>
-    
-
   </div>
 </template>
 
@@ -76,7 +100,7 @@ import { useStore } from "../pinia/store.js";
 import TarjetaCliente from "./tarjetas/TarjetaCliente.vue";
 import { checkToken } from "../functions/check.js";
 import { QDialog } from "quasar";
-import FormCliente from "./formularios/formCliente.vue"
+import FormCliente from "./formularios/formCliente.vue";
 
 export default defineComponent({
   name: "PaginaClientes",
@@ -123,7 +147,7 @@ export default defineComponent({
           clientes.value = response.data;
           clientesFiltrados.value = response.data; // en clientes mantendria todos, mientras que los q se muestran en pantalla los tengo el el clientesFiltrados!
           mailsClientes.value = response.data.map((cliente) => cliente.MAIL);
-          console.log("Los mails: ", mailsClientes.value)
+          console.log("Los mails: ", mailsClientes.value);
         }
       } catch (error) {
         console.error(error);

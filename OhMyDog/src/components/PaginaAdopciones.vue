@@ -70,6 +70,12 @@
                 :comentario="perro.COMENTARIO"
               />
             </div>
+            <div
+              class="row textoNoItems justify-center full-height content-center q-pa-xl"
+              v-if="perrosDatos.length === 0"
+            >
+              ¡No hay ningún perro en adopción!
+            </div>
           </q-scroll-area>
         </q-tab-panel>
 
@@ -80,10 +86,7 @@
             style="height: 75vh; width: 100%"
             class="bg-white full-width"
           >
-            <div
-              v-if="perrosDatos.length > 0"
-              class="full-width row items-justify"
-            >
+            <div class="full-width row items-justify">
               <TarjetaAdopcion
                 @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 v-for="perro of perrosDatos"
@@ -103,7 +106,7 @@
             </div>
             <div
               class="row textoNoItems justify-center full-height content-center q-pa-xl"
-              v-else
+              v-if="perrosDatos.length === 0"
             >
               ¡No tenés ningún perro en adopción!
             </div>
@@ -193,6 +196,7 @@ export default defineComponent({
           { dni: useStore().dni }
         );
         perrosDatos.value = response.data;
+        
       } catch (error) {
         console.error(error);
       }
@@ -222,6 +226,8 @@ export default defineComponent({
   mounted() {
     this.loadPerros();
     this.mostrarPopupM();
+
+    
   },
 });
 </script>

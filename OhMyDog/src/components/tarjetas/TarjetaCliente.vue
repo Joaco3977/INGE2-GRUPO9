@@ -50,31 +50,49 @@
           </div>
 
           <div class="column col-5">
-            <q-expansion-item @click="loadPerrosCliente(dni)"
+            <q-expansion-item
+              @click="loadPerrosCliente(dni)"
+              class="full-width bg-primary text-white text-center text-bold"
               expand-separator
               icon="ion-paw"
+              expand-icon="ion-arrow-dropdown"
               label="Ver perros del cliente"
             >
               <q-card>
+                <div
+                  class="row text-secondary text-center justify-center full-height content-center q-pa-md q-mx-lg"
+                  v-if="perrosCliente.length === 0"
+                >
+                  ¡Este cliente no tiene ningún perro!
+                </div>
                 <q-card-section>
                   <div class="column justify-center">
-                    <q-btn v-for="perro in perrosCliente.value" :key="perro"
-                      @click="verPerro = true; perroElegido = perro"
-                      class="q-mx-lg q-mb-sm" 
+                    <q-btn
+                      v-for="perro in perrosCliente"
+                      :key="perro"
+                      @click="
+                        verPerro = true;
+                        perroElegido = perro;
+                      "
+                      class="q-mx-lg q-mb-sm"
                       color="secondary"
                     >
-                      <div class="textoBoton text-bold"> {{ perro.NOMBRE }}</div>
+                      <div class="textoBoton text-bold">{{ perro.NOMBRE }}</div>
                     </q-btn>
-                    
                   </div>
                 </q-card-section>
-
               </q-card>
             </q-expansion-item>
           </div>
 
           <div class="column col-3 justify-center content-end">
-                  <q-btn class="textoBoton q-ml-lg" color="accent" @click="agregarPerro = true"> Agregar perro </q-btn>
+            <q-btn
+              class="textoBoton q-ml-lg"
+              color="accent"
+              @click="agregarPerro = true"
+            >
+              Agregar perro
+            </q-btn>
           </div>
         </div>
       </q-card-section>
@@ -83,17 +101,20 @@
       </q-card-actions>
     </q-card>
 
-    <q-dialog  v-model="verPerro" >
-      <TarjetaPerroVet :perro="perroElegido" 
-      @eliminarPerro="eliminarPerro"
-      @loadPerrosCliente="loadPerrosCliente"
-      :dni="dni"/>
-    </q-dialog> 
+    <q-dialog v-model="verPerro">
+      <TarjetaPerroVet
+        :perro="perroElegido"
+        @eliminarPerro="eliminarPerro"
+        @loadPerrosCliente="loadPerrosCliente"
+        :dni="dni"
+      />
+    </q-dialog>
+    
 
     <q-dialog v-model="confirmar">
       <q-card>
         <q-card-section>
-          <div class="textoTituloTarjeta text-primary"> ¿Eliminar cliente? </div>
+          <div class="textoTituloTarjeta text-primary">¿Eliminar cliente?</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -101,16 +122,21 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Eliminar" @click="ejecutarFuncionPadre(dni)" color="primary" v-close-popup />
+          <q-btn
+            flat
+            label="Eliminar"
+            @click="ejecutarFuncionPadre(dni)"
+            color="primary"
+            v-close-popup
+          />
           <q-btn flat label="Cancelar" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
 
     <q-dialog v-model="agregarPerro">
-      <FormPerro @registrarPerro= "registrarPerro" />
+      <FormPerro @registrarPerro="registrarPerro" />
     </q-dialog>
-
   </div>
 </template>
 
@@ -118,8 +144,8 @@
 import { api } from "src/boot/axios";
 import { defineComponent } from "vue";
 import { ref } from "vue";
-import TarjetaPerroVet from "./TarjetaPerroVet.vue"
-import FormPerro from "../formularios/formPerro.vue"
+import TarjetaPerroVet from "./TarjetaPerroVet.vue";
+import FormPerro from "../formularios/formPerro.vue";
 
 export default defineComponent({
   name: "TarjetaCliente",
@@ -135,7 +161,7 @@ export default defineComponent({
     direccion: String,
   },
   setup(props) {
-    const perrosCliente = ref([])
+    const perrosCliente = ref([]);
 
     const perroElegido = ref("");
 
@@ -143,13 +169,13 @@ export default defineComponent({
       try {
         const response = await api.post("/perro/addPerro", {
           perro: {
-            nombre:perroAdd.nombre,
-            tamanio:perroAdd.tamanio,
-            color:perroAdd.color,
-            nacimiento:perroAdd.nacimiento,
-            sexo:perroAdd.sexo,
-            raza:perroAdd.raza,
-            peso:perroAdd.peso,
+            nombre: perroAdd.nombre,
+            tamanio: perroAdd.tamanio,
+            color: perroAdd.color,
+            nacimiento: perroAdd.nacimiento,
+            sexo: perroAdd.sexo,
+            raza: perroAdd.raza,
+            peso: perroAdd.peso,
             dnicliente: props.dni,
           },
         });
@@ -159,15 +185,15 @@ export default defineComponent({
     };
 
     const eliminarPerro = async (nombre) => {
-      console.log(nombre)
+      console.log(nombre);
       try {
         const response = await api.post("/perro/deletePerroPropio", {
           datos: {
-            nombre:nombre,
+            nombre: nombre,
             dnicliente: props.dni,
-          }
+          },
         });
-        loadPerrosCliente()
+        loadPerrosCliente();
       } catch (error) {
         console.error(error);
       }
@@ -187,18 +213,20 @@ export default defineComponent({
     ejecutarFuncionPadre(dni) {
       this.$emit("ejecutarFuncion", dni);
     },
-    async loadPerrosCliente(dni) {         //YA FUNCIONAL
-      await api.post('/perro/getPerrosPropios', {
-        dni: dni,
-      })
-      .then ((response) => {
-        this.perrosCliente.value = response.data
-        //console.log(response.data)
-      })
-      .catch((error) => {
-        console.error(error)
-      })
-    }
+    async loadPerrosCliente(dni) {
+      //YA FUNCIONAL
+      await api
+        .post("/perro/getPerrosPropios", {
+          dni: dni,
+        })
+        .then((response) => {
+          this.perrosCliente = response.data;
+          console.log("perros cliente: ", response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
   },
 });
 </script>

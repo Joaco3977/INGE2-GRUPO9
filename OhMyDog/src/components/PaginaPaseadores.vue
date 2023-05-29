@@ -26,31 +26,34 @@
       style="height: 86vh"
       class="bg-white"
     >
-      <div v-if="paseadores.length > 0" class="full-width row wrap justify-center">
-          <TarjetaPaseador
-            @ejecutarFuncion="eliminarPaseador"
-            class="q-px-sm col-stretch"
-            v-for="paseador in paseadores"
-            :rol="rol"
-            :key="paseador.DNI"
-            :dni="paseador.DNI"
-            :nombre="paseador.NOMBREAPELLIDO"
-            :zona="paseador.ZONA"
-            :disponibilidad="paseador.DISPONIBILIDAD"
-            :contacto="paseador.MAIL"
-            :comentario="paseador.COMENTARIO"
-          />
-        </div>
-        <div
-          class="row textoNoItems justify-center full-height content-center q-pa-xl"
-          v-else
-        >
-          ¡Todavía no tenemos ningún paseador en el sitio!
-        </div>
+      <div
+        v-if="paseadores.length > 0"
+        class="full-width row wrap justify-center"
+      >
+        <TarjetaPaseador
+          @ejecutarFuncion="eliminarPaseador"
+          class="q-px-sm col-stretch"
+          v-for="paseador in paseadores"
+          :rol="rol"
+          :key="paseador.DNI"
+          :dni="paseador.DNI"
+          :nombre="paseador.NOMBREAPELLIDO"
+          :zona="paseador.ZONA"
+          :disponibilidad="paseador.DISPONIBILIDAD"
+          :contacto="paseador.MAIL"
+          :comentario="paseador.COMENTARIO"
+        />
+      </div>
+      <div
+        class="row textoNoItems justify-center full-height content-center q-pa-xl"
+        v-else
+      >
+        ¡Todavía no tenemos ningún paseador en el sitio!
+      </div>
     </q-scroll-area>
 
     <q-dialog persistent v-model="abrirForm" class="">
-      <formPaseador @registrarPaseador="registrarPaseador" />
+      <formPaseador @registrarPaseador="registrarPaseador" :dniPaseadores="dniPaseadores" />
     </q-dialog>
   </div>
 </template>
@@ -74,11 +77,15 @@ export default defineComponent({
     const rol = useStore().rol;
     const abrirForm = ref(false);
 
+    const dniPaseadores = ref([]);
+
     const loadPaseadores = async () => {
       try {
         const response = await api.get("/paseador/getPaseadores");
         if (response !== false) {
           paseadores.value = response.data;
+          dniPaseadores.value = response.data.map((paseador) => paseador.DNI);
+          console.log("Los paseadores: ", dniPaseadores.value);
         }
       } catch (error) {
         console.error(error);
@@ -113,6 +120,7 @@ export default defineComponent({
     return {
       eliminarPaseador,
       paseadores,
+      dniPaseadores,
       rol,
       loadPaseadores,
       registrarPaseador,

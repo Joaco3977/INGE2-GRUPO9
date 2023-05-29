@@ -124,7 +124,7 @@ export default {
     nombreValido() {
       return (
         this.cliente.nombreApellido.length > 0 &&
-        /^[A-Za-z\s]+$/.test(this.cliente.nombreApellido)
+        /^[A-Za-zÀ-ÿ\s]+$/.test(this.cliente.nombreApellido)
       );
     },
     dniValido() {

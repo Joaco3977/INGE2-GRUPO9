@@ -66,8 +66,8 @@
               Ver historial
             </q-btn> 
           <q-btn flat class="textoBoton"> Editar datos </q-btn> -->
-              <q-btn @click="eliminarPerro(nombre)" flat class="textoBoton"
-              v-close-popup>
+              <q-btn @click="confirmar = true" flat class="textoBoton"
+              >
                 Eliminar
               </q-btn>
             </q-card-actions>
@@ -82,6 +82,30 @@
       </q-tab-panel>
       
     </q-tab-panels>
+
+    <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">¿Eliminar perro?</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Esta acción no puede deshacerse
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Eliminar"
+            @click="eliminarPerro(nombre)"
+            color="primary"
+            v-close-popup
+          />
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </q-card>
 </template>
 
@@ -145,6 +169,7 @@ export default defineComponent({
     return {
       edad,
       tab,
+      confirmar: ref(false),
     };
   },
   methods: {

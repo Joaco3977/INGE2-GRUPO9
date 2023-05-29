@@ -205,16 +205,16 @@ export default defineComponent({
     },
     nombreValido() {
       return (
-        this.perroNOMBRE.length > 0 && /^[A-Za-z\s]+$/.test(this.perroNOMBRE)
+        this.perroNOMBRE.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.perroNOMBRE)
       );
     },
     colorValido() {
       return (
-        this.perroCOLOR.length > 0 && /^[A-Za-z\s]+$/.test(this.perroCOLOR)
+        this.perroCOLOR.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.perroCOLOR)
       );
     },
     razaValido() {
-      return this.perroRAZA.length > 0 && /^[A-Za-z\s]+$/.test(this.perroRAZA)
+      return this.perroRAZA.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.perroRAZA)
     },
     tamanioValido() {
       return this.perroTAMANIO.value != undefined;

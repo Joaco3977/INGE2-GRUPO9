@@ -49,13 +49,36 @@
             <q-btn flat v-if="rol > 1" class="textoBoton">
               Editar datos
             </q-btn>
-            <q-btn @click="eliminarPerro(nombre)" flat v-if="rol >= 1" class="textoBoton">
+            <q-btn @click="confirmar = true" flat v-if="rol >= 1" class="textoBoton">
               Eliminar
             </q-btn>
           </q-card-actions>
         </q-card-section>
       </q-card-section>
     </q-card>
+
+    <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">¿Eliminar paseador?</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Esta acción no puede deshacerse
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Eliminar"
+            @click="eliminarPerro(nombre)"
+            color="primary"
+            v-close-popup
+          />
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -117,7 +140,8 @@ export default defineComponent({
     const edad = `${edadAnios} ${edadMeses} ${edadDias}`.trim();
 
     return {
-      edad
+      edad,
+      confirmar: ref(false),
     }
   },
   methods: {
