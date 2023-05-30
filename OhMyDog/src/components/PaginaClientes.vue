@@ -86,6 +86,7 @@
       <FormCliente
         @registrarCliente="registrarCliente"
         :mailsClientes="mailsClientes"
+        :dniClientes="dniClientes"
       />
     </q-dialog>
   </div>
@@ -115,6 +116,7 @@ export default defineComponent({
     const clientes = reactive([]);
     const clientesFiltrados = ref([]);
     const mailsClientes = ref([]);
+    const dniClientes = ref([]);
     const dniFiltrar = ref("");
     const nombreFiltrar = ref("");
 
@@ -146,7 +148,8 @@ export default defineComponent({
           clientes.value = response.data;
           clientesFiltrados.value = response.data; // en clientes mantendria todos, mientras que los q se muestran en pantalla los tengo el el clientesFiltrados!
           mailsClientes.value = response.data.map((cliente) => cliente.MAIL);
-          console.log("Los mails: ", mailsClientes.value);
+          dniClientes.value = response.data.map((cliente) => cliente.DNI);
+          console.log("Los dnis: ", dniClientes.value);
         }
       } catch (error) {
         console.error(error);
@@ -207,6 +210,7 @@ export default defineComponent({
       clientes,
       clientesFiltrados,
       mailsClientes,
+      dniClientes,
       dniFiltrar,
       nombreFiltrar,
       loadClientes,

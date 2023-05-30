@@ -50,17 +50,17 @@
           </div>
 
           <div class="column col-5">
-            <q-expansion-item
+            <!-- <q-expansion-item
               @click="loadPerrosCliente(dni)"
               class="full-width bg-primary text-white text-center text-bold"
               expand-separator
               icon="ion-paw"
               expand-icon="ion-arrow-dropdown"
               label="Ver perros del cliente"
-            >
-              <q-card>
+            > -->
+              <q-card flat>
                 <div
-                  class="row text-secondary text-center justify-center full-height content-center q-pa-md q-mx-lg"
+                  class="row  text-bold text-secondary text-center justify-center full-height content-center q-pa-md q-mx-lg"
                   v-if="perrosCliente.length === 0"
                 >
                   ¡Este cliente no tiene ningún perro!
@@ -82,7 +82,7 @@
                   </div>
                 </q-card-section>
               </q-card>
-            </q-expansion-item>
+           <!-- </q-expansion-item> -->
           </div>
 
           <div class="column col-3 justify-center content-end">
@@ -109,7 +109,6 @@
         :dni="dni"
       />
     </q-dialog>
-    
 
     <q-dialog v-model="confirmar">
       <q-card>
@@ -142,7 +141,7 @@
 
 <script>
 import { api } from "src/boot/axios";
-import { defineComponent } from "vue";
+import { defineComponent, onMounted  } from "vue";
 import { ref } from "vue";
 import TarjetaPerroVet from "./TarjetaPerroVet.vue";
 import FormPerro from "../formularios/formPerro.vue";
@@ -162,7 +161,7 @@ export default defineComponent({
   },
   setup(props) {
     const perrosCliente = ref([]);
-
+    const verPerro = ref(false);
     const perroElegido = ref("");
 
     const registrarPerro = async (perroAdd) => {
@@ -179,13 +178,27 @@ export default defineComponent({
             dnicliente: props.dni,
           },
         });
+        loadPerrosCliente();
+      } catch (error) {
+        console.error("error en agregar perro cliente", error);
+      }
+    };
+
+    const loadPerrosCliente = async () => {
+      try {
+        const response = await api.post("/perro/getPerrosPropios", {
+          dni: props.dni,
+        });
+        perrosCliente.value = response.data;
+        //console.log("perros cliente: ", response.data);
       } catch (error) {
         console.error(error);
       }
     };
+    
 
     const eliminarPerro = async (nombre) => {
-      console.log(nombre);
+      console.log("Perro eliminado: ", nombre);
       try {
         const response = await api.post("/perro/deletePerroPropio", {
           datos: {
@@ -193,39 +206,30 @@ export default defineComponent({
             dnicliente: props.dni,
           },
         });
+        verPerro.value = false;
         loadPerrosCliente();
       } catch (error) {
-        console.error(error);
+        //console.error(error);
+        console.log("En el eliminar perro de TarjetaCliente", error);
       }
     };
 
+    onMounted(loadPerrosCliente);
+
     return {
       confirmar: ref(false),
-      verPerro: ref(false),
+      verPerro,
       agregarPerro: ref(false),
       perrosCliente,
       perroElegido,
       registrarPerro,
       eliminarPerro,
+      loadPerrosCliente,
     };
   },
   methods: {
     ejecutarFuncionPadre(dni) {
       this.$emit("ejecutarFuncion", dni);
-    },
-    async loadPerrosCliente(dni) {
-      //YA FUNCIONAL
-      await api
-        .post("/perro/getPerrosPropios", {
-          dni: dni,
-        })
-        .then((response) => {
-          this.perrosCliente = response.data;
-          console.log("perros cliente: ", response.data);
-        })
-        .catch((error) => {
-          console.error(error);
-        });
     },
   },
 });
