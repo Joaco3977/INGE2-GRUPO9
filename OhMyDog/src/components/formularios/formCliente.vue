@@ -81,6 +81,10 @@ export default {
       type: Array,
       required: true,
     },
+    dniClientes: {
+      type: Array,
+      required: true,
+    },
   },
   setup(_, { emit }) {
     const cliente = ref({
@@ -105,21 +109,33 @@ export default {
     mensajeError() {
       let sError = [];
       if (!this.nombreValido) {
-        sError.push(" El nombre no es correcto");
+        sError.push("Ingrese un nombre válido");
       }
       if (!this.dniValido) {
-        sError.push("El DNI no es correcto");
+        sError.push("Ingrese un DNI válido");
       }
+      if ( this.dniExiste) {
+        sError.push( "Un cliente con este DNI ya está registrado" )
+      } 
       if (!this.mailValido) {
-        sError.push("El mail no es correcto o ya está registrado");
+        sError.push("Ingrese un mail válido");
       }
+      if ( this.mailExiste) {
+        sError.push( "Un cliente con este mail ya está registrado" )
+      } 
       if (!this.telefonoValido) {
-        sError.push("La telefono no es correcta");
+        sError.push("Ingrese un teléfono válido");
       }
       if (!this.direccionValida) {
-        sError.push("La dirección no es correcta");
+        sError.push("Ingrese una dirección válida");
       }
       return sError;
+    },
+    mailExiste(){
+      return this.mailsClientes.includes(this.cliente.mail)
+    },
+    dniExiste(){
+      return this.dniClientes.includes(parseInt(this.cliente.dni));
     },
     nombreValido() {
       return (
@@ -134,8 +150,7 @@ export default {
       return (
         this.cliente.mail.length > 5 &&
         this.cliente.mail.includes("@") &&
-        this.cliente.mail.includes(".") &&
-        !this.mailsClientes.includes(this.cliente.mail)
+        this.cliente.mail.includes(".")
       );
     },
     direccionValida() {
@@ -151,7 +166,9 @@ export default {
       return (
         this.nombreValido &&
         this.dniValido &&
+        !this.mailExiste &&
         this.mailValido &&
+        !this.mailExiste &&
         this.telefonoValido &&
         this.direccionValida
       );

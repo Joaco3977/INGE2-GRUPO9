@@ -176,7 +176,8 @@ export default defineComponent({
     eliminarPerro() {
       console.log('entre')
       this.$emit("eliminarPerro",this.perro.NOMBRE);
-      this.$emit("loadPerrosCliente",this.dni)
+      //this.$emit("loadPerrosCliente",this.dni)
+      this.$emit("close");
     },
   },
   mounted() {},

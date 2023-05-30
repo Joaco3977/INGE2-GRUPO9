@@ -1,14 +1,14 @@
 <template>
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
-  <div class="bg-white" style="width: full; max-height: 90vh">
+  <div class="bg-white" style="width: full; max-height: 45vh">
     <q-card
       flat
       class="my-card bg-primary text-white q-ma-md"
       style="width: 60rem"
     >
       <q-card-section horizontal>
-        <q-img class="col-5 q-pb-none" fit="cover" src="https://www.giantfreakinrobot.com/wp-content/uploads/2021/12/scoob.jpeg" />
+        <q-img class="col-5 q-pb-none" fit="cover" src="https://shorturl.at/mnsL0" />
 
         <q-card-section class="column col-7 justify-between">
           <div class="">
