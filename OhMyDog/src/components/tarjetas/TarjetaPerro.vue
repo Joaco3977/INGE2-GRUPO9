@@ -102,13 +102,13 @@ export default defineComponent({
     foto: Image,
   },
   setup(props) {
-    
+
     const fechaNacimiento = new Date(props.nacimiento);
     const fechaHoy = new Date();
 
-    const anios = fechaHoy.getFullYear() - fechaNacimiento.getFullYear();
-    const meses = fechaHoy.getMonth() - fechaNacimiento.getMonth();
-    const dias = fechaHoy.getDate() - fechaNacimiento.getDate();
+    var anios = fechaHoy.getFullYear() - fechaNacimiento.getFullYear();
+    var meses = fechaHoy.getMonth() - fechaNacimiento.getMonth();
+    var dias = fechaHoy.getDate() - fechaNacimiento.getDate();
 
     // Adjust for negative values
     if (meses < 0 || (meses === 0 && dias < 0)) {
