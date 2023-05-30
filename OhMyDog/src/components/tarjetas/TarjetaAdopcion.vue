@@ -7,12 +7,9 @@
       class="my-card bg-primary text-white q-ma-md"
       style="width: 20rem"
     >
-      <q-banner
-        v-if="adoptado == 1"
-        inline-actions
-        class="bg-primary text-white"
-        >ADOPTADO</q-banner
-      >
+      <q-card-section v-if="adoptado == 1" class="bg-primary textoNoItems text-white">
+        ¡ADOPTADO!
+      </q-card-section>
       <q-card-section v-if="servicio === 'perrosMios' || rol === 2">
         <div class="row justify-end full-width">
           <!-- <q-btn
@@ -31,9 +28,7 @@
             <div>Eliminar</div>
           </q-btn>
 
-<!-- @click="ejecutarFuncionPadre(dnicliente, nombre)" -->
-
-
+          <!-- @click="ejecutarFuncionPadre(dnicliente, nombre)" -->
         </div>
       </q-card-section>
       <q-card-section>
@@ -55,7 +50,7 @@
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Sexo:</div>
             <div>{{ sexo }}</div>
           </div>
-          <div class="row">
+          <div v-if="adoptado == 0" class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Mail:</div>
             <div>{{ mail }}</div>
           </div>
@@ -73,8 +68,12 @@
       </q-card-section>
       <!-- Acciones -->
       <q-separator dark />
-      <q-card-actions class="column items-center">
-        <q-btn flat v-if="servicio === 'perrosMios' || rol == 2" class="textoBoton">
+      <q-card-actions v-if="adoptado == 0" class="column items-center">
+        <q-btn
+          flat
+          v-if="servicio === 'perrosMios' || rol == 2"
+          class="textoBoton"
+        >
           Marcar como adoptado
         </q-btn>
         <q-btn
@@ -89,11 +88,10 @@
       </q-card-actions>
     </q-card>
 
-
     <q-dialog v-model="confirmar">
       <q-card>
         <q-card-section>
-          <div class="textoTituloTarjeta text-primary"> ¿Eliminar perro? </div>
+          <div class="textoTituloTarjeta text-primary">¿Eliminar perro?</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -101,7 +99,13 @@
         </q-card-section>
 
         <q-card-actions align="right">
-          <q-btn flat label="Eliminar" @click="ejecutarFuncionPadre(dnicliente, nombre)" color="primary" v-close-popup />
+          <q-btn
+            flat
+            label="Eliminar"
+            @click="ejecutarFuncionPadre(dnicliente, nombre)"
+            color="primary"
+            v-close-popup
+          />
           <q-btn flat label="Cancelar" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
@@ -131,7 +135,6 @@ export default defineComponent({
     dnicliente: String,
   },
   setup() {
-
     return {
       contactoCliente: "",
       confirmar: ref(false),
