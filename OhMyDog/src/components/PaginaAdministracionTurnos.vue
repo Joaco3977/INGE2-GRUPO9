@@ -37,7 +37,7 @@
           label="Cancelados"
         />
         <q-tab
-          @click="loadTurnos('Pasado')"
+          @click="loadTurnosFecha('Pasado')"
           name="turnosPasados"
           label="Pasados"
         />
@@ -47,7 +47,7 @@
           label="Pendientes"
         />
         <q-tab
-          @click="loadTurnos('Confirmado')"
+          @click="loadTurnosFecha('Confirmado')"
           name="turnosConfirmados"
           label="Confirmados"
         />
@@ -186,10 +186,31 @@ export default defineComponent({
           console.log(error);
         });
     },
+
+    async loadTurnosFecha(estado) {
+      await api
+      .post("/turno/getTurnosEstado", {
+          estado: 'Confirmado',
+        })
+        .then((response) => {
+          if (estado === 'Confirmado') {
+            this.listaTurnos = response.data.filter((turno) =>
+              (new Date()) <= new Date(turno.FECHA)
+            );
+          } else {
+            this.listaTurnos = response.data.filter((turno) =>
+              (new Date()) >= new Date(turno.FECHA)
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   },
   mounted() {
     checkToken();
-    this.loadTurnos("Confirmado");
+    this.loadTurnosFecha("Confirmado");
   },
 });
 </script>
