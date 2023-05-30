@@ -89,8 +89,8 @@ router.post('/deletePerroPropio', async (req, res) => {
         Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.datos.dnicliente} elimino a su perro: ${req.body.datos.nombre}`)
         Log.agregarEntradaLog(1, req.body.datos.dnicliente, `elimino a su PERRO ${req.body.datos.nombre}`)
         res.status(200).send({})
-    }).catch(()=>{
-        console.log('fallo')
+    }).catch((error)=>{
+        console.log(error)
         res.status(401).send('No fue posible conectar con la base de datos');
     })
 })

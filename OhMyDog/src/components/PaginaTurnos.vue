@@ -37,7 +37,7 @@
           label="Cancelados"
         />
         <q-tab
-          @click="loadTurnosPropios('Pasado')"
+          @click="loadTurnosPropiosFecha('Pasado')"
           name="turnosPasados"
           label="Pasados"
         />
@@ -47,7 +47,7 @@
           label="Pendientes"
         />
         <q-tab
-          @click="loadTurnosPropios('Confirmado')"
+          @click="loadTurnosPropiosFecha('Confirmado')"
           name="turnosConfirmados"
           label="Confirmados"
         />
@@ -189,7 +189,6 @@ export default defineComponent({
           estado: estado,
         })
         .then((response) => {
-          console.log(response.data);
           this.listaTurnos = response.data;
         })
         .catch((error) => {
@@ -207,10 +206,32 @@ export default defineComponent({
         console.error(error);
       }
     },
+
+    async loadTurnosPropiosFecha (estado) {
+      await api
+      .post("/turno/getTurnosDni", {
+          dni: useStore().dni,
+          estado: 'Confirmado',
+        })
+        .then((response) => {
+          if (estado === 'Confirmado') {
+            this.listaTurnos = response.data.filter((turno) =>
+              (new Date()) <= new Date(turno.FECHA)
+            );
+          } else {
+            this.listaTurnos = response.data.filter((turno) =>
+              (new Date()) >= new Date(turno.FECHA)
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   },
   mounted() {
     checkToken();
-    this.loadTurnosPropios("Confirmado");
+    this.loadTurnosPropiosFecha("Confirmado");
     this.loadPerrosPropios();
   },
 });

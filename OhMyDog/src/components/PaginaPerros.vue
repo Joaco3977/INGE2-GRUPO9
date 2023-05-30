@@ -76,17 +76,20 @@ export default defineComponent({
       }
     };
 
-    async function eliminarPerro (nombre) {
+    async function eliminarPerro (nombre)  {
+      console.log(nombre);
       try {
-        await api.post("/perro/deletePerro", {
-          dnicliente: useStore().dni,
-          nombre: nombre
-        })
-        loadPerrosPropios()
-      } catch {
-        console.error('NO SE PUDO ELIMINAR PERRO')
+        const response = await api.post("/perro/deletePerroPropio", {
+          datos: {
+            nombre: nombre,
+            dnicliente: useStore().dni,
+          },
+        });
+        loadPerrosPropios();
+      } catch (error) {
+        console.error(error);
       }
-    }
+    };
 
     return {
       loadPerrosPropios,
