@@ -29,13 +29,13 @@
           <q-input
             class="q-px-xl"
             v-model="cliente.telefono"
-            label="Telefono"
+            label="Teléfono"
             type="tel"
           />
           <q-input
             class="q-px-xl"
             v-model="cliente.direccion"
-            label="Direccion"
+            label="Dirección"
             type="text"
           />
           <ul class="q-mx-md q-py-xs">
