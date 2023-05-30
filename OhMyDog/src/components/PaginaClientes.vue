@@ -42,7 +42,7 @@
         <q-input
           filled
           class="q-pl-sm q-pr-xl"
-          v-model="dniFiltrar"
+          v-model="nombreFiltrar"
           :dense="dense"
           placeholder="Nombre o apellido"
           style="width: 20rem"
@@ -52,8 +52,6 @@
           </template>
         </q-input>
       </div>
-
-      
 
       <q-scroll-area
         :thumb-style="thumbStyle"
@@ -118,6 +116,7 @@ export default defineComponent({
     const clientesFiltrados = ref([]);
     const mailsClientes = ref([]);
     const dniFiltrar = ref("");
+    const nombreFiltrar = ref("");
 
     const registrarCliente = async (cliente) => {
       try {
@@ -155,13 +154,40 @@ export default defineComponent({
     };
 
     watch(dniFiltrar, (nuevoValor, valorAnterior) => {
-      filtrarClientes(nuevoValor);
+      if (nuevoValor != "") {
+        nombreFiltrar.value = ''
+        filtrarClientes(nuevoValor);
+      }
+    });
+
+    watch(nombreFiltrar, (nuevoValor, valorAnterior) => {
+      if (nuevoValor != "") {
+        dniFiltrar.value = ''
+        filtrarClientesNom(nuevoValor);
+      }
     });
 
     const filtrarClientes = (dni) => {
       clientesFiltrados.value = clientes.value.filter((cliente) =>
         cliente.DNI.toString().includes(dni.toString())
       );
+    };
+
+    const normalizeString = (str) => {
+      return str
+        .toLowerCase() // Convert string to lowercase
+        .normalize("NFD") // Normalize to decomposed form
+        .replace(/[\u0300-\u036f]/g, ""); // Remove accents
+    };
+
+    const filtrarClientesNom = (nom) => {
+      const nomNormalized = normalizeString(nom); // Normalize the input string
+
+      clientesFiltrados.value = clientes.value.filter((cliente) => {
+        const clienteNormalized = normalizeString(cliente.NOMBREAPELLIDO); // Normalize the NOMBREAPELLIDO field
+        return clienteNormalized.includes(nomNormalized);
+      });
+
     };
 
     async function eliminarCliente(dni) {
@@ -182,6 +208,7 @@ export default defineComponent({
       clientesFiltrados,
       mailsClientes,
       dniFiltrar,
+      nombreFiltrar,
       loadClientes,
       registrarCliente,
       filtrarClientes,
