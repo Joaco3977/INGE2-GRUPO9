@@ -157,17 +157,11 @@ export default defineComponent({
     };
 
     watch(dniFiltrar, (nuevoValor, valorAnterior) => {
-      if (nuevoValor != "") {
-        nombreFiltrar.value = ''
-        filtrarClientes(nuevoValor);
-      }
+      filtrarClientes(nuevoValor);
     });
 
     watch(nombreFiltrar, (nuevoValor, valorAnterior) => {
-      if (nuevoValor != "") {
-        dniFiltrar.value = ''
-        filtrarClientesNom(nuevoValor);
-      }
+      filtrarClientesNom(nuevoValor);
     });
 
     const filtrarClientes = (dni) => {

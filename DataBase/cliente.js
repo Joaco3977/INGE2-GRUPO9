@@ -103,9 +103,16 @@ router.post('/deleteCliente', async (req,res) =>{
     knex('cliente').where('DNI', req.body.dni).del()
     .then(() =>{
         Log.agregarEntradaLog(2, req.body.dniVet, `elimino al cliente ${req.body.dni}`)
-        Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino cliente con dni: ${req.body.dni}`)
-        res.status(200).send({})
+        knex('perro').where('DNICLIENTE', req.body.dni).del()
+        .then(() => {
+            Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino cliente con dni: ${req.body.dni} junto con todos sus perros`)
+            res.status(200).send({})
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     }).catch((error)=>{
+        console.log(error)
         res.status(401).send('No fue posible conectar con la base de datos');
     })
 })
