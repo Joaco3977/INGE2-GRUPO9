@@ -30,7 +30,7 @@ const Log = require ('./log.js')
 //MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS
 const getClientes = async () => {
     try {
-        const resultado = await knex('cliente').select('*')
+        const resultado = await knex('cliente').select('*').orderBy('FECHAREGISTRO', 'desc');
         return resultado;
     } catch (error) {
         console.error(error)
