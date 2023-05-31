@@ -49,9 +49,13 @@
       <q-separator />
       <q-card-actions class="q-py-lg row justify-end q-px-xl">
         <!-- <q-btn class="textoBoton q-mx-md" > Editar perfil </q-btn> -->
+        <q-btn class="textoBoton q-mx-md" @click="mostrarPopup = true" > Cambiar contraseña </q-btn>
         <q-btn class="textoBoton" @click="cerrarSesion()"> Cerrar Sesión </q-btn>
       </q-card-actions>
     </q-card>
+    <q-dialog v-model="mostrarPopup">
+      <FormCambiarContraseña />
+    </q-dialog>
   </div>
 </template>
 
@@ -61,15 +65,16 @@ import { checkToken } from "../functions/check.js";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
 import { LocalStorage } from "quasar";
+import FormCambiarContraseña from "./formularios/formCambiarContraseña.vue";
 
 export default defineComponent({
   name: "PaginaPerfil",
-  components: {},
+  components: { FormCambiarContraseña },
   setup() {
     const rol = useStore().rol;
     const misDatos = ref({});
     const fechaRegistro = ref('')
-
+    const mostrarPopup = ref("false");
     const traerDatos = async () => {
       let url = "";
       if (rol === 1) {
@@ -87,12 +92,16 @@ export default defineComponent({
         console.log("No se pudo solicitar la operacion correspondiente");
       }
     };
+    const mostrarPopupM = () => {
+      mostrarPopup.value = !mostrarPopup.value;
+    };
 
     return {
       rol,
       misDatos,
       traerDatos: ref(traerDatos),
       fechaRegistro,
+      mostrarPopup,
       store: useStore(),
     };
   },

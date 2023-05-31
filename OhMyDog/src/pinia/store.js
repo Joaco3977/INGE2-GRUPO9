@@ -6,6 +6,7 @@ export const useStore = defineStore("store", {
       rol: 0,
       tab: "Quienes Somos",
       dni: 0,
+      mail:"",
     };
   },
   actions: {
@@ -18,5 +19,8 @@ export const useStore = defineStore("store", {
     setDni(nuevoValor) {
       this.dni = nuevoValor;
     },
+    setMail(nuevoValor){
+      this.mail = nuevoValor;
+    }
   },
 });

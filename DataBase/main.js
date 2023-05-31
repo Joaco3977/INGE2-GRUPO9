@@ -76,6 +76,33 @@ app.post("/login", async (req, res) => {
   }
 });
 
+app.post("/passwordCheck", async (req, res) => {
+    checkVeterinario(req.body.mail, req.body.password)
+      .then((resultVet) => {
+        if (resultVet === false) {
+          return checkCliente(req.body.mail, req.body.password)
+            .then((resultCli) => {
+              if (resultCli === false) {
+                console.log("Chequeo incorrecto")
+                res.status(401).send({ check:false });
+              } else {
+                console.log("Chequeo correcto de contraseña para cliente")
+                res.status(200).send({ check:true });
+              }
+            })
+            .catch(() => {
+              res.status(401).send('No fue posible conectar con la base de datos')
+            })
+        } else {
+          console.log("Chequeo correcto de contraseña para Veterinario")
+          res.status(200).send({ check:true });
+        }
+      })
+      .catch(() => {
+        res.status(401).send('No fue posible conectar con la base de datos');
+      })
+});
+
 app.post("/logout", async (req, res) => {
   try {
     const result = await Sesion.eliminarToken(req.body.token)

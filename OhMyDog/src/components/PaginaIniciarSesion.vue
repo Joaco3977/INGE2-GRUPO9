@@ -67,6 +67,7 @@ export default defineComponent({
         });
         localStorage.setItem("token", response.data.token);
         this.store.setRol(response.data.rol);
+        this.store.setMail(this.mail);
         if (response.data.rol > 0) {
           this.store.setDni(response.data.dni);
           this.store.setTab("Mi Perfil");
