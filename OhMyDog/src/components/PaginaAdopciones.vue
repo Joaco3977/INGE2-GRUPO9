@@ -56,6 +56,7 @@
             <div class="full-width row items-justify">
               <TarjetaAdopcion
                 @eliminarPerroAdopcion="eliminarPerroAdopcion"
+                @marcarAdoptado="marcarAdoptado"
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
                 :id="perro.IDPERROADOPCION"
@@ -91,6 +92,7 @@
             <div class="full-width row items-justify">
               <TarjetaAdopcion
                 @eliminarPerroAdopcion="eliminarPerroAdopcion"
+                @marcarAdoptado="marcarAdoptado"
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
                 :id="perro.IDPERROADOPCION"
@@ -193,6 +195,7 @@ export default defineComponent({
     }
 
     const marcarAdoptado = async (id) => {
+      console.log('llegue funcion')
       await api.post('perroAdopcion/marcarAdoptado', {
         id: id
       })
@@ -202,6 +205,7 @@ export default defineComponent({
         } else {
           loadPerrosPropios();
         }
+        console.log('funco')
       })
       .catch((error) => {
         console.log(error)

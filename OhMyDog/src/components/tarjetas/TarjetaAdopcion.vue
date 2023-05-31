@@ -69,7 +69,7 @@
       <!-- Acciones -->
       <q-separator dark />
       <q-card-actions v-if="adoptado == 0" class="column items-center">
-        <q-btn @click="marcarAdoptado()"
+        <q-btn @click="marcarAdoptado(id)"
           flat
           v-if="servicio === 'perrosMios' || rol == 2"
           class="textoBoton"
