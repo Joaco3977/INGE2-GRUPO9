@@ -1,4 +1,5 @@
 perrosFotos
+knexConfig.js
 axios.js
 DataBase/configs/knexConfig.js
 package-lock.json
