@@ -64,8 +64,10 @@
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="turnosCancelados">
             <TarjetaTurno
+              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
+              :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
               :cliente="turno.DNICLIENTE"
@@ -82,8 +84,10 @@
           </q-tab-panel>
           <q-tab-panel name="turnosPasados">
             <TarjetaTurno
+              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
+              :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
               :cliente="turno.DNICLIENTE"
@@ -100,8 +104,10 @@
           </q-tab-panel>
           <q-tab-panel name="turnosSolicitados">
             <TarjetaTurno
+              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
+              :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
               :cliente="turno.DNICLIENTE"
@@ -118,8 +124,10 @@
           </q-tab-panel>
           <q-tab-panel name="turnosConfirmados">
             <TarjetaTurno
+              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
+              :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
               :cliente="turno.DNICLIENTE"
@@ -164,12 +172,25 @@ export default defineComponent({
     const tab = ref("turnosConfirmados");
     const listaTurnos = ref([]);
 
+    const setEstado = async(data) => {
+      console.log("entre setEstado")
+      await api
+      .post("/turno/setEstado", data)
+      .then((response)=>{
+        console.log(response.data)
+      })
+      .catch((error) => {
+          console.log(error);
+        })
+    }
+
     const rol = useStore().rol;
     return {
       tab,
       rol,
       listaTurnos,
       mostrarPopup,
+      setEstado,
     };
   },
   methods: {

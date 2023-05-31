@@ -65,7 +65,7 @@
           <q-tab-panel name="turnosCancelados">
             <div></div>
             <TarjetaTurno
-              @setEstado="setEstado"
+              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -85,7 +85,7 @@
           </q-tab-panel>
           <q-tab-panel name="turnosPasados">
             <TarjetaTurno
-              @setEstado="setEstado"
+              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -105,7 +105,7 @@
           </q-tab-panel>
           <q-tab-panel name="turnosSolicitados">
             <TarjetaTurno
-              @setEstado="setEstado"
+              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -125,7 +125,7 @@
           </q-tab-panel>
           <q-tab-panel name="turnosConfirmados">
             <TarjetaTurno
-              @setEstado="setEstado"
+              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -181,12 +181,25 @@ export default defineComponent({
       mostrarPopup.value = !mostrarPopup.value;
     };
 
+    const setEstado = async(data) => {
+      console.log("entre setEstado")
+      await api
+      .post("/turno/setEstado", data)
+      .then((response)=>{
+        console.log(response.data)
+      })
+      .catch((error) => {
+          console.log(error);
+        })
+    }
+
     return {
       tab,
       rol,
       listaTurnos,
       mostrarPopup,
       misPerros,
+      setEstado,
     };
   },
   methods: {
@@ -236,18 +249,6 @@ export default defineComponent({
           console.log(error);
         });
     },
-
-    async setEstado (data){
-      console.log("entre1")
-      await api
-      .post("/turnos/setEstado",data)
-      .then((response)=>{
-        console.log(response.data)
-      })
-      .catch((error) => {
-          console.log(error);
-        })
-    }
   },
   mounted() {
     checkToken();

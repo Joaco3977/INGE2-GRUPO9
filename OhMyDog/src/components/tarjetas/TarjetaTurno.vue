@@ -54,8 +54,8 @@ export default defineComponent({
   name: "TarjetaPaseador",
   components: {},
   props: {
-    rol: String,
     id: String,
+    rol: String,
     cliente: String,
     state: String,
     fecha: String,
@@ -67,11 +67,13 @@ export default defineComponent({
   },
   methods: {
     setEstado (id,state) {
-      console.log("entre")
-      this.$emit("setEstado",{
-        id:id,
-        state:state,
-      })
+      console.log('entre boton')
+      let data = {
+        id: id,
+        state: state
+      }
+      console.log('data:', data)
+      this.$emit("ejecutarFuncion", data)
     }
   },
   computed: {

@@ -58,7 +58,7 @@
               icon="ion-paw"
               expand-icon="ion-arrow-dropdown"
               label="Ver perros del cliente"
-            > 
+            >
               <q-card flat>
                 <div
                   class="row  text-bold text-secondary text-center justify-center full-height content-center q-pa-md q-mx-lg"
@@ -83,7 +83,7 @@
                   </div>
                 </q-card-section>
               </q-card>
-            </q-expansion-item> 
+            </q-expansion-item>
           </div>
 
           <div class="column col-3 justify-center content-end">
@@ -199,7 +199,6 @@ export default defineComponent({
         console.error(error);
       }
     };
-    
 
     const eliminarPerro = async (nombre) => {
       console.log("Perro eliminado: ", nombre);
