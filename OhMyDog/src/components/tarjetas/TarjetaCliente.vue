@@ -135,7 +135,7 @@
     </q-dialog>
 
     <q-dialog v-model="agregarPerro">
-      <FormPerro @registrarPerro="registrarPerro" />
+      <FormPerro @registrarPerro="registrarPerro" :nombresPerros="nombresPerros"/>
     </q-dialog>
   </div>
 </template>
@@ -161,6 +161,7 @@ export default defineComponent({
     direccion: String,
   },
   setup(props) {
+    const nombresPerros = ref([]);
     const perrosCliente = ref([]);
     const verPerro = ref(false);
     const perroElegido = ref("");
@@ -191,7 +192,8 @@ export default defineComponent({
           dni: props.dni,
         });
         perrosCliente.value = response.data;
-        //console.log("perros cliente: ", response.data);
+        nombresPerros.value = response.data.map((perro) => perro.NOMBRE);
+        console.log("perros cliente: ", nombresPerros.value);
       } catch (error) {
         console.error(error);
       }
@@ -218,6 +220,7 @@ export default defineComponent({
     return {
       confirmar: ref(false),
       expandedItem: ref(false),
+      nombresPerros,
       verPerro,
       agregarPerro: ref(false),
       perrosCliente,

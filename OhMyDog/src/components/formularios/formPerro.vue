@@ -94,6 +94,12 @@ import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "formPerro",
+  props: {
+    nombresPerros: {
+      type: Array,
+      required: true,
+    },
+  },
   setup() {
     const $q = useQuasar();
 
@@ -131,15 +137,15 @@ export default defineComponent({
     };
 
     const opcionesFecha = (date) => {
-      const hoy = new Date().toLocaleDateString('zh-Hans-CN', {
+      const hoy = new Date().toLocaleDateString("zh-Hans-CN", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
       });
 
-      const fechaHace25Anios = new Date()
+      const fechaHace25Anios = new Date();
       fechaHace25Anios.setFullYear(fechaHace25Anios.getFullYear() - 25);
-      const fechaStr = fechaHace25Anios.toLocaleDateString('zh-Hans-CN', {
+      const fechaStr = fechaHace25Anios.toLocaleDateString("zh-Hans-CN", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
@@ -176,32 +182,50 @@ export default defineComponent({
       const perro = this.getDatosPerro();
       this.$emit("registrarPerro", perro);
     },
+    normalizeString(str) {
+      return str
+        .toLowerCase() // Convert string to lowercase
+        .normalize("NFD") // Normalize to decomposed form
+        .replace(/[\u0300-\u036f]/g, ""); // Remove accents
+    },
   },
   computed: {
     mensajeError() {
       let sError = [];
       if (!this.nombreValido) {
-        sError.push(" El nombre no es correcto");
+        sError.push("Ingrese un nombre válido");
+      }
+      if (this.nombreExiste) {
+        sError.push("Un perro con este nombre ya está registrado");
       }
       if (!this.tamanioValido) {
         sError.push("El tamaño debe completarse");
       }
       if (!this.edadValida) {
-        sError.push("El nacimiento no es correcto");
+        sError.push("Ingrese una fecha de nacimiento válida");
       }
       if (!this.sexoValido) {
         sError.push("El sexo debe completarse");
       }
       if (!this.colorValido) {
-        sError.push("El color no es correcto");
+        sError.push("Ingrese un color válido");
       }
       if (!this.razaValido) {
-        sError.push("La raza no es valida");
+        sError.push("Ingrese una raza válida");
       }
       if (!this.pesoValido) {
-        sError.push("El peso no es correcto");
+        sError.push("Ingrese un peso válido");
       }
       return sError;
+    },
+    nombreExiste() {
+      console.log("entre a nombre existe");
+      const normalizedNombresPerros = this.normalizeString(
+        this.nombresPerros.join(" ")
+      );
+      const normalizedPerroNOMBRE = this.normalizeString(this.perroNOMBRE);
+
+      return normalizedNombresPerros.includes(normalizedPerroNOMBRE);
     },
     nombreValido() {
       return (
@@ -214,26 +238,26 @@ export default defineComponent({
       );
     },
     razaValido() {
-      return this.perroRAZA.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.perroRAZA)
+      return (
+        this.perroRAZA.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.perroRAZA)
+      );
     },
     tamanioValido() {
       return this.perroTAMANIO.value != undefined;
     },
-    pesoValido(){
-      return this.perroPESO.length > 0;
+    pesoValido() {
+      return this.perroPESO.length > 0 && this.perroPESO > 0;
     },
     sexoValido() {
       return this.perroSEXO.value != undefined;
     },
     edadValida() {
-      return (
-        
-        this.perroNACIMIENTO.length >= 0
-      );
+      return this.perroNACIMIENTO.length >= 0;
     },
     camposValidos() {
       return (
         this.nombreValido &&
+        !this.nombreExiste &&
         this.tamanioValido &&
         this.edadValida &&
         this.sexoValido &&

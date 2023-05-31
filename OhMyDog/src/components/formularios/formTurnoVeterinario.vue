@@ -16,13 +16,15 @@
             class="q-px-xl"
             label="Cliente"
           />
-          <q-select v-if="hayCliente"
+          <q-select
+            v-if="hayCliente"
             v-model="nombrePerro"
             :options="opcionPerros"
             class="q-px-xl"
             label="Perro"
           />
-          <q-select v-if="hayCliente"
+          <q-select
+            v-if="hayCliente"
             v-model="nombreServicio"
             :options="opcionServicio"
             class="q-px-xl"
@@ -39,14 +41,21 @@
             <div class="q-px-xl q-py-sm text-start self-start color-grey">
               Fecha y hora del turno:
             </div>
-            <q-date class="q-mb-lg"
-              
+            <q-date
+              class="q-mb-lg"
               v-model="fechaTurno"
               minimal
               :options="opcionesFecha"
             />
-            <q-time minimal v-model="horaTurno" />
+            
           </div>
+          <q-select
+             v-if="hayCliente"
+              v-model="horaTurno"
+              :options="opcionHora"
+              class="q-px-xl"
+              label="Bloque horario"
+            />
           <ul class="q-mx-md q-py-xs">
             <li
               v-for="mnsj in mensajeError"
@@ -57,7 +66,6 @@
             </li>
           </ul>
           <div class="row justify-end q-pt-xl">
-            
             <q-btn
               label="Cancelar"
               type="reset"
@@ -109,7 +117,7 @@ export default defineComponent({
 
     const onReset = () => {
       console.log("Los datos están mal!");
-      nombreCliente.value ="";
+      nombreCliente.value = "";
       nombrePerro.value = "";
       nombreServicio.value = "";
       nombreVacuna.value = "";
@@ -117,13 +125,13 @@ export default defineComponent({
     };
 
     const opcionesFecha = (date) => {
-      const hoy = new Date().toLocaleDateString('zh-Hans-CN', {
+      const hoy = new Date().toLocaleDateString("zh-Hans-CN", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
       });
 
-      return date >= hoy
+      return date >= hoy;
     };
 
     watch(nombreServicio, (newNombreServicio) => {
@@ -140,7 +148,7 @@ export default defineComponent({
       nombreVacuna,
       clienteDNI,
       fechaTurno,
-      horaTurno, 
+      horaTurno,
 
       opcionServicio: [
         { label: "Consulta", value: "Consulta" },
@@ -154,17 +162,18 @@ export default defineComponent({
         { label: "Moquillo", value: "Moquillo" },
         { label: "Hepatitis canina", value: "Hepatitis canina" },
       ],
+      opcionHora: [
+        { label: "Mañana", value: "Mañana" },
+        { label: "Tarde", value: "Tarde" },
+        { label: "Noche", value: "Noche" },
+      ],
       getDatosTurno,
       onReset,
       opcionesFecha,
 
-      opcionClientes: [
-        { label: "cliente", value: "cliente" },
-      ],
+      opcionClientes: [{ label: "cliente", value: "cliente" }],
 
-      opcionPerros: [
-        { label: "perro1", value: "perro1" },
-      ],
+      opcionPerros: [{ label: "perro1", value: "perro1" }],
     };
   },
   methods: {
@@ -174,8 +183,8 @@ export default defineComponent({
     },
   },
   computed: {
-    hayCliente(){
-      return this.clienteDNI.value != undefined
+    hayCliente() {
+      return this.clienteDNI.value != undefined;
     },
     esVacuna() {
       return this.nombreServicio.value === "Vacunación";
@@ -191,9 +200,15 @@ export default defineComponent({
       if (!this.vacunaValida) {
         sError.push("Elija una vacuna");
       }
+      if (!this.fechaValida) {
+        sError.push("Elija una fecha");
+      }
+      if (!this.horaValida) {
+        sError.push("Elija una banda horaria");
+      }
       return sError;
     },
-    clienteValido(){
+    clienteValido() {
       return this.nombreCliente != undefined;
     },
     perroValido() {
@@ -208,8 +223,22 @@ export default defineComponent({
         this.nombreVacuna.value != undefined
       );
     },
+    fechaValida(){
+      console.log("fecha", this.fechaTurno)
+      return this.fechaTurno != undefined;
+    },
+    horaValida(){
+      return this.horaTurno.value != undefined;
+    },
     camposValidos() {
-      return this.clienteValido && this.perroValido && this.servicioValido && this.vacunaValida;
+      return (
+        this.clienteValido &&
+        this.perroValido &&
+        this.servicioValido &&
+        this.vacunaValida &&
+        this.horaValida &&
+        this.fechaValida
+      );
     },
   },
 });
