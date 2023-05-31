@@ -83,6 +83,10 @@ export default {
       type: Array,
       required: true,
     },
+    mailsVeterinarios: {
+      type: Array,
+      required: true,
+    },
     dniClientes: {
       type: Array,
       required: true,
@@ -134,7 +138,7 @@ export default {
       return sError;
     },
     mailExiste(){
-      return this.mailsClientes.includes(normalizeString(this.cliente.mail))
+      return this.mailsClientes.includes(normalizeString(this.cliente.mail)) || this.mailsVeterinarios.includes(normalizeString(this.cliente.mail))
     },
     dniExiste(){
       return this.dniClientes.includes(parseInt(this.cliente.dni));
