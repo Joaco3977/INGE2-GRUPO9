@@ -1,10 +1,7 @@
 perrosFotos
-knexConfig.js
 axios.js
-DataBase/configs/knexConfig.js
 package-lock.json
 package.json
-DataBase/configs/knexConfig.js
 node_modules/.package-lock.json
 node_modules/.bin/mkdirp
 node_modules/.bin/mkdirp.cmd
