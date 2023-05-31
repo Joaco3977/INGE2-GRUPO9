@@ -58,6 +58,7 @@
                 @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
+                :id="perro.IDPERROADOPCION"
                 :rol="rol"
                 :dnicliente="perro.DNICLIENTE"
                 :servicio="servicio1"
@@ -91,6 +92,7 @@
                 @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
+                :id="perro.IDPERROADOPCION"
                 :rol="rol"
                 :dnicliente="perro.DNICLIENTE"
                 :servicio="servicio2"
@@ -189,6 +191,22 @@ export default defineComponent({
       }
     }
 
+    const marcarAdoptado = async (id) => {
+      await api.post('perroAdopcion/marcarAdoptado', {
+        id: id
+      })
+      .then(() => {
+        if (tab.value === "perrosOtros") {
+          loadPerros();
+        } else {
+          loadPerrosPropios();
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+
     const loadPerrosPropios = async () => {
       try {
         const response = await api.post(
@@ -196,7 +214,7 @@ export default defineComponent({
           { dni: useStore().dni }
         );
         perrosDatos.value = response.data;
-        
+
       } catch (error) {
         console.error(error);
       }
@@ -221,13 +239,12 @@ export default defineComponent({
       servicio1,
       servicio2,
       eliminarPerroAdopcion,
+      marcarAdoptado
     };
   },
   mounted() {
     this.loadPerros();
     this.mostrarPopupM();
-
-    
   },
 });
 </script>

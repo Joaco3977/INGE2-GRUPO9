@@ -94,6 +94,17 @@ router.post('/addPerroAdopcion', async (req, res) => {
 
 });
 
+router.post('/marcarAdoptado', async(req,res) => {
+    knex('perroAdopcion').where('IDPERROADOPCION', req.body.id).update({ ADOPTADO: 1 })
+    .then(() => {
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`el perro con ID ${req.body.id} fue adoptado!`)
+        res.status(200).send({});
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+})
+
 router.post('/deletePerroAdopcion', async (req,res) =>{
     let quien = ''
     if (req.body.rol === 1) {

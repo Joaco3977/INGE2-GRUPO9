@@ -74,7 +74,7 @@
       <!-- Acciones -->
       <q-separator dark />
       <q-card-actions class="column items-center">
-        <q-btn flat v-if="servicio === 'perrosMios' || rol == 2" class="textoBoton">
+        <q-btn @click="marcarAdoptado()" flat v-if="servicio === 'perrosMios' || rol == 2" class="textoBoton">
           Marcar como adoptado
         </q-btn>
         <q-btn
@@ -118,6 +118,7 @@ export default defineComponent({
   name: "TarjetaAdopcion",
   components: {},
   props: {
+    id: String,
     rol: String,
     servicio: String,
     nombre: String,
@@ -161,6 +162,9 @@ export default defineComponent({
         nombre: nombre,
       };
       this.$emit("eliminarPerroAdopcion", data);
+    },
+    marcarAdoptado(id) {
+      this.$emit("marcarAdoptado", id);
     },
   },
   mounted() {},
