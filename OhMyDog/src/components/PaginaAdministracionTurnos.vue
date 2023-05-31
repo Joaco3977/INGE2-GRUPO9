@@ -64,7 +64,6 @@
         <q-tab-panels v-model="tab" animated>
           <q-tab-panel name="turnosCancelados">
             <TarjetaTurno
-              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -84,7 +83,6 @@
           </q-tab-panel>
           <q-tab-panel name="turnosPasados">
             <TarjetaTurno
-              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -104,7 +102,7 @@
           </q-tab-panel>
           <q-tab-panel name="turnosSolicitados">
             <TarjetaTurno
-              @ejecutarFuncion="setEstado"
+              @confirmarTurno="confirmarTurno"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -124,7 +122,7 @@
           </q-tab-panel>
           <q-tab-panel name="turnosConfirmados">
             <TarjetaTurno
-              @ejecutarFuncion="setEstado"
+              @cancelarTurno="cancelarTurno"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -172,54 +170,55 @@ export default defineComponent({
     const tab = ref("turnosConfirmados");
     const listaTurnos = ref([]);
 
-    const setEstado = async(data) => {
-      console.log("entre setEstado")
+    const confirmarTurno = async(data) => {
       await api
-      .post("/turno/setEstado", data)
-      .then((response)=>{
-        console.log(response.data)
+      .post("/turno/confirmarTurno", data)
+      .then(()=>{
+        loadTurnos('Pendiente')
       })
       .catch((error) => {
           console.log(error);
-        })
+      })
     }
 
-    const rol = useStore().rol;
-    return {
-      tab,
-      rol,
-      listaTurnos,
-      mostrarPopup,
-      setEstado,
-    };
-  },
-  methods: {
-    async loadTurnos(estado) {
+    const cancelarTurno = async(id) => {
+      await api
+      .post("/turno/cancelarTurno", {
+        id: id
+      })
+      .then(()=>{
+        loadTurnos('Confirmado')
+      })
+      .catch((error) => {
+          console.log(error);
+      })
+    }
+
+    const loadTurnos = async(estado) => {
       await api
         .post("/turno/getTurnosEstado", {
           estado: estado,
         })
         .then((response) => {
-          console.log("respuesta: ", response.data);
-          this.listaTurnos = response.data;
+          listaTurnos.value = response.data;
         })
         .catch((error) => {
           console.log(error);
         });
-    },
+    }
 
-    async loadTurnosFecha(estado) {
+    const loadTurnosFecha = async(estado) =>  {
       await api
       .post("/turno/getTurnosEstado", {
           estado: 'Confirmado',
         })
         .then((response) => {
           if (estado === 'Confirmado') {
-            this.listaTurnos = response.data.filter((turno) =>
+            listaTurnos.value = response.data.filter((turno) =>
               (new Date()) <= new Date(turno.FECHA)
             );
           } else {
-            this.listaTurnos = response.data.filter((turno) =>
+            listaTurnos.value = response.data.filter((turno) =>
               (new Date()) >= new Date(turno.FECHA)
             );
           }
@@ -228,6 +227,21 @@ export default defineComponent({
           console.log(error);
         });
     }
+
+    const rol = useStore().rol;
+    return {
+      tab,
+      rol,
+      listaTurnos,
+      mostrarPopup,
+      confirmarTurno,
+      cancelarTurno,
+      loadTurnos,
+      loadTurnosFecha
+    };
+  },
+  methods: {
+
   },
   mounted() {
     checkToken();
