@@ -9,7 +9,7 @@
       <div class="titulo text-center text-h4 text-bold text-primary">
         ADMINISTRACIÓN TURNOS
       </div>
-      <q-btn
+      <!-- <q-btn
         v-if="rol > 0"
         @click="mostrarPopup = true"
         color="accent"
@@ -17,7 +17,7 @@
         style="width: max-content; height: max-content"
       >
         <div class="textoBoton" s>Crear turno</div>
-      </q-btn>
+      </q-btn> -->
     </div>
 
     <q-card flat>
