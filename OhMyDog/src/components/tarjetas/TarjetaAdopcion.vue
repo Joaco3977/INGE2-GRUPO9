@@ -68,17 +68,12 @@
       </q-card-section>
       <!-- Acciones -->
       <q-separator dark />
-<<<<<<< HEAD
-      <q-card-actions class="column items-center">
-        <q-btn @click="marcarAdoptado()" flat v-if="servicio === 'perrosMios' || rol == 2" class="textoBoton">
-=======
       <q-card-actions v-if="adoptado == 0" class="column items-center">
-        <q-btn
+        <q-btn @click="marcarAdoptado()"
           flat
           v-if="servicio === 'perrosMios' || rol == 2"
           class="textoBoton"
         >
->>>>>>> ee83dc2763e42568c2336c35ac281653ef62b4b8
           Marcar como adoptado
         </q-btn>
         <q-btn
