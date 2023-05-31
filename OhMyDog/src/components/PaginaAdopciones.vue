@@ -69,6 +69,7 @@
                 :telefono="perro.TELEFONO"
                 :mail="perro.MAIL"
                 :comentario="perro.COMENTARIO"
+                :adoptado="perro.ADOPTADO"
               />
             </div>
             <div
