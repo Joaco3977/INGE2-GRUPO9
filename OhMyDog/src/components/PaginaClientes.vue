@@ -101,6 +101,7 @@ import TarjetaCliente from "./tarjetas/TarjetaCliente.vue";
 import { checkToken } from "../functions/check.js";
 import { QDialog } from "quasar";
 import FormCliente from "./formularios/formCliente.vue";
+import { normalizeString } from "src/functions/misc";
 
 export default defineComponent({
   name: "PaginaClientes",
@@ -148,7 +149,7 @@ export default defineComponent({
         if (response !== false) {
           clientes.value = response.data;
           clientesFiltrados.value = response.data; // en clientes mantendria todos, mientras que los q se muestran en pantalla los tengo el el clientesFiltrados!
-          mailsClientes.value = response.data.map((cliente) => cliente.MAIL);
+          mailsClientes.value = response.data.map((cliente) => normalizeString(cliente.MAIL));
           dniClientes.value = response.data.map((cliente) => cliente.DNI);
           console.log("Los dnis: ", dniClientes.value);
         }
@@ -169,13 +170,6 @@ export default defineComponent({
       clientesFiltrados.value = clientes.value.filter((cliente) =>
         cliente.DNI.toString().includes(dni.toString())
       );
-    };
-
-    const normalizeString = (str) => {
-      return str
-        .toLowerCase() // Convert string to lowercase
-        .normalize("NFD") // Normalize to decomposed form
-        .replace(/[\u0300-\u036f]/g, ""); // Remove accents
     };
 
     const filtrarClientesNom = (nom) => {

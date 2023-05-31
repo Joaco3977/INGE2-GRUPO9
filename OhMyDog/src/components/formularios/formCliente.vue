@@ -70,6 +70,7 @@
 
 <script>
 import { defineComponent, reactive, ref, watch } from "vue";
+import { normalizeString } from "src/functions/misc";
 
 export default {
   name: "formCliente",
@@ -112,7 +113,7 @@ export default {
         sError.push("Ingrese un nombre válido");
       }
       if (!this.dniValido) {
-        sError.push("Ingrese un DNI válido");
+        sError.push("Ingrese un DNI válido (sin puntos)");
       }
       if ( this.dniExiste) {
         sError.push( "Un cliente con este DNI ya está registrado" )
@@ -132,7 +133,7 @@ export default {
       return sError;
     },
     mailExiste(){
-      return this.mailsClientes.includes(this.cliente.mail)
+      return this.mailsClientes.includes(normalizeString(this.cliente.mail))
     },
     dniExiste(){
       return this.dniClientes.includes(parseInt(this.cliente.dni));
@@ -167,7 +168,7 @@ export default {
         this.dniValido &&
         !this.mailExiste &&
         this.mailValido &&
-        !this.mailExiste &&
+        !this.dniExiste &&
         this.telefonoValido &&
         this.direccionValida
       );

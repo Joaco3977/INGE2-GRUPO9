@@ -91,6 +91,7 @@
 import { defineComponent, ref } from "vue";
 import { useStore } from "src/pinia/store";
 import { useQuasar } from "quasar";
+import { normalizeString } from "src/functions/misc";
 
 export default defineComponent({
   name: "formPerro",
@@ -182,12 +183,6 @@ export default defineComponent({
       const perro = this.getDatosPerro();
       this.$emit("registrarPerro", perro);
     },
-    normalizeString(str) {
-      return str
-        .toLowerCase() // Convert string to lowercase
-        .normalize("NFD") // Normalize to decomposed form
-        .replace(/[\u0300-\u036f]/g, ""); // Remove accents
-    },
   },
   computed: {
     mensajeError() {
@@ -219,13 +214,7 @@ export default defineComponent({
       return sError;
     },
     nombreExiste() {
-      console.log("entre a nombre existe");
-      const normalizedNombresPerros = this.normalizeString(
-        this.nombresPerros.join(" ")
-      );
-      const normalizedPerroNOMBRE = this.normalizeString(this.perroNOMBRE);
-
-      return normalizedNombresPerros.includes(normalizedPerroNOMBRE);
+      return this.nombresPerros.includes(normalizeString(this.perroNOMBRE));
     },
     nombreValido() {
       return (

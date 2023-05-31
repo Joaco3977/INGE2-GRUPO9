@@ -146,6 +146,7 @@ import { defineComponent, onMounted  } from "vue";
 import { ref } from "vue";
 import TarjetaPerroVet from "./TarjetaPerroVet.vue";
 import FormPerro from "../formularios/formPerro.vue";
+import { normalizeString } from "src/functions/misc";
 
 export default defineComponent({
   name: "TarjetaCliente",
@@ -192,7 +193,7 @@ export default defineComponent({
           dni: props.dni,
         });
         perrosCliente.value = response.data;
-        nombresPerros.value = response.data.map((perro) => perro.NOMBRE);
+        nombresPerros.value = response.data.map((perro) => normalizeString(perro.NOMBRE));
         console.log("perros cliente: ", nombresPerros.value);
       } catch (error) {
         console.error(error);
@@ -239,7 +240,7 @@ export default defineComponent({
       this.loadPerrosCliente(this.dni);
       console.log("ente aca, cerrate sesamo!");
       this.expandedItem = false;
-    }
+    },
   },
   mounted(){
     this.loadPerrosCliente(this.dni);
