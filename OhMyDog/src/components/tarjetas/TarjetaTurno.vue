@@ -105,7 +105,6 @@ export default defineComponent({
   },
   methods: {
     setEstado (id,state) {
-<<<<<<< HEAD
       console.log('entre boton')
       let data = {
         id: id,
@@ -114,17 +113,6 @@ export default defineComponent({
       console.log('data:', data)
       this.$emit("ejecutarFuncion", data)
     }
-=======
-      console.log("entre")
-      this.$emit("setEstado",{
-        id:id,
-        state:state,
-      })
-    },
-    reiniciarHora() {
-      this.horaTurno = "";
-    },
->>>>>>> 4f86d4ad34cb32bbd4339f036999f650ec607735
   },
   computed: {
     formattedDate() {
