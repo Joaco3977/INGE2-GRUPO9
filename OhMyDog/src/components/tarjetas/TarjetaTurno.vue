@@ -104,18 +104,16 @@ export default defineComponent({
     };
   },
   methods: {
-    reiniciarHora() {
-      this.horaTurno = "";
-    },
-  },
-  methods: {
     setEstado (id,state) {
       console.log("entre")
       this.$emit("setEstado",{
         id:id,
         state:state,
       })
-    }
+    },
+    reiniciarHora() {
+      this.horaTurno = "";
+    },
   },
   computed: {
     formattedDate() {
