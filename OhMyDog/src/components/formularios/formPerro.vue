@@ -226,14 +226,12 @@ export default defineComponent({
       return this.perroSEXO.value != undefined;
     },
     edadValida() {
-      console.log(this.perroNACIMIENTO);
       return (
         
         this.perroNACIMIENTO.length >= 0
       );
     },
     camposValidos() {
-      console.log(this.perroTAMANIO.value);
       return (
         this.nombreValido &&
         this.tamanioValido &&

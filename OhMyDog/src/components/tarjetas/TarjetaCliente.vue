@@ -50,14 +50,15 @@
           </div>
 
           <div class="column col-5">
-            <!-- <q-expansion-item
+             <q-expansion-item
+             v-model="expandedItem"
               @click="loadPerrosCliente(dni)"
               class="full-width bg-primary text-white text-center text-bold"
               expand-separator
               icon="ion-paw"
               expand-icon="ion-arrow-dropdown"
               label="Ver perros del cliente"
-            > -->
+            > 
               <q-card flat>
                 <div
                   class="row  text-bold text-secondary text-center justify-center full-height content-center q-pa-md q-mx-lg"
@@ -82,7 +83,7 @@
                   </div>
                 </q-card-section>
               </q-card>
-           <!-- </q-expansion-item> -->
+            </q-expansion-item> 
           </div>
 
           <div class="column col-3 justify-center content-end">
@@ -214,10 +215,9 @@ export default defineComponent({
       }
     };
 
-    onMounted(loadPerrosCliente);
-
     return {
       confirmar: ref(false),
+      expandedItem: ref(false),
       verPerro,
       agregarPerro: ref(false),
       perrosCliente,
@@ -230,7 +230,21 @@ export default defineComponent({
   methods: {
     ejecutarFuncionPadre(dni) {
       this.$emit("ejecutarFuncion", dni);
+      console.log("ya ejecuté la funcion")
     },
+    recargarPerros(){
+      this.loadPerrosCliente(this.dni);
+      console.log("ente aca, cerrate sesamo!");
+      this.expandedItem = false;
+    }
+  },
+  mounted(){
+    this.loadPerrosCliente(this.dni);
+  },
+  beforeUnmount(){
+    this.perrosCliente.value = [];
+    this.expandedItem = false;
+    console.log("acá me fui antes de desmontar")
   },
 });
 </script>

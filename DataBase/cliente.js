@@ -99,23 +99,38 @@ router.post('/getCliente',async (req,res) =>{
     })
 })
 
-router.post('/deleteCliente', async (req,res) =>{
+/*router.post('/deleteCliente', async (req,res) =>{
     knex('cliente').where('DNI', req.body.dni).del()
     .then(() =>{
         Log.agregarEntradaLog(2, req.body.dniVet, `elimino al cliente ${req.body.dni}`)
+        console.log("Esto es lo que entra a eliminar: ",req.body);
         knex('perro').where('DNICLIENTE', req.body.dni).del()
         .then(() => {
             Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino cliente con dni: ${req.body.dni} junto con todos sus perros`)
             res.status(200).send({})
         })
         .catch((error) => {
-            console.log(error)
+            console.log("Acá paso algo!!")
         })
     }).catch((error)=>{
         console.log(error)
         res.status(401).send('No fue posible conectar con la base de datos');
     })
-})
+})*/
+
+router.post('/deleteCliente', async (req, res) => {
+    try {
+      await knex('perro').where('DNICLIENTE', req.body.dni).del();
+      await knex('cliente').where('DNI', req.body.dni).del();
+      Log.agregarEntradaLog(2, req.body.dniVet, `elimino al cliente ${req.body.dni}`);
+      Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO elimino cliente con dni: ${req.body.dni} junto con todos sus perros`);
+      res.status(200).send({});
+    } catch (error) {
+      console.log(error);
+      res.status(401).send('No fue posible conectar con la base de datos');
+    }
+});
+  
 
 router.post('/addCliente', async (req, res) => {
     enviadorMails.enviarMailPassword(req.body.cliente.mail)

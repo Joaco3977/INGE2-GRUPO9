@@ -62,6 +62,7 @@
         <q-card flat>
           <div class="full-width row items-center q-py-md">
             <TarjetaCliente
+              :ref="'losClientes'"
               @ejecutarFuncion="eliminarCliente"
               v-for="(cliente, dni) in clientesFiltrados"
               :key="dni"
@@ -93,7 +94,7 @@
 </template>
 
 <script>
-import { defineComponent, reactive, ref, watch } from "vue";
+import { defineComponent, reactive, ref, watch, getCurrentInstance } from "vue";
 import { api } from "../boot/axios.js";
 import { useStore } from "../pinia/store.js";
 import TarjetaCliente from "./tarjetas/TarjetaCliente.vue";
@@ -184,18 +185,33 @@ export default defineComponent({
         const clienteNormalized = normalizeString(cliente.NOMBREAPELLIDO); // Normalize the NOMBREAPELLIDO field
         return clienteNormalized.includes(nomNormalized);
       });
-
     };
+
+    const instance = getCurrentInstance();
 
     async function eliminarCliente(dni) {
       try {
+        console.log("por lo menos entre aca?");
         await api.post("cliente/deleteCliente", {
           dniVet: useStore().dni,
           dni: dni,
         });
-        loadClientes();
+        console.log("las refs: ", instance.refs);
+        console.log(
+          "llegue acaa y la lista es: ",
+          instance.refs["losClientes"]
+        );
+        await loadClientes();
+
+        for (let i = 0; i < instance.refs["losClientes"].length; i++) {
+          if (instance.refs["losClientes"]) {
+            console.log("ENTREEEeeee");
+            console.log(instance.refs["losClientes"][i]);
+            instance.refs["losClientes"][i].recargarPerros();
+          }
+        }
       } catch {
-        console.error("NO SE PUDO ELIMINAR CLIENTE");
+        console.error("NO SE PUDO ELIMINAR CLIENTE (mentira)");
       }
     }
 
@@ -211,7 +227,7 @@ export default defineComponent({
       registrarCliente,
       filtrarClientes,
       eliminarCliente,
-
+      instance,
       mostrarPopup: ref(false),
       inputRef,
     };
