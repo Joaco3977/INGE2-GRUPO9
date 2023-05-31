@@ -22,7 +22,7 @@
         class="q-pt-sm bg-primary text-white"
         style="max-height: 60vh"
       >
-        <q-tab v-if="store.rol > -1" name="Quienes Somos" icon="ion-home" label="Quienes Somos" /> 
+        <q-tab v-if="store.rol > -1" name="Quienes Somos" icon="ion-home" label="¿Quiénes Somos?" /> 
         <q-tab
           v-if="store.rol > 0"
           name="Mi Perfil"

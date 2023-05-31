@@ -40,11 +40,11 @@
               <div>{{ mail }}</div>
             </div>
             <div class="row">
-              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Telefono:</div>
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Teléfono:</div>
               <div>{{ telefono }}</div>
             </div>
             <div class="row">
-              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Direccion:</div>
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Dirección:</div>
               <div>{{ direccion }}</div>
             </div>
           </div>

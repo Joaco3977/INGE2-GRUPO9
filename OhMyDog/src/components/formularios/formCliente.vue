@@ -45,13 +45,6 @@
           </ul>
           <div class="row justify-end q-pt-lg">
             <q-btn
-              label="Registrar cliente"
-              :disabled="!camposValidos"
-              type="submit"
-              color="accent"
-              v-close-popup
-            />
-            <q-btn
               label="Cancelar"
               type="reset"
               color="primary"
@@ -59,6 +52,14 @@
               class="q-ml-sm"
               v-close-popup
             />
+            <q-btn
+              label="Registrar cliente"
+              :disabled="!camposValidos"
+              type="submit"
+              color="accent"
+              v-close-popup
+            />
+            
           </div>
         </q-form>
       </q-card-section>

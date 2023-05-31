@@ -180,7 +180,7 @@ export default defineComponent({
       return this.perroSEXO.value != undefined;
     },
     edadValida(){
-      return this.perroEDAD.length >= 0 && this.perroEDAD.length < 3 && /^\d+$/.test(this.perroEDAD);
+      return this.perroEDAD.length >= 0 && this.perroEDAD.length < 3 && /^\d+$/.test(this.perroEDAD) && this.perroEDAD > 0;
     },
     camposValidos(){
       return this.nombreValido && this.tamanioValido && this.edadValida && this.sexoValido && this.mailValido;

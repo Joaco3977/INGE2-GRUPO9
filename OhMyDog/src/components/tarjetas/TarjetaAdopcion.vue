@@ -69,7 +69,7 @@
       <!-- Acciones -->
       <q-separator dark />
       <q-card-actions v-if="adoptado == 0" class="column items-center">
-        <q-btn @click="marcarAdoptado(id)"
+        <q-btn @click="confirmarAdopcion = true"
           flat
           v-if="servicio === 'perrosMios' || rol == 2"
           class="textoBoton"
@@ -110,6 +110,30 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="confirmarAdopcion">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">¿Marcar perro como adoptado?</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Esta acción no puede deshacerse
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+          <q-btn
+            flat
+            label="Confirmar"
+            @click="marcarAdoptado(id)"
+            color="primary"
+            v-close-popup
+          />
+          
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -139,6 +163,7 @@ export default defineComponent({
     return {
       contactoCliente: "",
       confirmar: ref(false),
+      confirmarAdopcion: ref(false),
     };
   },
   methods: {

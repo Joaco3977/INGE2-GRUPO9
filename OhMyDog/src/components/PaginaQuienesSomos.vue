@@ -6,11 +6,9 @@
       class="flex row q-mx-xl justify-between items-center"
       style="height: 4em"
     >
-      <!-- titulo -->
       <div class="titulo text-center text-h4 text-bold text-primary">
-        Sobre Nosotros
+        ¿Quiénes somos?
       </div>
-
     </div>
 
 

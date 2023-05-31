@@ -4,8 +4,15 @@
   <div
     class="bg-white column no-wrap col-10 items-center full-height full-width"
   >
-    <div class="titulo text-center text-h4 text-bold text-primary q-pt-md">
-      MI PERFIL
+    
+    <div
+      class="flex row q-mx-xl justify-start items-center"
+      style="height: 4em"
+    >
+      <div class="self-start titulo text-center text-h4 text-bold text-primary">
+        Mi perfil
+      </div>
+      
     </div>
     <q-card class="my-card q-mt-lg" style="width: 90%; height: max-content">
       <q-separator />
@@ -42,7 +49,7 @@
       <q-separator />
       <q-card-actions class="q-py-lg row justify-end q-px-xl">
         <!-- <q-btn class="textoBoton q-mx-md" > Editar perfil </q-btn> -->
-        <q-btn class="textoBoton" @click="cerrarSesion()"> Cerrar Sesion </q-btn>
+        <q-btn class="textoBoton" @click="cerrarSesion()"> Cerrar Sesión </q-btn>
       </q-card-actions>
     </q-card>
   </div>
