@@ -36,6 +36,12 @@
                 linkImg="https://cdn.quasar.dev/img/parallax2.jpg"
               />
             </div>
+            <div
+              class="row textoNoItems justify-center full-height content-center q-pa-xl"
+              v-if="perrosDatos.length === 0"
+            >
+              ¡No tenés ningún perro!
+            </div>
           </q-scroll-area>
 
     </q-card>

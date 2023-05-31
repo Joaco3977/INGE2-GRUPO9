@@ -29,6 +29,18 @@
             class="q-px-xl"
             label="Vacuna"
           />
+          <div class="column items-center bg-white q-pa-sm">
+            <div class="q-px-xl q-py-sm text-start self-start color-grey">
+              Fecha y hora del turno:
+            </div>
+            <q-date
+              class="q-mb-lg"
+              v-model="fechaTurno"
+              minimal
+              :options="opcionesFecha"
+            />
+            
+          </div>
           <ul class="q-mx-md q-py-xs">
             <li
               v-for="mnsj in mensajeError"
@@ -95,6 +107,16 @@ export default defineComponent({
       return false;
     };
 
+    const opcionesFecha = (date) => {
+      const hoy = new Date().toLocaleDateString("zh-Hans-CN", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+
+      return date >= hoy;
+    };
+
     watch(nombreServicio, (newNombreServicio) => {
       // Update nombreVacuna based on the value of nombreServicio
       if (newNombreServicio != "Vacunación") {
@@ -107,6 +129,8 @@ export default defineComponent({
       nombrePerro,
       nombreServicio,
       nombreVacuna,
+      opcionesFecha,
+      fechaTurno: ref(""),
       clienteDNI,
       opcionServicio: [
         { label: "Consulta", value: "Consulta" },
@@ -150,6 +174,9 @@ export default defineComponent({
       if (!this.vacunaValida) {
         sError.push("Elija una vacuna");
       }
+      if (!this.fechaValida){
+        sError.push("Elija una fecha");
+      }
       return sError;
     },
     perroValido() {
@@ -164,8 +191,11 @@ export default defineComponent({
         this.nombreVacuna.value != undefined
       );
     },
+    fechaValida(){
+      return this.fechaTurno != undefined;
+    },
     camposValidos() {
-      return this.perroValido && this.servicioValido && this.vacunaValida;
+      return this.perroValido && this.servicioValido && this.vacunaValida && this.fechaValida;
     },
   },
 });

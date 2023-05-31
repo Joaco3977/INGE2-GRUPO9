@@ -9,7 +9,7 @@
       <q-card-section class="column">
         <div class="column">
           <div class="textoPerfil q-py-sm">
-            Fecha del turno:    {{ formattedDate }}
+            Fecha del turno: {{ formattedDate }}
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Cliente:</div>
@@ -36,6 +36,7 @@
               v-if="rol == 2 && state == 'Pendiente'"
               class="q-ml-md"
               color="accent"
+              @click="confirmar = true"
             >
               <div>Confirmar</div>
             </q-btn>
@@ -43,6 +44,34 @@
         </q-card-actions>
       </q-card-section>
     </q-card>
+
+    <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">Confirmar horario</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-select
+            v-model="horaTurno"
+            :options="opcionHora"
+            class="q-px-none"
+            label="Bloque horario"
+          />
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Confirmar"
+            color="primary"
+            :disable="horaTurno.value == undefined"
+            v-close-popup
+          />
+          <q-btn flat @click="reiniciarHora" label="Cancelar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -54,8 +83,8 @@ export default defineComponent({
   name: "TarjetaPaseador",
   components: {},
   props: {
-    rol: String,
     id: String,
+    rol: String,
     cliente: String,
     state: String,
     fecha: String,
@@ -63,15 +92,26 @@ export default defineComponent({
     nombreServicio: String,
   },
   setup() {
-    return {};
+    const horaTurno = ref("");
+    return {
+      confirmar: ref(false),
+      horaTurno,
+      opcionHora: [
+        { label: "Mañana", value: "Mañana" },
+        { label: "Tarde", value: "Tarde" },
+        { label: "Noche", value: "Noche" },
+      ],
+    };
   },
   methods: {
     setEstado (id,state) {
-      console.log("entre")
-      this.$emit("setEstado",{
-        id:id,
-        state:state,
-      })
+      console.log('entre boton')
+      let data = {
+        id: id,
+        state: state
+      }
+      console.log('data:', data)
+      this.$emit("ejecutarFuncion", data)
     }
   },
   computed: {

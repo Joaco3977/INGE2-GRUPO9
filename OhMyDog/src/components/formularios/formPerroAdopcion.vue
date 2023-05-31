@@ -53,12 +53,6 @@
           </ul>
           <div class="row justify-end q-pt-lg">
             <q-btn
-              label="Registrar Adopción"
-              @click="this.ejecutarFuncionPadre();"
-              :disabled="!camposValidos"
-              color="accent"
-            />
-            <q-btn
               label="Cancelar"
               type="reset"
               color="primary"
@@ -66,6 +60,13 @@
               class="q-ml-sm"
               v-close-popup
             />
+            <q-btn
+              label="Registrar Adopción"
+              @click="this.ejecutarFuncionPadre();"
+              :disabled="!camposValidos"
+              color="accent"
+            />
+            
           </div>
         </q-form>
       </q-card-section>
@@ -147,7 +148,7 @@ export default defineComponent({
     mensajeError(){
       let sError = [];
       if (!this.nombreValido ){
-        sError.push( " El nombre no es correcto" )
+        sError.push( "Ingrese un nombre válido" )
       }
       if (!this.tamanioValido ){
         sError.push("Seleccione un tamaño")
@@ -156,10 +157,10 @@ export default defineComponent({
         sError.push("Seleccione un sexo")
       }
       if (!this.edadValida ){
-        sError.push("La edad no es correcta")
+        sError.push("Ingrese una edad válida")
       }
       if (!this.mailValido){
-        sError.push("Mail invalido")
+        sError.push("Ingrese un mail válido")
       }
       return sError
     },
@@ -180,7 +181,7 @@ export default defineComponent({
       return this.perroSEXO.value != undefined;
     },
     edadValida(){
-      return this.perroEDAD.length >= 0 && this.perroEDAD.length < 3 && /^\d+$/.test(this.perroEDAD);
+      return this.perroEDAD.length >= 0 && this.perroEDAD.length < 3 && /^\d+$/.test(this.perroEDAD) && this.perroEDAD > 0;
     },
     camposValidos(){
       return this.nombreValido && this.tamanioValido && this.edadValida && this.sexoValido && this.mailValido;
