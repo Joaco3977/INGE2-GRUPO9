@@ -13,7 +13,7 @@ const enviadorMails = require('./loginCheck.js');
 const Consola = require ('./serverFunctions.js')
 const Log = require ('./log.js')
 
-const getVeterianos = async () => {
+const getVeterinarios = async () => {
     try {
         const resultado = await knex('veterinario').select('*')
         return resultado;
@@ -54,7 +54,7 @@ const addVeterinario = async (nuevoVeterinario) => {
 }
 
 router.get('/getVeterinarios', async (req, res) => {
-    getVeterianos()
+    getVeterinarios()
     .then ((resultadoGet) => {
         if (resultadoGet === undefined || resultadoGet === false) {
             res.status(401)

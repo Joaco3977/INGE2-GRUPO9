@@ -87,6 +87,7 @@
       <FormCliente
         @registrarCliente="registrarCliente"
         :mailsClientes="mailsClientes"
+        :mailsVeterinarios="mailsVeterinarios"
         :dniClientes="dniClientes"
       />
     </q-dialog>
@@ -118,6 +119,7 @@ export default defineComponent({
     const clientes = reactive([]);
     const clientesFiltrados = ref([]);
     const mailsClientes = ref([]);
+    const mailsVeterinarios = ref([]);
     const dniClientes = ref([]);
     const dniFiltrar = ref("");
     const nombreFiltrar = ref("");
@@ -151,12 +153,24 @@ export default defineComponent({
           clientesFiltrados.value = response.data; // en clientes mantendria todos, mientras que los q se muestran en pantalla los tengo el el clientesFiltrados!
           mailsClientes.value = response.data.map((cliente) => normalizeString(cliente.MAIL));
           dniClientes.value = response.data.map((cliente) => cliente.DNI);
-          console.log("Los dnis: ", dniClientes.value);
+          //console.log("Los dnis: ", dniClientes.value);
         }
       } catch (error) {
         console.error(error);
       }
     };
+
+    const loadVeterinarios = async () => {
+        try {
+          const response = await api.get("/veterinario/getVeterinarios");
+          if (response !== false) {
+            mailsVeterinarios.value = response.data.map((vet) => normalizeString(vet.MAIL));
+            //console.log("los mails: ", mailsVeterinarios.value)
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
     watch(dniFiltrar, (nuevoValor, valorAnterior) => {
       filtrarClientes(nuevoValor);
@@ -214,10 +228,12 @@ export default defineComponent({
       clientes,
       clientesFiltrados,
       mailsClientes,
+      mailsVeterinarios,
       dniClientes,
       dniFiltrar,
       nombreFiltrar,
       loadClientes,
+      loadVeterinarios,
       registrarCliente,
       filtrarClientes,
       eliminarCliente,
@@ -229,6 +245,7 @@ export default defineComponent({
   mounted() {
     checkToken();
     this.loadClientes();
+    this.loadVeterinarios();
   },
 });
 </script>

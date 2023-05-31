@@ -14,10 +14,22 @@ router.post('/crearTurno', async (req, res) => {
     res.status(200).send({})
 })
 
-router.post('/setEstado', async(req,res) =>{
-    await knex('turno').where("ID",req.body.id).update({ ESTADO: req.body.state } )
+router.post('/cancelarTurno', async(req,res) =>{
+    console.log(req.body)
+    await knex('turno').where("ID",req.body.id).update({ ESTADO: 'Cancelado' } )
     .then(()=>{
-        Consola.mensaje("\x1b[33m%s\x1b[0m", `VETERINARIO cambio el estado del turno con id ${req.body.id}`)
+        Consola.mensaje("\x1b[33m%s\x1b[0m", `se cancelo el turno con id ${req.body.id}`)
+        res.status(200).send({});
+    }).catch((error)=>{
+        console.log(error)
+        res.status(401).send('No es posible realizar la operacion solicitada en este momento')
+    })
+})
+
+router.post('/confirmarTurno', async(req,res) =>{
+    await knex('turno').where("ID",req.body.id).update({ ESTADO: 'Confirmado' , FRANJAHORARIA: req.body.franjaHoraria} )
+    .then(()=>{
+        Consola.mensaje("\x1b[33m%s\x1b[0m", `se confirmo el turno con id ${req.body.id}`)
         res.status(200).send({});
     }).catch((error)=>{
         console.log(error)
