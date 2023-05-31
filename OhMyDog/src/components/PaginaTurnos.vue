@@ -65,10 +65,12 @@
           <q-tab-panel name="turnosCancelados">
             <div></div>
             <TarjetaTurno
+              @setEstado="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
+              :id="turno.ID"
               :rol="rol"
-              :state="turno.ESTADO"
+              :state="'Cancelado'"
               :cliente="turno.DNICLIENTE"
               :nombrePerro="turno.IDPERRO"
               :fecha="turno.FECHA"
@@ -83,8 +85,10 @@
           </q-tab-panel>
           <q-tab-panel name="turnosPasados">
             <TarjetaTurno
+              @setEstado="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
+              :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
               :cliente="turno.DNICLIENTE"
@@ -101,8 +105,10 @@
           </q-tab-panel>
           <q-tab-panel name="turnosSolicitados">
             <TarjetaTurno
+              @setEstado="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
+              :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
               :cliente="turno.DNICLIENTE"
@@ -119,8 +125,10 @@
           </q-tab-panel>
           <q-tab-panel name="turnosConfirmados">
             <TarjetaTurno
+              @setEstado="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
+              :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
               :cliente="turno.DNICLIENTE"
@@ -227,6 +235,18 @@ export default defineComponent({
         .catch((error) => {
           console.log(error);
         });
+    },
+
+    async setEstado (data){
+      console.log("entre1")
+      await api
+      .post("/turnos/setEstado",data)
+      .then((response)=>{
+        console.log(response.data)
+      })
+      .catch((error) => {
+          console.log(error);
+        })
     }
   },
   mounted() {

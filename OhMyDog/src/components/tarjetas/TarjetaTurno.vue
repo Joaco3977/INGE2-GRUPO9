@@ -26,7 +26,7 @@
         </div>
         <q-card-actions>
           <div class="row justify-end full-width q-pr-sm">
-            <q-btn flat v-if="rol > 0 && state == 'Confirmado'" class="q-ml-md">
+            <q-btn @click="setEstado(id,'Cancelado')" flat v-if="rol > 0 && state == 'Confirmado' " class="q-ml-md">
               <div>Cancelar Turno</div>
             </q-btn>
             <q-btn flat v-if="rol == 2 && state == 'Pendiente'" class="q-ml-md">
@@ -84,6 +84,7 @@ export default defineComponent({
   components: {},
   props: {
     rol: String,
+    id: String,
     cliente: String,
     state: String,
     fecha: String,
@@ -106,6 +107,15 @@ export default defineComponent({
     reiniciarHora() {
       this.horaTurno = "";
     },
+  },
+  methods: {
+    setEstado (id,state) {
+      console.log("entre")
+      this.$emit("setEstado",{
+        id:id,
+        state:state,
+      })
+    }
   },
   computed: {
     formattedDate() {
