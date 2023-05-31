@@ -10,6 +10,9 @@
       <!-- <div class="q-pa-md text-center text-white bg-accent">
         ROL ACTUAL: {{ roles[store.rol + 1] }}
       </div> -->
+      <q-btn v-if="store.rol === -1" @click="cerrarSesion()" class="q-pt-sm bg-primary text-white">
+        Cerrar Sesion
+      </q-btn>
 
       <q-tabs
         v-model="store.tab"
@@ -19,7 +22,7 @@
         class="q-pt-sm bg-primary text-white"
         style="max-height: 60vh"
       >
-        <q-tab name="Quienes Somos" icon="ion-home" label="Quienes Somos" /> 
+        <q-tab v-if="store.rol > -1" name="Quienes Somos" icon="ion-home" label="Quienes Somos" /> 
         <q-tab
           v-if="store.rol > 0"
           name="Mi Perfil"
@@ -63,9 +66,9 @@
           label="Veterinarios"
         />
 
-        <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
-        <q-tab name="Adopciones" icon="ion-heart" label="Adopciones" />
-        <q-tab name="Paseadores" icon="ion-walk" label="Paseadores" />
+        <!--<q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />-->
+        <q-tab v-if="store.rol > -1" name="Adopciones" icon="ion-heart" label="Adopciones" />
+        <q-tab v-if="store.rol > -1"  name="Paseadores" icon="ion-walk" label="Paseadores" />
         <!-- <q-tab name="TESTING" icon="ion-walk" label="TESTING" /> -->
         <!-- <q-tab
           v-if="store.rol === 2"
@@ -131,9 +134,9 @@
           <PaginaPaseadores :rol="store.rol" />
         </q-tab-panel>
 
-        <q-tab-panel v-if="store.rol === -1" name="LOG">
+        <!--<q-tab-panel v-if="store.rol === -1" name="LOG">
           <PaginaLog />
-        </q-tab-panel>
+        </q-tab-panel>-->
 
         <q-tab-panel v-if="store.rol === 1" name="Consultas">
           <PaginaConsultaCliente />
@@ -171,7 +174,8 @@ import PaginaLog from "../components/PaginaLog.vue";
 import PaginaVeterinarios from "src/components/PaginaVeterinarios.vue";
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
-
+import { api } from "../boot/axios.js";
+import { LocalStorage } from "quasar";
 import PaginaTesting from '../components/PaginaTesting.vue' //SACAR DESPUES
 
 export default defineComponent({
@@ -188,7 +192,7 @@ export default defineComponent({
     PaginaAdopciones,
     PaginaPaseadores,
     PaginaPerfil,
-    PaginaLog,
+    //PaginaLog,
     PaginaVeterinarios,
     PaginaTesting, //SACAR DESPUES
   },
@@ -199,6 +203,22 @@ export default defineComponent({
       roles: listaRoles,
     });
     return data;
+  },
+  methods: {
+    async cerrarSesion() {
+      try {
+        const response = await api.post("/logout", {
+          token: LocalStorage.getItem("token"),
+        });
+        if (response) {
+          this.store.setRol(0);
+          this.store.setTab("Iniciar Sesion");
+          LocalStorage.clear();
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
   mounted() {
     checkTokenHome();

@@ -28,9 +28,35 @@
           </div>
         </q-card-section>
         <q-card-actions class="column items-center">
-          <q-btn push class="textoBoton"  flat> Contactar </q-btn>
-          <q-btn push class="textoBoton"  flat> Editar </q-btn>
-          <q-btn @click="ejecutarFuncionPadre(dni)" push class="textoBoton"  flat> Eliminar </q-btn>
+          <!--<q-btn push class="textoBoton"  flat> Contactar </q-btn>
+          <q-btn push class="textoBoton"  flat> Editar </q-btn>-->
+          <q-btn @click="confirmar = true" class="q-ml-sm" color="accent">
+            <div>Eliminar</div>
+
+            <!-- @click="ejecutarFuncionPadre(dni)"-->
+          </q-btn>
+            <q-dialog v-model="confirmar">
+              <q-card>
+                <q-card-section>
+                  <div class="textoTituloTarjeta text-primary">¿Eliminar veterinario?</div>
+                </q-card-section>
+
+                <q-card-section class="q-pt-none">
+                  Esta acción no puede deshacerse
+                </q-card-section>
+
+                <q-card-actions align="right">
+                  <q-btn
+                    flat
+                    label="Eliminar"
+                    @click="ejecutarFuncionPadre(dni)"
+                    color="primary"
+                    v-close-popup
+                  />
+                  <q-btn flat label="Cancelar" color="primary" v-close-popup />
+                </q-card-actions>
+            </q-card>
+          </q-dialog>
         </q-card-actions>
       </q-card>
     </div>
@@ -50,7 +76,9 @@
       telefono: String,
     },
     setup() {
-      return {};
+      return {
+        confirmar: ref(false)
+      };
     },
     methods: {
       ejecutarFuncionPadre(dni) {

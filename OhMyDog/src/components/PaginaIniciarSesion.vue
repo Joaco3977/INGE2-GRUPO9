@@ -70,6 +70,8 @@ export default defineComponent({
         if (response.data.rol > 0) {
           this.store.setDni(response.data.dni);
           this.store.setTab("Mi Perfil");
+        } else if(response.data.rol === -1) {
+          this.store.setTab("Veterinarios");
         }
       } catch (error) {
         console.error(error.response);
