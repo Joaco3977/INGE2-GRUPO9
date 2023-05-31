@@ -26,7 +26,7 @@
         </div>
         <q-card-actions>
           <div class="row justify-end full-width q-pr-sm">
-            <q-btn @click="setEstado(id,'Cancelado')" flat v-if="rol > 0 && state == 'Confirmado' " class="q-ml-md">
+            <q-btn @click="cancelarTurno(id)" flat v-if="rol > 0 && state == 'Confirmado' " class="q-ml-md">
               <div>Cancelar Turno</div>
             </q-btn>
             <q-btn flat v-if="rol == 2 && state == 'Pendiente'" class="q-ml-md">
@@ -64,6 +64,7 @@
           <q-btn
             flat
             label="Confirmar"
+            @click="confirmarTurno(id)"
             color="primary"
             :disable="horaTurno.value == undefined"
             v-close-popup
@@ -104,14 +105,16 @@ export default defineComponent({
     };
   },
   methods: {
-    setEstado (id,state) {
-      console.log('entre boton')
+    cancelarTurno (id) {
+      this.$emit("cancelarTurno", id)
+    },
+    confirmarTurno (id) {
+      console.log('entre confirmar')
       let data = {
         id: id,
-        state: state
+        franjaHoraria: this.horaTurno.value
       }
-      console.log('data:', data)
-      this.$emit("ejecutarFuncion", data)
+      this.$emit("confirmarTurno", data)
     }
   },
   computed: {

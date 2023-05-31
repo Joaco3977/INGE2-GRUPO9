@@ -65,7 +65,6 @@
           <q-tab-panel name="turnosCancelados">
             <div></div>
             <TarjetaTurno
-              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -85,7 +84,6 @@
           </q-tab-panel>
           <q-tab-panel name="turnosPasados">
             <TarjetaTurno
-              @ejecutarFuncion="setEstado"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -105,7 +103,7 @@
           </q-tab-panel>
           <q-tab-panel name="turnosSolicitados">
             <TarjetaTurno
-              @ejecutarFuncion="setEstado"
+              @confirmarTurno="confirmarTurno"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -125,7 +123,7 @@
           </q-tab-panel>
           <q-tab-panel name="turnosConfirmados">
             <TarjetaTurno
-              @ejecutarFuncion="setEstado"
+              @cancelarTurno="cancelarTurno"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
@@ -181,16 +179,62 @@ export default defineComponent({
       mostrarPopup.value = !mostrarPopup.value;
     };
 
-    const setEstado = async(data) => {
-      console.log("entre setEstado")
+    const confirmarTurno = async(id) => {
       await api
-      .post("/turno/setEstado", data)
-      .then((response)=>{
-        console.log(response.data)
+      .post("/turno/confirmarTurno", id)
+      .then(()=>{
+        loadTurnosPropio('Pendiente')
       })
       .catch((error) => {
           console.log(error);
+      })
+    }
+
+    const cancelarTurno = async(id) => {
+      await api
+      .post("/turno/cancelarTurno", id)
+      .then(()=>{
+        loadTurnosPropios('Cancelado')
+      })
+      .catch((error) => {
+          console.log(error);
+      })
+    }
+
+    const loadTurnosPropiosFecha = async(estado) => {
+      await api
+      .post("/turno/getTurnosDni", {
+          dni: useStore().dni,
+          estado: 'Confirmado',
         })
+        .then((response) => {
+          if (estado === 'Confirmado') {
+            listaTurnos.value = response.data.filter((turno) =>
+              (new Date()) <= new Date(turno.FECHA)
+            );
+          } else {
+            listaTurnos.value = response.data.filter((turno) =>
+              (new Date()) >= new Date(turno.FECHA)
+            );
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    const loadTurnosPropios = async(estado) => {
+      await api
+        .post("/turno/getTurnosDni", {
+          dni: useStore().dni,
+          estado: estado,
+        })
+        .then((response) => {
+          listaTurnos.value = response.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
 
     return {
@@ -199,24 +243,13 @@ export default defineComponent({
       listaTurnos,
       mostrarPopup,
       misPerros,
-      setEstado,
+      cancelarTurno,
+      confirmarTurno,
+      loadTurnosPropios,
+      loadTurnosPropiosFecha
     };
   },
   methods: {
-    async loadTurnosPropios(estado) {
-      await api
-        .post("/turno/getTurnosDni", {
-          dni: useStore().dni,
-          estado: estado,
-        })
-        .then((response) => {
-          this.listaTurnos = response.data;
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-
     async loadPerrosPropios() {
       try {
         const response = await api.post("/perro/getPerrosPropios",{ dni : useStore().dni })
@@ -226,28 +259,6 @@ export default defineComponent({
       catch (error) {
         console.error(error);
       }
-    },
-
-    async loadTurnosPropiosFecha (estado) {
-      await api
-      .post("/turno/getTurnosDni", {
-          dni: useStore().dni,
-          estado: 'Confirmado',
-        })
-        .then((response) => {
-          if (estado === 'Confirmado') {
-            this.listaTurnos = response.data.filter((turno) =>
-              (new Date()) <= new Date(turno.FECHA)
-            );
-          } else {
-            this.listaTurnos = response.data.filter((turno) =>
-              (new Date()) >= new Date(turno.FECHA)
-            );
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
     },
   },
   mounted() {
