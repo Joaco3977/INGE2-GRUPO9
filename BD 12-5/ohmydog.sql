@@ -347,20 +347,21 @@ DROP TABLE IF EXISTS `turno`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `turno` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `IDPERRO` int NOT NULL,
   `DNIVETERINARIO` int DEFAULT NULL,
   `DNICLIENTE` int NOT NULL,
   `FECHA` date NOT NULL,
   `ESTADO` varchar(20) NOT NULL,
-  `IDVACUNA` int DEFAULT NULL,
+  `NOMBREVACUNA` varchar(45) DEFAULT NULL,
+  `NOMBREPERRO` varchar(45) NOT NULL,
   `NOMBRESERVICIO` varchar(200) NOT NULL,
   `NOMBREVETERINARIO` varchar(60) DEFAULT NULL,
   `NOMBRECLIENTE` varchar(60) DEFAULT NULL,
   `FRANJAHORARIA` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -369,7 +370,7 @@ CREATE TABLE `turno` (
 
 LOCK TABLES `turno` WRITE;
 /*!40000 ALTER TABLE `turno` DISABLE KEYS */;
-INSERT INTO `turno` VALUES (1,1,213,23,'2023-05-17','Confirmado',NULL,'Chequeo','Joaco','Pedro',NULL),(2,2,213,23,'2023-09-18','Cancelado',NULL,'Peluqueria','Renzo','Camila',NULL),(3,5,213,43178686,'2023-05-18','Confirmado',NULL,'Desparacitacion','Juan','Joaquin Diez','Tarde'),(4,124,213,43178686,'2023-05-18','Confirmado',2,'Vacunacion','Lucia','Joaquin Diez',NULL),(5,142,213,124,'2023-05-18','Confirmado',1,'Vacunacion','Federico','Hernan',NULL),(6,1,123,43178686,'2024-02-19','Cancelado',NULL,'Peluqueria','Lorenzo','Joaquin Diez',NULL);
+INSERT INTO `turno` VALUES (1,1,213,23,'2023-05-17','Confirmado',NULL,'','Chequeo','Joaco','Pedro',NULL),(2,2,213,23,'2023-09-18','Cancelado',NULL,'','Peluqueria','Renzo','Camila',NULL),(3,5,213,43178686,'2023-05-18','Confirmado',NULL,'','Desparacitacion','Juan','Joaquin Diez','Tarde'),(4,124,213,43178686,'2023-05-18','Confirmado','2','','Vacunacion','Lucia','Joaquin Diez',NULL),(5,142,213,124,'2023-05-18','Confirmado','1','','Vacunacion','Federico','Hernan',NULL),(6,1,123,43178686,'2024-02-19','Cancelado',NULL,'','Peluqueria','Lorenzo','Joaquin Diez',NULL),(7,1,NULL,43178686,'2023-06-21','Pendiente',NULL,'Donna','Castración',NULL,'Joaquin Diez',NULL);
 /*!40000 ALTER TABLE `turno` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -464,4 +465,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-31 20:08:03
+-- Dump completed on 2023-05-31 21:57:11
