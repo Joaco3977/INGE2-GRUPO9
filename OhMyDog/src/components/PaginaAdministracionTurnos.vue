@@ -69,10 +69,14 @@
               :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
-              :cliente="turno.DNICLIENTE"
-              :nombrePerro="turno.IDPERRO"
+              :dniCliente="turno.DNICLIENTE"
+              :nombreCliente="turno.NOMBRECLIENTE"
+              :nombreVeterinario="turno.NOMBREVETERINARIO"
+              :nombrePerro="turno.NOMBREPERRO"
+              :nombreVacuna="turno.NOMBREVACUNA"
+              :franjaHoraria="turno.FRANJAHORARIA"
               :fecha="turno.FECHA"
-              :nombreServicio="turno.IDSERVICIO"
+              :nombreServicio="turno.NOMBRESERVICIO"
             />
             <div
               class="row textoNoItems justify-center full-height content-center q-pa-xl"
@@ -88,10 +92,14 @@
               :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
-              :cliente="turno.DNICLIENTE"
-              :nombrePerro="turno.IDPERRO"
+              :dniCliente="turno.DNICLIENTE"
+              :nombreCliente="turno.NOMBRECLIENTE"
+              :nombreVeterinario="turno.NOMBREVETERINARIO"
+              :nombrePerro="turno.NOMBREPERRO"
+              :nombreVacuna="turno.NOMBREVACUNA"
+              :franjaHoraria="turno.FRANJAHORARIA"
               :fecha="turno.FECHA"
-              :nombreServicio="turno.IDSERVICIO"
+              :nombreServicio="turno.NOMBRESERVICIO"
             />
             <div
               class="row textoNoItems justify-center full-height content-center q-pa-xl"
@@ -103,15 +111,20 @@
           <q-tab-panel name="turnosSolicitados">
             <TarjetaTurno
               @confirmarTurno="confirmarTurno"
+              @cancelarTurno="cancelarTurno"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
-              :cliente="turno.DNICLIENTE"
-              :nombrePerro="turno.IDPERRO"
+              :dniCliente="turno.DNICLIENTE"
+              :nombreCliente="turno.NOMBRECLIENTE"
+              :nombreVeterinario="turno.NOMBREVETERINARIO"
+              :nombrePerro="turno.NOMBREPERRO"
+              :nombreVacuna="turno.NOMBREVACUNA"
+              :franjaHoraria="turno.FRANJAHORARIA"
               :fecha="turno.FECHA"
-              :nombreServicio="turno.IDSERVICIO"
+              :nombreServicio="turno.NOMBRESERVICIO"
             />
             <div
               class="row textoNoItems justify-center full-height content-center q-pa-xl"
@@ -128,10 +141,14 @@
               :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
-              :cliente="turno.DNICLIENTE"
-              :nombrePerro="turno.IDPERRO"
+              :dniCliente="turno.DNICLIENTE"
+              :nombreCliente="turno.NOMBRECLIENTE"
+              :nombreVeterinario="turno.NOMBREVETERINARIO"
+              :nombrePerro="turno.NOMBREPERRO"
+              :nombreVacuna="turno.NOMBREVACUNA"
+              :franjaHoraria="turno.FRANJAHORARIA"
               :fecha="turno.FECHA"
-              :nombreServicio="turno.IDSERVICIO"
+              :nombreServicio="turno.NOMBRESERVICIO"
             />
             <div
               class="row textoNoItems justify-center full-height content-center q-pa-xl"
@@ -181,13 +198,15 @@ export default defineComponent({
       })
     }
 
-    const cancelarTurno = async(id) => {
+    const cancelarTurno = async(data) => {
       await api
       .post("/turno/cancelarTurno", {
-        id: id
+        id: data.id,
       })
       .then(()=>{
-        loadTurnos('Confirmado')
+        if (data.state === 'Confirmado') {
+          loadTurnosFecha('Confirmado')
+        } else loadTurnos('Pendiente')
       })
       .catch((error) => {
           console.log(error);

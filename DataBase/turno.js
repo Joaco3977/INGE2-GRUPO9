@@ -32,7 +32,7 @@ router.post('/cancelarTurno', async(req,res) =>{
 })
 
 router.post('/confirmarTurno', async(req,res) =>{
-    await knex('turno').where("ID",req.body.id).update({ ESTADO: 'Confirmado' , FRANJAHORARIA: req.body.franjaHoraria} )
+    await knex('turno').where("ID",req.body.id).update({ ESTADO: 'Confirmado' , FRANJAHORARIA: req.body.franjaHoraria, NOMBREVETERINARIO: req.body.nombre, DNIVETERINARIO: req.body.dni} )
     .then(()=>{
         Consola.mensaje("\x1b[33m%s\x1b[0m", `se confirmo el turno con id ${req.body.id}`)
         res.status(200).send({});

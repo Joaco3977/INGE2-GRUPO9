@@ -69,11 +69,15 @@
               :key="turno.ID"
               :id="turno.ID"
               :rol="rol"
-              :state="'Cancelado'"
-              :cliente="turno.DNICLIENTE"
-              :nombrePerro="turno.IDPERRO"
+              :state="turno.ESTADO"
+              :dniCliente="turno.DNICLIENTE"
+              :nombreCliente="turno.NOMBRECLIENTE"
+              :nombreVeterinario="turno.NOMBREVETERINARIO"
+              :nombrePerro="turno.NOMBREPERRO"
+              :nombreVacuna="turno.NOMBREVACUNA"
+              :franjaHoraria="turno.FRANJAHORARIA"
               :fecha="turno.FECHA"
-              :nombreServicio="turno.IDSERVICIO"
+              :nombreServicio="turno.NOMBRESERVICIO"
             />
             <div
               class="row textoNoItems justify-center full-height content-center q-pa-xl"
@@ -89,10 +93,14 @@
               :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
-              :cliente="turno.DNICLIENTE"
-              :nombrePerro="turno.IDPERRO"
+              :dniCliente="turno.DNICLIENTE"
+              :nombreCliente="turno.NOMBRECLIENTE"
+              :nombreVeterinario="turno.NOMBREVETERINARIO"
+              :nombrePerro="turno.NOMBREPERRO"
+              :nombreVacuna="turno.NOMBREVACUNA"
+              :franjaHoraria="turno.FRANJAHORARIA"
               :fecha="turno.FECHA"
-              :nombreServicio="turno.IDSERVICIO"
+              :nombreServicio="turno.NOMBRESERVICIO"
             />
             <div
               class="row textoNoItems justify-center full-height content-center q-pa-xl"
@@ -103,16 +111,20 @@
           </q-tab-panel>
           <q-tab-panel name="turnosSolicitados">
             <TarjetaTurno
-              @confirmarTurno="confirmarTurno"
+              @cancelarTurno="cancelarTurno"
               v-for="turno in listaTurnos"
               :key="turno.ID"
               :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
-              :cliente="turno.DNICLIENTE"
-              :nombrePerro="turno.IDPERRO"
+              :dniCliente="turno.DNICLIENTE"
+              :nombreCliente="turno.NOMBRECLIENTE"
+              :nombreVeterinario="turno.NOMBREVETERINARIO"
+              :nombrePerro="turno.NOMBREPERRO"
+              :nombreVacuna="turno.NOMBREVACUNA"
+              :franjaHoraria="turno.FRANJAHORARIA"
               :fecha="turno.FECHA"
-              :nombreServicio="turno.IDSERVICIO"
+              :nombreServicio="turno.NOMBRESERVICIO"
             />
             <div
               class="row textoNoItems justify-center full-height content-center q-pa-xl"
@@ -129,10 +141,14 @@
               :id="turno.ID"
               :rol="rol"
               :state="turno.ESTADO"
-              :cliente="turno.DNICLIENTE"
-              :nombrePerro="turno.IDPERRO"
+              :dniCliente="turno.DNICLIENTE"
+              :nombreCliente="turno.NOMBRECLIENTE"
+              :nombreVeterinario="turno.NOMBREVETERINARIO"
+              :nombrePerro="turno.NOMBREPERRO"
+              :nombreVacuna="turno.NOMBREVACUNA"
+              :franjaHoraria="turno.FRANJAHORARIA"
               :fecha="turno.FECHA"
-              :nombreServicio="turno.IDSERVICIO"
+              :nombreServicio="turno.NOMBRESERVICIO"
             />
             <div
               class="row textoNoItems justify-center full-height content-center q-pa-xl"
@@ -146,7 +162,7 @@
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      <FormTurno @registrarTurno="registrarTurno" :misPerros="misPerros" />
+      <FormTurno @registrarTurno="registrarTurno" :misPerros="misPerros" :pestania="tab" />
     </q-dialog>
   </div>
 </template>
@@ -178,22 +194,15 @@ export default defineComponent({
       mostrarPopup.value = !mostrarPopup.value;
     };
 
-    const confirmarTurno = async(id) => {
+    const cancelarTurno = async(data) => {
       await api
-      .post("/turno/confirmarTurno", id)
-      .then(()=>{
-        loadTurnosPropio('Pendiente')
+      .post("/turno/cancelarTurno", {
+        id: data.id,
       })
-      .catch((error) => {
-          console.log(error);
-      })
-    }
-
-    const cancelarTurno = async(id) => {
-      await api
-      .post("/turno/cancelarTurno", id)
       .then(()=>{
-        loadTurnosPropios('Cancelado')
+        if (data.state === 'Confirmado') {
+          loadTurnosPropiosFecha('Confirmado')
+        } else loadTurnosPropios('Pendiente')
       })
       .catch((error) => {
           console.log(error);
@@ -236,13 +245,15 @@ export default defineComponent({
         });
     }
 
-    const registrarTurno = async (turno) => {
+    const registrarTurno = async (data) => {
       await api
         .post("/turno/pedirTurno", {
-          turno: turno
+          turno: data.turno
         })
         .then(() => {
-          console.log('salio todo un lujo')
+          if (data.pestania === 'turnosSolicitados') {
+            loadTurnosPropios('Pendiente')
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -256,7 +267,6 @@ export default defineComponent({
       mostrarPopup,
       misPerros,
       cancelarTurno,
-      confirmarTurno,
       loadTurnosPropios,
       loadTurnosPropiosFecha,
       registrarTurno

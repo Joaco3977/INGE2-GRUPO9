@@ -59,7 +59,7 @@
               class="q-ml-sm"
               v-close-popup
             />
-            <q-btn @click="pedirTurno" label="Pedir turno" color="accent" v-close-popup />
+            <q-btn @click="pedirTurno(pestania)" label="Pedir turno" color="accent" v-close-popup />
           </div>
         </q-form>
       </q-card-section>
@@ -79,6 +79,7 @@ export default defineComponent({
       type: Array,
       default: () => [], // Set the default value as an empty array
     },
+    pestania: String,
   },
   setup(props) {
     const $q = useQuasar();
@@ -186,9 +187,13 @@ export default defineComponent({
     };
   },
   methods: {
-    pedirTurno() {
+    pedirTurno(pestania) {
       const turno = this.getDatosTurno();
-      this.$emit("registrarTurno", turno);
+      let data = {
+        turno: turno,
+        pestania: pestania
+      }
+      this.$emit("registrarTurno", data);
     },
   },
   computed: {

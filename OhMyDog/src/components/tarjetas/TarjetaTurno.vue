@@ -11,9 +11,9 @@
           <div class="textoPerfil q-py-sm">
             Fecha del turno: {{ formattedDate }}
           </div>
-          <div v-if="rol == 2" class="row">
-            <div  class="textoTituloPosteo q-pr-sm q-pb-xs">Cliente:</div>
-            <div>{{ cliente }}</div>
+          <div v-if="rol === 2" class="row">
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Cliente:</div>
+            <div>Nombre: {{ nombreCliente }} - DNI: {{ dniCliente }}</div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Perro:</div>
@@ -21,7 +21,11 @@
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Servicio:</div>
-            <div>{{ nombreServicio }}</div>
+            <div>{{ formattedService }}</div>
+          </div>
+          <div v-if="state === 'Confirmado'" class="row">
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Veterinario:</div>
+            <div>Nombre: {{ nombreVeterinario }}</div>
           </div>
         </div>
         <q-card-actions>
@@ -30,13 +34,13 @@
               flat
               v-if="mostrarBoton()"
               class="q-ml-md"
-              @click="cancelarTurno(id)"
+              @click="cancelarTurno(id, state)"
             >
               <div>Cancelar Turno</div>
             </q-btn>
-            <q-btn flat v-if="rol == 2 && state == 'Pendiente'" class="q-ml-md">
+            <!--<q-btn flat v-if="rol == 2 && state == 'Pendiente'" class="q-ml-md">
               <div>Rechazar</div>
-            </q-btn>
+            </q-btn> -->
             <q-btn
               v-if="rol == 2 && state == 'Pendiente'"
               class="q-ml-md"
@@ -90,6 +94,7 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
+import { useStore } from '../../pinia/store'
 
 export default defineComponent({
   name: "TarjetaPaseador",
@@ -97,11 +102,15 @@ export default defineComponent({
   props: {
     id: String,
     rol: String,
-    cliente: String,
     state: String,
-    fecha: String,
+    dniCliente: String,
+    nombreCliente: String,
+    nombreVeterinario: String,
     nombrePerro: String,
-    nombreServicio: String,
+    nombreVacuna: String,
+    franjaHoraria: String,
+    fecha: String,
+    nombreServicio: String
   },
   setup() {
     const horaTurno = ref("");
@@ -116,13 +125,18 @@ export default defineComponent({
     };
   },
   methods: {
-    cancelarTurno(id) {
-      this.$emit("cancelarTurno", id);
-    },
-    confirmarTurno(id) {
-      console.log("entre confirmar");
+    cancelarTurno(id, state) {
       let data = {
         id: id,
+        state: state
+      }
+      this.$emit("cancelarTurno", data);
+    },
+    confirmarTurno(id) {
+      let data = {
+        id: id,
+        nombre: useStore().nombre,
+        dni: useStore().dni,
         franjaHoraria: this.horaTurno.value,
       };
       this.$emit("confirmarTurno", data);
@@ -140,8 +154,15 @@ export default defineComponent({
     formattedDate() {
       const date = new Date(this.fecha);
       const options = { year: "numeric", month: "numeric", day: "numeric" };
-      return date.toLocaleDateString(undefined, options);
+      if (this.franjaHoraria !== null) {
+        return (`${date.toLocaleDateString(undefined, options)} - Franja Horaria: ${this.franjaHoraria}`)
+      } else return date.toLocaleDateString(undefined, options);
     },
+    formattedService() {
+      if (this.nombreServicio === 'Vacunación') {
+        return (`Vacunación - Nombre Vacuna: ${this.nombreVacuna}`)
+      } else return (this.nombreServicio)
+    }
   },
 });
 </script>

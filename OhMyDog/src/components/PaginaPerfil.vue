@@ -4,7 +4,7 @@
   <div
     class="bg-white column no-wrap col-10 items-center full-height full-width"
   >
-    
+
     <div
       class="flex row q-mx-xl justify-start items-center"
       style="height: 4em"
@@ -12,7 +12,7 @@
       <div class="self-start titulo text-center text-h4 text-bold text-primary">
         Mi perfil
       </div>
-      
+
     </div>
     <div>
     <q-banner
@@ -62,7 +62,7 @@
       </q-card-actions>
     </q-card>
     <q-dialog v-model="mostrarPopup">
-      <FormCambiarContrasenia 
+      <FormCambiarContrasenia
       @mostrarMensaje0="showBanner"/>
     </q-dialog>
   </div>
@@ -99,7 +99,6 @@ export default defineComponent({
         });
         misDatos.value = response.data;
         let regDate = new Date(response.data.FECHAREGISTRO)
-        console.log('date:', regDate)
         fechaRegistro.value = `${regDate.getDate()}-${regDate.getMonth() + 1}-${regDate.getFullYear()}`
       } catch {
         console.log("No se pudo solicitar la operacion correspondiente");

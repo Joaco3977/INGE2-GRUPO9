@@ -213,8 +213,6 @@ export default defineComponent({
 
         for (let i = 0; i < instance.refs["losClientes"].length; i++) {
           if (instance.refs["losClientes"]) {
-            console.log("ENTREEEeeee");
-            console.log(instance.refs["losClientes"][i]);
             instance.refs["losClientes"][i].recargarPerros();
           }
         }

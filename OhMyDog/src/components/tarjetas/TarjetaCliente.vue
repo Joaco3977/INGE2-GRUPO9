@@ -194,14 +194,12 @@ export default defineComponent({
         });
         perrosCliente.value = response.data;
         nombresPerros.value = response.data.map((perro) => normalizeString(perro.NOMBRE));
-        console.log("perros cliente: ", nombresPerros.value);
       } catch (error) {
         console.error(error);
       }
     };
 
     const eliminarPerro = async (nombre) => {
-      console.log("Perro eliminado: ", nombre);
       try {
         const response = await api.post("/perro/deletePerroPropio", {
           datos: {
@@ -233,11 +231,9 @@ export default defineComponent({
   methods: {
     ejecutarFuncionPadre(dni) {
       this.$emit("ejecutarFuncion", dni);
-      console.log("ya ejecuté la funcion")
     },
     recargarPerros(){
       this.loadPerrosCliente(this.dni);
-      console.log("ente aca, cerrate sesamo!");
       this.expandedItem = false;
     },
   },
@@ -247,7 +243,6 @@ export default defineComponent({
   beforeUnmount(){
     this.perrosCliente.value = [];
     this.expandedItem = false;
-    console.log("acá me fui antes de desmontar")
   },
 });
 </script>
