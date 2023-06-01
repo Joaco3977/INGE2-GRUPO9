@@ -124,6 +124,8 @@ export default defineComponent({
     const dniFiltrar = ref("");
     const nombreFiltrar = ref("");
 
+    const instance = getCurrentInstance();
+
     const registrarCliente = async (cliente) => {
       try {
         const response = await api.post("/cliente/addCliente", {
@@ -136,7 +138,12 @@ export default defineComponent({
             direccion: cliente.direccion,
           },
         });
-        loadClientes();
+        await loadClientes();
+        for (let i = 0; i < instance.refs["losClientes"].length; i++) {
+          if (instance.refs["losClientes"]) {
+            instance.refs["losClientes"][i].recargarPerros();
+          }
+        }
       } catch (error) {
         console.error(error);
       }
@@ -195,8 +202,7 @@ export default defineComponent({
       });
     };
 
-    const instance = getCurrentInstance();
-
+    
     async function eliminarCliente(dni) {
       try {
         console.log("por lo menos entre aca?");

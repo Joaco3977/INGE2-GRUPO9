@@ -43,8 +43,8 @@
             <div>{{ tamanio }}</div>
           </div>
           <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Edad:</div>
-            <div>{{ edad }}</div>
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Edad aproximada:</div>
+            <div>{{ edad }} meses</div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Sexo:</div>
