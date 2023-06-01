@@ -13,7 +13,7 @@
           </div>
           <div v-if="rol === 2" class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Cliente:</div>
-            <div>Nombre: {{ nombreCliente }} - DNI: {{ dniCliente }}</div>
+            <div> {{ nombreCliente }} - DNI: {{ dniCliente }}</div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Perro:</div>
@@ -25,7 +25,7 @@
           </div>
           <div v-if="state === 'Confirmado'" class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Veterinario:</div>
-            <div>Nombre: {{ nombreVeterinario }}</div>
+            <div> {{ nombreVeterinario }}</div>
           </div>
         </div>
         <q-card-actions>
@@ -34,9 +34,10 @@
               flat
               v-if="mostrarBoton()"
               class="q-ml-md"
-              @click="cancelarTurno(id, state)"
+              @click="confirmarCancelar = true"
             >
-              <div>Cancelar Turno</div>
+              <div v-if="state == 'Pendiente' && rol == 2 " >Rechazar</div>
+              <div v-else > Cancelar turno </div>
             </q-btn>
             <!--<q-btn flat v-if="rol == 2 && state == 'Pendiente'" class="q-ml-md">
               <div>Rechazar</div>
@@ -88,6 +89,34 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="confirmarCancelar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary"> Cancelar turno </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          Esta acción no puede deshacerse
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Confirmar"
+            @click="cancelarTurno(id, state)"
+            color="primary"
+            v-close-popup
+          />
+          <q-btn
+            flat
+            label="Cancelar"
+            color="primary"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -116,6 +145,7 @@ export default defineComponent({
     const horaTurno = ref("");
     return {
       confirmar: ref(false),
+      confirmarCancelar: ref(false),
       horaTurno,
       opcionHora: [
         { label: "Mañana", value: "Mañana" },

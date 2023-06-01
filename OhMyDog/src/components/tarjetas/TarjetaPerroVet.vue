@@ -16,7 +16,7 @@
       narrow-indicator
     >
       <q-tab name="datos" label="datos" />
-      <q-tab name="turnos" label="turnos" />
+      <!-- <q-tab name="turnos" label="turnos" /> -->
     </q-tabs>
 
     <q-tab-panels v-model="tab" animated class="full-width">
@@ -75,11 +75,11 @@
         </q-card-section>
       </q-tab-panel>
 
-      <q-tab-panel name="turnos" class="bg-primary">
+      <!-- <q-tab-panel name="turnos" class="bg-primary">
         <div horizontal style="width: 55rem; max-width: 55rem; max-height: 40rem">
           <SubPaginaTurnos :nombrePerro="perro.NOMBRE" />
         </div>
-      </q-tab-panel>
+      </q-tab-panel> -->
       
     </q-tab-panels>
 
@@ -112,12 +112,10 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { api } from "../../boot/axios.js";
-import SubPaginaTurnos from "../subPaginas/SubPaginaTurnos.vue";
 
 export default defineComponent({
   name: "TarjetaPerroVet",
   components: {
-    SubPaginaTurnos,
   },
   props: {
     dni:String,
