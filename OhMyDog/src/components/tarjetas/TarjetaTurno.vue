@@ -26,7 +26,12 @@
         </div>
         <q-card-actions>
           <div class="row justify-end full-width q-pr-sm">
-            <q-btn @click="cancelarTurno(id)" flat v-if="rol > 0 && state == 'Confirmado' " class="q-ml-md">
+            <q-btn
+              flat
+              v-if="mostrarBoton()"
+              class="q-ml-md"
+              @click="cancelarTurno(id)"
+            >
               <div>Cancelar Turno</div>
             </q-btn>
             <q-btn flat v-if="rol == 2 && state == 'Pendiente'" class="q-ml-md">
@@ -69,7 +74,13 @@
             :disable="horaTurno.value == undefined"
             v-close-popup
           />
-          <q-btn flat @click="reiniciarHora" label="Cancelar" color="primary" v-close-popup />
+          <q-btn
+            flat
+            @click="reiniciarHora"
+            label="Cancelar"
+            color="primary"
+            v-close-popup
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -105,17 +116,25 @@ export default defineComponent({
     };
   },
   methods: {
-    cancelarTurno (id) {
-      this.$emit("cancelarTurno", id)
+    cancelarTurno(id) {
+      this.$emit("cancelarTurno", id);
     },
-    confirmarTurno (id) {
-      console.log('entre confirmar')
+    confirmarTurno(id) {
+      console.log("entre confirmar");
       let data = {
         id: id,
-        franjaHoraria: this.horaTurno.value
-      }
-      this.$emit("confirmarTurno", data)
-    }
+        franjaHoraria: this.horaTurno.value,
+      };
+      this.$emit("confirmarTurno", data);
+    },
+    esTurnoPasado() {
+      const hoy = new Date().toISOString();
+      //console.log("la fecha: ", this.fecha, hoy, this.fecha < hoy)
+      return this.fecha < hoy;
+    },
+    mostrarBoton() {
+      return this.state != 'Cancelado' && !this.esTurnoPasado();
+    },
   },
   computed: {
     formattedDate() {
