@@ -8,7 +8,7 @@
       </q-card-section>
 
       <q-card-section class="">
-        <q-form class="q-px-xl" @submit.prevent="ejecutarFuncionPadre" reset>
+        <q-form class="q-px-xl" reset>
           <!-- las opciones deberian ser los perros de cliente -->
           <q-select
             v-model="nombrePerro"
@@ -39,7 +39,7 @@
               minimal
               :options="opcionesFecha"
             />
-            
+
           </div>
           <ul class="q-mx-md q-py-xs">
             <li
@@ -59,7 +59,7 @@
               class="q-ml-sm"
               v-close-popup
             />
-            <q-btn label="Pedir turno" color="accent" v-close-popup />
+            <q-btn @click="pedirTurno" label="Pedir turno" color="accent" v-close-popup />
           </div>
         </q-form>
       </q-card-section>
@@ -87,16 +87,34 @@ export default defineComponent({
     const nombreServicio = ref("");
     const nombreVacuna = ref("");
     const clienteDNI = useStore().dni;
+    const fechaTurno = ref("")
 
     const getDatosTurno = () => {
-      const perro = {
-        nombre: nombrePerro.value.value,
-        servicio: nombreServicio.value.value,
-        vacuna: nombreVacuna.value,
-        nombre: perroNOMBRE.value,
-        dnicliente: clienteDNI,
+      let turno = null
+      const perroEncontrado = props.misPerros.find(perro => perro.NOMBRE === nombrePerro.value.value);
+      if (nombreVacuna.value.value !== undefined) {
+        turno = {
+          IDPERRO: perroEncontrado.ID,
+          DNICLIENTE: useStore().dni,
+          FECHA: fechaTurno.value,
+          ESTADO: 'Pendiente',
+          NOMBREVACUNA: nombreVacuna.value.value,
+          NOMBREPERRO: nombrePerro.value.value,
+          NOMBRESERVICIO: nombreServicio.value.value,
+          NOMBRECLIENTE: 'reemplazar esto',
+        }
+      } else {
+        turno = {
+          IDPERRO: perroEncontrado.ID,
+          DNICLIENTE: useStore().dni,
+          FECHA: fechaTurno.value,
+          ESTADO: 'Pendiente',
+          NOMBREPERRO: nombrePerro.value.value,
+          NOMBRESERVICIO: nombreServicio.value.value,
+          NOMBRECLIENTE: 'reemplazar esto',
       };
-      return perro;
+      }
+      return turno;
     };
 
     const onReset = () => {
@@ -130,7 +148,7 @@ export default defineComponent({
       nombreServicio,
       nombreVacuna,
       opcionesFecha,
-      fechaTurno: ref(""),
+      fechaTurno,
       clienteDNI,
       opcionServicio: [
         { label: "Consulta", value: "Consulta" },
@@ -148,13 +166,12 @@ export default defineComponent({
       onReset,
 
       opcionPerros: props.misPerros.map((perro) => {
-        console.log("este es el perro:", perro.NOMBRE); // Log the perro object
         return { label: perro.NOMBRE, value: perro.NOMBRE };
       }),
     };
   },
   methods: {
-    ejecutarFuncionPadre() {
+    pedirTurno() {
       const turno = this.getDatosTurno();
       this.$emit("registrarTurno", turno);
     },

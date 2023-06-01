@@ -7,11 +7,13 @@ const Consola = require ('./serverFunctions.js')
 const Log = require ('./log.js')
 
 router.post('/pedirTurno', async (req, res) => {
-    res.status(200).send({})
-})
-
-router.post('/crearTurno', async (req, res) => {
-    res.status(200).send({})
+    try {
+        await knex('turno').insert()
+        return true
+    } catch (error) {
+        console.error(error)
+        return false
+    }
 })
 
 router.post('/cancelarTurno', async(req,res) =>{

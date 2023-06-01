@@ -146,7 +146,7 @@
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      <FormTurno @registrarPerro="registrarPerro" :misPerros="misPerros" />
+      <FormTurno @registrarTurno="registrarTurno" :misPerros="misPerros" />
     </q-dialog>
   </div>
 </template>
@@ -237,6 +237,10 @@ export default defineComponent({
         });
     }
 
+    const registrarTurno = async (turno) => {
+      console.log(turno)
+    }
+
     return {
       tab,
       rol,
@@ -246,7 +250,8 @@ export default defineComponent({
       cancelarTurno,
       confirmarTurno,
       loadTurnosPropios,
-      loadTurnosPropiosFecha
+      loadTurnosPropiosFecha,
+      registrarTurno
     };
   },
   methods: {
@@ -254,7 +259,6 @@ export default defineComponent({
       try {
         const response = await api.post("/perro/getPerrosPropios",{ dni : useStore().dni })
         this.misPerros = response.data
-        console.log("mis perros: ", this.misPerros)
       }
       catch (error) {
         console.error(error);
