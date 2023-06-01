@@ -155,7 +155,6 @@
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import TarjetaTurno from "./tarjetas/TarjetaTurno.vue";
-import TarjetaTurnoCancelado from "./tarjetas/TarjetaTurnoCancelado.vue";
 import FormTurno from "./formularios/formTurno.vue";
 import { useStore } from "../pinia/store.js";
 import { checkToken } from "src/functions/check.js";
