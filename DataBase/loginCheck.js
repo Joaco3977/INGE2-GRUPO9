@@ -13,8 +13,8 @@ const enviarMailPassword = async (destinatario) => {
   
   const password = generarPassword();
   
-  const asunto = 'Nueva contraseña!';
-  const mensaje = `Su nueva contraseña es: ${password}`;
+  const asunto = '¡Bienvenido a la veterinaria OhMyDog!';
+  const mensaje = `Con su mail y esta contraseña puede ingresar a nuestro sitio. \n Su nueva contraseña es: ${password}`;
 
   transporter.sendMail({
     from: 'BitBuilders2023@gmail.com',
