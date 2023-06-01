@@ -96,22 +96,22 @@ export default defineComponent({
         turno = {
           IDPERRO: perroEncontrado.ID,
           DNICLIENTE: useStore().dni,
-          FECHA: fechaTurno.value,
+          FECHA: formatearFecha(new Date(fechaTurno.value)),
           ESTADO: 'Pendiente',
           NOMBREVACUNA: nombreVacuna.value.value,
           NOMBREPERRO: nombrePerro.value.value,
           NOMBRESERVICIO: nombreServicio.value.value,
-          NOMBRECLIENTE: 'reemplazar esto',
+          NOMBRECLIENTE: useStore().nombre,
         }
       } else {
         turno = {
           IDPERRO: perroEncontrado.ID,
           DNICLIENTE: useStore().dni,
-          FECHA: fechaTurno.value,
+          FECHA: formatearFecha(new Date(fechaTurno.value)),
           ESTADO: 'Pendiente',
           NOMBREPERRO: nombrePerro.value.value,
           NOMBRESERVICIO: nombreServicio.value.value,
-          NOMBRECLIENTE: 'reemplazar esto',
+          NOMBRECLIENTE: useStore().nombre,
       };
       }
       return turno;
@@ -142,6 +142,21 @@ export default defineComponent({
       }
       // Add other conditions or update logic as needed
     });
+
+    const formatearFecha = (fechaString) => {
+      const fecha = new Date(fechaString);
+
+      const year = fecha.getFullYear();
+      const month = (fecha.getMonth() + 1).toString().padStart(2, '0');
+      const day = fecha.getDate().toString().padStart(2, '0');
+      const hours = fecha.getHours().toString().padStart(2, '0');
+      const minutes = fecha.getMinutes().toString().padStart(2, '0');
+      const seconds = fecha.getSeconds().toString().padStart(2, '0');
+
+      const fechaFormateada = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+      return fechaFormateada
+    }
 
     return {
       nombrePerro,

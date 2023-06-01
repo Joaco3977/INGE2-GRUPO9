@@ -7,13 +7,16 @@ const Consola = require ('./serverFunctions.js')
 const Log = require ('./log.js')
 
 router.post('/pedirTurno', async (req, res) => {
-    try {
-        await knex('turno').insert()
-        return true
-    } catch (error) {
-        console.error(error)
-        return false
-    }
+    console.log(req.body)
+    await knex('turno').insert(req.body.turno)
+    .then(() => {
+        Consola.mensaje("\x1b[33m%s\x1b[0m", `cliente ${req.body.turno.NOMBRECLIENTE} pidio un turno`)
+        res.status(200).send({})
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send(error)
+    })
 })
 
 router.post('/cancelarTurno', async(req,res) =>{

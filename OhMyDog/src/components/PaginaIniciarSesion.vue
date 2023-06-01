@@ -16,7 +16,7 @@
           v-model="mail"
           label="Correo electrónico"
           type="email"
-          
+
         />
         <q-input
           class="q-px-xl"
@@ -71,6 +71,7 @@ export default defineComponent({
         if (response.data.rol > 0) {
           this.store.setDni(response.data.dni);
           this.store.setTab("Mi Perfil");
+          this.store.setNombre(response.data.nombre)
         } else if(response.data.rol === -1) {
           this.store.setTab("Veterinarios");
         }

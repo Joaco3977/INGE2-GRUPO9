@@ -238,7 +238,16 @@ export default defineComponent({
     }
 
     const registrarTurno = async (turno) => {
-      console.log(turno)
+      await api
+        .post("/turno/pedirTurno", {
+          turno: turno
+        })
+        .then(() => {
+          console.log('salio todo un lujo')
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
 
     return {

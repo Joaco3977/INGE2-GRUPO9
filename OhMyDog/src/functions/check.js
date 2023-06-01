@@ -13,6 +13,7 @@ export const checkToken = async () => {
       if (response.data.rol === 0) {
         store.setRol(0);
         store.setDni(0);
+        store.setNombre('');
         store.setTab('Iniciar Sesion')
         return false;
       } else {
@@ -23,12 +24,14 @@ export const checkToken = async () => {
       console.error(error);
       store.setRol(0);
       store.setDni(0);
+      store.setNombre('');
       store.setTab('Iniciar Sesion');
       return false;
     }
   } else {
     store.setRol(0);
     store.setDni(0);
+    store.setNombre('');
     store.setTab('Iniciar Sesion');
     return false;
   }
@@ -53,12 +56,14 @@ export const checkTokenHome = async () => {
       console.error(error);
       store.setRol(0);
       store.setDni(0);
+      store.setNombre('');
       store.setTab('Quienes Somos');
       return false;
     }
   } else {
     store.setRol(0);
     store.setDni(0);
+    store.setNombre('');
     store.setTab('Quienes Somos');
     return false;
   }

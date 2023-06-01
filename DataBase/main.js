@@ -55,7 +55,7 @@ app.post("/login", async (req, res) => {
               } else {
                 Consola.mensaje("\x1b[36m%s\x1b[0m", `CLIENTE ${resultCli.NOMBREAPELLIDO} logueado! Se le asigna el token: ${token}`);
                 Sesion.almacenarToken(token, req.body.mail, resultCli.DNI , 1);
-                res.status(200).send({ rol: 1 , token: token , dni: resultCli.DNI });
+                res.status(200).send({ rol: 1 , token: token , dni: resultCli.DNI , nombre: resultCli.NOMBREAPELLIDO});
               }
             })
             .catch(() => {
@@ -64,7 +64,7 @@ app.post("/login", async (req, res) => {
         } else {
           Consola.mensaje("\x1b[36m%s\x1b[0m", `VETERINARIO ${resultVet.NOMBREAPELLIDO} logueado! Se le asigna el token: ${token}`);
           Sesion.almacenarToken(token, req.body.mail, resultVet.DNI, 2);
-          res.status(200).send({ rol: 2 , token: token , dni: resultVet.DNI });
+          res.status(200).send({ rol: 2 , token: token , dni: resultVet.DNI , nombre: resultVet.NOMBREAPELLIDO});
         }
       })
       .catch(() => {
