@@ -14,6 +14,14 @@
       </div>
       
     </div>
+    <div>
+    <q-banner
+      :message="message"
+      :type="type"
+      :timeout="timeout"
+      @hide="hideBanner"
+    ></q-banner>
+    </div>
     <q-card class="my-card q-mt-lg" style="width: 90%; height: max-content">
       <q-separator />
       <q-card-section class="row justify-between bg-secondary">
@@ -49,12 +57,13 @@
       <q-separator />
       <q-card-actions class="q-py-lg row justify-end q-px-xl">
         <!-- <q-btn class="textoBoton q-mx-md" > Editar perfil </q-btn> -->
-        <q-btn class="textoBoton q-mx-md" @click="mostrarPopup = true" > Cambiar contraseña </q-btn>
+        <q-btn v-if="false" class="textoBoton q-mx-md" @click="mostrarPopup = true" > Cambiar contraseña </q-btn>
         <q-btn class="textoBoton" @click="cerrarSesion()"> Cerrar Sesión </q-btn>
       </q-card-actions>
     </q-card>
     <q-dialog v-model="mostrarPopup">
-      <FormCambiarContrasenia />
+      <FormCambiarContrasenia 
+      @mostrarMensaje0="showBanner"/>
     </q-dialog>
   </div>
 </template>
@@ -66,11 +75,15 @@ import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
 import { LocalStorage } from "quasar";
 import FormCambiarContrasenia from "./formularios/formCambiarContrasenia.vue";
+import { QBanner } from "quasar";
 
 export default defineComponent({
   name: "PaginaPerfil",
   components: { FormCambiarContrasenia },
   setup() {
+    var message;
+    var timeout;
+    var type;
     const rol = useStore().rol;
     const misDatos = ref({});
     const fechaRegistro = ref('')
@@ -103,6 +116,9 @@ export default defineComponent({
       fechaRegistro,
       mostrarPopup,
       store: useStore(),
+      message,
+      type,
+      timeout,
     };
   },
   methods: {
@@ -119,6 +135,11 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
+    },
+    showBanner(message, type, timeout) {
+      this.message = message
+      this.type = type
+      this.timeout = timeout
     },
   },
   mounted() {

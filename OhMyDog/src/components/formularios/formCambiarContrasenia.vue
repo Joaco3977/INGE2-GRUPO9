@@ -60,7 +60,7 @@
   export default defineComponent({
     name: "formCambiarContrasenia",
     components: {},
-    setup() {
+    setup(props ,{ emit }) {
         const contraseñaA = ref("")
         const contraseñaNuevaA = ref("")
         const contraseñaNuevaB = ref("")
@@ -71,33 +71,37 @@
                 mail: useStore().mail,
                 password: contraseñaA.value,
             });
-            return response.check
+            
+            return response.data.check
         } catch (error) {
             console.error(error);
             }
         }
-        
+        function ejecutarFuncionPadre(message,type,timeout) {
+        emit("mostrarMensaje",message,type,timeout)}
+
         const cambiarContraseña = async () => {
-            if (chequeoPass()){
-                var response;
+            await chequeoPass().then(async (response)=>{
+              if(response === true){
                 if(useStore().rol === 2){
                     response = await api.post("/cambiarContraseniaVet", {
                         mail: useStore().mail,
                         password: contraseñaNuevaA.value,
                     }).then(()=>{
-                        console.log("se cambia la contraseña")
+                        ejecutarFuncionPadre('Hecho','positive',2000)
                     })
                 }else{
                     response = await api.post("/cambiarContraseniaCli", {
                         mail: useStore().mail,
                         password: contraseñaNuevaA.value,
                     }).then(()=>{
-                        console.log("se cambia la contraseña")
+                      ejecutarFuncionPadre('Hecho','positive',2000)
                     })
                 }
             }else{
-                console.log(" no se cambia la contraseña")
+              ejecutarFuncionPadre('no Hecho','negative',2000)
             }
+            })
         }
 
         return {
@@ -114,16 +118,26 @@
         if (!this.contraseñasIguales) {
             sError.push("Las contraseñas no son iguales");
         }
+        if (this.contraseñasVacias){
+            sError.push("Hay campos vacios")
+        }
         return sError;
         },
+
         contraseñasIguales(){
             return this.contraseñaNuevaA === this.contraseñaNuevaB
+        },
+
+        contraseñasVacias(){
+          return (this.contraseñaA === undefined) || (this.contraseñaNuevaA === undefined) || (this.contraseñaNuevaB === undefined)
         }
     },
     
     camposValidos() {
       return (
         this.contraseñasIguales
+        && 
+        !this.contraseñasVacias
       );
     },
   },
