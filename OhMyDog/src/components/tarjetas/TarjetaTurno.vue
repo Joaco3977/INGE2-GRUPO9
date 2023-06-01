@@ -11,8 +11,8 @@
           <div class="textoPerfil q-py-sm">
             Fecha del turno: {{ formattedDate }}
           </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Cliente:</div>
+          <div v-if="rol == 2" class="row">
+            <div  class="textoTituloPosteo q-pr-sm q-pb-xs">Cliente:</div>
             <div>{{ cliente }}</div>
           </div>
           <div class="row">
