@@ -36,7 +36,7 @@
                 </li>
             </ul>
             <div class="row justify-end">
-              <q-btn label="Cambiar contraseña"  :disabled="!camposValidos" type="submit" color="accent" />
+              <q-btn label="Cambiar contraseña"  @click="cambiarContraseña" :disabled="camposValidos"  color="accent" v-close-popup />
               <q-btn
                 label="Cancelar"
                 type="reset"
@@ -58,18 +58,17 @@
   import { api } from "../../boot/axios.js";
 
   export default defineComponent({
-    name: "formCambiarContraseña",
+    name: "formCambiarContrasenia",
     components: {},
     setup() {
         const contraseñaA = ref("")
         const contraseñaNuevaA = ref("")
         const contraseñaNuevaB = ref("")
-        
+
         const chequeoPass = async ()=>{
-            console.log("chequeo")
         try {
             var response = await api.post("/passwordCheck", {
-                mail: useStore.mail,
+                mail: useStore().mail,
                 password: contraseñaA.value,
             });
             return response.check
@@ -77,13 +76,37 @@
             console.error(error);
             }
         }
+        
+        const cambiarContraseña = async () => {
+            if (chequeoPass()){
+                var response;
+                if(useStore().rol === 2){
+                    response = await api.post("/cambiarContraseniaVet", {
+                        mail: useStore().mail,
+                        password: contraseñaNuevaA.value,
+                    }).then(()=>{
+                        console.log("se cambia la contraseña")
+                    })
+                }else{
+                    response = await api.post("/cambiarContraseniaCli", {
+                        mail: useStore().mail,
+                        password: contraseñaNuevaA.value,
+                    }).then(()=>{
+                        console.log("se cambia la contraseña")
+                    })
+                }
+            }else{
+                console.log(" no se cambia la contraseña")
+            }
+        }
 
-      return {
-        contraseñaA,
-        contraseñaNuevaA,
-        contraseñaNuevaB,
-        chequeoPass,
-      };
+        return {
+            contraseñaA,
+            contraseñaNuevaA,
+            contraseñaNuevaB,
+            chequeoPass,
+            cambiarContraseña,
+        };
     },
     computed: {
         mensajeError() {
@@ -91,22 +114,15 @@
         if (!this.contraseñasIguales) {
             sError.push("Las contraseñas no son iguales");
         }
-        if (this.constraseñaCorrecta) {
-            sError.push("La contraseña actual no es correcta");
-        }
         return sError;
         },
         contraseñasIguales(){
-        return this.contraseñaNuevaA === this.contraseñaNuevaB
-        },
-        constraseñaCorrecta(){
-        return this.chequeoPass();
+            return this.contraseñaNuevaA === this.contraseñaNuevaB
         }
     },
     
     camposValidos() {
       return (
-        this.constraseñaCorrecta &&
         this.contraseñasIguales
       );
     },

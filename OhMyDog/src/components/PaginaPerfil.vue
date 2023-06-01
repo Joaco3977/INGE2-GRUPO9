@@ -54,7 +54,7 @@
       </q-card-actions>
     </q-card>
     <q-dialog v-model="mostrarPopup">
-      <FormCambiarContraseña />
+      <FormCambiarContrasenia />
     </q-dialog>
   </div>
 </template>
@@ -65,11 +65,11 @@ import { checkToken } from "../functions/check.js";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
 import { LocalStorage } from "quasar";
-import FormCambiarContraseña from "./formularios/formCambiarContraseña.vue";
+import FormCambiarContrasenia from "./formularios/formCambiarContrasenia.vue";
 
 export default defineComponent({
   name: "PaginaPerfil",
-  components: { FormCambiarContraseña },
+  components: { FormCambiarContrasenia },
   setup() {
     const rol = useStore().rol;
     const misDatos = ref({});

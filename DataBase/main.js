@@ -29,7 +29,8 @@ const adminRouter = require ('./admin.js')
 const perroAdopcionRouter = require ('./perroAdopcion.js')
 const perroRouter = require ('./perro.js')
 const paseadorRouter = require ('./paseador.js')
-const turnoRouter = require ('./turno.js')
+const turnoRouter = require ('./turno.js');
+const { default: knex } = require("knex");
 
 app.use('/cliente', clienteRouter)
 app.use('/veterinario', veterinarioRouter)
@@ -77,6 +78,7 @@ app.post("/login", async (req, res) => {
 });
 
 app.post("/passwordCheck", async (req, res) => {
+  console.log(req.body)
     checkVeterinario(req.body.mail, req.body.password)
       .then((resultVet) => {
         if (resultVet === false) {
@@ -102,7 +104,27 @@ app.post("/passwordCheck", async (req, res) => {
         res.status(401).send('No fue posible conectar con la base de datos');
       })
 });
+/*
+  app.post("/cambiarContraseniaVet", async (req, res) => {
+    knex("veterinario").where(MAIL, req.body.mail).update({PASSWORD : req.body.password})
+    .then((response)=>{
+      console.log("se cambio con exito la contraseña del veterinario con mail:", req.body.mail)
+      res.send({});
+    }).catch((error)=>{
+      console.log(error)
+    })
+  });
 
+  app.post("/cambiarContraseniaCli", async (req, res) => {
+    knex("cliente").where(MAIL, req.body.mail).update({PASSWORD : req.body.password})
+    .then((response)=>{
+      console.log("se cambio con exito la contraseña del cliente con mail:", req.body.mail)
+      res.send({});
+    }).catch((error)=>{
+      console.log(error)
+    })
+  }); 
+*/
 app.post("/logout", async (req, res) => {
   try {
     const result = await Sesion.eliminarToken(req.body.token)
