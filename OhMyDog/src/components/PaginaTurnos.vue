@@ -198,6 +198,7 @@ export default defineComponent({
       await api
       .post("/turno/cancelarTurno", {
         id: data.id,
+        rol: rol,
       })
       .then(()=>{
         if (data.state === 'Confirmado') {
@@ -248,6 +249,7 @@ export default defineComponent({
     const registrarTurno = async (data) => {
       await api
         .post("/turno/pedirTurno", {
+          mail: useStore().mail,
           turno: data.turno
         })
         .then(() => {

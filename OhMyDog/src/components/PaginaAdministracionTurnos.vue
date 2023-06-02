@@ -201,6 +201,7 @@ export default defineComponent({
     const cancelarTurno = async(data) => {
       await api
       .post("/turno/cancelarTurno", {
+        rol: useStore().rol,
         id: data.id,
       })
       .then(()=>{
