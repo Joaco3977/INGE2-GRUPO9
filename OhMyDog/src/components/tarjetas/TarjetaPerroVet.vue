@@ -48,7 +48,7 @@
               </div>
               <div class="row">
                 <div class="textoTituloPosteo q-pr-sm q-pb-xs">Edad:</div>
-                <div>{{ edad }}</div>
+                <div>{{ formattedDate }}</div>
               </div>
               <div class="row">
                 <div class="textoTituloPosteo q-pr-sm q-pb-xs">Sexo:</div>
@@ -64,7 +64,7 @@
             <q-card-actions class="row justify-end items-center self-end">
               <!-- <q-btn flat v-if="rol >= 1" class="textoBoton">
               Ver historial
-            </q-btn> 
+            </q-btn>
           <q-btn flat class="textoBoton"> Editar datos </q-btn> -->
               <q-btn @click="confirmar = true" flat class="textoBoton"
               >
@@ -80,7 +80,7 @@
           <SubPaginaTurnos :nombrePerro="perro.NOMBRE" />
         </div>
       </q-tab-panel> -->
-      
+
     </q-tab-panels>
 
     <q-dialog v-model="confirmar">
@@ -126,46 +126,9 @@ export default defineComponent({
       default: () => ({ NOMBRE: "", TAMANIO: "" }), // Set a default empty value for the prop
     },
   },
-  setup(props) {
+  setup() {
     const tab = ref("datos");
-    const fechaNacimiento = new Date(props.perro.NACIMIENTO);
-    const fechaHoy = new Date();
-
-    var anios = fechaHoy.getFullYear() - fechaNacimiento.getFullYear();
-    var meses = fechaHoy.getMonth() - fechaNacimiento.getMonth();
-    var dias = fechaHoy.getDate() - fechaNacimiento.getDate();
-
-    // Adjust for negative values
-    if (meses < 0 || (meses === 0 && dias < 0)) {
-      anios--;
-    }
-
-    // Calculate the difference in months
-    var mesesAbs =
-      fechaHoy.getFullYear() * 12 +
-      fechaHoy.getMonth() -
-      (fechaNacimiento.getFullYear() * 12 + fechaNacimiento.getMonth());
-    var aniosMeses = Math.floor(mesesAbs / 12);
-    var mesesRestantes = mesesAbs % 12;
-
-    // Calculate the remaining days
-    var fechaDeReferencia = new Date(
-      fechaNacimiento.getFullYear() + aniosMeses,
-      fechaNacimiento.getMonth() + mesesRestantes,
-      fechaNacimiento.getDate()
-    );
-    var diferenciaEnDias = Math.floor(
-      (fechaHoy - fechaDeReferencia) / (24 * 60 * 60 * 1000)
-    );
-
-    var edadAnios = anios > 0 ? `${anios} años` : "";
-    var edadMeses = aniosMeses > 0 ? `${aniosMeses} meses` : "";
-    var edadDias = diferenciaEnDias > 0 ? `${diferenciaEnDias} días` : "";
-
-    var edad = `${edadAnios} ${edadMeses} ${edadDias}`.trim();
-
     return {
-      edad,
       tab,
       confirmar: ref(false),
     };
@@ -178,6 +141,33 @@ export default defineComponent({
       this.$emit("close");
     },
   },
-  mounted() {},
+  computed: {
+    formattedDate() {
+      const currentDate = new Date();
+      const date = new Date(this.perro.NACIMIENTO);
+      const diff = Math.abs(currentDate - date);
+
+      const millisecondsPerDay = 24 * 60 * 60 * 1000;
+      const days = Math.floor(diff / millisecondsPerDay);
+
+      const years = Math.floor(days / 365);
+      const months = Math.floor((days % 365) / 30);
+      const remainingDays = days - years * 365 - months * 30;
+
+      let formattedDate = "";
+
+      if (years > 0) {
+        formattedDate += years === 1 ? "1 año" : `${years} años`;
+      }
+      if (months > 0) {
+        formattedDate += `${years > 0 ? ", " : ""}${months === 1 ? "1 mes" : `${months} meses`}`;
+      }
+      if (remainingDays > 0) {
+        formattedDate += `${(years > 0 || months > 0) ? ", " : ""}${remainingDays === 1 ? "1 día" : `${remainingDays} días`}`;
+      }
+
+      return formattedDate;
+    }
+  }
 });
 </script>

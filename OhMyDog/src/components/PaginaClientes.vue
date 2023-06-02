@@ -202,7 +202,7 @@ export default defineComponent({
       });
     };
 
-    
+
     async function eliminarCliente(dni) {
       try {
         console.log("por lo menos entre aca?");
@@ -210,11 +210,6 @@ export default defineComponent({
           dniVet: useStore().dni,
           dni: dni,
         });
-        console.log("las refs: ", instance.refs);
-        console.log(
-          "llegue acaa y la lista es: ",
-          instance.refs["losClientes"]
-        );
         await loadClientes();
 
         for (let i = 0; i < instance.refs["losClientes"].length; i++) {

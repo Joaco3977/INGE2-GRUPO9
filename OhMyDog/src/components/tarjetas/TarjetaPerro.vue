@@ -29,7 +29,7 @@
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Edad:</div>
-            <div>{{ edad }}</div>
+            <div>{{ formattedDate }}</div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Sexo:</div>
@@ -84,7 +84,6 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { api } from '../../boot/axios.js'
 
 export default defineComponent({
   name: "TarjetaPerro",
@@ -101,46 +100,8 @@ export default defineComponent({
     linkImg: String,
     foto: Image,
   },
-  setup(props) {
-
-    const fechaNacimiento = new Date(props.nacimiento);
-    const fechaHoy = new Date();
-
-    var anios = fechaHoy.getFullYear() - fechaNacimiento.getFullYear();
-    var meses = fechaHoy.getMonth() - fechaNacimiento.getMonth();
-    var dias = fechaHoy.getDate() - fechaNacimiento.getDate();
-
-    // Adjust for negative values
-    if (meses < 0 || (meses === 0 && dias < 0)) {
-      anios--;
-    }
-
-    // Calculate the difference in months
-    const mesesAbs =
-      fechaHoy.getFullYear() * 12 +
-      fechaHoy.getMonth() -
-      (fechaNacimiento.getFullYear() * 12 + fechaNacimiento.getMonth());
-    const aniosMeses = Math.floor(mesesAbs / 12);
-    const mesesRestantes = mesesAbs % 12;
-
-    // Calculate the remaining days
-    const fechaDeReferencia = new Date(
-      fechaNacimiento.getFullYear() + aniosMeses,
-      fechaNacimiento.getMonth() + mesesRestantes,
-      fechaNacimiento.getDate()
-    );
-    const diferenciaEnDias = Math.floor(
-      (fechaHoy - fechaDeReferencia) / (24 * 60 * 60 * 1000)
-    );
-
-    const edadAnios = anios > 0 ? `${anios} años` : "";
-    const edadMeses = aniosMeses > 0 ? `${aniosMeses} meses` : "";
-    const edadDias = diferenciaEnDias > 0 ? `${diferenciaEnDias} días` : "";
-
-    const edad = `${edadAnios} ${edadMeses} ${edadDias}`.trim();
-
+  setup() {
     return {
-      edad,
       confirmar: ref(false),
     }
   },
@@ -149,8 +110,33 @@ export default defineComponent({
       this.$emit('eliminarPerro', nombre)
     }
   },
-  mounted() {
+  computed: {
+    formattedDate() {
+      const currentDate = new Date();
+      const date = new Date(this.nacimiento);
+      const diff = Math.abs(currentDate - date);
 
-  },
+      const millisecondsPerDay = 24 * 60 * 60 * 1000;
+      const days = Math.floor(diff / millisecondsPerDay);
+
+      const years = Math.floor(days / 365);
+      const months = Math.floor((days % 365) / 30);
+      const remainingDays = days - years * 365 - months * 30;
+
+      let formattedDate = "";
+
+      if (years > 0) {
+        formattedDate += years === 1 ? "1 año" : `${years} años`;
+      }
+      if (months > 0) {
+        formattedDate += `${years > 0 ? ", " : ""}${months === 1 ? "1 mes" : `${months} meses`}`;
+      }
+      if (remainingDays > 0) {
+        formattedDate += `${(years > 0 || months > 0) ? ", " : ""}${remainingDays === 1 ? "1 día" : `${remainingDays} días`}`;
+      }
+
+      return formattedDate;
+    }
+  }
 });
 </script>

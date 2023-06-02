@@ -210,8 +210,7 @@ export default defineComponent({
         verPerro.value = false;
         loadPerrosCliente();
       } catch (error) {
-        //console.error(error);
-        console.log("En el eliminar perro de TarjetaCliente", error);
+        console.log(error);
       }
     };
 

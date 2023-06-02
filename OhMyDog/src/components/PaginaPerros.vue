@@ -75,7 +75,7 @@ export default defineComponent({
     const loadPerrosPropios = async () => {
       try {
         const response = await api.post("/perro/getPerrosPropios",{ dni : useStore().dni })
-        perrosDatos.value = response.data;{}
+        perrosDatos.value = response.data;
       }
       catch (error) {
         console.error(error);
