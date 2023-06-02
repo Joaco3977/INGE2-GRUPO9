@@ -50,7 +50,7 @@ router.get('/getPaseadores', async (req, res) => {
 
 router.post('/addPaseador', async (req,res) => {
     const paseador = req.body.paseador;
-    enviadorMails.enviarMailPaseador(paseador.nombre, paseador.mail)
+    enviadorMails.enviarMail('Bienvenido nuevo Paseador!',`Hola ${paseador.nombre}, te comunicamos que ya estas registrado como paseador en OhMyDog!`, paseador.mail)
     .then((respuesta) => {
         if (respuesta) {
             addPaseador(paseador)

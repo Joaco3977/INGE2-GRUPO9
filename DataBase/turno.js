@@ -7,7 +7,6 @@ const Consola = require ('./serverFunctions.js')
 const Log = require ('./log.js')
 
 router.post('/pedirTurno', async (req, res) => {
-    console.log(req.body)
     await knex('turno').insert(req.body.turno)
     .then(() => {
         Consola.mensaje("\x1b[33m%s\x1b[0m", `cliente ${req.body.turno.NOMBRECLIENTE} pidio un turno`)
@@ -20,7 +19,6 @@ router.post('/pedirTurno', async (req, res) => {
 })
 
 router.post('/cancelarTurno', async(req,res) =>{
-    console.log(req.body)
     await knex('turno').where("ID",req.body.id).update({ ESTADO: 'Cancelado' } )
     .then(()=>{
         Consola.mensaje("\x1b[33m%s\x1b[0m", `se cancelo el turno con id ${req.body.id}`)
@@ -34,8 +32,21 @@ router.post('/cancelarTurno', async(req,res) =>{
 router.post('/confirmarTurno', async(req,res) =>{
     await knex('turno').where("ID",req.body.id).update({ ESTADO: 'Confirmado' , FRANJAHORARIA: req.body.franjaHoraria, NOMBREVETERINARIO: req.body.nombre, DNIVETERINARIO: req.body.dni} )
     .then(()=>{
-        Consola.mensaje("\x1b[33m%s\x1b[0m", `se confirmo el turno con id ${req.body.id}`)
-        res.status(200).send({});
+        knex('cliente').select('MAIL').where('DNI', req.body.dniCliente).first()
+        .then((mail) => {
+            knex('turno').where("ID",req.body.id).first()
+            .then ((turno) => {
+                const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+                const mensaje = `Hola ${turno.NOMBRECLIENTE}, se le informa que el turno solicitado de ${turno.NOMBRESERVICIO} para su perro ${turno.NOMBREPERRO} fue confirmado por el veterinario ${turno.NOMBREVETERINARIO}.
+                El turno esta asignado para el dia ${turno.FECHA.toLocaleDateString('es-ES', opciones)} por la ${req.body.franjaHoraria}`
+                enviadorMails.enviarMail('Turno confirmado', mensaje , mail.MAIL)
+                Consola.mensaje("\x1b[33m%s\x1b[0m", `${turno.NOMBREVETERINARIO} confirmo el turno con id ${req.body.id} para el perro ${turno.NOMBREPERRO}`)
+                res.status(200).send({});
+            })
+        })
+        .catch((error) => {
+            console.log(error)
+        })
     }).catch((error)=>{
         console.log(error)
         res.status(401).send('No es posible realizar la operacion solicitada en este momento')

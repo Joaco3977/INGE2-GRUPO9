@@ -167,6 +167,10 @@ export default defineComponent({
         id: id,
         nombre: useStore().nombre,
         dni: useStore().dni,
+        nombreCliente: this.nombreCliente,
+        nombrePerro: this.nombrePerro,
+        nombreServicio: this.nombreServicio,
+        dniCliente: this.dniCliente,
         franjaHoraria: this.horaTurno.value,
       };
       this.$emit("confirmarTurno", data);

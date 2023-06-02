@@ -30,10 +30,7 @@ const enviarMailPassword = async (destinatario) => {
   return password
 }
 
-const enviarMailPaseador = async (nombre, destinatario) => {
-  const asunto = 'Bienvenido Paseador!';
-  const mensaje = `Hola ${nombre}, te comunicamos que ya estas registrado como paseador en OhMyDog!`;
-
+const enviarMail = async (asunto, mensaje, destinatario) => {
   let pude = false
 
   transporter.sendMail({
@@ -80,4 +77,4 @@ const checkVeterinario = async (mail, pass) => {
     }
   };
 
-module.exports = { checkAdmin, checkCliente, checkVeterinario, generarPassword , enviarMailPassword, enviarMailPaseador };
+module.exports = { checkAdmin, checkCliente, checkVeterinario, generarPassword , enviarMailPassword, enviarMail };
