@@ -25,7 +25,7 @@
             v-model="perroEDAD"
             class="q-px-xl"
             label="Edad aproximada en meses"
-            type="text"
+            type="number"
           />
           <q-input
             v-model="perroMAIL"
@@ -66,7 +66,7 @@
               :disabled="!camposValidos"
               color="accent"
             />
-            
+
           </div>
         </q-form>
       </q-card-section>
@@ -174,7 +174,7 @@ export default defineComponent({
       return (
         this.perroMAIL.length > 5 &&
         this.perroMAIL.includes("@") &&
-        this.perroMAIL.includes(".") 
+        this.perroMAIL.includes(".")
       );
     },
     sexoValido(){
@@ -186,7 +186,7 @@ export default defineComponent({
     camposValidos(){
       return this.nombreValido && this.tamanioValido && this.edadValida && this.sexoValido && this.mailValido;
     },
-    
+
   }
 });
 </script>
