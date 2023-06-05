@@ -12,13 +12,23 @@
             <div>Editar datos</div>
           </q-btn> -->
           <div class="textoPerfil q-pl-md">
-            {{ nombreaApellido }}
+            {{ nombreApellido }}
           </div>
+          <q-btn
+            @click="mostrarPopupEditar = true"
+            color="accent"
+            label="Editar"
+            class=""
+            style="width: max-content; height: max-content"
+          >
+          </q-btn>
           <q-btn @click="confirmar = true" class="q-ml-sm" color="accent">
             <div>Eliminar</div>
 
             <!-- @click="ejecutarFuncionPadre(dni)"-->
           </q-btn>
+
+          
         </div>
       </q-card-section>
       <q-card-section>
@@ -33,7 +43,7 @@
               <div class="textoTituloPosteo q-pr-sm q-pb-xs">
                 Nombre y Apellido:
               </div>
-              <div>{{ nombreaApellido }}</div>
+              <div>{{ nombreApellido }}</div>
             </div>
             <div class="row">
               <div class="textoTituloPosteo q-pr-sm q-pb-xs">Mail:</div>
@@ -137,15 +147,30 @@
     <q-dialog v-model="agregarPerro">
       <FormPerro @registrarPerro="registrarPerro" :nombresPerros="nombresPerros"/>
     </q-dialog>
+
+    <q-dialog v-model="mostrarPopupEditar">
+      <FormClienteEditar
+        @editarCliente="editarCliente"
+        :dni=dni
+        :nombreApellido=nombreApellido
+        :mail=mail
+        :telefono=telefono
+        :direccion=direccion
+        :mailsClientes="mailsClientes"
+        :mailsVeterinarios="mailsVeterinarios"
+        :dniClientes="dniClientes"
+      />
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import { api } from "src/boot/axios";
-import { defineComponent, onMounted  } from "vue";
+import { defineComponent } from "vue";
 import { ref } from "vue";
 import TarjetaPerroVet from "./TarjetaPerroVet.vue";
 import FormPerro from "../formularios/formPerro.vue";
+import FormClienteEditar from "../formulariosEditar/formCliente.vue"
 import { normalizeString } from "src/functions/misc";
 
 export default defineComponent({
@@ -153,13 +178,26 @@ export default defineComponent({
   components: {
     TarjetaPerroVet,
     FormPerro,
+    FormClienteEditar,
   },
   props: {
     dni: String,
-    nombreaApellido: String,
+    nombreApellido: String,
     mail: String,
     telefono: String,
     direccion: String,
+    mailsClientes: {
+      type: Array,
+      required: true,
+    },
+    mailsVeterinarios: {
+      type: Array,
+      required: true,
+    },
+    dniClientes: {
+      type: Array,
+      required: true,
+    },
   },
   setup(props) {
     const nombresPerros = ref([]);
@@ -220,6 +258,7 @@ export default defineComponent({
       nombresPerros,
       verPerro,
       agregarPerro: ref(false),
+      mostrarPopupEditar: ref(false),
       perrosCliente,
       perroElegido,
       registrarPerro,

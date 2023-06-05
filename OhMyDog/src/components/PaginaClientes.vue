@@ -64,13 +64,17 @@
             <TarjetaCliente
               :ref="'losClientes'"
               @ejecutarFuncion="eliminarCliente"
+              @editarCliente="editarCliente"
               v-for="(cliente, dni) in clientesFiltrados"
               :key="dni"
               :dni="cliente.DNI"
-              :nombreaApellido="cliente.NOMBREAPELLIDO"
+              :nombreApellido="cliente.NOMBREAPELLIDO"
               :mail="cliente.MAIL"
               :telefono="cliente.TELEFONO"
               :direccion="cliente.DIRECCION"
+              :mailsClientes="mailsClientes"
+              :mailsVeterinarios="mailsVeterinarios"
+              :dniClientes="dniClientes"
             />
           </div>
           <div
