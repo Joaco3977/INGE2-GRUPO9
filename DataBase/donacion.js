@@ -18,10 +18,10 @@ router.get('/getDonaciones', (req,res) => {
 })
 
 router.post('/deleteDonacion', (req,res) => {
-    knex('campania').where('NOMBRE', req.body.nombre).del()
+    knex('campania').where('ID', req.body.id).del()
     .then(() => {
         res.status(200).send({})
-        Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO elimino la campaña: ${req.body.campania.NOMBRE}`);
+        Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO elimino la campaña con id: ${req.body.id}`);
     })
     .catch((error) => {
         console.log(error)
@@ -30,10 +30,15 @@ router.post('/deleteDonacion', (req,res) => {
 })
 
 router.post('/addDonacion', (req,res) => {
-    knex('campania').insert(req.body.campania)
+    const nuevaDonacion = {
+        NOMBRE: req.body.campania.NOMBRE,
+        DESCRIPCION: req.body.campania.DESCRIPCION,
+        LINK: req.body.campania.LINK
+    }
+    knex('campania').insert(nuevaDonacion)
     .then(() => {
-        res.status(200).send({})
         Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO agrego la campaña: ${req.body.campania.NOMBRE}`)
+        res.status(200).send({})
     })
     .catch((error) => {
         console.log(error)
