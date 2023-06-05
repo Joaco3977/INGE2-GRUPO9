@@ -40,7 +40,7 @@
           :nombre="paseador.NOMBREAPELLIDO"
           :zona="paseador.ZONA"
           :disponibilidad="paseador.DISPONIBILIDAD"
-          :contacto="paseador.MAIL"
+          :mail="paseador.MAIL"
           :comentario="paseador.COMENTARIO"
         />
       </div>

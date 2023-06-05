@@ -11,9 +11,9 @@
 
       <q-card-section v-if="rol == 2">
         <div class="row justify-end full-width">
-          <!-- <q-btn class="q-ml-md" color="accent">
-            <div>Editar datos</div>
-          </q-btn> -->
+          <q-btn class="q-ml-md" color="accent">
+            <div>Editar</div>
+          </q-btn>
           <q-btn @click="confirmar = true" class="q-ml-md" color="accent">
             <div>Eliminar</div>
           </q-btn>
@@ -34,8 +34,12 @@
               <div>{{ zona }}</div>
             </div>
             <div class="row">
-              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Contacto:</div>
-              <div>{{ contacto }}</div>
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Mail:</div>
+              <div>{{ mail }}</div>
+            </div>
+            <div class="row">
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Teléfono:</div>
+              <div>{{ telefono }}</div>
             </div>
             <div
               v-if="comentario != null && comentario.length > 0"
@@ -145,7 +149,7 @@ export default defineComponent({
     nombre: String,
     zona: String,
     disponibilidad: String,
-    contacto: String,
+    mail: String,
     comentario: String,
   },
   setup() {
@@ -161,15 +165,15 @@ export default defineComponent({
 
     convertirContacto() {
       let cont = "";
-      if (this.contacto.includes("@")) {
+      if (this.mail.includes("@")) {
         cont =
           "mailto:" +
-          this.contacto +
+          this.mail +
           "?subject=Contacto%20desde%20OhMyDog%20-%20Paseo%20de%20perro";
       } else {
         cont =
           "https://api.whatsapp.com/send?phone=" +
-          this.contacto +
+          this.mail +
           "&text=Contacto%20desde%20OhMyDog%20por%20paseador20de%20perro";
       }
       return cont;

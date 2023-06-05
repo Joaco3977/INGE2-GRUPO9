@@ -33,6 +33,13 @@
           <q-input
             class="q-px-lg"
             filled
+            v-model="telefono"
+            label="Teléfono de contacto"
+          />
+
+          <q-input
+            class="q-px-lg"
+            filled
             v-model="zona"
             label="Zona"
             lazy-rules
@@ -156,6 +163,7 @@ export default defineComponent({
     const mail = ref("");
     const zona = ref("");
     const info = ref("");
+    const telefono = ref("");
 
     const dias = ref([]);
 
@@ -182,6 +190,7 @@ export default defineComponent({
     return {
       name,
       mail,
+      telefono,
       info,
       zona,
       dni,
@@ -195,6 +204,7 @@ export default defineComponent({
         zona.value = null;
         info.value = null;
         dias.value = null;
+        telefono.value = null;
       },
     };
   },
@@ -224,6 +234,10 @@ export default defineComponent({
       if (!this.mailValido ){
         sError.push("El mail no es correcto")
       }
+      if (!this.telefonoValido ){
+        sError.push("El teléfono no es correcto")
+        
+      } 
       if (!this.zonaValida ){
         sError.push("La zona no es correcta")
       }
@@ -244,6 +258,9 @@ export default defineComponent({
     mailValido(){
       return this.mail.length > 5 && this.mail.includes('@') && this.mail.includes('.')
     },
+    telefonoValido(){
+      return this.telefono.length > 6 && /^\d+$/.test(this.telefono);
+    },
     zonaValida(){
       return this.zona.length > 0
     },
@@ -251,7 +268,7 @@ export default defineComponent({
       return this.dias.length > 0;
     },
     camposValidos(){
-      return this.nombreValido && !this.dniExiste && this.dniValido && this.mailValido && this.zonaValida && this.diasValidos;
+      return this.nombreValido && !this.dniExiste && this.dniValido && this.mailValido && this.telefonoValido && this.zonaValida && this.diasValidos;
     },
     
   }
