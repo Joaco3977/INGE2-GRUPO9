@@ -69,6 +69,7 @@
         <!--<q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />-->
         <q-tab v-if="store.rol > -1" name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab v-if="store.rol > -1"  name="Paseadores" icon="ion-walk" label="Paseadores" />
+        <q-tab v-if="store.rol > -1"  name="Donaciones" icon="ion-walk" label="Donaciones" />
         <!-- <q-tab name="TESTING" icon="ion-walk" label="TESTING" /> -->
         <!-- <q-tab
           v-if="store.rol === 2"
@@ -102,23 +103,23 @@
           <PaginaPerfil />
         </q-tab-panel>
 
-        <q-tab-panel v-if="store.rol === 0" name="Iniciar Sesion">
+        <q-tab-panel name="Iniciar Sesion">
           <PaginaIniciarSesion />
         </q-tab-panel>
 
-        <q-tab-panel v-if="store.rol === 1" name="Turnos">
+        <q-tab-panel name="Turnos">
           <PaginaTurnos />
         </q-tab-panel>
 
-        <q-tab-panel v-if="store.rol === 2" name="Administrar Turnos">
+        <q-tab-panel name="Administrar Turnos">
           <PaginaAdministracionTurnos />
         </q-tab-panel>
 
-        <q-tab-panel v-if="store.rol === 1" name="Mis Perros">
+        <q-tab-panel name="Mis Perros">
           <PaginaPerros />
         </q-tab-panel>
 
-        <q-tab-panel v-if="store.rol === 2" name="Clientes">
+        <q-tab-panel name="Clientes">
           <PaginaClientes />
         </q-tab-panel>
 
@@ -126,15 +127,15 @@
           <PaginaVeterinarios />
         </q-tab-panel>
 
-        <q-tab-panel v-if="store.rol > -1" name="Adopciones">
+        <q-tab-panel name="Adopciones">
           <PaginaAdopciones :rol="store.rol" />
         </q-tab-panel>
 
-        <q-tab-panel v-if="store.rol > -1" name="Paseadores">
+        <q-tab-panel name="Paseadores">
           <PaginaPaseadores :rol="store.rol" />
         </q-tab-panel>
 
-        <q-tab-panel v-if="store.rol > -1" name="Paseadores">
+        <q-tab-panel name="Donaciones">
           <PaginaDonaciones />
         </q-tab-panel>
 
@@ -176,7 +177,7 @@ import PaginaPaseadores from "../components/PaginaPaseadores.vue";
 import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
 import PaginaVeterinarios from "src/components/PaginaVeterinarios.vue";
-import PaginaDonaciones from "../components/PaginaAdopciones.vue"
+import PaginaDonaciones from "../components/PaginaDonaciones.vue"
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
 import { api } from "../boot/axios.js";
