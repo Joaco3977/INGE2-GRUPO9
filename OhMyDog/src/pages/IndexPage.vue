@@ -22,7 +22,7 @@
         class="q-pt-sm bg-primary text-white"
         style="max-height: 60vh"
       >
-        <q-tab v-if="store.rol > -1" name="Quienes Somos" icon="ion-home" label="¿Quiénes Somos?" /> 
+        <q-tab v-if="store.rol > -1" name="Quienes Somos" icon="ion-home" label="¿Quiénes Somos?" />
         <q-tab
           v-if="store.rol > 0"
           name="Mi Perfil"
@@ -126,12 +126,16 @@
           <PaginaVeterinarios />
         </q-tab-panel>
 
-        <q-tab-panel name="Adopciones">
+        <q-tab-panel v-if="store.rol > -1" name="Adopciones">
           <PaginaAdopciones :rol="store.rol" />
         </q-tab-panel>
 
-        <q-tab-panel name="Paseadores">
+        <q-tab-panel v-if="store.rol > -1" name="Paseadores">
           <PaginaPaseadores :rol="store.rol" />
+        </q-tab-panel>
+
+        <q-tab-panel v-if="store.rol > -1" name="Paseadores">
+          <PaginaDonaciones />
         </q-tab-panel>
 
         <!--<q-tab-panel v-if="store.rol === -1" name="LOG">
@@ -172,6 +176,7 @@ import PaginaPaseadores from "../components/PaginaPaseadores.vue";
 import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
 import PaginaVeterinarios from "src/components/PaginaVeterinarios.vue";
+import PaginaDonaciones from "../components/PaginaAdopciones.vue"
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
 import { api } from "../boot/axios.js";
@@ -195,6 +200,8 @@ export default defineComponent({
     //PaginaLog,
     PaginaVeterinarios,
     PaginaTesting, //SACAR DESPUES
+    PaginaAdopciones,
+    PaginaDonaciones
   },
   setup() {
     const data = reactive({
