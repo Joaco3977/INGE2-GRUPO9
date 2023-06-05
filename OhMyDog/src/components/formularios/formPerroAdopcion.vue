@@ -165,7 +165,7 @@ export default defineComponent({
       return sError
     },
     nombreValido(){
-      return this.perroNOMBRE.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.perroNOMBRE);;
+      return this.perroNOMBRE.length == 0 || /^[A-Za-zÀ-ÿ\s]+$/.test(this.perroNOMBRE);;
     },
     tamanioValido(){
       return this.perroTAMANIO.value != undefined;

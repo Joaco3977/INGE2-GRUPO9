@@ -12,13 +12,13 @@
       </q-card-section>
       <q-card-section v-if="servicio === 'perrosMios' || rol === 2">
         <div class="row justify-end full-width">
-          <!-- <q-btn
+           <q-btn
             v-if="servicio === 'perrosMios' || rol === 2 || adoptado == 0"
             class=""
             color="accent"
           >
-            <div>Editar datos</div>
-          </q-btn> -->
+            <div>Editar</div>
+          </q-btn> 
           <q-btn
             v-if="servicio === 'perrosMios' || rol === 2 || adoptado == 0"
             @click="confirmar = true"
@@ -34,9 +34,12 @@
       <q-card-section>
         <!-- Contenido -->
         <div class="column">
-          <div class="row">
+          <div v-if="nombre.length > 0" class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Nombre:</div>
             <div>{{ nombre }}</div>
+          </div>
+          <div v-else class="row">
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> ¡Elegime un nombre! </div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Tamaño:</div>
