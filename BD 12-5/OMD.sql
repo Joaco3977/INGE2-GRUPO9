@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `campania`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `campania` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `NOMBRE` varchar(45) NOT NULL,
   `DESCRIPCION` varchar(240) DEFAULT NULL,
   `LINK` varchar(60) NOT NULL,
@@ -494,4 +494,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-05 17:08:40
+-- Dump completed on 2023-06-05 17:24:14

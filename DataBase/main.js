@@ -30,6 +30,7 @@ const perroAdopcionRouter = require ('./perroAdopcion.js')
 const perroRouter = require ('./perro.js')
 const paseadorRouter = require ('./paseador.js')
 const turnoRouter = require ('./turno.js');
+const donacionRouter = require ('./donacion.js');
 
 app.use('/cliente', clienteRouter)
 app.use('/veterinario', veterinarioRouter)
@@ -38,6 +39,7 @@ app.use('/perroAdopcion', perroAdopcionRouter)
 app.use('/perro', perroRouter)
 app.use('/paseador', paseadorRouter)
 app.use('/turno', turnoRouter)
+app.use('/donacion', donacionRouter)
 
 app.post("/login", async (req, res) => {
   const admin = checkAdmin(req.body.mail, req.body.password);
