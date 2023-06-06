@@ -2,41 +2,44 @@
   <div class="flex">
     <q-card style="width: 40rem">
       <q-card-section class="bg-secondary">
-        <div class="text-h5 text-uppercase text-white text-center text-bold" >Agregar campaña</div>
+        <div class="text-h5 text-uppercase text-white text-center text-bold">
+          Agregar campaña
+        </div>
       </q-card-section>
 
       <q-card-section class="q-pt-md">
-        <div class="text-h6 q-pb-xs text-center text-primary"> Información básica </div>
+        <div class="text-h6 q-pb-xs text-center text-primary">
+          Información básica
+        </div>
         <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-          <q-input
-            class="q-px-lg"
-            filled
-            v-model="nombre"
-            label="Nombre"
-          />
+          <q-input class="q-px-lg" filled v-model="nombre" label="Nombre" />
 
           <q-input
             class="q-px-lg"
             filled
             v-model="descripcion"
-            label="Descripcion"
+            label="Descripción"
           />
 
-          <q-input
-            class="q-px-lg"
-            filled
-            v-model="link"
-            label="Link"
-          />
+          <q-input class="q-px-lg" filled v-model="link" label="Link" />
 
           <ul class="q-mx-md q-py-xs">
-          <li v-for="mnsj in mensajeError" :key="mnsj" class="bg-white text-accent text-bold">
-            {{ mnsj }}
-          </li>
+            <li
+              v-for="mnsj in mensajeError"
+              :key="mnsj"
+              class="bg-white text-accent text-bold"
+            >
+              {{ mnsj }}
+            </li>
           </ul>
 
           <div class="row justify-end">
-            <q-btn label="Registrar campaña" :disabled="!camposValidos" type="submit" color="accent" />
+            <q-btn
+              label="Registrar campaña"
+              :disabled="!camposValidos"
+              type="submit"
+              color="accent"
+            />
             <q-btn
               label="Cancelar"
               type="reset"
@@ -64,7 +67,6 @@ export default defineComponent({
     },
   },
   setup() {
-
     const nombre = ref("");
     const descripcion = ref("");
     const link = ref("");
@@ -74,9 +76,9 @@ export default defineComponent({
         NOMBRE: nombre.value,
         DESCRIPCION: descripcion.value,
         LINK: link.value,
-      }
-      return donacion
-    }
+      };
+      return donacion;
+    };
 
     return {
       nombre,
@@ -92,41 +94,52 @@ export default defineComponent({
     };
   },
   methods: {
-    async onSubmit () {
+    async onSubmit() {
       try {
-        const donacion = this.getDatosDonacion()
-        this.$emit('registrarDonacion', donacion);
-      } catch (error){
-        console.error(error)
+        const donacion = this.getDatosDonacion();
+        this.$emit("registrarDonacion", donacion);
+      } catch (error) {
+        console.error(error);
       }
+    },
+    urlValida(string){
+      const urlPattern = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(\/.*)?$/i;
+      return urlPattern.test(string);
     }
   },
   computed: {
-    mensajeError(){
+    mensajeError() {
       let sError = [];
-      if (!this.nombreValido ){
-        sError.push( "El nombre no es correcto" )
+      if (!this.nombreValido) {
+        sError.push("Ingrese un nombre de la campaña");
       }
-      if (this.nombreExiste ){
-        sError.push( "Ese nombre ya esta registrado" )
+      if (this.nombreExiste) {
+        sError.push("Ese nombre ya esta registrado");
       }
-      if (!this.linkValido ){
-        sError.push( "El link no puede estar vacio" )
+      if (!this.descripcionValida) {
+        sError.push("Ingrese una descripción de la campaña");
       }
-      return sError
+      if (!this.linkValido) {
+        sError.push("El link debe ser válido");
+      }
+      return sError;
     },
-    nombreValido(){
+    nombreValido() {
       return this.nombre.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.nombre);
     },
-    linkValido(){
-      return this.link.length > 0;
+    descripcionValida() {
+      return this.descripcion.length > 0;
     },
-    nombreExiste(){
+    linkValido() {
+      console.log(this.urlValida(this.link))
+      return this.link.length > 0 ;
+    },
+    nombreExiste() {
       return this.nombreDonaciones.includes(this.nombre);
     },
-    camposValidos(){
-      return this.nombreValido && !this.nombreExiste && this.linkValido;
+    camposValidos() {
+      return this.nombreValido && !this.nombreExiste && this.linkValido && this.descripcionValida;
     },
-  }
+  },
 });
 </script>

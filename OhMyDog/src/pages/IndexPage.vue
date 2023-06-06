@@ -69,7 +69,7 @@
         <!--<q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />-->
         <q-tab v-if="store.rol > -1" name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab v-if="store.rol > -1"  name="Paseadores" icon="ion-walk" label="Paseadores" />
-        <q-tab v-if="store.rol > -1"  name="Donaciones" icon="ion-walk" label="Donaciones" />
+        <q-tab v-if="store.rol > -1"  name="Donaciones" icon="ion-hand" label="Donaciones" />
         <!-- <q-tab name="TESTING" icon="ion-walk" label="TESTING" /> -->
         <!-- <q-tab
           v-if="store.rol === 2"
