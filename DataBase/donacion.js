@@ -5,6 +5,11 @@ const router = express.Router();
 const Consola = require ('./serverFunctions.js')
 const Log = require ('./log.js')
 
+router.post('/registrarDonacion', (req,res) => {
+    console.log('Donacion registrada: ', req.body)
+    res.status(200).send({})
+})
+
 router.get('/getDonaciones', (req,res) => {
     knex('campania').select('*')
     .then ((response) => {

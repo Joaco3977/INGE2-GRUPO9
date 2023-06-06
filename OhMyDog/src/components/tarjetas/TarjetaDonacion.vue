@@ -95,7 +95,7 @@
             flat
             label="Donar"
             :disabled="!montoValido"
-            @click="pagoTarjeta = true"
+            @click="initiatePayment"
             color="primary"
             v-close-popup
           />
@@ -138,6 +138,8 @@
           label="Codigo de seguridad"
         />
 
+        <p1 align="right">Donar {{ donacion.monto }} $ pesos argentinos</p1>
+
         <q-card-actions align="right">
           <q-btn
             flat
@@ -151,12 +153,20 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <div id="card-element"></div>
+    <!-- Otros elementos de tu formulario -->
+    <form id="payment-form">
+      <!-- Campos del formulario y botón de envío -->
+    </form>
   </div>
 </template>
 
 <script>
 import { useStore } from "src/pinia/store";
 import { defineComponent, ref } from "vue";
+import { loadStripe } from '@stripe/stripe-js'
+import { api } from 'src/boot/axios.js'
 
 export default defineComponent({
   name: "TarjetaDonacion",
@@ -192,9 +202,46 @@ export default defineComponent({
     };
   },
   methods: {
-    realizarDonacion(link) {
-      //Aca hariamos lo q se tenga q hacer cuadno donamos
-      console.log("Realizar donacion: ", this.donacion);
+    async initiatePayment() {
+      const stripe = await loadStripe('pk_test_51NG7cAEHp7zfZgFctfOKS010Wrnu2h3GQyknCZnEgyWdCCCVuzhoKpB3iCh63qDTFkB2OQ3fNyAi9G16srwuylcP00B65q8ry3');
+      const elements = stripe.elements();
+
+      // Código para crear y mostrar el formulario de pago con los campos necesarios
+
+      // Por ejemplo, puedes utilizar el formulario de elementos de Stripe para el número de tarjeta
+      const cardElement = elements.create('card');
+      cardElement.mount('#card-element');
+
+      // Escucha el evento de envío del formulario de pago
+      const form = document.getElementById('payment-form');
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        // Realiza la solicitud de pago a través de la API de Stripe
+        const { paymentMethod } = await stripe.createPaymentMethod({
+          type: 'card',
+          card: cardElement,
+        });
+
+        // Envía el ID del método de pago a tu servidor para realizar el cobro
+        // Aquí debes hacer una solicitud a tu servidor para crear la orden y procesar el pago
+        // Puedes enviar el ID del método de pago y otros datos necesarios para completar la transacción
+        // en el cuerpo de la solicitud.
+
+        // Ejemplo de solicitud usando fetch:
+        const response = await api.post('/donacion/registrarDonacion', paymentMethod.id,);
+
+        // Maneja la respuesta del servidor y muestra un mensaje apropiado al usuario
+
+        // Por ejemplo, si el pago fue exitoso:
+        if (response.ok) {
+          alert('El pago se ha realizado con éxito');
+          // Redirige o realiza otras acciones necesarias
+        } else {
+          // El pago falló
+          alert('Ha ocurrido un error al procesar el pago');
+        }
+      });
     },
     eliminarDonacion(id) {
       this.$emit("eliminarDonacion", id);
