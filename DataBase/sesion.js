@@ -8,37 +8,6 @@ function generarToken() {
     return token;
 }
 
-/*
-async function getInfoQuien (token) {
-  await knex('sesion')
-    .select('sesion.ROL', 'cliente.NOMBREAPELLIDO AS nombre_cliente', 'cliente.DNI AS dni_cliente', 'veterinario.NOMBREAPELLIDO AS nombre_veterinario', 'veterinario.DNI AS dni_veterinario')
-    .where('sesion.TOKEN', token)
-    .leftJoin('cliente', 'sesion.MAIL', 'cliente.MAIL')
-    .leftJoin('veterinario', 'sesion.MAIL', 'veterinario.MAIL')
-    .then((rows) => {
-      if (rows.length === 0) {
-        return false;
-      }
-      const rol = rows[0].ROL;
-      if (rol === 1) {
-        return {
-          rol,
-          nombre: rows[0].nombre_cliente,
-          dni: rows[0].dni_cliente,
-        };
-      } else if (rol === 2) {
-        return {
-          rol,
-          nombre: rows[0].nombre_veterinario,
-          dni: rows[0].dni_veterinario,
-        };
-      } else {
-        return false;
-      }
-    });
-}
-*/
-
 const almacenarToken = async (token, mail, dni, rol) => {
     const nuevoToken = {
       TOKEN: token,

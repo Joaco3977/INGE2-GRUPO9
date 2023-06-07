@@ -17,7 +17,7 @@ const Log = require ('./log.js')
 
 const getPerrosPropios = async (dni) => {
     try {
-        const resultado = await knex('perro').select('*').where('DNICLIENTE', dni)
+        const resultado = await knex('perro').select('*').where('DNICLIENTE', dni).andWhere('ELIMINADO', 0)
         return resultado;
     }catch (error){
         console.error(error)
@@ -51,7 +51,6 @@ router.post('/getPerrosPropios', async (req, res) => {
 })
 
 router.post('/addPerro', async (req, res) => {
-    console.log(req.body.perro)
     const nuevoPerro = {
         SEXO:req.body.perro.sexo,
         TAMANIO:req.body.perro.tamanio,
@@ -84,7 +83,7 @@ router.post('/deletePerroPropio', async (req, res) => {
     knex('perro').where({
         DNICLIENTE: req.body.datos.dnicliente,
         NOMBRE: req.body.datos.nombre
-    }).del()
+    }).update('ELIMINADO', 1)
     .then(() =>{
         Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.datos.dnicliente} elimino a su perro: ${req.body.datos.nombre}`)
         Log.agregarEntradaLog(1, req.body.datos.dnicliente, `elimino a su PERRO ${req.body.datos.nombre}`)

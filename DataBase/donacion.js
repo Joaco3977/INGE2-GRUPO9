@@ -11,7 +11,7 @@ router.post('/registrarDonacion', (req,res) => {
 })
 
 router.get('/getDonaciones', (req,res) => {
-    knex('campania').select('*')
+    knex('campania').select('*').where('ELIMINADO', 0)
     .then ((response) => {
         Consola.mensaje("\x1b[33m%s\x1b[0m", "USUARIO solicito clientes")
         res.status(200).send(response)
@@ -23,7 +23,7 @@ router.get('/getDonaciones', (req,res) => {
 })
 
 router.post('/deleteDonacion', (req,res) => {
-    knex('campania').where('ID', req.body.id).del()
+    knex('campania').where('ID', req.body.id).update('ELIMINADO', 1)
     .then(() => {
         res.status(200).send({})
         Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO elimino la campaña con id: ${req.body.id}`);

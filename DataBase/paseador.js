@@ -7,7 +7,7 @@ const Log = require ('./log.js')
 
 const getPaseadores = async () => {
     try {
-        const resultado = await knex('paseador').select('*')
+        const resultado = await knex('paseador').select('*').where('ELIMINADO', 0)
         return resultado;
     } catch (error) {
         console.error(error)
@@ -77,7 +77,7 @@ router.post('/addPaseador', async (req,res) => {
 })
 
 router.post('/deletePaseador', async (req,res) =>{
-    knex('paseador').where('DNI', req.body.dni).del()
+    knex('paseador').where('DNI', req.body.dni).update('ELIMINADO', 1)
     .then(() =>{
         Log.agregarEntradaLog(2, req.body.dniVet, `elimino al PASEADOR ${req.body.dni}`)
         Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino paseador con dni: ${req.body.dni}`)

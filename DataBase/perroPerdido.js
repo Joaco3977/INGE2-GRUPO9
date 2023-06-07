@@ -7,7 +7,7 @@ const Log = require ('./log.js')
 
 const getPerrosPerdidos = async () => {
     try {
-        const resultado = await knex('perroPerdido').select('*')
+        const resultado = await knex('perroPerdido').select('*').where('ELIMINADO', 0)
         return resultado;
     } catch (error) {
         console.error(error)
@@ -17,7 +17,7 @@ const getPerrosPerdidos = async () => {
 
 const getPerrosPerdidosPropios = async (dni) =>{
     try {
-        const resultado = await knex('perroPerdido').select('*').where(perroPerdido.DNI == dni)
+        const resultado = await knex('perroPerdido').select('*').where(perroPerdido.DNI == dni).andWhere('ELIMINADO', 0)
         return resultado;
     }catch (error){
         console.error(error)

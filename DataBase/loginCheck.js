@@ -55,7 +55,7 @@ function checkAdmin (mail, pass) {
 
 const checkCliente = async (mail, pass) => {
     try {
-      const resultado = await knex('cliente').select('*').where('MAIL', '=', mail).andWhere('PASSWORD', '=', pass).first();
+      const resultado = await knex('cliente').select('*').where('MAIL', '=', mail).andWhere('PASSWORD', '=', pass).andWhere('ELIMINADO', 0).first();
       if (resultado === undefined) {
         return false;
       } else return resultado;
@@ -67,7 +67,7 @@ const checkCliente = async (mail, pass) => {
 
 const checkVeterinario = async (mail, pass) => {
     try {
-      const resultado = await knex('veterinario').select('*').where('MAIL', '=', mail).andWhere('PASSWORD', '=', pass).first();
+      const resultado = await knex('veterinario').select('*').where('MAIL', '=', mail).andWhere('PASSWORD', '=', pass).andWhere('ELIMINADO', 0).first();
       if (resultado === undefined) {
         return false;
       } else return resultado;

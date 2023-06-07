@@ -30,7 +30,7 @@ const Log = require ('./log.js')
 //MEJOR MANERA ES HACER FUNCIONES DE BD Y FUNCIONES DE CONSULTAS POR SEPARADO Y QUE ESTAS INVOQUEN A LAS PRIMERAS
 const getClientes = async () => {
     try {
-        const resultado = await knex('cliente').select('*').orderBy('FECHAREGISTRO', 'desc');
+        const resultado = await knex('cliente').select('*').where('ELIMINADO', 0).orderBy('FECHAREGISTRO', 'desc');
         return resultado;
     } catch (error) {
         console.error(error)
@@ -50,7 +50,7 @@ const getClientePorMail = async (mail) => {
 
 const getClientePorDNI= async (dni) => {
     try {
-        const resultado = await knex.select('*').from('cliente').where('DNI', '=', dni).first()
+        const resultado = await knex.select('*').from('cliente').where('DNI', dni).andWhere('ELIMINADO', 0).first()
         return resultado;
     } catch (error) {
         console.error(error)
@@ -103,7 +103,7 @@ router.post('/deleteCliente', async (req, res) => {
     try {
         await knex('perro').where('DNICLIENTE', req.body.dni).del();
         await knex('turno').where('DNICLIENTE', req.body.dni).del();
-      await knex('cliente').where('DNI', req.body.dni).del();
+      await knex('cliente').where('DNI', req.body.dni).update('ELIMINADO', 1)
       Log.agregarEntradaLog(2, req.body.dniVet, `elimino al cliente ${req.body.dni}`);
       Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO elimino cliente con dni: ${req.body.dni} junto con todos sus perros`);
       res.status(200).send({});

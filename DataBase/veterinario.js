@@ -15,7 +15,7 @@ const Log = require ('./log.js')
 
 const getVeterinarios = async () => {
     try {
-        const resultado = await knex('veterinario').select('*')
+        const resultado = await knex('veterinario').select('*').where('ELIMINADO', 0)
         return resultado;
     } catch (error) {
         console.error(error)
@@ -25,7 +25,7 @@ const getVeterinarios = async () => {
 
 const getVeterinarioPorMail = async (mail) => {
     try {
-        const resultado = await knex.select('*').from('veterinario').where('MAIL', '=', mail)
+        const resultado = await knex.select('*').from('veterinario').where('MAIL', '=', mail).andWhere('ELIMINADO', 0).first()
         return resultado;
     } catch (error) {
         console.error(error)
@@ -35,7 +35,7 @@ const getVeterinarioPorMail = async (mail) => {
 
 const getVeterinarioPorDNI= async (dni) => {
     try {
-        const resultado = await knex.select('*').from('veterinario').where('DNI', '=', dni).first()
+        const resultado = await knex.select('*').from('veterinario').where('DNI', '=', dni).andWhere('ELIMINADO', 0).first()
         return resultado;
     } catch (error) {
         console.error(error)
@@ -69,7 +69,7 @@ router.get('/getVeterinarios', async (req, res) => {
 });
 
 router.post('/deleteVeterinario', async (req,res) =>{
-    knex('Veterinario').where('DNI', req.body.dni).del()
+    knex('Veterinario').where('DNI', req.body.dni).update('ELIMINADO', 0)
     .then((resultado) =>{
         Consola.mensaje("\x1b[35m%s\x1b[0m",`ADMIN elimino veterinario con dni: ${req.body.dni}`)
         Log.agregarEntradaLog(-1, '', `elimino al VETERINARIO ${req.body.dni}`)

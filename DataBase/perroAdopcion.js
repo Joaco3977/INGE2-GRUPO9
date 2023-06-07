@@ -7,7 +7,7 @@ const Log = require ('./log.js')
 
 const getPerrosAdopcion = async () => {
     try {
-        const resultado = await knex('perroAdopcion').select('*')
+        const resultado = await knex('perroAdopcion').select('*').where('ELIMINADO', 0)
         return resultado;
     } catch (error) {
         console.error(error)
@@ -17,7 +17,7 @@ const getPerrosAdopcion = async () => {
 
 const getPerrosAdopcionPropios = async (dni) =>{
     try {
-        const resultado = await knex('perroAdopcion').select('*').where('DNICLIENTE', dni)
+        const resultado = await knex('perroAdopcion').select('*').where('DNICLIENTE', dni).andWhere('ELIMINADO', 0)
         return resultado;
     }catch (error){
         console.error(error)
@@ -115,7 +115,7 @@ router.post('/deletePerroAdopcion', async (req,res) =>{
     knex('perroAdopcion').where({
         DNICLIENTE: req.body.dnicliente,
         NOMBRE: req.body.nombre
-    }).del()
+    }).update('ELIMINADO', 1)
     .then(() =>{
         Consola.mensaje("\x1b[35m%s\x1b[0m",`${quien} ${req.body.dni} elimino al perro en adopcion ${req.body.nombre} del cliente con DNI ${req.body.dnicliente}`)
         Log.agregarEntradaLog(req.body.rol, req.body.dni, `elimino al PERRO EN ADOPCION ${req.body.nombre} del cliente ${req.body.dnicliente}`)
