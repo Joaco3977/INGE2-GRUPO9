@@ -3,7 +3,7 @@ const knexConfig = {
   connection: {
     host: "localhost",
     user: "root",
-    password: "cg7ThKa8Bd@r5zyi",
+    password: "12345",
     database: "ohmydog",
   },
 };

@@ -101,8 +101,8 @@ router.post('/getCliente',async (req,res) =>{
 
 router.post('/deleteCliente', async (req, res) => {
     try {
-        await knex('perro').where('DNICLIENTE', req.body.dni).del();
-        await knex('turno').where('DNICLIENTE', req.body.dni).del();
+        await knex('perro').where('DNICLIENTE', req.body.dni).update('ELIMINADO', 1);
+        await knex('turno').where('DNICLIENTE', req.body.dni).update('ELIMINADO', 1);
       await knex('cliente').where('DNI', req.body.dni).update('ELIMINADO', 1)
       Log.agregarEntradaLog(2, req.body.dniVet, `elimino al cliente ${req.body.dni}`);
       Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO elimino cliente con dni: ${req.body.dni} junto con todos sus perros`);

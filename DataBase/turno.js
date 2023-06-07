@@ -93,7 +93,7 @@ router.post('/confirmarTurno', async(req,res) =>{
 })
 
 router.post('/getTurnosDni', async (req, res) => {
-    await knex('turno').select('*').where('DNICLIENTE', req.body.dni).andWhere('ESTADO', req.body.estado)
+    await knex('turno').select('*').where('DNICLIENTE', req.body.dni).andWhere('ESTADO', req.body.estado).andWhere("ELIMINADO", 0)
     .then ((resultado) => {
         Consola.mensaje("\x1b[33m%s\x1b[0m", `SISTEMA solicito turnos del cliente ${req.body.dni}`)
         res.status(200).send(resultado)
@@ -105,7 +105,7 @@ router.post('/getTurnosDni', async (req, res) => {
 })
 
 router.post('/getTurnosEstado', async (req, res) => {
-    await knex('turno').select('*').where('ESTADO', req.body.estado)
+    await knex('turno').select('*').where('ESTADO', req.body.estado).andWhere("ELIMINADO", 0)
     .then ((resultado) => {
         Consola.mensaje("\x1b[33m%s\x1b[0m", `VETERINARIO solicito todos los turnos`)
         res.status(200).send(resultado)

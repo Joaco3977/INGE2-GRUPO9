@@ -165,7 +165,7 @@
 <script>
 import { useStore } from "src/pinia/store";
 import { defineComponent, ref } from "vue";
-import { loadStripe } from '@stripe/stripe-js'
+//import { loadStripe } from '@stripe/stripe-js'
 import { api } from 'src/boot/axios.js'
 
 export default defineComponent({
