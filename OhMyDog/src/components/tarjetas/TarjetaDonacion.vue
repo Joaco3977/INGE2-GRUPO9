@@ -64,7 +64,7 @@
           <q-btn
             flat
             label="Eliminar"
-            @click="eliminarDonacion(id)"
+            @click="eliminarDonacion(id, nombre)"
             color="primary"
             v-close-popup
           />
@@ -243,8 +243,12 @@ export default defineComponent({
         }
       });
     },
-    eliminarDonacion(id) {
-      this.$emit("eliminarDonacion", id);
+    eliminarDonacion(id, nombre) {
+      const data = {
+        id: id,
+        nombre: nombre
+      }
+      this.$emit("eliminarDonacion", data);
     },
     resetMonto(){
       this.donacion.monto = "";
