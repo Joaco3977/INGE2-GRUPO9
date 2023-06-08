@@ -92,6 +92,16 @@ router.post('/deleteCliente', async (req, res) => {
 });
   
 
+router.post ('/editarCliente',async(req,res)=>{
+    try {  
+        await knex('cliente').where("DNI", req.body.cliente.dniA).update({"DNI":req.body.cliente.dni,"NOMBREAPELLIDO" : req.body.cliente.nombreApellido,"MAIL": req.body.cliente.mail,"TELEFONO":req.body.cliente.telefono,"DIRECCION": req.body.cliente.direccion});
+        res.status(200).send({});
+    }catch (error){
+        console.log(error);
+        res.status(401).send('No fue posible conectar con la base de datos');
+    }
+})
+
 router.post('/addCliente', async (req, res) => {
     enviadorMails.enviarMailPassword(req.body.cliente.mail)
     .then ((resultadoPassword) => {
