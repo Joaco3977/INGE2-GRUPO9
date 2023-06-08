@@ -14,16 +14,6 @@ const getClientes = async () => {
         console.error(error)
         return false;
     }
-};
-
-const getClientePorMail = async (mail) => {
-    try {
-        const resultado = await knex.select('*').from('cliente').where('MAIL', '=', mail)
-        return resultado;
-    } catch (error) {
-        console.error(error)
-        return false;
-    } 
 }
 
 const getClientePorDNI= async (dni) => {
@@ -82,8 +72,8 @@ router.post('/deleteCliente', async (req, res) => {
         await knex('perro').where('DNICLIENTE', req.body.dni).update('ELIMINADO', 1);
         await knex('turno').where('DNICLIENTE', req.body.dni).update('ELIMINADO', 1);
       await knex('cliente').where('DNI', req.body.dni).update('ELIMINADO', 1)
-      Log.agregarEntradaLog(2, req.body.dniVet, `elimino al cliente ${req.body.dni}`);
       Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO elimino cliente con dni: ${req.body.dni} junto con todos sus perros`);
+      Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `elimino al CLIENTE ${req.body.dni}`)
       res.status(200).send({});
     } catch (error) {
       console.log(error);
@@ -95,6 +85,7 @@ router.post('/deleteCliente', async (req, res) => {
 router.post ('/editarCliente',async(req,res)=>{
     try {  
         await knex('cliente').where("DNI", req.body.cliente.dniA).update({"DNI":req.body.cliente.dni,"NOMBREAPELLIDO" : req.body.cliente.nombreApellido,"MAIL": req.body.cliente.mail,"TELEFONO":req.body.cliente.telefono,"DIRECCION": req.body.cliente.direccion});
+        Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `edito al CLIENTE ${req.body.cliente.nombreApellido} con DNI: ${req.body.cliente.dniA}`)
         res.status(200).send({});
     }catch (error){
         console.log(error);
@@ -118,8 +109,8 @@ router.post('/addCliente', async (req, res) => {
             addCliente(nuevoCliente)
             .then ((resultadoAdd) => {
                 if (resultadoAdd !== false) {
-                    Log.agregarEntradaLog(2, req.body.dniVet, `registro al CLIENTE ${req.body.cliente.dni}`)
                     Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO registro al CLIENTE: ${req.body.cliente.nombreApellido}, DNI: ${req.body.cliente.dni}, Mail: ${req.body.cliente.mail}`)
+                    Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `agrego al CLIENTE ${req.body.cliente.nombreApellido} con DNI:${req.body.cliente.dni}`)
                     res.status(200).send({})
                 } else {
                     res.status(401).send('No se pudo insertar al nuevo cliente');

@@ -116,6 +116,12 @@ export default defineComponent({
     FormCliente,
   },
   setup() {
+    const quienSoy = {
+      rol: useStore().rol,
+      dni: useStore().dni,
+      nombre: useStore().nombre,
+    }
+
     const inputRef = ref(null);
 
     const tab = ref("Buscar Cliente");
@@ -133,7 +139,6 @@ export default defineComponent({
     const registrarCliente = async (cliente) => {
       try {
         const response = await api.post("/cliente/addCliente", {
-          dniVet: useStore().dni,
           cliente: {
             dni: cliente.dni,
             nombreApellido: cliente.nombreApellido,
@@ -141,6 +146,7 @@ export default defineComponent({
             telefono: cliente.telefono,
             direccion: cliente.direccion,
           },
+          quienSoy: quienSoy,
         });
         await loadClientes();
         for (let i = 0; i < instance.refs["losClientes"].length; i++) {
@@ -164,12 +170,13 @@ export default defineComponent({
             direccion: cliente.direccion,
             dniA: cliente.dniA,
           },
+          quienSoy: quienSoy,
         });
         await loadClientes();
       } catch (error) {
         console.error(error);
       }}
-    
+
 
     const loadClientes = async () => {
       try {
@@ -229,8 +236,8 @@ export default defineComponent({
       try {
         console.log("por lo menos entre aca?");
         await api.post("cliente/deleteCliente", {
-          dniVet: useStore().dni,
           dni: dni,
+          quienSoy: quienSoy,
         });
         await loadClientes();
 

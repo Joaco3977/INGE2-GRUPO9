@@ -172,6 +172,7 @@ import TarjetaPerroVet from "./TarjetaPerroVet.vue";
 import FormPerro from "../formularios/formPerro.vue";
 import FormClienteEditar from "../formulariosEditar/formCliente.vue"
 import { normalizeString } from "src/functions/misc";
+import { useStore } from '../../pinia/store.js'
 
 export default defineComponent({
   name: "TarjetaCliente",
