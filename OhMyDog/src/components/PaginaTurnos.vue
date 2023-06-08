@@ -199,6 +199,8 @@ export default defineComponent({
       .post("/turno/cancelarTurno", {
         id: data.id,
         rol: rol,
+        dni: useStore().dni,
+        nombre: useStore().nombre,
       })
       .then(()=>{
         if (data.state === 'Confirmado') {

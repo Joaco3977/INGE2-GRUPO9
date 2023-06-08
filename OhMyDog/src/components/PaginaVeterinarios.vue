@@ -10,7 +10,7 @@
         >
           <div class="textoBoton">Agregar Veterinario</div>
         </q-btn>
-  
+
         <q-tabs
           v-model="tab"
           dense
@@ -26,7 +26,7 @@
             label="Buscar Veterinario"
           />
         </q-tabs>
-  
+
         <q-scroll-area
           :thumb-style="thumbStyle"
           :bar-style="barStyle"
@@ -35,7 +35,7 @@
         >
           <q-card flat>
             <q-separator />
-  
+
             <q-tab-panels v-model="tab" animated>
               <q-tab-panel name="Buscar Veterinario">
                 <div class="full-width row items-center">
@@ -58,7 +58,7 @@
           </q-card>
         </q-scroll-area>
       </q-card>
-  
+
       <q-dialog v-model="mostrarPopup">
         <div class="full-width row items-center bg-white">
           <div class="q-pa-md" style="width: 50rem">
@@ -113,7 +113,7 @@
       </q-dialog>
     </div>
   </template>
-  
+
   <script>
   import { defineComponent, reactive, ref, watch } from "vue";
   import { api } from "../boot/axios.js";
@@ -122,7 +122,7 @@
   import TarjetaVeterinario from "./tarjetas/TarjetaVeterinario.vue";
   import { checkToken } from "../functions/check.js";
   import { QDialog } from "quasar";
-  
+
   export default defineComponent({
     name: "PaginaVeterinarios",
     components: {
@@ -131,9 +131,8 @@
     },
     setup() {
       const inputRef = ref(null);
-  
+
       const tab = ref("Buscar Veterinario");
-      const store = useStore();
       const veterinarios = reactive([]);
       const veterinariosFiltrados = ref([]);
       const dniFiltrar = ref("");
@@ -142,7 +141,7 @@
       const veterinarioAgregarMail = ref("");
       const veterinarioAgregarTelefono = ref("");
       const veterinarioAgregarDireccion = ref("");
-  
+
       const registrarVeterinario = async () => {
         try {
           const response = await api.post("/veterinario/addVeterinario", {
@@ -158,7 +157,7 @@
           console.error(error);
         }
       };
-  
+
       const loadVeterinarios = async () => {
         try {
           const response = await api.get("/veterinario/getVeterinarios");
@@ -170,29 +169,30 @@
           console.error(error);
         }
       };
-  
+
       watch(dniFiltrar, (nuevoValor, valorAnterior) => {
         this.filtrarVeterinario(nuevoValor, veterinarios);
       });
-  
+
       const filtrarVeterinario = () => {
         const query = dniFiltrar.value;
         veterinariosFiltrados.value = veterinario.value.filter((veterinario) =>
         veterinario.dni.includes(query)
         );
       };
-  
+
       async function eliminarVeterinario (dni) {
         try {
           await api.post("veterinario/deleteVeterinario", {
-            dni: dni
+            dni: dni,
+            nombre: nombreApellido
           })
           loadVeterinarios();
         } catch {
           console.error('NO SE PUDO ELIMINAR VETERINARIO')
         }
       }
-  
+
       return {
         tab,
         veterinarios,
@@ -207,7 +207,7 @@
         registrarVeterinario,
         filtrarVeterinario,
         eliminarVeterinario,
-  
+
         mostrarPopup: ref(false),
         inputRef,
       };

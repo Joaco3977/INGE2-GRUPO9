@@ -96,6 +96,7 @@ export default defineComponent({
       try {
         await api.post("/paseador/addPaseador", {
           dniVet: useStore().dni,
+          nombreVet: useStore().nombre,
           paseador: paseador,
         });
         abrirForm.value = false;
@@ -109,6 +110,7 @@ export default defineComponent({
       try {
         await api.post("paseador/deletePaseador", {
           dniVet: useStore().dni,
+          nombreVet: useStore().nombre,
           dni: dni,
         });
         loadPaseadores();
