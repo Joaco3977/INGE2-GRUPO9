@@ -66,7 +66,7 @@
           label="Veterinarios"
         />
 
-        <!--<q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />-->
+        <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
         <q-tab v-if="store.rol > -1" name="Adopciones" icon="ion-heart" label="Adopciones" />
         <q-tab v-if="store.rol > -1"  name="Paseadores" icon="ion-walk" label="Paseadores" />
         <q-tab v-if="store.rol > -1"  name="Donaciones" icon="ion-hand" label="Donaciones" />
@@ -139,9 +139,9 @@
           <PaginaDonaciones />
         </q-tab-panel>
 
-        <!--<q-tab-panel v-if="store.rol === -1" name="LOG">
+        <q-tab-panel v-if="store.rol === -1" name="LOG">
           <PaginaLog />
-        </q-tab-panel>-->
+        </q-tab-panel>
 
         <q-tab-panel v-if="store.rol === 1" name="Consultas">
           <PaginaConsultaCliente />
@@ -198,7 +198,7 @@ export default defineComponent({
     PaginaAdopciones,
     PaginaPaseadores,
     PaginaPerfil,
-    //PaginaLog,
+    PaginaLog,
     PaginaVeterinarios,
     PaginaTesting, //SACAR DESPUES
     PaginaAdopciones,
