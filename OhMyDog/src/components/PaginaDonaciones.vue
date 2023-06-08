@@ -77,6 +77,12 @@ export default defineComponent({
 
     const nombreDonaciones = ref([]);
 
+    const quienSoy = {
+      rol: useStore().rol,
+      dni: useStore().dni,
+      nombre: useStore().nombre,
+    }
+
     const loadDonaciones = async () => {
       try {
         const response = await api.get("/donacion/getDonaciones");
@@ -93,6 +99,7 @@ export default defineComponent({
       try {
         await api.post("/donacion/addDonacion", {
           campania: donacion,
+          quienSoy: quienSoy,
         });
         abrirForm.value = false;
         loadDonaciones();
@@ -101,10 +108,12 @@ export default defineComponent({
       }
     };
 
-    async function eliminarDonacion(id) {
+    async function eliminarDonacion(data) {
       try {
         await api.post("donacion/deleteDonacion", {
-          id: id,
+          id: data.id,
+          nombre: data.nombre,
+          quienSoy: quienSoy,
         });
         loadDonaciones();
       } catch {
