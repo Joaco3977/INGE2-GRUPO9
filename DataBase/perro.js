@@ -64,7 +64,7 @@ router.post('/addPerro', async (req, res) => {
     addPerro(nuevoPerro)
     .then ((resultadoAdd) => {
         if (resultadoAdd !== false) {
-            Log.agregarEntradaLog(req.body.rol, req.body.dni, `agrego al PERRO  ${req.body.perro.nombre} al cliente con dni ${req.body.perro.dnicliente}`)
+            Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `agrego al PERRO ${req.body.perro.nombre} del cliente con DNI:${req.body.perro.dnicliente}`)
             Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO agrego al perro: ${req.body.perro.nombre} al cliente con dni ${req.body.perro.dnicliente}`)
             res.status(200).send({})
         } else {
@@ -78,15 +78,18 @@ router.post('/addPerro', async (req, res) => {
 
 });
 
-router.post('/deletePerroPropio', async (req, res) => { 
-    console.log(req.body)
+router.post('/deletePerroPropio', async (req, res) => {
     knex('perro').where({
-        DNICLIENTE: req.body.datos.dnicliente,
-        NOMBRE: req.body.datos.nombre
+        DNICLIENTE: req.body.perro.dnicliente,
+        NOMBRE: req.body.perro.nombre
     }).update('ELIMINADO', 1)
     .then(() =>{
-        Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.datos.dnicliente} elimino a su perro: ${req.body.datos.nombre}`)
-        Log.agregarEntradaLog(1, req.body.datos.dnicliente, `elimino a su PERRO ${req.body.datos.nombre}`)
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.perro.dnicliente} elimino a su perro: ${req.body.perro.nombre}`)
+        if (req.body.perro.dnicliente === req.body.quienSoy.dni) {
+            Log.agregarEntradaLog(1, req.body.quienSoy.nombre, req.body.quienSoy.dni, `elimino a su propio PERRO ${req.body.perro.nombre}`)
+        } else {
+            Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `elimino al PERRO ${req.body.perro.nombre} del cliente con DNI:${req.body.perro.dnicliente}`)
+        }
         res.status(200).send({})
     }).catch((error)=>{
         console.log(error)

@@ -72,6 +72,12 @@ export default defineComponent({
     const perrosDatos = ref([]);
     const rol = useStore().rol
 
+    const quienSoy = {
+      rol: useStore().rol,
+      dni: useStore().dni,
+      nombre: useStore().nombre,
+    }
+
     const loadPerrosPropios = async () => {
       try {
         const response = await api.post("/perro/getPerrosPropios",{ dni : useStore().dni })
@@ -86,10 +92,11 @@ export default defineComponent({
       console.log(nombre);
       try {
         const response = await api.post("/perro/deletePerroPropio", {
-          datos: {
+          perro: {
             nombre: nombre,
             dnicliente: useStore().dni,
           },
+          quienSoy: quienSoy
         });
         loadPerrosPropios();
       } catch (error) {

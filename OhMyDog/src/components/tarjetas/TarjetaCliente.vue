@@ -28,7 +28,7 @@
             <!-- @click="ejecutarFuncionPadre(dni)"-->
           </q-btn>
 
-          
+
         </div>
       </q-card-section>
       <q-card-section>
@@ -205,6 +205,12 @@ export default defineComponent({
     const verPerro = ref(false);
     const perroElegido = ref("");
 
+    const quienSoy = {
+      rol: useStore().rol,
+      dni: useStore().dni,
+      nombre: useStore().nombre,
+    }
+
     const registrarPerro = async (perroAdd) => {
       try {
         const response = await api.post("/perro/addPerro", {
@@ -218,6 +224,7 @@ export default defineComponent({
             peso: perroAdd.peso,
             dnicliente: props.dni,
           },
+          quienSoy: quienSoy,
         });
         loadPerrosCliente();
       } catch (error) {
@@ -240,10 +247,11 @@ export default defineComponent({
     const eliminarPerro = async (nombre) => {
       try {
         const response = await api.post("/perro/deletePerroPropio", {
-          datos: {
+          perro: {
             nombre: nombre,
             dnicliente: props.dni,
           },
+          quienSoy: quienSoy,
         });
         verPerro.value = false;
         loadPerrosCliente();

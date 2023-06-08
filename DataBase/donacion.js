@@ -18,7 +18,6 @@ router.get('/getDonaciones', (req,res) => {
 })
 
 router.post('/deleteDonacion', (req,res) => {
-    console.log(req.body)
     knex('campania').where('ID', req.body.id).update('ELIMINADO', 1)
     .then(() => {
         Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO elimino la campaña con id: ${req.body.id}`);
