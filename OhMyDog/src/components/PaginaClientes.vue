@@ -153,6 +153,24 @@ export default defineComponent({
       }
     };
 
+    const editarCliente = async  (cliente) => {
+      try {
+        const response = await api.post("/cliente/editarCliente",{
+          cliente: {
+            dni: cliente.dni,
+            nombreApellido: cliente.nombreApellido,
+            mail: cliente.mail,
+            telefono: cliente.telefono,
+            direccion: cliente.direccion,
+            dniA: cliente.dniA,
+          },
+        });
+        await loadClientes();
+      } catch (error) {
+        console.error(error);
+      }}
+    
+
     const loadClientes = async () => {
       try {
         const response = await api.post("/cliente/getClientes", {
@@ -240,6 +258,7 @@ export default defineComponent({
       registrarCliente,
       filtrarClientes,
       eliminarCliente,
+      editarCliente,
       instance,
       mostrarPopup: ref(false),
       inputRef,

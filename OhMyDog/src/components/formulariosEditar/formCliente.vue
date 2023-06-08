@@ -12,6 +12,7 @@
             ref="inputRef"
             class="q-px-xl"
             label="DNI"
+            type="text"
             v-model="cliente.dni"
             :value="dni"
           />
@@ -83,7 +84,7 @@ export default {
   components:{
   },
    props: {
-    dni:Number,
+    dni:String,
     nombreApellido:String,
     mail:String,
     telefono:String,
@@ -108,7 +109,10 @@ export default {
       mail: props.mail,
       telefono: props.telefono,
       direccion: props.direccion,
+      dniA: props.dni,
     });
+    const dniA= cliente.value.dni;
+    const mailA=  cliente.value.mail;
 
     const submitForm = () => {
       emit("editarCliente", cliente.value);
@@ -117,6 +121,8 @@ export default {
     return {
       cliente,
       submitForm,
+      dniA,
+      mailA
     }
   },
   computed: {
@@ -146,10 +152,17 @@ export default {
       return sError;
     },
     mailExiste(){
-      return this.mailsClientes.includes(normalizeString(this.cliente.mail)) || this.mailsVeterinarios.includes(normalizeString(this.cliente.mail))
+      if (this.cliente.mail === this.mailA){
+        return false
+      }else{
+      return this.mailsClientes.includes(normalizeString(this.cliente.mail)) || this.mailsVeterinarios.includes(normalizeString(this.cliente.mail))}
     },
     dniExiste(){
-      return this.dniClientes.includes(parseInt(this.cliente.dni));
+      console.log(this.dniA)
+      if (parseInt(this.cliente.dni) === parseInt(this.dniA)){
+        return false
+      }else{
+      return this.dniClientes.includes(parseInt(this.cliente.dni))};
     },
     nombreValido() {
       return (
@@ -157,7 +170,7 @@ export default {
       );
     },
     dniValido() {
-      return this.cliente.dni.length == 8 && /^\d+$/.test(this.cliente.dni);
+      return this.cliente.dni.toString().length === 8 && /^\d+$/.test(this.cliente.dni);
     },
     mailValido() {
       return (

@@ -278,6 +278,9 @@ export default defineComponent({
     ejecutarFuncionPadre(dni) {
       this.$emit("ejecutarFuncion", dni);
     },
+    editarCliente(cliente){
+      this.$emit("editarCliente",cliente);
+    },
     recargarPerros(){
       this.loadPerrosCliente(this.dni);
       this.expandedItem = false;
