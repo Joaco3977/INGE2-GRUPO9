@@ -61,6 +61,7 @@ router.post('/cancelarTurno', async(req,res) =>{
             console.log(error)
         })
         Consola.mensaje("\x1b[33m%s\x1b[0m", `se cancelo el turno con id ${req.body.id}`)
+        Log.agregarEntradaLog(req.body.rol, )
         res.status(200).send({});
     }).catch((error)=>{
         console.log(error)

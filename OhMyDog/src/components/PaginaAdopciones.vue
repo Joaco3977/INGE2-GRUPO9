@@ -164,6 +164,7 @@ export default defineComponent({
           perro,
           rol: useStore().rol,
           dni: useStore().dni,
+          nombre: useStore().nombre,
         });
         mostrarPopupM();
         if (tab.value === "perrosOtros") {
@@ -181,6 +182,7 @@ export default defineComponent({
         await api.post("perroAdopcion/deletePerroAdopcion", {
           rol: useStore().rol,
           dni: useStore().dni,
+          nombre: useStore().nombre,
           dnicliente: data.dnicliente,
           nombre: data.nombre,
         });

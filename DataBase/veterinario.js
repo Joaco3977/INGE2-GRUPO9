@@ -23,16 +23,6 @@ const getVeterinarios = async () => {
     }
 };
 
-const getVeterinarioPorMail = async (mail) => {
-    try {
-        const resultado = await knex.select('*').from('veterinario').where('MAIL', '=', mail).andWhere('ELIMINADO', 0).first()
-        return resultado;
-    } catch (error) {
-        console.error(error)
-        return false;
-    } 
-}
-
 const getVeterinarioPorDNI= async (dni) => {
     try {
         const resultado = await knex.select('*').from('veterinario').where('DNI', '=', dni).andWhere('ELIMINADO', 0).first()
@@ -70,9 +60,9 @@ router.get('/getVeterinarios', async (req, res) => {
 
 router.post('/deleteVeterinario', async (req,res) =>{
     knex('Veterinario').where('DNI', req.body.dni).update('ELIMINADO', 0)
-    .then((resultado) =>{
-        Consola.mensaje("\x1b[35m%s\x1b[0m",`ADMIN elimino veterinario con dni: ${req.body.dni}`)
-        Log.agregarEntradaLog(-1, '', `elimino al VETERINARIO ${req.body.dni}`)
+    .then(() =>{
+        Consola.mensaje("\x1b[35m%s\x1b[0m",`ADMIN elimino veterinario ${req.body.nombre} con DNI: ${req.body.dni}`)
+        Log.agregarEntradaLog(-1, '', '', `elimino al VETERINARIO ${req.body.dni}`)
         res.status(200).send({})
     }).catch((error)=>{
         res.status(401).send('No fue posible conectar con la base de datos');
@@ -110,7 +100,7 @@ router.post('/addVeterinario', async (req,res)=>{
             .then((resultadoAdd)=>{
                 if(resultadoAdd){
                     Consola.mensaje("\x1b[33m%s\x1b[0m", "ADMIN agrego un veterinario")
-                    Log.agregarEntradaLog(-1, '', `agrego al VETERINARIO ${req.body.veterinario.dni}`)
+                    Log.agregarEntradaLog(-1, '', '', `agrego al VETERINARIO ${req.veterinario.nombreApellido} con DNI:${req.body.veterinario.dni}`)
                     res.status(200).send({})
                 }else{
                     res.status(401)

@@ -7,6 +7,7 @@ const Log = require ('./log.js')
 
 router.post('/registrarDonacion', (req,res) => {
     console.log('Donacion registrada: ', req.body)
+    Log.agregarEntradaLog(2, )
     res.status(200).send({})
 })
 

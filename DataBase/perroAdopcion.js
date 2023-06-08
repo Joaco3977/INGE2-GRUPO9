@@ -80,8 +80,8 @@ router.post('/addPerroAdopcion', async (req, res) => {
             addperroAdopcion(nuevoPerroA)
             .then ((resultadoAdd) => {
                 if (resultadoAdd !== false) {
-                    Log.agregarEntradaLog(req.body.rol, req.body.dni, `agrego al PERRO EN ADOPCION ${req.body.perro.nombre}`)
-                    Consola.mensaje("\x1b[35m%s\x1b[0m", `CLIENTE agrego al perro en Adopcion: ${req.body.perro.nombre}`)
+                    Log.agregarEntradaLog(req.body.rol, req.body.nombre, req.body.dni, `agrego al PERRO EN ADOPCION ${req.body.perro.nombre}`)
+                    Consola.mensaje("\x1b[35m%s\x1b[0m", `USUARIO agrego al perro en Adopcion: ${req.body.perro.nombre}`)
                     res.status(200).send({})
                 } else {
                     res.status(401).send('No fue posible agregar al perro en adopcion');
@@ -117,8 +117,11 @@ router.post('/deletePerroAdopcion', async (req,res) =>{
         NOMBRE: req.body.nombre
     }).update('ELIMINADO', 1)
     .then(() =>{
-        Consola.mensaje("\x1b[35m%s\x1b[0m",`${quien} ${req.body.dni} elimino al perro en adopcion ${req.body.nombre} del cliente con DNI ${req.body.dnicliente}`)
-        Log.agregarEntradaLog(req.body.rol, req.body.dni, `elimino al PERRO EN ADOPCION ${req.body.nombre} del cliente ${req.body.dnicliente}`)
+        if (req.body.dni === req.body.dnicliente) {
+            Log.agregarEntradaLog(req.body.rol, req.body.nombre, req.body.dni, `elimino a su propio PERRO EN ADOPCION ${req.body.nombre}`)
+        } else {
+            Log.agregarEntradaLog(req.body.rol, req.body.nombre, req.body.dni, `elimino al PERRO EN ADOPCION ${req.body.nombre} del cliente ${req.body.dnicliente}`)
+        }
         res.status(200).send({})
     }).catch((error)=>{
         console.log(error)

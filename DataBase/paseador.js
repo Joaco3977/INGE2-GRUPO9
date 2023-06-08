@@ -56,7 +56,7 @@ router.post('/addPaseador', async (req,res) => {
             addPaseador(paseador)
             .then((respuestaAdd) => {
                 if (respuestaAdd) {
-                    Log.agregarEntradaLog(2, req.body.dniVet, `agrego al PASEADOR ${req.body.dni}`)
+                    Log.agregarEntradaLog(2, req.body.nombreVet, req.body.dniVet, `agrego al PASEADOR ${req.body.dni}`)
                     Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO agrego paseador con dni: ${paseador.dni}`)
                     res.status(200).send({})
                 } else {
@@ -79,7 +79,7 @@ router.post('/addPaseador', async (req,res) => {
 router.post('/deletePaseador', async (req,res) =>{
     knex('paseador').where('DNI', req.body.dni).update('ELIMINADO', 1)
     .then(() =>{
-        Log.agregarEntradaLog(2, req.body.dniVet, `elimino al PASEADOR ${req.body.dni}`)
+        Log.agregarEntradaLog(2, req.body.nombreVet, req.body.dniVet, `elimino al PASEADOR ${req.body.dni}`)
         Consola.mensaje("\x1b[35m%s\x1b[0m",`VETERINARIO elimino paseador con dni: ${req.body.dni}`)
         res.status(200).send({})
     }).catch(()=>{

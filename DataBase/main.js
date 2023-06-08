@@ -114,19 +114,21 @@ app.post("/passwordCheck", async (req, res) => {
     knex("veterinario").where("MAIL", req.body.mail).update({PASSWORD : req.body.password})
     .then((response)=>{
       console.log("se cambio con exito la contraseña del veterinario con mail:", req.body.mail)
-      res.send({});
+      res.status(200).send({});
     }).catch((error)=>{
       console.log(error)
+      res.status(401).send({});
     })
   });
 
   app.post("/cambiarContraseniaCli", async (req, res) => {
     knex("cliente").where("MAIL", req.body.mail).update({PASSWORD : req.body.password})
-    .then((response)=>{
+    .then(()=>{
       console.log("se cambio con exito la contraseña del cliente con mail:", req.body.mail)
-      res.send({});
+      res.status(200).send({});
     }).catch((error)=>{
       console.log(error)
+      res.status(401).send({});
     })
   }); 
 

@@ -5,7 +5,7 @@ const enviadorMails = require('./loginCheck.js');
 
 const Consola = require ('./serverFunctions.js')
 
-const agregarEntradaLog = async (rol, dni, queHizo) => {
+const agregarEntradaLog = async (rol, nombre, dni, queHizo) => {
     let quien = ''
     if (rol === 1) {
         quien = 'CLIENTE'
@@ -16,7 +16,7 @@ const agregarEntradaLog = async (rol, dni, queHizo) => {
             quien = 'ADMIN'
         }
     }
-    const descripcion = `[${quien} ${dni}] -- ${queHizo}`
+    const descripcion = `[${quien} ${dni} ${nombre}] -- ${queHizo}`
     await knex('log').insert({
         FECHA: new Date(),
         DESCRIPCION: descripcion
