@@ -110,7 +110,7 @@ export default defineComponent({
 
     async function eliminarDonacion(data) {
       try {
-        await api.post("donacion/deleteDonacion", {
+        await api.post("/donacion/deleteDonacion", {
           id: data.id,
           nombre: data.nombre,
           quienSoy: quienSoy,
