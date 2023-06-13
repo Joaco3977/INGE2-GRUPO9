@@ -117,6 +117,7 @@
         :perro="perroElegido"
         @eliminarPerro="eliminarPerro"
         @loadPerrosCliente="loadPerrosCliente"
+        @cerrarPerro="cerrarPerro"
         :nombresPerros="nombresPerros"
         :dni="dni"
       />
@@ -262,6 +263,10 @@ export default defineComponent({
       }
     };
 
+    const cerrarPerro= () =>{
+      verPerro.value= false;
+    }
+
     return {
       confirmar: ref(false),
       expandedItem: ref(false),
@@ -274,6 +279,7 @@ export default defineComponent({
       registrarPerro,
       eliminarPerro,
       loadPerrosCliente,
+      cerrarPerro,
     };
   },
   methods: {

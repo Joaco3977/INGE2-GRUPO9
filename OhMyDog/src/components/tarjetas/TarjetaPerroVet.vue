@@ -181,6 +181,7 @@ export default defineComponent({
           quienSoy: quienSoy,
         })
         context.emit("loadPerrosCliente")
+        context.emit("cerrarPerro")
       } catch (error) {
         console.error(error);
       }}
