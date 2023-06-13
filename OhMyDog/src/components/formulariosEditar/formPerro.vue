@@ -3,12 +3,12 @@
     <q-card style="width: 40rem">
       <q-card-section class="bg-secondary">
         <div class="text-h5 text-uppercase text-white text-center text-bold">
-          Agregar perro a cliente
+          Editar perro a cliente
         </div>
       </q-card-section>
 
       <q-card-section class="">
-        <q-form class="q-px-xl" @submit.prevent="ejecutarFuncionPadre" reset>
+        <q-form class="q-px-xl"  reset>
           <q-input
             v-model="perroNOMBRE"
             class="q-px-xl"
@@ -74,7 +74,7 @@
               v-close-popup
             />
             <q-btn
-              label="Registrar perro"
+              label="Editar Perro"
               @click="this.ejecutarFuncionPadre()"
               :disabled="!camposValidos"
               color="accent"
@@ -95,33 +95,40 @@ import { useQuasar } from "quasar";
 import { normalizeString } from "src/functions/misc";
 
 export default defineComponent({
-  name: "formPerro",
+  name: "FormPerro",
   props: {
     nombresPerros: {
       type: Array,
       required: true,
     },
+    COLOR: String,
+    NOMBRE: String,
+    TAMANIO: String,
+    NACIMIENTO: String,
+    SEXO: String,
+    RAZA: String,
+    PESO: String,
   },
-  setup() {
+  setup(props) {
     const $q = useQuasar();
-
-    const perroSEXO = ref("");
-    const perroTAMANIO = ref("");
-    const perroNACIMIENTO = ref("");
-    const perroNOMBRE = ref("");
-    const perroRAZA = ref("");
-    const perroCOLOR = ref("");
-    const perroPESO = ref("");
-
+    const perroSEXO = ref(props.SEXO);
+    const perroTAMANIO = ref(props.TAMANIO);
+    const perroNACIMIENTO = ref(props.NACIMIENTO);
+    const perroNOMBRE = ref(props.NOMBRE);
+    const perroRAZA = ref(props.RAZA);
+    const perroCOLOR = ref(props.COLOR);
+    const perroPESO = ref(props.PESO);
+    const nombreA= perroNOMBRE.value;
     const getDatosPerro = () => {
       const perro = {
-        sexo: perroSEXO.value.value,
-        tamanio: perroTAMANIO.value.value,
+        sexo: perroSEXO.value,
+        tamanio: perroTAMANIO.value,
         nacimiento: perroNACIMIENTO.value,
         raza: perroRAZA.value,
         color: perroCOLOR.value,
         nombre: perroNOMBRE.value,
         peso: perroPESO.value,
+        nombreA : nombreA,
       };
       return perro;
     };
@@ -161,6 +168,7 @@ export default defineComponent({
       perroNACIMIENTO,
       perroSEXO,
       perroNOMBRE,
+      nombreA,
       perroRAZA,
       perroCOLOR,
       perroPESO,
@@ -181,8 +189,8 @@ export default defineComponent({
   },
   methods: {
     ejecutarFuncionPadre() {
-      const perro = this.getDatosPerro();
-      this.$emit("registrarPerro", perro);
+      var perro = this.getDatosPerro();
+      this.$emit("editarPerro", perro);
     },
   },
   computed: {
@@ -215,7 +223,11 @@ export default defineComponent({
       return sError;
     },
     nombreExiste() {
+      if (this.nombreA == this.perroNOMBRE){
+        return false;
+      }else{
       return this.nombresPerros.includes(normalizeString(this.perroNOMBRE));
+      }
     },
     nombreValido() {
       return (
@@ -233,13 +245,13 @@ export default defineComponent({
       );
     },
     tamanioValido() {
-      return this.perroTAMANIO.value != undefined;
+      return toString(this.perroTAMANIO.value) != undefined;
     },
     pesoValido() {
-      return this.perroPESO.length > 0 && this.perroPESO > 0;
+      return toString(this.perroPESO).length > 0 && this.perroPESO > 0;
     },
     sexoValido() {
-      return this.perroSEXO.value != undefined;
+      return toString(this.perroSEXO.value) != undefined;
     },
     edadValida() {
       return this.perroNACIMIENTO.length >= 0;

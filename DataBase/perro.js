@@ -78,6 +78,21 @@ router.post('/addPerro', async (req, res) => {
 
 });
 
+router.post ('/editarPerro',async(req,res)=>{
+    try {  
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+        await knex('perro').where({
+            DNICLIENTE: req.body.perro.dnicliente,
+            NOMBRE: req.body.perro.nombreA
+        }).update({"NOMBRE" : req.body.perro.nombre,"TAMANIO": req.body.perro.tamanio,"NACIMIENTO":(new Date(req.body.perro.nacimiento)),"SEXO": req.body.perro.sexo, "COLOR" : req.body.perro.color, "RAZA": req.body.perro.raza, "PESO" : req.body.perro.peso});
+        Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `edito al PERRO ${req.body.perro.nombre} del CLIENTE con DNI: ${req.body.perro.dnicliente}`)
+        res.status(200).send({});
+    }catch (error){
+        console.log(error);
+        res.status(401).send('No fue posible conectar con la base de datos');
+    }
+})
+
 router.post('/deletePerroPropio', async (req, res) => {
     knex('perro').where({
         DNICLIENTE: req.body.perro.dnicliente,

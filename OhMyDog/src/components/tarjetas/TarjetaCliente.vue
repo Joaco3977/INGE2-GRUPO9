@@ -117,6 +117,7 @@
         :perro="perroElegido"
         @eliminarPerro="eliminarPerro"
         @loadPerrosCliente="loadPerrosCliente"
+        :nombresPerros="nombresPerros"
         :dni="dni"
       />
     </q-dialog>

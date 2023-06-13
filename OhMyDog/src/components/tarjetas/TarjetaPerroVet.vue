@@ -70,10 +70,15 @@
               >
                 Eliminar
               </q-btn>
+              <q-btn @click="edicionPerro = true"  flat class="textoBoton" 
+              >
+                Editar datos
+              </q-btn>
             </q-card-actions>
           </q-card-section>
         </q-card-section>
       </q-tab-panel>
+
 
     <q-tab-panel name="turnos" class="bg-primary">
         <div horizontal style="width: 55rem; max-width: 55rem; max-height: 40rem">
@@ -82,6 +87,20 @@
     </q-tab-panel>
 
     </q-tab-panels>
+
+    <q-dialog v-model="edicionPerro">
+        <FormPerro 
+        @editarPerro="editarPerro" 
+        :nombresPerros="nombresPerros" 
+        :COLOR="perro.COLOR"
+        :NOMBRE="perro.NOMBRE"
+        :TAMANIO="perro.TAMANIO"
+        :NACIMIENTO="perro.NACIMIENTO"
+        :SEXO="perro.SEXO"
+        :RAZA="perro.RAZA"
+        :PESO="perro.PESO"
+        />
+      </q-dialog>
 
     <q-dialog v-model="confirmar">
       <q-card>
@@ -101,7 +120,7 @@
             color="primary"
             v-close-popup
           />
-          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+          <q-btn flat label="Cancelar" color="primary"  />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -112,32 +131,68 @@
 <script>
 import { defineComponent, ref } from "vue";
 import TarjetaHistorial from "./TarjetaHistorial.vue"
+import FormPerro from "../formulariosEditar/formPerro.vue";
 import { api } from "../../boot/axios.js";
+import { useStore } from '../../pinia/store.js'
+
 
 export default defineComponent({
   name: "TarjetaPerroVet",
   components: {
     TarjetaHistorial,
+    FormPerro,
   },
   props: {
     dni:String,
     rol: String,
+    nombresPerros: {
+      type: Array,
+      required: true,
+    },
     perro: {
       type: Object,
       required: true,
       default: () => ({ NOMBRE: "", TAMANIO: "" }), // Set a default empty value for the prop
     },
   },
-  setup() {
+  setup(props, context) {
     const tab = ref("datos");
+    const edicionPerro = ref(false);
+    const quienSoy = {
+      rol: useStore().rol,
+      dni: useStore().dni,
+      nombre: useStore().nombre,
+    }
+
+    const editarPerro = async (perroEditado) => {
+      try {
+        var perro={
+            dnicliente: props.dni,
+            nombre:perroEditado.nombre,
+            peso:perroEditado.peso,
+            sexo:perroEditado.sexo,
+            color:perroEditado.color,
+            nacimiento:perroEditado.nacimiento,
+            tamanio:perroEditado.tamanio,
+            nombreA:perroEditado.nombreA,
+          }
+        const response = await api.post("/perro/editarPerro",{
+          perro,
+          quienSoy: quienSoy,
+        })
+        context.emit("loadPerrosCliente")
+      } catch (error) {
+        console.error(error);
+      }}
     return {
       tab,
       confirmar: ref(false),
+      edicionPerro,
+      editarPerro,
     };
   },
   methods: {
     eliminarPerro() {
-      console.log('entre')
       this.$emit("eliminarPerro",this.perro.NOMBRE);
       //this.$emit("loadPerrosCliente",this.dni)
       this.$emit("close");
