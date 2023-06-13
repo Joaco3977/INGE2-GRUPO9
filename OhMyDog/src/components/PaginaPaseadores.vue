@@ -32,6 +32,8 @@
       >
         <TarjetaPaseador
           @ejecutarFuncion="eliminarPaseador"
+          @editarPaseador="editarPaseador"
+          :dniPaseadores="dniPaseadores"
           class="q-px-sm col-stretch"
           v-for="paseador in paseadores"
           :rol="rol"
@@ -42,6 +44,7 @@
           :disponibilidad="paseador.DISPONIBILIDAD"
           :mail="paseador.MAIL"
           :comentario="paseador.COMENTARIO"
+          :telefono="paseador.TELEFONO"
         />
       </div>
       <div
@@ -106,6 +109,10 @@ export default defineComponent({
       }
     };
 
+    const editarPaseador = async (paseador) =>{
+
+    }
+
     async function eliminarPaseador(dni) {
       try {
         await api.post("paseador/deletePaseador", {
@@ -127,6 +134,7 @@ export default defineComponent({
       loadPaseadores,
       registrarPaseador,
       abrirForm,
+      editarPaseador,
     };
   },
   mounted() {

@@ -11,9 +11,21 @@
 
       <q-card-section v-if="rol == 2">
         <div class="row justify-end full-width">
-          <q-btn class="q-ml-md" color="accent">
+          <q-btn @click="PopEditar = true" class="q-ml-md" color="accent">
             <div>Editar</div>
           </q-btn>
+          <q-dialog v-model ="PopEditar">
+            <formPaseador
+            :rol="rol"
+            :Adni="dni"
+            :Anombre="nombre"
+            :Azona="zona"
+            :Adisponibilidad="disponibilidad"
+            :Amail="mail"
+            :Acomentario="comentario"
+            :dniPaseadores="dniPaseadores"
+            />
+          </q-dialog>
           <q-btn @click="confirmar = true" class="q-ml-md" color="accent">
             <div>Eliminar</div>
           </q-btn>
@@ -129,6 +141,7 @@
 import { defineComponent, ref } from "vue";
 import { api } from "../../boot/axios.js";
 import { useStore } from "../../pinia/store.js";
+import formPaseador from "../formulariosEditar/formPaseador.vue";
 
 const semana = [
   "Lunes",
@@ -142,7 +155,9 @@ const semana = [
 
 export default defineComponent({
   name: "TarjetaPaseador",
-  components: {},
+  components: {
+    formPaseador
+},
   props: {
     rol: String,
     dni: String,
@@ -151,11 +166,17 @@ export default defineComponent({
     disponibilidad: String,
     mail: String,
     comentario: String,
+    telefono:String,
+    dniPaseadores: {
+      type: Array,
+      required: true,
+    },
   },
   setup() {
     return {
       confirmar: ref(false),
       semana,
+      PopEditar: ref(false),
     };
   },
   methods: {

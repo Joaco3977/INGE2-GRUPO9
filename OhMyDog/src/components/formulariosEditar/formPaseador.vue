@@ -2,7 +2,7 @@
   <div class="flex">
     <q-card style="width: 40rem">
       <q-card-section class="bg-secondary">
-        <div class="text-h5 text-uppercase text-white text-center text-bold" >Agregar paseador</div>
+        <div class="text-h5 text-uppercase text-white text-center text-bold" >Editar paseador</div>
       </q-card-section>
 
       <q-card-section class="q-pt-md">
@@ -76,7 +76,7 @@
           </li>
           </ul>
           <div class="row justify-end">
-            <q-btn label="Registrar paseador" :disabled="!camposValidos" type="submit" color="accent" />
+            <q-btn label="Editar paseador" :disabled="!camposValidos" type="submit" color="accent" />
             <q-btn
               label="Cancelar"
               type="reset"
@@ -151,17 +151,25 @@ const semana = [
 export default defineComponent({
   name: "formPaseador",
   props: {
+    rol: String,
+    Adni: String,
+    Anombre: String,
+    Azona: String,
+    Adisponibilidad: String,
+    Amail: String,
+    Acomentario: String,
+    Atelefono:String,
     dniPaseadores: {
       type: Array,
       required: true,
     },
   },
-  setup() {
+  setup(props) {
 
-    const name = ref("");
-    const dni = ref("");
-    const mail = ref("");
-    const zona = ref("");
+    const name = ref(props.Anombre);
+    const dni = ref(props.Adni);
+    const mail = ref(props.Amail);
+    const zona = ref(props.Azona);
     const info = ref("");
     const telefono = ref("");
 
