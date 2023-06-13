@@ -223,21 +223,21 @@ export default defineComponent({
       let sError = [];
       if (!this.nombreValido ){
         sError.push( " El nombre no es correcto" )
-      } 
+      }
       if (!this.dniValido ){
         sError.push("El DNI no es correcto")
-        
-      } 
+
+      }
       if ( this.dniExiste) {
         sError.push( " Un paseador con este DNI ya está registrado" )
-      } 
+      }
       if (!this.mailValido ){
         sError.push("El mail no es correcto")
       }
       if (!this.telefonoValido ){
         sError.push("El teléfono no es correcto")
-        
-      } 
+
+      }
       if (!this.zonaValida ){
         sError.push("La zona no es correcta")
       }
@@ -270,7 +270,7 @@ export default defineComponent({
     camposValidos(){
       return this.nombreValido && !this.dniExiste && this.dniValido && this.mailValido && this.telefonoValido && this.zonaValida && this.diasValidos;
     },
-    
+
   }
 });
 </script>
