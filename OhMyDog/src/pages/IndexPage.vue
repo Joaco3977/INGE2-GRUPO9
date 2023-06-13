@@ -10,9 +10,6 @@
       <!-- <div class="q-pa-md text-center text-white bg-accent">
         ROL ACTUAL: {{ roles[store.rol + 1] }}
       </div> -->
-      <q-btn v-if="store.rol === -1" @click="cerrarSesion()" class="q-pt-sm bg-primary text-white">
-        Cerrar Sesion
-      </q-btn>
 
       <q-tabs
         v-model="store.tab"
@@ -22,7 +19,12 @@
         class="q-pt-sm bg-primary text-white"
         style="max-height: 60vh"
       >
-        <q-tab v-if="store.rol > -1" name="Quienes Somos" icon="ion-home" label="¿Quiénes Somos?" />
+        <q-tab
+          v-if="store.rol > -1"
+          name="Quienes Somos"
+          icon="ion-home"
+          label="¿Quiénes Somos?"
+        />
         <q-tab
           v-if="store.rol > 0"
           name="Mi Perfil"
@@ -66,10 +68,25 @@
           label="Veterinarios"
         />
 
-        <q-tab v-if="store.rol < 0" name="LOG" icon="ion-people" label="LOG" />
-        <q-tab v-if="store.rol > -1" name="Adopciones" icon="ion-heart" label="Adopciones" />
-        <q-tab v-if="store.rol > -1"  name="Paseadores" icon="ion-walk" label="Paseadores" />
-        <q-tab v-if="store.rol > -1"  name="Donaciones" icon="ion-hand" label="Donaciones" />
+        <q-tab v-if="store.rol < 0" name="LOG" icon="ion-folder" label="LOG" />
+        <q-tab
+          v-if="store.rol > -1"
+          name="Adopciones"
+          icon="ion-heart"
+          label="Adopciones"
+        />
+        <q-tab
+          v-if="store.rol > -1"
+          name="Paseadores"
+          icon="ion-walk"
+          label="Paseadores"
+        />
+        <q-tab
+          v-if="store.rol > -1"
+          name="Donaciones"
+          icon="ion-hand"
+          label="Donaciones"
+        />
         <!-- <q-tab name="TESTING" icon="ion-walk" label="TESTING" /> -->
         <!-- <q-tab
           v-if="store.rol === 2"
@@ -84,6 +101,15 @@
           label="Consultas"
         /> -->
       </q-tabs>
+
+      <q-btn
+        flat
+        v-if="store.rol === -1"
+        @click="cerrarSesion()"
+        class="bg-accent q-py-md text-white"
+      >
+        <div>Cerrar Sesión</div>
+      </q-btn>
     </div>
     <!-- Secciones -->
     <div class="col-10 bg-white full-height">
@@ -177,12 +203,12 @@ import PaginaPaseadores from "../components/PaginaPaseadores.vue";
 import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
 import PaginaVeterinarios from "src/components/PaginaVeterinarios.vue";
-import PaginaDonaciones from "../components/PaginaDonaciones.vue"
+import PaginaDonaciones from "../components/PaginaDonaciones.vue";
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
 import { api } from "../boot/axios.js";
 import { LocalStorage } from "quasar";
-import PaginaTesting from '../components/PaginaTesting.vue' //SACAR DESPUES
+import PaginaTesting from "../components/PaginaTesting.vue"; //SACAR DESPUES
 
 export default defineComponent({
   name: "IndexPage",
@@ -202,7 +228,7 @@ export default defineComponent({
     PaginaVeterinarios,
     PaginaTesting, //SACAR DESPUES
     PaginaAdopciones,
-    PaginaDonaciones
+    PaginaDonaciones,
   },
   setup() {
     const data = reactive({

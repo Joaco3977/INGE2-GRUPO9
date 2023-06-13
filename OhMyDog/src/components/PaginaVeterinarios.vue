@@ -1,36 +1,29 @@
 <template>
-    <div class="bg-white" style="width: full; max-height: 90vh">
-      <div class="text-center text-h4 text-primary q-pt-md">VETERINARIOS</div>
-      <q-card flat class="column">
-        <q-btn
+    <div class="bg-white" style="width: full; max-height: 100vh">
+      <div
+      class="flex row q-mx-xl justify-between items-center"
+      style="height: 4em"
+    >
+      <div class="titulo text-center text-h4 text-bold text-primary">
+        VETERINARIOS
+      </div>
+
+      <q-btn
           color="accent"
           @click="mostrarPopup = true"
           class="q-ma-md self-end"
-          style="width: 15em"
+          style="width: fit-content"
         >
           <div class="textoBoton">Agregar Veterinario</div>
         </q-btn>
-
-        <q-tabs
-          v-model="tab"
-          dense
-          class="text-grey q-pt-lg"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            @click="loadVeterinarios"
-            name="Buscar Veterinario"
-            label="Buscar Veterinario"
-          />
-        </q-tabs>
+    </div>
+      <q-card flat class="column">
+        
 
         <q-scroll-area
           :thumb-style="thumbStyle"
           :bar-style="barStyle"
-          style="height: 70vh"
+          style="height: 84vh"
           class="bg-white"
         >
           <q-card flat>
