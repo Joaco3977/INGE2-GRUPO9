@@ -1,13 +1,19 @@
 <template>
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
-  <div class="bg-white full-height" style="width: 96%; height: 27vh">
+  <div class="bg-primary full-height" style="width: 96%; height: 27vh">
     <q-card flat>
+      <div class="bg-primary full-width flex justify-end">
+        <q-btn @click="mostrarPopup = true" class="q-ma-sm" color="accent">
+          <div>Agregar historial</div>
+        </q-btn>
+      </div>
+
       <q-scroll-area
         :thumb-style="thumbStyle"
         :bar-style="barStyle"
         style="height: 70vh; width: 100%"
-        class="bg-white full-width"
+        class="bg-primary full-width"
       >
         <div v-if="numeroMagico > 0" class="full-width row wrap justify-center">
           <TarjetaEntradaHistorial
@@ -18,16 +24,16 @@
           />
         </div>
 
-        <div
-          class="row textoNoItems justify-center full-height content-center q-pa-xl"
+        <div v-else
+          class="row textoNoItems text-white justify-center full-height content-center q-pa-xl"
         >
-          ¡Todavía no tenemos ninguna donación en el sitio!
+          ¡Todavía no hay historial!
         </div>
       </q-scroll-area>
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      <FormTurno @registrarPerro="registrarPerro" />
+      <FormHistorial @registrarPerro="registrarPerro" />
     </q-dialog>
   </div>
 </template>
@@ -35,18 +41,17 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
-import FormTurno from "../formularios/formTurno.vue";
+import FormHistorial from "../formularios/formHistorial.vue";
 import { useStore } from "../../pinia/store.js";
 import { checkToken } from "../../functions/check.js";
 import { api } from "../../boot/axios";
 import TarjetaEntradaHistorial from "./TarjetaEntradaHistorial.vue";
 
-const numeroMagico = 5;
 
 export default defineComponent({
-  name: "PaginaTurnos",
+  name: "PaginaHistorial",
   components: {
-    FormTurno,
+    FormHistorial,
     TarjetaEntradaHistorial,
   },
   props: {
@@ -54,39 +59,15 @@ export default defineComponent({
   },
   setup() {
     const mostrarPopup = ref("false");
-    const tab = ref("turnosConfirmados");
-    const listaTurnos = ref([]);
     const rol = useStore().rol;
 
-    const mostrarPopupM = () => {
-      mostrarPopup.value = !mostrarPopup.value;
-    };
-
     return {
-      tab,
       rol,
-      listaTurnos,
       mostrarPopup,
+      numeroMagico: ref(5),
     };
   },
   methods: {
-    async loadTurnosPropios(estado) {
-      await api
-        .post("/turno/getTurnosDni", {
-          dni: useStore().dni,
-          estado: estado,
-        })
-        .then((response) => {
-          console.log(response.data);
-          this.listaTurnos = response.data;
-          //.filter((turno) => turno.IDPERRO == this.idPerro);
-          //this.getPerroSeleccionado();
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
-
     async getPerroSeleccionado() {
       await api
         .post("/perro/getPerroPorNombre", {
@@ -103,7 +84,6 @@ export default defineComponent({
   },
   mounted() {
     checkToken();
-    this.loadTurnosPropios("Confirmado");
   },
 });
 </script>

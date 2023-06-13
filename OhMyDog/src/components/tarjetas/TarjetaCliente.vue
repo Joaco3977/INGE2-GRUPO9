@@ -5,30 +5,24 @@
     <q-card class="my-card bg-white text-white q-ma-md" style="width: 75vw">
       <q-card-section class="bg-primary">
         <div class="row justify-between full-width">
-          <!-- <q-btn
-            class=""
-            color="accent"
-          >
-            <div>Editar datos</div>
-          </q-btn> -->
           <div class="textoPerfil q-pl-md">
             {{ nombreApellido }}
           </div>
-          <q-btn
-            @click="mostrarPopupEditar = true"
-            color="accent"
-            label="Editar"
-            class=""
-            style="width: max-content; height: max-content"
-          >
-          </q-btn>
-          <q-btn @click="confirmar = true" class="q-ml-sm" color="accent">
-            <div>Eliminar</div>
+          <div>
+            <q-btn
+              @click="mostrarPopupEditar = true"
+              color="accent"
+              class=""
+              style="width: max-content; height: max-content"
+            >
+            <div>Editar</div>
+            </q-btn>
+            <q-btn @click="confirmar = true" class="q-ml-sm" color="accent">
+              <div>Eliminar</div>
 
-            <!-- @click="ejecutarFuncionPadre(dni)"-->
-          </q-btn>
-
-
+              <!-- @click="ejecutarFuncionPadre(dni)"-->
+            </q-btn>
+          </div>
         </div>
       </q-card-section>
       <q-card-section>
@@ -60,8 +54,8 @@
           </div>
 
           <div class="column col-5">
-             <q-expansion-item
-             v-model="expandedItem"
+            <q-expansion-item
+              v-model="expandedItem"
               @click="loadPerrosCliente(dni)"
               class="full-width bg-primary text-white text-center text-bold"
               expand-separator
@@ -71,7 +65,7 @@
             >
               <q-card flat>
                 <div
-                  class="row  text-bold text-secondary text-center justify-center full-height content-center q-pa-md q-mx-lg"
+                  class="row text-bold text-secondary text-center justify-center full-height content-center q-pa-md q-mx-lg"
                   v-if="perrosCliente.length === 0"
                 >
                   ¡Este cliente no tiene ningún perro!
@@ -147,17 +141,20 @@
     </q-dialog>
 
     <q-dialog v-model="agregarPerro">
-      <FormPerro @registrarPerro="registrarPerro" :nombresPerros="nombresPerros"/>
+      <FormPerro
+        @registrarPerro="registrarPerro"
+        :nombresPerros="nombresPerros"
+      />
     </q-dialog>
 
     <q-dialog v-model="mostrarPopupEditar">
       <FormClienteEditar
         @editarCliente="editarCliente"
-        :dni=dni
-        :nombreApellido=nombreApellido
-        :mail=mail
-        :telefono=telefono
-        :direccion=direccion
+        :dni="dni"
+        :nombreApellido="nombreApellido"
+        :mail="mail"
+        :telefono="telefono"
+        :direccion="direccion"
         :mailsClientes="mailsClientes"
         :mailsVeterinarios="mailsVeterinarios"
         :dniClientes="dniClientes"
@@ -172,9 +169,9 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 import TarjetaPerroVet from "./TarjetaPerroVet.vue";
 import FormPerro from "../formularios/formPerro.vue";
-import FormClienteEditar from "../formulariosEditar/formCliente.vue"
+import FormClienteEditar from "../formulariosEditar/formCliente.vue";
 import { normalizeString } from "src/functions/misc";
-import { useStore } from '../../pinia/store.js'
+import { useStore } from "../../pinia/store.js";
 
 export default defineComponent({
   name: "TarjetaCliente",
@@ -212,7 +209,7 @@ export default defineComponent({
       rol: useStore().rol,
       dni: useStore().dni,
       nombre: useStore().nombre,
-    }
+    };
 
     const registrarPerro = async (perroAdd) => {
       try {
@@ -241,7 +238,9 @@ export default defineComponent({
           dni: props.dni,
         });
         perrosCliente.value = response.data;
-        nombresPerros.value = response.data.map((perro) => normalizeString(perro.NOMBRE));
+        nombresPerros.value = response.data.map((perro) =>
+          normalizeString(perro.NOMBRE)
+        );
       } catch (error) {
         console.error(error);
       }
@@ -263,9 +262,9 @@ export default defineComponent({
       }
     };
 
-    const cerrarPerro= () =>{
-      verPerro.value= false;
-    }
+    const cerrarPerro = () => {
+      verPerro.value = false;
+    };
 
     return {
       confirmar: ref(false),
@@ -286,18 +285,18 @@ export default defineComponent({
     ejecutarFuncionPadre(dni) {
       this.$emit("ejecutarFuncion", dni);
     },
-    editarCliente(cliente){
-      this.$emit("editarCliente",cliente);
+    editarCliente(cliente) {
+      this.$emit("editarCliente", cliente);
     },
-    recargarPerros(){
+    recargarPerros() {
       this.loadPerrosCliente(this.dni);
       this.expandedItem = false;
     },
   },
-  mounted(){
+  mounted() {
     this.loadPerrosCliente(this.dni);
   },
-  beforeUnmount(){
+  beforeUnmount() {
     this.perrosCliente.value = [];
     this.expandedItem = false;
   },
