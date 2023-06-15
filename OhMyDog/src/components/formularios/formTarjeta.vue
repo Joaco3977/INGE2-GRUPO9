@@ -40,13 +40,13 @@
           />
 
           <ul class="q-mx-md q-py-xs">
-              <li v-for="mnsj in mensajeError" :key="mnsj" class="bg-white text-accent text-bold">
-                  {{ mnsj }}
-              </li>
+          <li v-for="mnsj in mensajeError" :key="mnsj" class="bg-white text-accent text-bold">
+            {{ mnsj }}
+          </li>
           </ul>
 
           <div class="row justify-end">
-            <q-btn label="Realizar Donacion"  @click="realizarDonacion(link, cantidad)" :disabled="camposValidos"  color="accent" v-close-popup />
+            <q-btn label="Realizar Donacion"  @click="realizarDonacion(link, cantidad)" :disabled="!camposValidos"  color="accent" v-close-popup />
             <q-btn
               label="Cancelar"
               type="reset"
@@ -112,49 +112,48 @@ export default defineComponent({
   computed: {
     mensajeError() {
       let sError = [];
-      if (this.nombreTitularVacio) {
+      if (!this.nombreTitularValido) {
         sError.push("Complete el nombre del titular");
       }
-      if (this.numeroVacio){
+      if (!this.numeroValido){
         sError.push("Complete el numero de tarjeta")
       }
-      if (this.vencimientoVacio){
+      if (!this.vencimientoValido){
         sError.push("Complete la fecha de vencimiento")
       }
-      if (this.codigoVacio){
+      if (!this.codigoValido){
         sError.push("Complete el codigo de seguridad")
       }
-      console.log(sError)
       return sError;
     },
 
-    nombreTitularVacio(){
-      return (this.nombreTitular === undefined)
+    nombreTitularValido(){
+      return this.nombreTitular.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.nombreTitular);
     },
 
-    numeroVacio(){
-      return (this.numero === undefined)
+    numeroValido(){
+      return this.numero.length >= 16 && /^\d+$/.test(this.numero);
     },
 
-    vencimientoVacio(){
-      return (this.vencimiento === undefined)
+    vencimientoValido(){
+      return this.vencimiento.length > 0 
     },
 
-    codigoVacio(){
-      return (this.codigo === undefined)
-    }
-  },
-  camposValidos() {
+    codigoValido(){
+      return this.codigo.length == 3 && /^\d+$/.test(this.codigo);
+    },
+    camposValidos() {
       return (
-        !this.nombreTitularVacio
+        this.nombreTitularValido
         &&
-        !this.numeroVacio
+        this.numeroValido
         &&
-        !this.vencimientoVacio
+        this.vencimientoValido
         &&
-        !this.codigoVacio
+        this.codigoValido
       );
     },
+  },
 },
 );
 </script>
