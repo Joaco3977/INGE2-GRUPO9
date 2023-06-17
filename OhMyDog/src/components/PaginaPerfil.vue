@@ -57,7 +57,7 @@
       <q-separator />
       <q-card-actions class="q-py-lg row justify-end q-px-xl">
         <!-- <q-btn class="textoBoton q-mx-md" > Editar perfil </q-btn> -->
-        <q-btn v-if="false" class="textoBoton q-mx-md" @click="mostrarPopup = true" > Cambiar contraseña </q-btn>
+        <q-btn v-if="true" class="textoBoton q-mx-md" @click="mostrarPopup = true" > Cambiar contraseña </q-btn>
         <q-btn class="textoBoton" @click="cerrarSesion()"> Cerrar Sesión </q-btn>
       </q-card-actions>
     </q-card>
