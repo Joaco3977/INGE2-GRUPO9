@@ -135,13 +135,13 @@ export default {
         sError.push("Ingrese un DNI válido (sin puntos)");
       }
       if ( this.dniExiste) {
-        sError.push( "Un cliente con este DNI ya está registrado o estas usando el mismo que este cliente ya tenia" )
+        sError.push( "Un cliente con este DNI ya está registrado" )
       } 
       if (!this.mailValido) {
         sError.push("Ingrese un mail válido");
       }
       if ( this.mailExiste) {
-        sError.push( "Un cliente con este mail ya está registrado o estas usando el mismo que este cliente ya tenia" )
+        sError.push( "Un cliente con este mail ya está registrado" )
       } 
       if (!this.telefonoValido) {
         sError.push("Ingrese un teléfono válido");

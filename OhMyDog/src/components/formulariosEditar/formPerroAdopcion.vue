@@ -83,7 +83,6 @@ export default defineComponent({
   name: "formAdopcion",
   setup() {
     const $q = useQuasar()
-
     const perroSEXO = ref("");
     const perroTAMANIO = ref("");
     const perroEDAD = ref("");
