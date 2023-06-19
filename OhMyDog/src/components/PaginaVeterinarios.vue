@@ -36,12 +36,17 @@
                 ></q-search>
                 <TarjetaVeterinario
                   @ejecutarFuncion="eliminarVeterinario"
+                  @loadVeterinarios="loadVeterinarios"
                   v-for="(veterinario, dni) in veterinariosFiltrados"
                   :key="dni"
                   :dni="veterinario.DNI"
-                  :nombreaApellido="veterinario.NOMBREAPELLIDO"
+                  :nombreApellido="veterinario.NOMBREAPELLIDO"
                   :mail="veterinario.MAIL"
                   :telefono="veterinario.TELEFONO"
+                  :mailsClientes="mailsClientes"
+                  :mailsVeterinarios="mailsVeterinarios"
+                  :dniClientes="dniClientes"
+                  :dniVeterinarios="dniVeterinarios"
                 />
               </div>
             </q-tab-panel>
@@ -51,12 +56,12 @@
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      
       <FormVeterinario
         @registrarVeterinario="registrarVeterinario"
         :mailsClientes="mailsClientes"
         :mailsVeterinarios="mailsVeterinarios"
         :dniClientes="dniClientes"
+        :dniVeterinarios="dniVeterinarios"
       />
     </q-dialog>
   </div>
@@ -70,6 +75,7 @@ import { LocalStorage } from "quasar";
 import TarjetaVeterinario from "./tarjetas/TarjetaVeterinario.vue";
 import { checkToken } from "../functions/check.js";
 import FormVeterinario from "./formularios/formVeterinario.vue";
+import { normalizeString } from "src/functions/misc";
 
 export default defineComponent({
   name: "PaginaVeterinarios",
@@ -93,6 +99,7 @@ export default defineComponent({
     const mailsClientes = ref([]);
     const mailsVeterinarios = ref([]);
     const dniClientes = ref([]);
+    const dniVeterinarios = ref([]);
 
     const registrarVeterinario = async (veterinario) => {
       try {
@@ -119,6 +126,10 @@ export default defineComponent({
           mailsVeterinarios.value = response.data.map((vet) =>
             normalizeString(vet.MAIL)
           );
+          dniVeterinarios.value = response.data.map((vet) =>
+            vet.DNI
+          );
+          console.log(dniVeterinarios.value)
         }
       } catch (error) {
         console.error(error);
@@ -174,13 +185,11 @@ export default defineComponent({
       registrarVeterinario,
       filtrarVeterinario,
       eliminarVeterinario,
-
       mailsClientes,
       mailsVeterinarios,
+      dniVeterinarios,
       dniClientes,
-
       loadClientes,
-
       mostrarPopup: ref(false),
       inputRef,
     };

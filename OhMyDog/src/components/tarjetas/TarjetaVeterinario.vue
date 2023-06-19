@@ -8,10 +8,12 @@
           <div class="column">
             <div class="q-pb-sm flex justify-end">
               <q-btn @click="confirmar = true" class="q-ml-sm" color="accent">
-            <div>Eliminar</div>
-
+                <div>Eliminar</div>
             <!-- @click="ejecutarFuncionPadre(dni)"-->
-          </q-btn>
+              </q-btn>
+              <q-btn @click="mostrarPop = true" class="q-ml-sm" color="accent">
+                <div>Editar</div>
+              </q-btn>
             </div>
             <div class="row">
               <div class="textoTituloPosteo q-pr-sm q-pb-xs"> DNI:</div>
@@ -19,7 +21,7 @@
             </div>
             <div class="row">
               <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Nombre y Apellido:</div>
-              <div> {{nombreaApellido}} </div>
+              <div> {{nombreApellido}} </div>
             </div>
             <div class="row">
               <div class="textoTituloPosteo q-pr-sm q-pb-xs"> Mail:</div>
@@ -55,34 +57,82 @@
                   />
                   <q-btn flat label="Cancelar" color="primary" v-close-popup />
                 </q-card-actions>
-            </q-card>
-          </q-dialog>
+              </q-card>
+            </q-dialog>
         </q-card-actions>
       </q-card>
+      <q-dialog v-model="mostrarPop">
+      <formVeterinario
+        @editarVeterinario="editarVeterinario"
+        :dni="dni"
+        :nombreApellido="nombreApellido"
+        :mail="mail"
+        :telefono="telefono"
+        :mailsClientes="mailsClientes"
+        :mailsVeterinarios="mailsVeterinarios"
+        :dniClientes="dniClientes"
+        :dniVeterinarios="dniVeterinarios"
+      />
+    </q-dialog>
     </div>
   </template>
   
   <script>
   import { defineComponent } from "vue";
   import { ref } from "vue";
+  import formVeterinario from "../formulariosEditar/formVeterinario.vue";
+  import { api } from "../../boot/axios.js";
   
   export default defineComponent({
     name: "TarjetaVeterinario",
-    components: {},
+    components: { formVeterinario },
     props: {
       dni: String,
-      nombreaApellido: String,
+      nombreApellido: String,
       mail: String,
       telefono: String,
+      mailsClientes: {
+        type: Array,
+        required: true,
+      },
+      mailsVeterinarios: {
+        type: Array,
+        required: true,
+      },
+      dniClientes: {
+        type: Array,
+        required: true,
+      },
+      dniVeterinarios: {
+        type: Array,
+        required: true,
+      },
     },
     setup() {
       return {
-        confirmar: ref(false)
+        confirmar: ref(false),
+        mostrarPop: ref(false),
       };
     },
     methods: {
       ejecutarFuncionPadre(dni) {
         this.$emit('ejecutarFuncion', dni);
+      },
+      async editarVeterinario(veterinario){
+        try {
+        const response = await api.post("/veterinario/editarVeterinario",{
+          veterinario: {
+            dni: veterinario.dni,
+            nombreApellido: veterinario.nombreApellido,
+            mail: veterinario.mail,
+            telefono: veterinario.telefono,
+            dniA: veterinario.dniA,
+          },
+        });
+        await this.$emit('loadVeterinarios');
+      } catch (error) {
+        console.error(error);
+      }
       }
     }
   });

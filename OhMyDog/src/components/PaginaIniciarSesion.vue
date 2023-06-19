@@ -46,6 +46,7 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
+import { LocalStorage } from "quasar";
 
 export default defineComponent({
   name: "PaginaIniciarSesion",
@@ -72,6 +73,7 @@ export default defineComponent({
           this.store.setTab("Mi Perfil");
           this.store.setNombre(response.data.nombre)
           this.store.setMail(this.mail);
+          localStorage.setItem("mail",this.mail);
         } else if(response.data.rol === -1) {
           this.store.setTab("Veterinarios");
         }

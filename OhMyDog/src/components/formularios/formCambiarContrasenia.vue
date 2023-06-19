@@ -68,7 +68,7 @@
         const chequeoPass = async ()=>{
         try {
             var response = await api.post("/passwordCheck", {
-                mail: useStore().mail,
+                mail: localStorage.getItem("mail"),
                 password: contraseñaA.value,
             });
             
@@ -85,14 +85,14 @@
               if(response === true){
                 if(useStore().rol === 2){
                     response = await api.post("/cambiarContraseniaVet", {
-                        mail: useStore().mail,
+                        mail: localStorage.getItem("mail"),
                         password: contraseñaNuevaA.value,
                     }).then(()=>{
                         ejecutarFuncionPadre('Hecho','positive',2000)
                     })
                 }else{
                     response = await api.post("/cambiarContraseniaCli", {
-                        mail: useStore().mail,
+                        mail: localStorage.getItem("mail"),
                         password: contraseñaNuevaA.value,
                     }).then(()=>{
                       ejecutarFuncionPadre('Hecho','positive',2000)

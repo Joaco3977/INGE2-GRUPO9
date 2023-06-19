@@ -84,6 +84,17 @@ router.post('/getVeterinario',async (req,res) =>{
     })
 })
 
+router.post ('/editarVeterinario',async(req,res)=>{
+    try {  
+        await knex('Veterinario').where("DNI", req.body.veterinario.dniA).update({"DNI":req.body.veterinario.dni,"NOMBREAPELLIDO" : req.body.veterinario.nombreApellido,"MAIL": req.body.veterinario.mail,"TELEFONO":req.body.veterinario.telefono});
+        console.log("admin edito un vet")
+        res.status(200).send({});
+    }catch (error){
+        console.log(error);
+        res.status(401).send('No fue posible conectar con la base de datos');
+    }
+})
+
 router.post('/addVeterinario', async (req,res)=>{
     enviadorMails.enviarMailPassword(req.body.veterinario.mail)
     .then((sendP)=>{
