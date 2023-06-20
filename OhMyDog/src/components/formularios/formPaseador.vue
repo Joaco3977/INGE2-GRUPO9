@@ -169,6 +169,7 @@ export default defineComponent({
 
     const getDatosPaseador = () => {
       var disponibilidad = [[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false]]
+      console.log('DIAS: ', dias)
       dias.value.forEach(element => {
         let partes = element.split(' ')
         let dia = parseInt(partes[0]);

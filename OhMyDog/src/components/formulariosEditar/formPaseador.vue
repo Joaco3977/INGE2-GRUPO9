@@ -164,6 +164,21 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const dias = ref([]);
+
+    const convertirMatriz = async () => {
+      let diaActual = 0
+      props.Adisponibilidad.forEach(element => {
+        let franjaActual = 0
+        element.forEach(franja => {
+          if (franja) {
+            dias.value.push(`${diaActual} ${franjaActual}`)
+          }
+          franjaActual++
+        })
+        diaActual++
+      })
+    }
 
     const name = ref(props.Anombre);
     const dni = ref(props.Adni);
@@ -172,9 +187,7 @@ export default defineComponent({
     const info = ref(props.Acomentario);
     const telefono = ref(props.Atelefono);
 
-    const dias = ref([]);
-
-    console.log(props)
+    convertirMatriz();
 
     const getDatosPaseador = () => {
       var disponibilidad = [[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false]]
@@ -234,7 +247,7 @@ export default defineComponent({
     mensajeError(){
       let sError = [];
       if (!this.nombreValido ){
-        sError.push( " El nombre no es correcto" )
+        sError.push( "El nombre no es correcto" )
       }
       if (!this.dniValido ){
         sError.push("El DNI no es correcto")
@@ -262,10 +275,14 @@ export default defineComponent({
       return this.name.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.name);
     },
     dniValido(){
-      return this.dni.length == 8 && /^\d+$/.test(this.dni);
+      return this.dni.toString().length == 8 && /^\d+$/.test(this.dni);
     },
     dniExiste(){
-      return this.dniPaseadores.includes(parseInt(this.dni));
+      if (this.Adni === this.dni) {
+        return false
+      } else {
+        return this.dniPaseadores.includes(this.dni.toString())
+      }
     },
     mailValido(){
       return this.mail.length > 5 && this.mail.includes('@') && this.mail.includes('.')
