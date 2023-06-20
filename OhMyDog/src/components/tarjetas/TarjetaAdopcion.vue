@@ -13,6 +13,7 @@
       <q-card-section v-if="servicio === 'perrosMios' || rol === 2">
         <div class="row justify-end full-width">
            <q-btn
+            @click="mostrarPopupEditar = true "
             v-if="servicio === 'perrosMios' || rol === 2 || adoptado == 0"
             class=""
             color="accent"
@@ -137,17 +138,34 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="mostrarPopupEditar">
+        <formPerroAdopcion
+        @editarPerro="editarPerro" 
+        :nombre="nombre"
+        :tamanio="tamanio"
+        :edad="edad"
+        :sexo="sexo"
+        :comentario="comentario"
+        :mail="mail"
+        :id="id"
+        />
+      </q-dialog>
   </div>
 </template>
 
 <script>
 import { useQuasar } from "quasar";
-import { defineComponent } from "vue";
+import { defineComponent, ssrContextKey } from "vue";
 import { ref } from "vue";
+import formPerroAdopcion from "../formulariosEditar/formPerroAdopcion.vue";
+import { useStore } from '../../pinia/store.js'
 
 export default defineComponent({
   name: "TarjetaAdopcion",
-  components: {},
+  components: {
+    formPerroAdopcion
+},
   props: {
     id: String,
     rol: String,
@@ -162,11 +180,25 @@ export default defineComponent({
     adoptado: String,
     dnicliente: String,
   },
-  setup() {
+  setup(props, {emit}) {
+    const editarPerro = async (perroEditado) => {
+        var perro={
+            id: props.id,
+            nombre:perroEditado.nombre,
+            sexo:perroEditado.sexo,
+            edad:perroEditado.edad,
+            tamanio:perroEditado.tamanio,
+            comentario:perroEditado.comentario,
+            mail:perroEditado.mail,
+          }
+        emit("editarPerro", perro)
+        }
     return {
+      editarPerro,
       contactoCliente: "",
       confirmar: ref(false),
       confirmarAdopcion: ref(false),
+      mostrarPopupEditar : ref(false),
     };
   },
   methods: {

@@ -105,6 +105,21 @@ router.post('/marcarAdoptado', async(req,res) => {
     })
 })
 
+router.post ('/editarPerro',async(req,res)=>{
+    try {  
+        const opciones = { year: 'numeric', month: 'long', day: 'numeric' };
+        await knex('perroAdopcion').where({
+            IDPERROADOPCION: req.body.perro.id,
+        }).update({"NOMBRE" : req.body.perro.nombre,"TAMANIO": req.body.perro.tamanio,"EDAD":req.body.perro.edad,"SEXO": req.body.perro.sexo, "COMENTARIO": req.body.perro.comentario,"MAIL":req.body.perro.mail});
+        Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `edito al PERRO en ADOPCION ${req.body.perro.nombre} con el siguiente id: ${req.body.perro.id}`)
+        res.status(200).send({});
+    }catch (error){
+        console.log(error);
+        res.status(401).send('No fue posible conectar con la base de datos');
+    }
+})
+
+
 router.post('/deletePerroAdopcion', async (req,res) =>{
     let quien = ''
     if (req.body.rol === 1) {

@@ -3,18 +3,20 @@
     <q-card style="width: 40rem">
       <q-card-section class="bg-secondary">
         <div class="text-h5 text-uppercase text-white text-center text-bold">
-          Agregar perro en adopción
+          Editar perro en adopción
         </div>
       </q-card-section>
 
       <q-card-section class="">
         <q-form class="q-px-xl" @submit.prevent="ejecutarFuncionPadre" reset>
           <q-input
+            v-if="!mostrarInput"
             v-model="perroNOMBRE"
             class="q-px-xl"
             label="Nombre"
             type="text"
           />
+          <q-checkbox class="q-px-xl" v-model="mostrarInput">No tiene Nombre</q-checkbox>
           <q-select
             v-model="perroTAMANIO"
             :options="opcionTamanio"
@@ -61,10 +63,11 @@
               v-close-popup
             />
             <q-btn
-              label="Registrar Adopción"
+              label="Editar Adopción"
               @click="this.ejecutarFuncionPadre();"
               :disabled="!camposValidos"
               color="accent"
+              v-close-popup
             />
 
           </div>
@@ -81,16 +84,27 @@ import { useQuasar } from 'quasar'
 
 export default defineComponent({
   name: "formAdopcion",
-  setup() {
+  props:{
+    nombre: String,
+    edad: String,
+    tamanio: String,
+    sexo: String,
+    telefono: String,
+    mail: String,
+    comentario: String,
+  },
+  setup(props) {
     const $q = useQuasar()
-    const perroSEXO = ref("");
-    const perroTAMANIO = ref("");
-    const perroEDAD = ref("");
-    const perroNOMBRE = ref("");
-    const perroMAIL = ref("");
-    const perroCOMENTARIO = ref("");
-    const perroDNICLIENTE = useStore().dni;
-
+    const perroSEXO = ref(props.sexo);
+    const perroTAMANIO = ref(props.tamanio);
+    const perroEDAD = ref(props.edad);
+    const perroNOMBRE = ref(props.nombre);
+    const perroMAIL = ref(props.mail);
+    const perroCOMENTARIO = ref(props.comentario);
+    const mostrarInput=ref(false)
+    if(perroNOMBRE.value == ""){
+      mostrarInput.value=true
+    }
     const getDatosAdopcion = () => {
       const perro = {
         sexo: perroSEXO.value.value,
@@ -100,8 +114,10 @@ export default defineComponent({
         nombre: perroNOMBRE.value,
         mail: perroMAIL.value,
         comentario: perroCOMENTARIO.value,
-        dnicliente: perroDNICLIENTE,
       };
+      if(mostrarInput.value){
+        perro.nombre="";
+      }
       return perro;
     };
 
@@ -117,12 +133,12 @@ export default defineComponent({
     };
 
     return {
+      mostrarInput,
       perroEDAD,
       perroSEXO,
       perroNOMBRE,
       perroMAIL,
       perroCOMENTARIO,
-      perroDNICLIENTE,
       opcionSexo: [
         { label: "Macho", value: "Macho" },
         { label: "Hembra", value: "Hembra" },
@@ -140,7 +156,7 @@ export default defineComponent({
   methods: {
     ejecutarFuncionPadre() {
       const perro = this.getDatosAdopcion();
-      this.$emit("registrarPerro", perro);
+      this.$emit("editarPerro", perro);
     },
   },
    computed: {
@@ -167,7 +183,7 @@ export default defineComponent({
       return this.perroNOMBRE.length == 0 || /^[A-Za-zÀ-ÿ\s]+$/.test(this.perroNOMBRE);;
     },
     tamanioValido(){
-      return this.perroTAMANIO.value != undefined;
+      return toString(this.perroTAMANIO.value) != undefined;
     },
     mailValido() {
       return (
@@ -177,7 +193,7 @@ export default defineComponent({
       );
     },
     sexoValido(){
-      return this.perroSEXO.value != undefined;
+      return toString(this.perroSEXO.value) != undefined;
     },
     edadValida(){
       return this.perroEDAD.length >= 0 && this.perroEDAD.length < 3 && /^\d+$/.test(this.perroEDAD) && this.perroEDAD > 0;

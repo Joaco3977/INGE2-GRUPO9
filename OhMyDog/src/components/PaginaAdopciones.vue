@@ -57,6 +57,7 @@
               <TarjetaAdopcion
                 @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 @marcarAdoptado="marcarAdoptado"
+                @editarPerro="editarPerro"
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
                 :id="perro.IDPERROADOPCION"
@@ -93,6 +94,7 @@
               <TarjetaAdopcion
                 @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 @marcarAdoptado="marcarAdoptado"
+                @editarPerro="editarPerro"
                 v-for="perro of perrosDatos"
                 :key="perro.IDPERROADOPCION"
                 :id="perro.IDPERROADOPCION"
@@ -121,7 +123,8 @@
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      <formAdopcion @registrarPerro="registrarPerro" />
+      <formAdopcion @registrarPerro="registrarPerro"
+      />
     </q-dialog>
   </div>
 </template>
@@ -134,6 +137,7 @@ import TarjetaAdopcion from "./tarjetas/TarjetaAdopcion.vue";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
 import formAdopcion from "./formularios/formPerroAdopcion.vue";
+
 export default defineComponent({
   name: "PaginaAdopciones",
   components: {
@@ -148,7 +152,6 @@ export default defineComponent({
     const tab = ref("perrosOtros");
     const servicio1 = "perrosOtros";
     const servicio2 = "perrosMios";
-
     const loadPerros = async () => {
       try {
         const response = await api.get("/perroAdopcion/getPerrosAdopcion");
@@ -157,7 +160,11 @@ export default defineComponent({
         console.error(error);
       }
     };
-
+    const quienSoy = {
+      rol: useStore().rol,
+      dni: useStore().dni,
+      nombre: useStore().nombre,
+    }
     const registrarPerro = async (perro) => {
       try {
         await api.post("/perroAdopcion/addPerroAdopcion", {
@@ -176,6 +183,21 @@ export default defineComponent({
         console.error(error);
       }
     };
+
+    const editarPerro = async (perro) => {
+      try {
+        const response = await api.post("/perroAdopcion/editarPerro",{
+          perro,
+          quienSoy: quienSoy,
+        })
+        if (tab.value === "perrosOtros") {
+          loadPerros();
+        } else {
+          loadPerrosPropios();
+        }
+      } catch (error) {
+        console.error(error);
+      }}
 
     async function eliminarPerroAdopcion(data) {
       try {
@@ -237,6 +259,7 @@ export default defineComponent({
       servicioActual: "adopciones",
       misAdopciones: "misPerros",
       registrarPerro,
+      editarPerro,
       perrosDatos,
       loadPerros,
       loadPerrosPropios,

@@ -10,11 +10,13 @@
       <q-card-section class="">
         <q-form class="q-px-xl" @submit.prevent="ejecutarFuncionPadre" reset>
           <q-input
+            v-if="!mostrarInput"
             v-model="perroNOMBRE"
             class="q-px-xl"
             label="Nombre"
             type="text"
           />
+          <q-checkbox class="q-px-xl" v-model="mostrarInput">No tiene Nombre</q-checkbox>
           <q-select
             v-model="perroTAMANIO"
             :options="opcionTamanio"
@@ -91,7 +93,7 @@ export default defineComponent({
     const perroMAIL = ref("");
     const perroCOMENTARIO = ref("");
     const perroDNICLIENTE = useStore().dni;
-
+    const mostrarInput = ref(false);
     const getDatosAdopcion = () => {
       const perro = {
         sexo: perroSEXO.value.value,
@@ -103,6 +105,9 @@ export default defineComponent({
         comentario: perroCOMENTARIO.value,
         dnicliente: perroDNICLIENTE,
       };
+      if(mostrarInput.value){
+        perro.nombre="";
+      }
       return perro;
     };
 
@@ -118,6 +123,7 @@ export default defineComponent({
     };
 
     return {
+      mostrarInput,
       perroEDAD,
       perroSEXO,
       perroNOMBRE,

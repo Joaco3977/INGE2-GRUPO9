@@ -46,9 +46,6 @@
             <!-- <q-btn flat v-if="rol >= 1" class="textoBoton">
               Ver historial
             </q-btn> -->
-            <q-btn flat v-if="rol > 1" class="textoBoton">
-              Editar datos
-            </q-btn>
             <q-btn @click="confirmar = true" flat v-if="rol >= 1" class="textoBoton">
               Eliminar
             </q-btn>
@@ -60,7 +57,7 @@
     <q-dialog v-model="confirmar">
       <q-card>
         <q-card-section>
-          <div class="textoTituloTarjeta text-primary">¿Eliminar paseador?</div>
+          <div class="textoTituloTarjeta text-primary">¿Eliminar perro?</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
