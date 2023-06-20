@@ -31,7 +31,7 @@ CREATE TABLE `campania` (
   PRIMARY KEY (`ID`,`NOMBRE`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   UNIQUE KEY `NOMBRE_UNIQUE` (`NOMBRE`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `campania` (
 
 LOCK TABLES `campania` WRITE;
 /*!40000 ALTER TABLE `campania` DISABLE KEYS */;
-INSERT INTO `campania` VALUES (6,'Joaco','prueba2','adad',0);
+INSERT INTO `campania` VALUES (10,'prueba','ada','ada',1),(11,'afaf','afaf','afaf',0),(12,'fafw','fwfwafwafw','wfwafwaf',1);
 /*!40000 ALTER TABLE `campania` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -73,7 +73,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES (1,'Julia Saenz','julia@gmail.com','2215621322','2023-05-08','5 n719','julia',0,0),(2,'Renzo Gigena','renzogigena1@gmail.com','2213176664','2023-05-08','5 y 80','123',0,0),(4458888,'Mauricio','mauricocella@gmail.com','5656546','2023-05-10','Dkfjsj','KvlKAyVu9R',0,0),(43178686,'Joaquin Diez','JoaquinDiez3977@gmail.com','2352463977','2023-04-21','56 586 3ero 5to','cisco',0,0);
+INSERT INTO `cliente` VALUES (1,'Julia Saenz','julia@gmail.com','2215621322','2023-05-08','5 n719','julia',0,0),(2,'Renzo Gigena','renzogigena1@gmail.com','2213176664','2023-05-08','5 y 80','123',0,0),(12511514,'Kakaka','214@aa.com','12414141','2023-06-07','41414','cxq6Qmv4Xi',0,1),(43178686,'Joaquin Diez','JoaquinDiez3977@gmail.com','2352463977','2023-04-21','56 586 3ero 5to','cisco',0,0),(44522333,'Mauricio','mauricocella@gmail.com','5656546','2023-05-10','Dkfjsj','KvlKAyVu9R',0,0);
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -175,7 +175,7 @@ CREATE TABLE `log` (
   `DESCRIPCION` varchar(120) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=130 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -184,7 +184,7 @@ CREATE TABLE `log` (
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
-INSERT INTO `log` VALUES (90,'2023-06-06','[VETERINARIO 43178686] -- registro al CLIENTE 51512551'),(91,'2023-06-06','[VETERINARIO 43178686] -- elimino al cliente 51512551');
+INSERT INTO `log` VALUES (105,'2023-06-08','[VETERINARIO 43178686 Joaquin Diez] -- edito al CLIENTE Mauricio con DNI: 44523451'),(106,'2023-06-08','[VETERINARIO 43178686 Joaquin Diez] -- agrego la campaña afaf con link: afaf'),(107,'2023-06-12','[VETERINARIO 43178686 Joaquin Diez] -- agrego la campaña fafw con link: wfwafwaf'),(108,'2023-06-12','[VETERINARIO 43178686 Joaquin Diez] -- elimino la campaña fafw'),(109,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- agrego al PASEADOR undefined'),(110,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(111,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(112,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(113,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(114,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(115,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(116,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(117,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(118,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521111'),(119,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(120,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(121,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(122,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(123,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(124,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(125,'2023-06-20','[VETERINARIO 43178686 ] -- agrego al PASEADOR undefined'),(126,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 24444222'),(127,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 24411111'),(128,'2023-06-20','[VETERINARIO 43178686 ] -- elimino al PASEADOR 24411111'),(129,'2023-06-20','[VETERINARIO 43178686 ] -- elimino al PASEADOR 51521511');
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,6 +203,7 @@ CREATE TABLE `paseador` (
   `COMENTARIO` varchar(200) DEFAULT NULL,
   `DISPONIBILIDAD` json DEFAULT NULL,
   `ELIMINADO` tinyint NOT NULL DEFAULT '0',
+  `TELEFONO` varchar(45) NOT NULL,
   PRIMARY KEY (`DNI`,`MAIL`),
   UNIQUE KEY `DNI_UNIQUE` (`DNI`),
   UNIQUE KEY `MAIL_UNIQUE` (`MAIL`)
@@ -215,7 +216,7 @@ CREATE TABLE `paseador` (
 
 LOCK TABLES `paseador` WRITE;
 /*!40000 ALTER TABLE `paseador` DISABLE KEYS */;
-INSERT INTO `paseador` VALUES (2,'ju','j@adada','mi casita',NULL,'[[false, false, false], [false, false, false], [false, false, false], [false, false, false], [false, false, false], [false, false, false], [true, false, false]]',0),(2424332,'ju','dsa@gmail.com','darear','ewqewqaddads addasd adajdasd alndal fr','[[true, false, false], [false, false, false], [false, false, false], [false, false, false], [false, false, false], [false, true, true], [false, false, false]]',0),(42042669,'Julia Saenz','julia@gmail.com','Plaza Paso',NULL,'[[true, false, false], [false, true, false], [false, false, true], [true, false, false], [false, true, false], [false, false, true], [false, false, false]]',0),(42119021,'Renzo Gigena','renzogigena1@gmail.com','La Plata','','[[false, false, false], [true, false, false], [false, true, false], [false, true, true], [false, false, false], [false, true, true], [false, true, false]]',0);
+INSERT INTO `paseador` VALUES (2,'ju','j@adada','mi casita',NULL,'[[false, false, false], [false, false, false], [false, false, false], [false, false, false], [false, false, false], [false, false, false], [true, false, false]]',0,''),(2424332,'ju','dsa@gmail.com','darear','ewqewqaddads addasd adajdasd alndal fr','[[true, false, false], [false, false, false], [false, false, false], [false, false, false], [false, false, false], [false, true, true], [false, false, false]]',0,''),(42042669,'Julia Saenz','julia@gmail.com','Plaza Paso',NULL,'[[true, false, false], [false, true, false], [false, false, true], [true, false, false], [false, true, false], [false, false, true], [false, false, false]]',0,''),(42119021,'Renzo Gigena','renzogigena1@gmail.com','La Plata','','[[false, false, false], [true, false, false], [false, true, false], [false, true, true], [false, false, false], [false, true, true], [false, true, false]]',0,'');
 /*!40000 ALTER TABLE `paseador` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,7 +275,7 @@ CREATE TABLE `perroadopcion` (
   `ELIMINADO` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`IDPERROADOPCION`),
   UNIQUE KEY `IDPERROADOPCION_UNIQUE` (`IDPERROADOPCION`)
-) ENGINE=InnoDB AUTO_INCREMENT=233 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=234 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -283,7 +284,7 @@ CREATE TABLE `perroadopcion` (
 
 LOCK TABLES `perroadopcion` WRITE;
 /*!40000 ALTER TABLE `perroadopcion` DISABLE KEYS */;
-INSERT INTO `perroadopcion` VALUES (2,'Macho','Grande','23','1212315352','Rocco','julio24@gmail.com','Me mude y no tengo espacio! Es un excelente perro',30987560,0,0),(3,'Macho','Pequeño','2','3242321313','Capitan','renzo@gmail.com','Cachorro muy jugueton',32678901,0,0),(4,'Hembra','Mediano','96','324234123','Luz','renzo@gmail.com','Gordita hermosa',42190651,0,0),(230,'Macho','Grande','36','2215622333','Juani','julia@gmail.com','habla un montón, se porta mal, saquenlo',1,1,0);
+INSERT INTO `perroadopcion` VALUES (2,'Macho','Grande','23','1212315352','Rocco','julio24@gmail.com','Me mude y no tengo espacio! Es un excelente perro',30987560,0,0),(3,'Macho','Pequeño','2','3242321313','Capitan','renzo@gmail.com','Cachorro muy jugueton',32678901,0,0),(4,'Hembra','Mediano','96','324234123','Luz','renzo@gmail.com','Gordita hermosa',42190651,0,0),(230,'Macho','Grande','36','2215622333','Juani','julia@gmail.com','habla un montón, se porta mal, saquenlo',1,1,0),(233,'Macho','Grande','24','0','Rufo','Aafwf@afafw.com','',43178686,0,1);
 /*!40000 ALTER TABLE `perroadopcion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -376,7 +377,6 @@ CREATE TABLE `sesion` (
 
 LOCK TABLES `sesion` WRITE;
 /*!40000 ALTER TABLE `sesion` DISABLE KEYS */;
-INSERT INTO `sesion` VALUES ('5999acda-3524-43f5-9c51-c8883f7a4432','JoaVet@gmail.com',43178686,2);
 /*!40000 ALTER TABLE `sesion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -510,4 +510,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-06 23:05:15
+-- Dump completed on 2023-06-20 18:26:08
