@@ -110,7 +110,7 @@
           />
           <q-btn
             flat
-            label="Cancelar"
+            label="Volver"
             color="primary"
             v-close-popup
           />

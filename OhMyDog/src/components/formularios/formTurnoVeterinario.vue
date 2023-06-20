@@ -39,7 +39,7 @@
           />
           <div v-if="hayCliente" class="column items-center bg-white q-pa-sm">
             <div class="q-px-xl q-py-sm text-start self-start color-grey">
-              Fecha y hora del turno:
+              Fecha del turno:
             </div>
             <q-date
               class="q-mb-lg"

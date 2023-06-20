@@ -158,7 +158,6 @@ export default {
       return this.mailsClientes.includes(normalizeString(this.cliente.mail)) || this.mailsVeterinarios.includes(normalizeString(this.cliente.mail))}
     },
     dniExiste(){
-      console.log(this.dniA)
       if (parseInt(this.cliente.dni) === parseInt(this.dniA)){
         return false
       }else{
