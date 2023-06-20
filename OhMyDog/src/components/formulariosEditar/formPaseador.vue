@@ -272,16 +272,16 @@ export default defineComponent({
       return sError
     },
     nombreValido(){
-      return this.name.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.name);
+      return this.name.toString().length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.name);
     },
     dniValido(){
       return this.dni.toString().length == 8 && /^\d+$/.test(this.dni);
     },
     dniExiste(){
-      if (this.Adni === this.dni) {
+      if (parseInt(this.Adni) === parseInt(this.dni)) {
         return false
       } else {
-        return this.dniPaseadores.includes(this.dni.toString())
+        return this.dniPaseadores.includes(parseInt(this.dni.toString()))
       }
     },
     mailValido(){
