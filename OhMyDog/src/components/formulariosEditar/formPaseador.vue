@@ -7,7 +7,7 @@
 
       <q-card-section class="q-pt-md">
         <div class="text-h6 q-pb-xs text-center text-primary"> Información básica </div>
-        <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
+        <q-form @submit="onSubmit(Adni)" @reset="onReset" class="q-gutter-md">
           <q-input
             class="q-px-lg"
             filled
@@ -94,7 +94,6 @@
 
 <script>
 import { defineComponent, ref } from "vue";
-import { data } from "autoprefixer";
 
 const semana = [
   {
@@ -170,10 +169,12 @@ export default defineComponent({
     const dni = ref(props.Adni);
     const mail = ref(props.Amail);
     const zona = ref(props.Azona);
-    const info = ref("");
-    const telefono = ref("");
+    const info = ref(props.Acomentario);
+    const telefono = ref(props.Atelefono);
 
     const dias = ref([]);
+
+    console.log(props)
 
     const getDatosPaseador = () => {
       var disponibilidad = [[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false]]
@@ -184,13 +185,16 @@ export default defineComponent({
         disponibilidad[dia][numero] = true;
       })
       const disponibilidadJSON = JSON.stringify(disponibilidad);
+
+      console.log('AAAAAAAA', disponibilidadJSON)
       const datos = {
-        nombre: name.value,
-        dni: dni.value,
-        mail: mail.value,
-        zona: zona.value,
-        disponibilidadJSON: disponibilidadJSON,
-        comentario: info.value,
+        NOMBREAPELLIDO: name.value,
+        DNI: dni.value,
+        MAIL: mail.value,
+        ZONA: zona.value,
+        DISPONIBILIDAD: disponibilidadJSON,
+        COMENTARIO: info.value,
+        TELEFONO: telefono.value,
       }
       return datos
     }
@@ -217,10 +221,10 @@ export default defineComponent({
     };
   },
   methods: {
-    async onSubmit () {
+    async onSubmit (Adni) {
       try {
         const data = this.getDatosPaseador()
-        this.$emit('registrarPaseador', data);
+        this.$emit('editarPaseador', {data, Adni});
       } catch (error){
         console.error(error)
       }
@@ -231,21 +235,21 @@ export default defineComponent({
       let sError = [];
       if (!this.nombreValido ){
         sError.push( " El nombre no es correcto" )
-      } 
+      }
       if (!this.dniValido ){
         sError.push("El DNI no es correcto")
-        
-      } 
+
+      }
       if ( this.dniExiste) {
         sError.push( " Un paseador con este DNI ya está registrado" )
-      } 
+      }
       if (!this.mailValido ){
         sError.push("El mail no es correcto")
       }
       if (!this.telefonoValido ){
         sError.push("El teléfono no es correcto")
-        
-      } 
+
+      }
       if (!this.zonaValida ){
         sError.push("La zona no es correcta")
       }
@@ -278,7 +282,7 @@ export default defineComponent({
     camposValidos(){
       return this.nombreValido && !this.dniExiste && this.dniValido && this.mailValido && this.telefonoValido && this.zonaValida && this.diasValidos;
     },
-    
+
   }
 });
 </script>

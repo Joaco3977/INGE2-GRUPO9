@@ -77,6 +77,19 @@ router.post('/addPaseador', async (req,res) => {
     })
 })
 
+router.post('/editarPaseador', async (req,res) => {
+    console.log(req.body.paseador)
+    knex('paseador').where('DNI', req.body.dniAct).update({'DNI': req.body.paseador.DNI, 'NOMBREAPELLIDO': req.body.paseador.NOMBREAPELLIDO, "TELEFONO": req.body.paseador.TELEFONO, "MAIL": req.body.paseador.MAIL, "DISPONIBILIDAD": req.body.paseador.DISPONIBILIDAD, "ZONA": req.body.paseador.ZONA})
+    .then(() => {
+        Log.agregarEntradaLog(2, req.body.nombreVet, req.body.dniVet, `edito al PASEADOR ${req.body.paseador.DNI}`)
+        res.status(200).send({})
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send(error)
+    })
+})
+
 router.post('/deletePaseador', async (req,res) =>{
     knex('paseador').where('DNI', req.body.dni).update('ELIMINADO', 1)
     .then(() =>{
