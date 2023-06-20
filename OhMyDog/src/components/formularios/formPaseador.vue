@@ -181,6 +181,7 @@ export default defineComponent({
         dni: dni.value,
         mail: mail.value,
         zona: zona.value,
+        telefono: telefono.value,
         disponibilidadJSON: disponibilidadJSON,
         comentario: info.value,
       }

@@ -22,6 +22,7 @@ const addPaseador = async (paseador) => {
         MAIL: paseador.mail,
         ZONA: paseador.zona,
         DISPONIBILIDAD: paseador.disponibilidadJSON,
+        TELEFONO: paseador.telefono,
         COMENTARIO: paseador.comentario,
     }
     try {
