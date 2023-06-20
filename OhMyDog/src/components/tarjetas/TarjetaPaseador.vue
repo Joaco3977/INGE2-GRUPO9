@@ -16,6 +16,7 @@
           </q-btn>
           <q-dialog v-model ="PopEditar">
             <formPaseador
+            @editarPaseador="editarPaseador"
             :rol="rol"
             :Adni="dni"
             :Anombre="nombre"
@@ -23,6 +24,7 @@
             :Adisponibilidad="disponibilidad"
             :Amail="mail"
             :Acomentario="comentario"
+            :Atelefono="telefono"
             :dniPaseadores="dniPaseadores"
             />
           </q-dialog>
@@ -140,8 +142,8 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { api } from "../../boot/axios.js";
-import { useStore } from "../../pinia/store.js";
 import formPaseador from "../formulariosEditar/formPaseador.vue";
+import { useStore } from '../../pinia/store.js'
 
 const semana = [
   "Lunes",
@@ -172,11 +174,31 @@ export default defineComponent({
       required: true,
     },
   },
-  setup() {
+  setup(props, { emit }) {
+
+    const PopEditar = ref(false)
+
+    const editarPaseador = async (paseador) =>{
+      console.log('edicionPaseador: ', paseador)
+      try {
+        await api.post("/paseador/editarPaseador", {
+          dniVet: useStore().dni,
+          nombreVet: useStore().nombre,
+          dniAct: paseador.Adni,
+          paseador: paseador.data,
+        });
+        PopEditar.value = false;
+        emit('loadPaseadores')
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
     return {
       confirmar: ref(false),
       semana,
-      PopEditar: ref(false),
+      PopEditar,
+      editarPaseador,
     };
   },
   methods: {

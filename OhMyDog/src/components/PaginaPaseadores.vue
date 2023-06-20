@@ -32,7 +32,7 @@
       >
         <TarjetaPaseador
           @ejecutarFuncion="eliminarPaseador"
-          @editarPaseador="editarPaseador"
+          @loadPaseadores="loadPaseadores"
           :dniPaseadores="dniPaseadores"
           class="q-px-sm col-stretch"
           v-for="paseador in paseadores"
@@ -109,10 +109,6 @@ export default defineComponent({
       }
     };
 
-    const editarPaseador = async (paseador) =>{
-
-    }
-
     async function eliminarPaseador(dni) {
       try {
         await api.post("paseador/deletePaseador", {
@@ -134,7 +130,6 @@ export default defineComponent({
       loadPaseadores,
       registrarPaseador,
       abrirForm,
-      editarPaseador,
     };
   },
   mounted() {
