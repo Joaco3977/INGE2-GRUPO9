@@ -99,13 +99,20 @@ router.post('/deletePerroPropio', async (req, res) => {
         NOMBRE: req.body.perro.nombre
     }).update('ELIMINADO', 1)
     .then(() =>{
-        Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.perro.dnicliente} elimino a su perro: ${req.body.perro.nombre}`)
+        knex('turno').where('DNICLIENTE', req.body.perro.dnicliente).andWhere('NOMBREPERRO', req.body.perro.nombre).update('ELIMINADO', 1)
+        .then(() => {
+            Consola.mensaje("\x1b[35m%s\x1b[0m",`CLIENTE ${req.body.perro.dnicliente} elimino a su perro: ${req.body.perro.nombre}`)
         if (req.body.perro.dnicliente === req.body.quienSoy.dni) {
             Log.agregarEntradaLog(1, req.body.quienSoy.nombre, req.body.quienSoy.dni, `elimino a su propio PERRO ${req.body.perro.nombre}`)
         } else {
             Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `elimino al PERRO ${req.body.perro.nombre} del cliente con DNI:${req.body.perro.dnicliente}`)
         }
         res.status(200).send({})
+        })
+        .catch((error) => {
+            console.log(error)
+            res.status(401).send(error)
+        })
     }).catch((error)=>{
         console.log(error)
         res.status(401).send('No fue posible conectar con la base de datos');
