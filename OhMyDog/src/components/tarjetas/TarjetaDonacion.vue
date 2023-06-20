@@ -9,7 +9,7 @@
 
       <q-card-section v-if="rol == 2">
         <div class="row justify-end full-width">
-          <q-btn class="q-ml-md" color="accent">
+          <q-btn @click="MostrarPopEditar = true" class="q-ml-md" color="accent">
             <div>Editar</div>
           </q-btn>
           <q-btn @click="confirmar = true" class="q-ml-md" color="accent">
@@ -107,6 +107,16 @@
     <q-dialog persistent v-model="abrirFormTarjeta" class="">
       <formTarjeta :cantidad="donacion.monto"  :link="link"/>
     </q-dialog>
+    
+    <q-dialog  v-model="MostrarPopEditar" class="">
+      <formDonacion
+      @editarDonacion="editarDonacion"
+      :Anombre="nombre"
+      :Adescripcion="descripcion"
+      :Alink="link"
+      :nombreDonaciones="nombreDonaciones"
+      />
+    </q-dialog>
 
   </div>
 </template>
@@ -115,11 +125,14 @@
 import { useStore } from "src/pinia/store";
 import { defineComponent, ref } from "vue";
 import formTarjeta from '../formularios/formTarjeta.vue'
+import formDonacion from "../formulariosEditar/formDonacion.vue";
+import { api } from "src/boot/axios";
 
 export default defineComponent({
   name: "TarjetaDonacion",
   components: {
     formTarjeta,
+    formDonacion,
   },
   props: {
     rol: String,
@@ -127,9 +140,12 @@ export default defineComponent({
     nombre: String,
     descripcion: String,
     link: String,
+    nombreDonaciones: {
+        type: Array,
+        required: true,
+      },
   },
-  setup(props) {
-
+  setup(props, {emit}) {
     const abrirFormTarjeta= ref(false);
 
     const donacion = ref({
@@ -138,6 +154,12 @@ export default defineComponent({
       monto: "",
     });
 
+    const quienSoy = {
+      rol: useStore().rol,
+      dni: useStore().dni,
+      nombre: useStore().nombre,
+    }
+
     const tarjeta = ref({
       numero: '',
       titular: '',
@@ -145,8 +167,21 @@ export default defineComponent({
       codigo: ''
     })
 
+    const editarDonacion = async (donacion) => {
+      try {
+        const response = await api.post("/donacion/editarDonacion",{
+          donacion,
+          quienSoy: quienSoy,
+        })
+        emit("loadDonaciones")
+      } catch (error) {
+        console.error(error);
+      }}
+
     return {
+      MostrarPopEditar:ref(false),
       abrirFormTarjeta,
+      editarDonacion,
       confirmar: ref(false),
       donar: ref(false),
       pagoTarjeta: ref(false),

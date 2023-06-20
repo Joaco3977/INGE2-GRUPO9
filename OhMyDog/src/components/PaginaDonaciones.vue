@@ -32,7 +32,9 @@
       >
         <TarjetaDonacion
           @eliminarDonacion="eliminarDonacion"
+          @loadDonaciones="loadDonaciones"
           class="q-px-sm col-stretch"
+          :nombreDonaciones="nombreDonaciones"
           v-for="donacion in donaciones"
           :key="donacion.ID"
           :rol="rol"

@@ -131,8 +131,7 @@ export default defineComponent({
       return this.descripcion.length > 0;
     },
     linkValido() {
-      console.log(this.urlValida(this.link))
-      return this.link.length > 0 ;
+      return this.link.length > 0 && this.urlValida(this.link);
     },
     nombreExiste() {
       return this.nombreDonaciones.includes(this.nombre);

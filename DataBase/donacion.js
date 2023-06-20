@@ -30,6 +30,19 @@ router.post('/deleteDonacion', (req,res) => {
     })
 })
 
+router.post ('/editarDonacion',async(req,res)=>{
+    try {  
+        await knex('campania').where({
+            NOMBRE: req.body.donacion.NOMBREA
+        }).update({"NOMBRE" : req.body.donacion.NOMBRE,"LINK":req.body.donacion.LINK, "DESCRIPCION": req.body.donacion.DESCRIPCION});
+        Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `edito la Donacion ${req.body.donacion.NOMBREA} `)
+        res.status(200).send({});
+    }catch (error){
+        console.log(error);
+        res.status(401).send('No fue posible conectar con la base de datos');
+    }
+})
+
 router.post('/addDonacion', (req,res) => {
     const nuevaDonacion = {
         NOMBRE: req.body.campania.NOMBRE,
