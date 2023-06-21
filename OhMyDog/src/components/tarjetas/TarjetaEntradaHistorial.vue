@@ -8,7 +8,7 @@
       <!-- style="min-width: 20rem; max-width: 25rem" -->
       <q-card-section>
         <q-btn
-              v-if="fecha"
+              v-if="!((Date.now() - new Date(fecha)) > 24 * 60 * 60 * 1000 )"
               @click="mostrarPopupEditar = true"
               color="accent"
               class=""
