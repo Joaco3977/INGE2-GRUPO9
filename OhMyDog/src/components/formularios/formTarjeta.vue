@@ -4,8 +4,9 @@
       <q-card-section class="bg-secondary">
         <div class="text-h5 text-uppercase text-white text-center text-bold" >Pagar con Tarjeta</div>
       </q-card-section>
-      <h5> Usted donara {{ cantidad }}$ pesos argentinos.</h5>
+      
       <q-card-section class="q-pt-md">
+        <div class="text-center q-py-sm"> Usted donará ${{ cantidad }} pesos argentinos </div> 
         <q-form  class="q-gutter-md">
           <q-input
             class="q-px-lg"
@@ -116,7 +117,7 @@ export default defineComponent({
         sError.push("Complete el nombre del titular");
       }
       if (!this.numeroValido){
-        sError.push("Complete el numero de tarjeta")
+        sError.push("Complete el número de tarjeta")
       }
       if (!this.vencimientoValido){
         sError.push("Complete la fecha de vencimiento")
