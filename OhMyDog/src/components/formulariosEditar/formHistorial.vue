@@ -48,11 +48,31 @@
                 class="q-ml-sm"
                 v-close-popup
               />
-              <q-btn :disabled="!camposValidos" @click="editarEntrada()" label="Editar Historial" color="accent" v-close-popup />
+              <q-btn :disabled="!camposValidos" @click="confirmar = true" label="Editar Historial" color="accent" />
             </div>
           </q-form>
         </q-card-section>
       </q-card>
+
+      <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">¿Editar Entrada?</div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+
+          <q-btn
+            flat
+            label="Confirmar"
+            @click="editarEntrada()"
+            color="primary"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     </div>
   </template>
   
@@ -85,6 +105,7 @@
       }
   
       return {
+        confirmar: ref(false),
         nombreServicio,
         nombreVacuna,
         comentario,
