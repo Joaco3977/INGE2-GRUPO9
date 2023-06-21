@@ -51,7 +51,7 @@
                   <q-btn
                     flat
                     label="Eliminar"
-                    @click="ejecutarFuncionPadre(dni)"
+                    @click="ejecutarFuncionPadre(dni,nombreApellido)"
                     color="primary"
                     v-close-popup
                   />
@@ -115,8 +115,8 @@
       };
     },
     methods: {
-      ejecutarFuncionPadre(dni) {
-        this.$emit('ejecutarFuncion', dni);
+      ejecutarFuncionPadre(dni,nombreApellido) {
+        this.$emit('ejecutarFuncion', dni,nombreApellido);
       },
       async editarVeterinario(veterinario){
         try {
