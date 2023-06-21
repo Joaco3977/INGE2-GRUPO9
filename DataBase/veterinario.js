@@ -109,6 +109,7 @@ router.post ('/editarVeterinario',async(req,res)=>{
 })
 
 router.post('/addVeterinario', async (req,res)=>{
+    console.log(req.body)
     enviadorMails.enviarMailPassword(req.body.veterinario.mail)
     .then((sendP)=>{
         if(sendP){
@@ -124,7 +125,7 @@ router.post('/addVeterinario', async (req,res)=>{
             .then((resultadoAdd)=>{
                 if(resultadoAdd){
                     Consola.mensaje("\x1b[33m%s\x1b[0m", "ADMIN agrego un veterinario")
-                    Log.agregarEntradaLog(-1, '', '', `agrego al VETERINARIO ${req.veterinario.nombreApellido} con DNI:${req.body.veterinario.dni}`)
+                    Log.agregarEntradaLog(-1, '', '', `agrego al VETERINARIO ${nuevoVeterinario.NOMBREAPELLIDO} con DNI:${nuevoVeterinario.DNI}`)
                     res.status(200).send({})
                 }else{
                     res.status(401)
