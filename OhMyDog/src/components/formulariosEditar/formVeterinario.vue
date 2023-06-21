@@ -7,7 +7,7 @@
           </div>
         </q-card-section>
         <q-card-section class="q-pt-md">
-          <q-form class="q-pa-md" @submit.prevent="submitForm">
+          <q-form class="q-pa-md">
             <q-input
               ref="inputRef"
               class="q-px-xl"
@@ -53,14 +53,33 @@
               <q-btn
                 label="Editar veterinario"
                 :disabled="!camposValidos"
-                type="submit"
                 color="accent"
-                v-close-popup
+                @click ="confirmar = true"
               />
             </div>
           </q-form>
         </q-card-section>
       </q-card>
+
+      <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">¿Editar veterinario?</div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+
+          <q-btn
+            flat
+            label="Confirmar"
+            @click="submitForm"
+            color="primary"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     </div>
   </template>
   
@@ -113,6 +132,7 @@
         submitForm,
         dniA,
         mailA,
+        confirmar: ref(false),
       };
     },
     computed: {

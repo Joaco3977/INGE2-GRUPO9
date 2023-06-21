@@ -200,6 +200,7 @@ export default defineComponent({
     },
   },
   setup(props) {
+    const mostrarPopupEditar= ref(false);
     const nombresPerros = ref([]);
     const perrosCliente = ref([]);
     const verPerro = ref(false);
@@ -263,7 +264,7 @@ export default defineComponent({
     };
 
     const cerrarPerro = () => {
-      verPerro.value = false;
+      //verPerro.value = false;
     };
 
     return {
@@ -272,7 +273,7 @@ export default defineComponent({
       nombresPerros,
       verPerro,
       agregarPerro: ref(false),
-      mostrarPopupEditar: ref(false),
+      mostrarPopupEditar,
       perrosCliente,
       perroElegido,
       registrarPerro,
@@ -286,6 +287,7 @@ export default defineComponent({
       this.$emit("ejecutarFuncion", dni);
     },
     editarCliente(cliente) {
+      this.mostrarPopupEditar = false;
       this.$emit("editarCliente", cliente);
     },
     recargarPerros() {

@@ -7,7 +7,7 @@
         </div>
       </q-card-section>
       <q-card-section class="q-pt-md">
-        <q-form class="q-pa-md" @submit.prevent="submitForm">
+        <q-form class="q-pa-md">
           <q-input
             ref="inputRef"
             class="q-px-xl"
@@ -61,16 +61,33 @@
             <q-btn
               label="Editar cliente"
               :disabled="!camposValidos"
-              type="submit"
+              @click="confirmar = true"
               color="accent"
-              v-close-popup
             />
           </div>
         </q-form>
       </q-card-section>
     </q-card>
 
+ <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">¿Editar cliente?</div>
+        </q-card-section>
 
+        <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+
+          <q-btn
+            flat
+            label="Confirmar"
+            @click="submitForm"
+            color="primary"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -122,7 +139,8 @@ export default {
       cliente,
       submitForm,
       dniA,
-      mailA
+      mailA,
+      confirmar: ref(false),
     }
   },
   computed: {
