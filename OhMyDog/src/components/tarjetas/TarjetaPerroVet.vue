@@ -16,7 +16,7 @@
       narrow-indicator
     >
       <q-tab name="datos" label="datos" />
-       <q-tab name="turnos" label="historial médico" /> 
+       <q-tab name="turnos" label="historial médico" />
     </q-tabs>
 
     <q-tab-panels v-model="tab" animated class="full-width">
@@ -70,7 +70,7 @@
               >
                 Eliminar
               </q-btn>
-              <q-btn @click="edicionPerro = true"  flat class="textoBoton" 
+              <q-btn @click="edicionPerro = true"  flat class="textoBoton"
               >
                 Editar datos
               </q-btn>
@@ -82,16 +82,19 @@
 
     <q-tab-panel name="turnos" class="bg-primary">
         <div horizontal style="width: 55rem; max-width: 55rem; max-height: 40rem">
-          <TarjetaHistorial :nombrePerro="perro.NOMBRE" />
+          <TarjetaHistorial
+          :nombrePerro="perro.NOMBRE"
+          :idPerro="perro.ID"
+          />
         </div>
     </q-tab-panel>
 
     </q-tab-panels>
 
     <q-dialog v-model="edicionPerro">
-        <FormPerro 
-        @editarPerro="editarPerro" 
-        :nombresPerros="nombresPerros" 
+        <FormPerro
+        @editarPerro="editarPerro"
+        :nombresPerros="nombresPerros"
         :COLOR="perro.COLOR"
         :NOMBRE="perro.NOMBRE"
         :TAMANIO="perro.TAMANIO"

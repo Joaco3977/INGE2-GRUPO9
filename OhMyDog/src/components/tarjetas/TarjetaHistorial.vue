@@ -15,12 +15,17 @@
         style="height: 70vh; width: 100%"
         class="bg-primary full-width"
       >
-        <div v-if="numeroMagico > 0" class="full-width row wrap justify-center">
+        <div v-if="historial.length > 0" class="full-width row wrap justify-center">
           <TarjetaEntradaHistorial
             class="q-px-sm col-stretch"
-            v-for="i in numeroMagico"
-            :key="i"
+            v-for="entrada in historial"
+            :key="entrada.FECHA"
             :rol="rol"
+            :fecha="entrada.FECHA"
+            :servicio="entrada.NOMBRESERVICIO"
+            :comentario="entrada.COMENTARIO"
+            :nombreVacuna="entrada.NOMBREVACUNA"
+            :dniVet="entrada.DNIVET"
           />
         </div>
 
@@ -55,35 +60,38 @@ export default defineComponent({
     TarjetaEntradaHistorial,
   },
   props: {
-    nombrePerro: String,
+    idPerro: Number,
   },
-  setup() {
+  setup(props) {
     const mostrarPopup = ref("false");
     const rol = useStore().rol;
+    const historial = ref([])
+
+    const loadHistorial = async () => {
+      await api.post('/historial/getHistorial', {
+        id: props.idPerro,
+      })
+      .then((response) => {
+        historial.value = response.data;
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
 
     return {
       rol,
       mostrarPopup,
-      numeroMagico: ref(5),
+      historial,
+      loadHistorial,
     };
   },
   methods: {
-    async getPerroSeleccionado() {
-      await api
-        .post("/perro/getPerroPorNombre", {
-          dni: useStore().dni,
-          nombre: this.nombrePerro,
-        })
-        .then((response) => {
-          console.log("esto recibí de get perro", response.data);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+
   },
   mounted() {
     checkToken();
+    this.loadHistorial();
   },
 });
 </script>

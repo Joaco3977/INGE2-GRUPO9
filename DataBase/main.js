@@ -33,6 +33,7 @@ const paseadorRouter = require ('./paseador.js')
 const turnoRouter = require ('./turno.js');
 const donacionRouter = require ('./donacion.js');
 const logRouter = Log.router;
+const historialRouter = require ('./historial.js');
 
 app.use('/cliente', clienteRouter)
 app.use('/veterinario', veterinarioRouter)
@@ -43,6 +44,7 @@ app.use('/paseador', paseadorRouter)
 app.use('/turno', turnoRouter)
 app.use('/donacion', donacionRouter)
 app.use('/log', logRouter)
+app.use('/historial', historialRouter)
 
 app.post("/login", async (req, res) => {
   const admin = checkAdmin(req.body.mail, req.body.password);
