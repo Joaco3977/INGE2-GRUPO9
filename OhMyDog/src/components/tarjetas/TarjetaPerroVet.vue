@@ -4,7 +4,7 @@
   <q-card
     flat
     class="my-card bg-primary text-white q-ma-md full-width"
-    style="width: 55rem; max-width: 55rem; max-height: 40rem"
+    style="width: 55rem; max-width: 55rem"
   >
     <q-tabs
       v-model="tab"
@@ -81,7 +81,7 @@
 
 
     <q-tab-panel name="turnos" class="bg-primary">
-        <div horizontal style="width: 55rem; max-width: 55rem; max-height: 40rem">
+        <div horizontal style="width: 55rem; max-width: 55rem; max-height: 50rem">
           <TarjetaHistorial
           :nombrePerro="perro.NOMBRE"
           :idPerro="perro.ID"
