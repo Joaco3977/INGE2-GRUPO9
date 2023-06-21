@@ -8,7 +8,7 @@
       <!-- style="min-width: 20rem; max-width: 25rem" -->
       <q-card-section class="row justify-end">
         <q-btn
-          v-if="!(Date.now() - new Date(fecha) > 24 * 60 * 60 * 1000)"
+          v-if="!(Date.now() - new Date(fecha) > 24 * 60 * 60 * 1000) && rol == 2"
           @click="mostrarPopupEditar = true"
           color="accent"
           class=""
@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import { useStore } from "../../pinia/store.js";
 import { api } from "src/boot/axios";
 import { defineComponent, ref } from "vue";
 import formHistorial from "../formulariosEditar/formHistorial.vue";
@@ -88,6 +89,7 @@ export default defineComponent({
     dniVet: String,
   },
   setup(props, { emit }) {
+    const rol = useStore().rol;
     const veterinario = ref({});
     const mostrarPopupEditar = ref(false);
     const getDatosVeterinario = async () => {
@@ -119,6 +121,7 @@ export default defineComponent({
     };
 
     return {
+      rol,
       getDatosVeterinario,
       editarHistorial,
       veterinario,
