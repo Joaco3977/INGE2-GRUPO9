@@ -36,7 +36,6 @@
                 </li>
             </ul>
             <div class="row justify-end">
-              <q-btn label="Cambiar contraseña"  @click="cambiarContraseña" :disabled="camposValidos"  color="accent" v-close-popup />
               <q-btn
                 label="Cancelar"
                 type="reset"
@@ -45,10 +44,25 @@
                 class="q-ml-sm"
                 v-close-popup
               />
+              <q-btn label="Cambiar contraseña"  @click="cambiarContraseña" :disabled="camposValidos"  color="accent" />
+              
             </div>
           </q-form>
         </q-card-section>
       </q-card>
+
+      <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">Su contraseña actual no pudo ser actualizada</div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Ok" color="primary" v-close-popup />
+
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     </div>
   </template>
   
@@ -61,6 +75,7 @@
     name: "formCambiarContrasenia",
     components: {},
     setup(props ,{ emit }) {
+      const confirmar = ref(false);
         const contraseñaA = ref("")
         const contraseñaNuevaA = ref("")
         const contraseñaNuevaB = ref("")
@@ -71,10 +86,14 @@
                 mail: localStorage.getItem("mail"),
                 password: contraseñaA.value,
             });
-            
+            console.log("todo ok")
+            emit("close-popup"); // Emit the close-popup event
             return response.data.check
         } catch (error) {
+          
             console.error(error);
+            console.log("Entre acá");
+            confirmar.value = true;
             }
         }
         function ejecutarFuncionPadre(message,type,timeout) {
@@ -105,6 +124,7 @@
         }
 
         return {
+          confirmar,
             contraseñaA,
             contraseñaNuevaA,
             contraseñaNuevaB,
@@ -118,6 +138,12 @@
         if (!this.contraseñasIguales) {
             sError.push("Las contraseñas no son iguales");
         }
+        if (!this.contraseñaLongitud){
+            sError.push("La contraseña debe tener por lo menos 4 caracteres")
+        }
+        if (this.contraseñasDistintas){
+            sError.push("La nueva contraseña no puede ser igual a la anterior")
+        }
         if (this.contraseñasVacias){
             sError.push("Hay campos vacios")
         }
@@ -128,18 +154,32 @@
             return this.contraseñaNuevaA === this.contraseñaNuevaB
         },
 
+        contraseñaLongitud(){
+           return this.contraseñaNuevaA.length >= 4;
+        },
+
+         contraseñasDistintas(){
+            return this.contraseñaNuevaA === this.contraseñaA
+        },
+
         contraseñasVacias(){
           return (this.contraseñaA === undefined) || (this.contraseñaNuevaA === undefined) || (this.contraseñaNuevaB === undefined)
-        }
-    },
-    
-    camposValidos() {
-      return (
+        },
+
+        camposValidos() {
+          return (
         this.contraseñasIguales
         && 
         !this.contraseñasVacias
+        && 
+        this.contraseñasDistintas
+        && 
+        this.contraseñaLongitud
       );
     },
+    },
+    
+    
   },
   );
   </script>

@@ -61,9 +61,10 @@
         <q-btn class="textoBoton" @click="cerrarSesion()"> Cerrar Sesión </q-btn>
       </q-card-actions>
     </q-card>
-    <q-dialog v-model="mostrarPopup">
+    <q-dialog ref="popup1" v-model="mostrarPopup">
       <FormCambiarContrasenia
-      @mostrarMensaje0="showBanner"/>
+      @mostrarMensaje0="showBanner"
+      @close-popup="cerrarPopup"/>
     </q-dialog>
   </div>
 </template>
@@ -104,8 +105,9 @@ export default defineComponent({
         console.log("No se pudo solicitar la operacion correspondiente");
       }
     };
-    const mostrarPopupM = () => {
-      mostrarPopup.value = !mostrarPopup.value;
+    const cerrarPopup = () => {
+      console.log("Deberia cerrar")
+      mostrarPopup.value = false;
     };
 
     return {
@@ -118,6 +120,7 @@ export default defineComponent({
       message,
       type,
       timeout,
+      cerrarPopup,
     };
   },
   methods: {
