@@ -17,6 +17,20 @@ router.post('/getHistorial', async (req,res) => {
     })
 })
 
+router.post ('/editarHistorial',async(req,res)=>{
+    try { 
+        await knex('historialperro').where({
+            ID: req.body.entrada.ID
+        }).update({"NOMBRESERVICIO" : req.body.entrada.NOMBRESERVICIO,"COMENTARIO":req.body.entrada.COMENTARIO, "NOMBREVACUNA": req.body.entrada.NOMBREVACUNA});
+       // Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `edito la Donacion ${req.body.donacion.NOMBREA} `)
+        res.status(200).send({});
+    }catch (error){
+        console.log(error);
+        res.status(401).send('No fue posible conectar con la base de datos');
+    }
+})
+
+
 router.post('/agregarEntrada', async (req,res) => {
     let nuevaEntrada = {
         IDPERRO: req.body.entrada.IDPERRO,

@@ -61,7 +61,7 @@ import { defineComponent, ref } from "vue";
 import { useStore } from "src/pinia/store";
 
 export default defineComponent({
-  name: "formTurno",
+  name: "formHistorial",
   props: {
     idPerro: String,
   },

@@ -18,9 +18,11 @@
         <div v-if="historial.length > 0" class="full-width row wrap justify-center">
           <TarjetaEntradaHistorial
             class="q-px-sm col-stretch"
+            @loadHistorial="loadHistorial"
             v-for="entrada in historial"
             :key="entrada.FECHA"
             :rol="rol"
+            :id="entrada.ID"
             :fecha="entrada.FECHA"
             :servicio="entrada.NOMBRESERVICIO"
             :comentario="entrada.COMENTARIO"

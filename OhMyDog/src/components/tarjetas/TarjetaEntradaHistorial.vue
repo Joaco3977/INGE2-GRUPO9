@@ -7,6 +7,15 @@
     >
       <!-- style="min-width: 20rem; max-width: 25rem" -->
       <q-card-section>
+        <q-btn
+              v-if="fecha"
+              @click="mostrarPopupEditar = true"
+              color="accent"
+              class=""
+              style="width: max-content; height: max-content"
+            >
+              <div>Editar</div>
+            </q-btn>
         <!-- Contenido -->
         <div class="row no-wrap">
           <div class="column col-12 justify-start q-pl-sm">
@@ -26,7 +35,15 @@
               <div class="textoTituloPosteo text-primary q-mr-md q-pb-xs"> Comentario:</div>
               <div class="text-primary q-pl-md q-pb-md"> {{ comentario }} </div>
             </div>
-
+            <q-dialog v-model="mostrarPopupEditar">
+              <formHistorial
+                @editarHistorial="editarHistorial"
+                :id="id"
+                :Aservicio="servicio"
+                :Acomentario="comentario"
+                :AnombreVacuna="nombreVacuna"
+              />
+            </q-dialog>
           </div>
         </div>
       </q-card-section>
@@ -37,20 +54,23 @@
 <script>
 import { api } from "src/boot/axios";
 import { defineComponent, ref } from "vue";
+import formHistorial from "../formulariosEditar/formHistorial.vue"
 
 export default defineComponent({
   name: "TarjetaDonacion",
-  components: {},
+  components: { 
+    formHistorial },
   props: {
+    id:String,
     fecha: String,
     servicio: String,
     comentario: String,
     nombreVacuna: String,
     dniVet: String,
   },
-  setup(props) {
+  setup(props,{emit}) {
     const veterinario = ref({})
-
+    const mostrarPopupEditar =ref(false)
     const getDatosVeterinario = async () => {
       await api.post('/veterinario/getVeterinarioHistorial', {
         dni: parseInt(props.dniVet)
@@ -62,10 +82,24 @@ export default defineComponent({
         console.log(error)
       })
     }
+    
+    const editarHistorial = async (entrada) => {
+      await api.post('/historial/editarHistorial', {
+        entrada: entrada,
+      })
+      .then(() => {
+        emit("loadHistorial");
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
 
     return {
       getDatosVeterinario,
+      editarHistorial,
       veterinario,
+      mostrarPopupEditar,
     }
   },
   methods: {
@@ -76,7 +110,7 @@ export default defineComponent({
   computed: {
     formattedService() {
       let formattedService = this.servicio
-      if (this.nombreVacuna !== null) {
+      if (this.servicio === "Vacunación") {
         formattedService += ` - ${this.nombreVacuna}`
       }
       return formattedService;
