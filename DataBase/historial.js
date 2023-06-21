@@ -18,7 +18,22 @@ router.post('/getHistorial', async (req,res) => {
 })
 
 router.post('/agregarEntrada', async (req,res) => {
-    res.status(200).send({})
+    let nuevaEntrada = {
+        IDPERRO: req.body.entrada.IDPERRO,
+        DNIVET: req.body.entrada.DNIVET,
+        FECHA: new Date(),
+        NOMBRESERVICIO: req.body.entrada.NOMBRESERVICIO,
+        COMENTARIO: req.body.entrada.COMENTARIO,
+        NOMBREVACUNA: req.body.entrada.NOMBREVACUNA
+    }
+    await knex('historial').insert(nuevaEntrada)
+    .then(() => {
+        res.status(200).send({})
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send(error)
+    })
 })
 
 module.exports = router

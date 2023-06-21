@@ -38,7 +38,10 @@
     </q-card>
 
     <q-dialog v-model="mostrarPopup">
-      <FormHistorial @registrarPerro="registrarPerro" />
+      <FormHistorial
+        @registrarEntrada="registrarEntrada"
+        :idPerro="idPerro"
+      />
     </q-dialog>
   </div>
 </template>
@@ -79,11 +82,24 @@ export default defineComponent({
       })
     }
 
+    const registrarEntrada = async (entrada) => {
+      await api.post('/historial/agregarEntrada', {
+        entrada: entrada,
+      })
+      .then(() => {
+        loadHistorial();
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+
     return {
       rol,
       mostrarPopup,
       historial,
       loadHistorial,
+      registrarEntrada,
     };
   },
   methods: {
