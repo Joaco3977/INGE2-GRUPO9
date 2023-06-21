@@ -1,91 +1,79 @@
 <template>
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
-  <div class="bg-white" style="width: full; max-height: 45vh">
+  <div class="bg-white" style="width: full; max-height: 50vh">
     <q-card
       flat
       class="my-card bg-primary text-white q-ma-md"
-      style="width: 60rem"
+      style="width: 80vw"
     >
       <q-card-section horizontal>
-        <q-img class="col-5 q-pb-none" fit="cover" src="https://shorturl.at/mnsL0" />
+        <q-img
+          class="col-3 q-pb-none"
+          fit="cover"
+          src="https://shorturl.at/mnsL0"
+        />
 
-        <q-card-section class="column col-7 justify-between">
+        <q-card-section class="column col-9 justify-between">
           <div class="">
             <div class="text-h6 text-uppercase text-bold q-pr-sm q-pb-xs">
-            {{ nombre }}
+              {{ nombre }}
+            </div>
+            <div class="row">
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Raza:</div>
+              <div>{{ raza }}</div>
+            </div>
+            <div class="row">
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Tamaño:</div>
+              <div>{{ tamanio }}</div>
+            </div>
+            <div class="row">
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Peso:</div>
+              <div>{{ peso }} kg</div>
+            </div>
+            <div class="row">
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Edad:</div>
+              <div>{{ formattedDate }}</div>
+            </div>
+            <div class="row">
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Sexo:</div>
+              <div>{{ sexo }}</div>
+            </div>
+            <div class="row">
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Color:</div>
+              <div>{{ color }}</div>
+            </div>
+            <q-separator class="q-mt-xs" dark />
           </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Raza:</div>
-            <div>{{ raza }}</div>
-          </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Tamaño:</div>
-            <div>{{ tamanio }}</div>
-          </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Peso:</div>
-            <div>{{ peso }} kg</div>
-          </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Edad:</div>
-            <div>{{ formattedDate }}</div>
-          </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Sexo:</div>
-            <div>{{ sexo }}</div>
-          </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Color:</div>
-            <div>{{ color }}</div>
-          </div>
-          <q-separator class="q-mt-xs" dark />
-          </div>
-
-          <q-card-actions class="row justify-end items-center self-end">
-            <!-- <q-btn flat v-if="rol >= 1" class="textoBoton">
-              Ver historial
-            </q-btn> -->
-            <q-btn @click="confirmar = true" flat v-if="rol >= 1" class="textoBoton">
-              Eliminar
-            </q-btn>
+          <q-card-actions class="justify-end items-center">
+            <q-btn @click="mostrarPopupEditar = true" flat class="textoBoton"> Ver historial </q-btn>
           </q-card-actions>
         </q-card-section>
       </q-card-section>
     </q-card>
 
-    <q-dialog v-model="confirmar">
-      <q-card>
-        <q-card-section>
-          <div class="textoTituloTarjeta text-primary">¿Eliminar perro?</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none">
-          Esta acción no puede deshacerse
-        </q-card-section>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="Eliminar"
-            @click="eliminarPerro(nombre)"
-            color="primary"
-            v-close-popup
+    <q-dialog v-model="mostrarPopupEditar">
+      <div horizontal style="width: 55rem; max-width: 55rem; max-height: 50rem">
+          <TarjetaHistorial
+          :nombrePerro="nombre"
+          :idPerro="id"
           />
-          <q-btn flat label="Cancelar" color="primary" v-close-popup />
-        </q-card-actions>
-      </q-card>
+        </div>
     </q-dialog>
   </div>
 </template>
 
 <script>
 import { defineComponent, ref } from "vue";
+import TarjetaHistorial from "./TarjetaHistorial.vue";
 
 export default defineComponent({
   name: "TarjetaPerro",
-  components: {},
+  components: {
+    TarjetaHistorial,
+  },
   props: {
+    id: Number,
     rol: String,
     nombre: String,
     nacimiento: Date,
@@ -99,13 +87,13 @@ export default defineComponent({
   },
   setup() {
     return {
-      confirmar: ref(false),
-    }
+      mostrarPopupEditar: ref(false),
+    };
   },
   methods: {
     eliminarPerro(nombre) {
-      this.$emit('eliminarPerro', nombre)
-    }
+      this.$emit("eliminarPerro", nombre);
+    },
   },
   computed: {
     formattedDate() {
@@ -126,14 +114,18 @@ export default defineComponent({
         formattedDate += years === 1 ? "1 año" : `${years} años`;
       }
       if (months > 0) {
-        formattedDate += `${years > 0 ? ", " : ""}${months === 1 ? "1 mes" : `${months} meses`}`;
+        formattedDate += `${years > 0 ? ", " : ""}${
+          months === 1 ? "1 mes" : `${months} meses`
+        }`;
       }
       if (remainingDays > 0) {
-        formattedDate += `${(years > 0 || months > 0) ? ", " : ""}${remainingDays === 1 ? "1 día" : `${remainingDays} días`}`;
+        formattedDate += `${years > 0 || months > 0 ? ", " : ""}${
+          remainingDays === 1 ? "1 día" : `${remainingDays} días`
+        }`;
       }
 
       return formattedDate;
-    }
-  }
+    },
+  },
 });
 </script>

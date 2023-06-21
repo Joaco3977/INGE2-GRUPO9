@@ -64,16 +64,35 @@
             />
             <q-btn
               label="Editar Adopción"
-              @click="this.ejecutarFuncionPadre();"
+              @click="confirmar = true"
               :disabled="!camposValidos"
               color="accent"
-              v-close-popup
             />
 
           </div>
         </q-form>
       </q-card-section>
     </q-card>
+
+    <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">¿Editar perro?</div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+                    <q-btn flat label="Cancelar" color="primary" v-close-popup />
+
+          <q-btn
+            flat
+            label="Confirmar"
+            @click="ejecutarFuncionPadre()"
+            color="primary"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -133,6 +152,7 @@ export default defineComponent({
     };
 
     return {
+      confirmar: ref(false),
       mostrarInput,
       perroEDAD,
       perroSEXO,
@@ -154,6 +174,9 @@ export default defineComponent({
     };
   },
   methods: {
+    closePopups() {
+      this.$emit('close-popups');
+    },
     ejecutarFuncionPadre() {
       const perro = this.getDatosAdopcion();
       this.$emit("editarPerro", perro);

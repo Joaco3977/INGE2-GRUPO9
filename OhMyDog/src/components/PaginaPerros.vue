@@ -24,6 +24,7 @@
               <TarjetaPerro @eliminarPerro="eliminarPerro" class="q-py-sm"
                 v-for="perro of perrosDatos"
                 :key="perro.ID"
+                :id="perro.ID"
                 :rol="rol"
                 :foto="perro.FOTO"
                 :nombre="perro.NOMBRE"
