@@ -111,6 +111,8 @@
         </q-card-section>
 
         <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+
           <q-btn
             flat
             label="Eliminar"
@@ -118,7 +120,6 @@
             color="primary"
             v-close-popup
           />
-          <q-btn flat label="Cancelar" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -190,8 +191,7 @@ export default defineComponent({
     dnicliente: String,
   },
   setup(props, { emit }) {
-
-    const mostrarPopupEditar= ref(false);
+    const mostrarPopupEditar = ref(false);
 
     const editarPerro = async (perroEditado) => {
       mostrarPopupEditar.value = false;
@@ -212,7 +212,6 @@ export default defineComponent({
       contactoCliente: "",
       confirmar: ref(false),
       confirmarAdopcion: ref(false),
-      
     };
   },
   methods: {

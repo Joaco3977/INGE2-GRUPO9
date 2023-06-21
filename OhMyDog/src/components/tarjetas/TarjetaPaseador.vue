@@ -4,7 +4,7 @@
   <div class="bg-white" style="width: full; max-height: 97vh">
     <q-card
       flat
-      class="my-card bg-primary text-white q-ma-md "
+      class="my-card bg-primary text-white q-ma-md"
       style="width: 55vw"
     >
       <!-- style="min-width: 20rem; max-width: 25rem" -->
@@ -14,18 +14,18 @@
           <q-btn @click="PopEditar = true" class="q-ml-md" color="accent">
             <div>Editar</div>
           </q-btn>
-          <q-dialog v-model ="PopEditar">
+          <q-dialog v-model="PopEditar">
             <formPaseador
-            @editarPaseador="editarPaseador"
-            :rol="rol"
-            :Adni="dni"
-            :Anombre="nombre"
-            :Azona="zona"
-            :Adisponibilidad="disponibilidad"
-            :Amail="mail"
-            :Acomentario="comentario"
-            :Atelefono="telefono"
-            :dniPaseadores="dniPaseadores"
+              @editarPaseador="editarPaseador"
+              :rol="rol"
+              :Adni="dni"
+              :Anombre="nombre"
+              :Azona="zona"
+              :Adisponibilidad="disponibilidad"
+              :Amail="mail"
+              :Acomentario="comentario"
+              :Atelefono="telefono"
+              :dniPaseadores="dniPaseadores"
             />
           </q-dialog>
           <q-btn @click="confirmar = true" class="q-ml-md" color="accent">
@@ -37,7 +37,7 @@
         <!-- Contenido -->
         <div class="row no-wrap">
           <div class="column col-6 justify-start q-pl-sm">
-            <div class="row items-baseline q-pb-sm ">
+            <div class="row items-baseline q-pb-sm">
               <q-icon name="ion-walk" size="2rem" />
               <div class="textoComillas q-pb-md">{{ nombre }}</div>
             </div>
@@ -96,18 +96,37 @@
               class="separadorFormulario row no-wrap full-width justify-between items-center q-py-xs q-pr-md"
             >
               <div class="text-white text-start" style="width: 5rem">
-                {{ semana[i-1] }}
+                {{ semana[i - 1] }}
               </div>
-              <q-icon v-if="disponibilidad[i-1][0] == true " class="q-py-xs" name="ion-checkmark" size="1.3rem" />
+              <q-icon
+                v-if="disponibilidad[i - 1][0] == true"
+                class="q-py-xs"
+                name="ion-checkmark"
+                size="1.3rem"
+              />
               <q-icon v-else class="q-py-xs" name="ion-close" size="1.3rem" />
-              <q-icon v-if="disponibilidad[i-1][1] == true " class="q-py-xs" name="ion-checkmark" size="1.3rem" />
+              <q-icon
+                v-if="disponibilidad[i - 1][1] == true"
+                class="q-py-xs"
+                name="ion-checkmark"
+                size="1.3rem"
+              />
               <q-icon v-else class="q-py-xs" name="ion-close" size="1.3rem" />
-              <q-icon v-if="disponibilidad[i-1][2] == true " class="q-py-xs" name="ion-checkmark" size="1.3rem" />
+              <q-icon
+                v-if="disponibilidad[i - 1][2] == true"
+                class="q-py-xs"
+                name="ion-checkmark"
+                size="1.3rem"
+              />
               <q-icon v-else class="q-py-xs" name="ion-close" size="1.3rem" />
             </div>
             <div class="row no-wrap q-py-md">
-              <q-icon class="q-pr-sm" name="ion-information-circle-outline" size="1.4rem" />
-              <div> Definir los horarios con el paseador</div>
+              <q-icon
+                class="q-pr-sm"
+                name="ion-information-circle-outline"
+                size="1.4rem"
+              />
+              <div>Definir los horarios con el paseador</div>
             </div>
           </div>
         </div>
@@ -125,6 +144,8 @@
         </q-card-section>
 
         <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+
           <q-btn
             flat
             label="Eliminar"
@@ -132,7 +153,6 @@
             color="primary"
             v-close-popup
           />
-          <q-btn flat label="Cancelar" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -143,7 +163,7 @@
 import { defineComponent, ref } from "vue";
 import { api } from "../../boot/axios.js";
 import formPaseador from "../formulariosEditar/formPaseador.vue";
-import { useStore } from '../../pinia/store.js'
+import { useStore } from "../../pinia/store.js";
 
 const semana = [
   "Lunes",
@@ -158,8 +178,8 @@ const semana = [
 export default defineComponent({
   name: "TarjetaPaseador",
   components: {
-    formPaseador
-},
+    formPaseador,
+  },
   props: {
     rol: String,
     dni: String,
@@ -168,18 +188,17 @@ export default defineComponent({
     disponibilidad: String,
     mail: String,
     comentario: String,
-    telefono:String,
+    telefono: String,
     dniPaseadores: {
       type: Array,
       required: true,
     },
   },
   setup(props, { emit }) {
+    const PopEditar = ref(false);
 
-    const PopEditar = ref(false)
-
-    const editarPaseador = async (paseador) =>{
-      console.log('edicionPaseador: ', paseador)
+    const editarPaseador = async (paseador) => {
+      console.log("edicionPaseador: ", paseador);
       try {
         await api.post("/paseador/editarPaseador", {
           dniVet: useStore().dni,
@@ -188,11 +207,11 @@ export default defineComponent({
           paseador: paseador.data,
         });
         PopEditar.value = false;
-        emit('loadPaseadores')
+        emit("loadPaseadores");
       } catch (error) {
         console.error(error);
       }
-    }
+    };
 
     return {
       confirmar: ref(false),
@@ -225,7 +244,6 @@ export default defineComponent({
       this.$emit("ejecutarFuncion", dni);
     },
   },
-  mounted(){
-  }
+  mounted() {},
 });
 </script>

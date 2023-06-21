@@ -13,7 +13,7 @@
           </div>
           <div v-if="rol === 2" class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Cliente:</div>
-            <div> {{ nombreCliente }} - DNI: {{ dniCliente }}</div>
+            <div>{{ nombreCliente }} - DNI: {{ dniCliente }}</div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Perro:</div>
@@ -25,7 +25,7 @@
           </div>
           <div v-if="state === 'Confirmado'" class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Veterinario:</div>
-            <div> {{ nombreVeterinario }}</div>
+            <div>{{ nombreVeterinario }}</div>
           </div>
         </div>
         <q-card-actions>
@@ -36,8 +36,8 @@
               class="q-ml-md"
               @click="confirmarCancelar = true"
             >
-              <div v-if="state == 'Pendiente' && rol == 2 " >Rechazar</div>
-              <div v-else > Cancelar turno </div>
+              <div v-if="state == 'Pendiente' && rol == 2">Rechazar</div>
+              <div v-else>Cancelar turno</div>
             </q-btn>
             <!--<q-btn flat v-if="rol == 2 && state == 'Pendiente'" class="q-ml-md">
               <div>Rechazar</div>
@@ -73,17 +73,17 @@
         <q-card-actions align="right">
           <q-btn
             flat
-            label="Confirmar"
-            @click="confirmarTurno(id)"
+            @click="reiniciarHora"
+            label="Cancelar"
             color="primary"
-            :disable="horaTurno.value == undefined"
             v-close-popup
           />
           <q-btn
             flat
-            @click="reiniciarHora"
-            label="Cancelar"
+            label="Confirmar"
+            @click="confirmarTurno(id)"
             color="primary"
+            :disable="horaTurno.value == undefined"
             v-close-popup
           />
         </q-card-actions>
@@ -93,7 +93,7 @@
     <q-dialog v-model="confirmarCancelar">
       <q-card>
         <q-card-section>
-          <div class="textoTituloTarjeta text-primary"> Cancelar turno </div>
+          <div class="textoTituloTarjeta text-primary">Cancelar turno</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -108,12 +108,7 @@
             color="primary"
             v-close-popup
           />
-          <q-btn
-            flat
-            label="Volver"
-            color="primary"
-            v-close-popup
-          />
+          <q-btn flat label="Volver" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -123,7 +118,7 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
-import { useStore } from '../../pinia/store'
+import { useStore } from "../../pinia/store";
 
 export default defineComponent({
   name: "TarjetaPaseador",
@@ -139,7 +134,7 @@ export default defineComponent({
     nombreVacuna: String,
     franjaHoraria: String,
     fecha: String,
-    nombreServicio: String
+    nombreServicio: String,
   },
   setup() {
     const horaTurno = ref("");
@@ -158,8 +153,8 @@ export default defineComponent({
     cancelarTurno(id, state) {
       let data = {
         id: id,
-        state: state
-      }
+        state: state,
+      };
       this.$emit("cancelarTurno", data);
     },
     confirmarTurno(id) {
@@ -178,7 +173,7 @@ export default defineComponent({
       return this.fecha < hoy;
     },
     mostrarBoton() {
-      return this.state != 'Cancelado' && !this.esTurnoPasado();
+      return this.state != "Cancelado" && !this.esTurnoPasado();
     },
   },
   computed: {
@@ -186,14 +181,17 @@ export default defineComponent({
       const date = new Date(this.fecha);
       const options = { year: "numeric", month: "numeric", day: "numeric" };
       if (this.franjaHoraria !== null) {
-        return (`${date.toLocaleDateString(undefined, options)} - Franja Horaria: ${this.franjaHoraria}`)
+        return `${date.toLocaleDateString(
+          undefined,
+          options
+        )} - Franja Horaria: ${this.franjaHoraria}`;
       } else return date.toLocaleDateString(undefined, options);
     },
     formattedService() {
-      if (this.nombreServicio === 'Vacunación') {
-        return (`Vacunación - Nombre Vacuna: ${this.nombreVacuna}`)
-      } else return (this.nombreServicio)
-    }
+      if (this.nombreServicio === "Vacunación") {
+        return `Vacunación - Nombre Vacuna: ${this.nombreVacuna}`;
+      } else return this.nombreServicio;
+    },
   },
 });
 </script>

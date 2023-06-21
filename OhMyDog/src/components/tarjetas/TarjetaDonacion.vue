@@ -9,7 +9,11 @@
 
       <q-card-section v-if="rol == 2">
         <div class="row justify-end full-width">
-          <q-btn @click="MostrarPopEditar = true" class="q-ml-md" color="accent">
+          <q-btn
+            @click="MostrarPopEditar = true"
+            class="q-ml-md"
+            color="accent"
+          >
             <div>Editar</div>
           </q-btn>
           <q-btn @click="confirmar = true" class="q-ml-md" color="accent">
@@ -93,38 +97,44 @@
         <q-card-actions align="right">
           <q-btn
             flat
+            label="Cancelar"
+            @click="resetMonto()"
+            color="primary"
+            v-close-popup
+          />
+
+          <q-btn
+            flat
             label="Donar"
             :disabled="!montoValido"
             @click="abrirFormTarjeta = true"
             color="primary"
             v-close-popup
           />
-          <q-btn flat label="Cancelar"  @click="resetMonto()" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
 
     <q-dialog persistent v-model="abrirFormTarjeta" class="">
-      <formTarjeta :cantidad="donacion.monto"  :link="link"/>
-    </q-dialog>
-    
-    <q-dialog  v-model="MostrarPopEditar" class="">
-      <formDonacion
-      @editarDonacion="editarDonacion"
-      :Anombre="nombre"
-      :Adescripcion="descripcion"
-      :Alink="link"
-      :nombreDonaciones="nombreDonaciones"
-      />
+      <formTarjeta :cantidad="donacion.monto" :link="link" />
     </q-dialog>
 
+    <q-dialog v-model="MostrarPopEditar" class="">
+      <formDonacion
+        @editarDonacion="editarDonacion"
+        :Anombre="nombre"
+        :Adescripcion="descripcion"
+        :Alink="link"
+        :nombreDonaciones="nombreDonaciones"
+      />
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import { useStore } from "src/pinia/store";
 import { defineComponent, ref } from "vue";
-import formTarjeta from '../formularios/formTarjeta.vue'
+import formTarjeta from "../formularios/formTarjeta.vue";
 import formDonacion from "../formulariosEditar/formDonacion.vue";
 import { api } from "src/boot/axios";
 
@@ -141,13 +151,13 @@ export default defineComponent({
     descripcion: String,
     link: String,
     nombreDonaciones: {
-        type: Array,
-        required: true,
-      },
+      type: Array,
+      required: true,
+    },
   },
-  setup(props, {emit}) {
-    const abrirFormTarjeta= ref(false);
-    const MostrarPopEditar= ref(false);
+  setup(props, { emit }) {
+    const abrirFormTarjeta = ref(false);
+    const MostrarPopEditar = ref(false);
 
     const donacion = ref({
       dniCliente: useStore().dni,
@@ -159,26 +169,27 @@ export default defineComponent({
       rol: useStore().rol,
       dni: useStore().dni,
       nombre: useStore().nombre,
-    }
+    };
 
     const tarjeta = ref({
-      numero: '',
-      titular: '',
-      vencimiento: '',
-      codigo: ''
-    })
+      numero: "",
+      titular: "",
+      vencimiento: "",
+      codigo: "",
+    });
 
     const editarDonacion = async (donacion) => {
       try {
         MostrarPopEditar.value = false;
-        const response = await api.post("/donacion/editarDonacion",{
+        const response = await api.post("/donacion/editarDonacion", {
           donacion,
           quienSoy: quienSoy,
-        })
-        emit("loadDonaciones")
+        });
+        emit("loadDonaciones");
       } catch (error) {
         console.error(error);
-      }}
+      }
+    };
 
     return {
       MostrarPopEditar,
@@ -192,33 +203,40 @@ export default defineComponent({
     };
   },
   methods: {
-    async initiatePayment() {
-
-    },
+    async initiatePayment() {},
     eliminarDonacion(id, nombre) {
       const data = {
         id: id,
-        nombre: nombre
-      }
+        nombre: nombre,
+      };
       this.$emit("eliminarDonacion", data);
     },
-    resetMonto(){
+    resetMonto() {
       this.donacion.monto = "";
     },
-    resetTarjeta(){
-      this.tarjeta.numero = '';
-      this.tarjeta.titular = '';
-      this.tarjeta.vencimiento = '';
-      this.tarjeta.codigo = '';
-    }
+    resetTarjeta() {
+      this.tarjeta.numero = "";
+      this.tarjeta.titular = "";
+      this.tarjeta.vencimiento = "";
+      this.tarjeta.codigo = "";
+    },
   },
   mounted() {},
   computed: {
     montoValido() {
-      return /^\d+$/.test(this.donacion.monto) && parseInt(this.donacion.monto) > 0 && parseInt(this.donacion.monto) < 1000000;
+      return (
+        /^\d+$/.test(this.donacion.monto) &&
+        parseInt(this.donacion.monto) > 0 &&
+        parseInt(this.donacion.monto) < 1000000
+      );
     },
     camposValidos() {
-      return this.tarjeta.numero.length > 0 && this.tarjeta.titular.length > 0 && this.tarjeta.vencimiento.length > 0 && this.tarjeta.codigo.length > 0;
+      return (
+        this.tarjeta.numero.length > 0 &&
+        this.tarjeta.titular.length > 0 &&
+        this.tarjeta.vencimiento.length > 0 &&
+        this.tarjeta.codigo.length > 0
+      );
     },
   },
 });

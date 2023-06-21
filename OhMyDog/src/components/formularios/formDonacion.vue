@@ -35,12 +35,6 @@
 
           <div class="row justify-end">
             <q-btn
-              label="Registrar campaña"
-              :disabled="!camposValidos"
-              type="submit"
-              color="accent"
-            />
-            <q-btn
               label="Cancelar"
               type="reset"
               color="primary"
@@ -48,6 +42,13 @@
               class="q-ml-sm"
               v-close-popup
             />
+            <q-btn
+              label="Registrar campaña"
+              :disabled="!camposValidos"
+              type="submit"
+              color="accent"
+            />
+            
           </div>
         </q-form>
       </q-card-section>

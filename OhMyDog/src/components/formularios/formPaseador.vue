@@ -2,11 +2,15 @@
   <div class="flex">
     <q-card style="width: 40rem">
       <q-card-section class="bg-secondary">
-        <div class="text-h5 text-uppercase text-white text-center text-bold" >Agregar paseador</div>
+        <div class="text-h5 text-uppercase text-white text-center text-bold">
+          Agregar paseador
+        </div>
       </q-card-section>
 
       <q-card-section class="q-pt-md">
-        <div class="text-h6 q-pb-xs text-center text-primary"> Información básica </div>
+        <div class="text-h6 q-pb-xs text-center text-primary">
+          Información básica
+        </div>
         <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
           <q-input
             class="q-px-lg"
@@ -15,12 +19,7 @@
             label="Nombre y apellido"
           />
 
-          <q-input
-            class="q-px-lg"
-            filled
-            v-model="dni"
-            label="DNI"
-          />
+          <q-input class="q-px-lg" filled v-model="dni" label="DNI" />
 
           <q-input
             class="q-px-lg"
@@ -46,7 +45,9 @@
           />
 
           <div class="column q-px-lg bg-white">
-            <div class="text-h6 q-pb-xs text-center text-primary"> Días y horarios disponibles </div>
+            <div class="text-h6 q-pb-xs text-center text-primary">
+              Días y horarios disponibles
+            </div>
             <div
               v-for="sem of semana"
               :key="sem.nombre"
@@ -61,7 +62,9 @@
             </div>
           </div>
 
-            <div class="text-h6 q-pt-md text-center text-primary"> Información adicional </div>
+          <div class="text-h6 q-pt-md text-center text-primary">
+            Información adicional
+          </div>
           <q-input
             class="q-px-lg"
             v-model="info"
@@ -71,12 +74,15 @@
             type="textarea"
           />
           <ul class="q-mx-md q-py-xs">
-          <li v-for="mnsj in mensajeError" :key="mnsj" class="bg-white text-accent text-bold">
-            {{ mnsj }}
-          </li>
+            <li
+              v-for="mnsj in mensajeError"
+              :key="mnsj"
+              class="bg-white text-accent text-bold"
+            >
+              {{ mnsj }}
+            </li>
           </ul>
           <div class="row justify-end">
-            <q-btn label="Registrar paseador" :disabled="!camposValidos" type="submit" color="accent" />
             <q-btn
               label="Cancelar"
               type="reset"
@@ -84,6 +90,12 @@
               flat
               class="q-ml-sm"
               v-close-popup
+            />
+            <q-btn
+              label="Registrar paseador"
+              :disabled="!camposValidos"
+              type="submit"
+              color="accent"
             />
           </div>
         </q-form>
@@ -157,7 +169,6 @@ export default defineComponent({
     },
   },
   setup() {
-
     const name = ref("");
     const dni = ref("");
     const mail = ref("");
@@ -168,14 +179,22 @@ export default defineComponent({
     const dias = ref([]);
 
     const getDatosPaseador = () => {
-      var disponibilidad = [[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false],[false, false, false]]
-      console.log('DIAS: ', dias)
-      dias.value.forEach(element => {
-        let partes = element.split(' ')
+      var disponibilidad = [
+        [false, false, false],
+        [false, false, false],
+        [false, false, false],
+        [false, false, false],
+        [false, false, false],
+        [false, false, false],
+        [false, false, false],
+      ];
+      console.log("DIAS: ", dias);
+      dias.value.forEach((element) => {
+        let partes = element.split(" ");
         let dia = parseInt(partes[0]);
         let numero = parseInt(partes[1]);
         disponibilidad[dia][numero] = true;
-      })
+      });
       const disponibilidadJSON = JSON.stringify(disponibilidad);
       const datos = {
         nombre: name.value,
@@ -185,9 +204,9 @@ export default defineComponent({
         telefono: telefono.value,
         disponibilidadJSON: disponibilidadJSON,
         comentario: info.value,
-      }
-      return datos
-    }
+      };
+      return datos;
+    };
 
     return {
       name,
@@ -211,68 +230,77 @@ export default defineComponent({
     };
   },
   methods: {
-    async onSubmit () {
+    async onSubmit() {
       try {
-        const data = this.getDatosPaseador()
-        this.$emit('registrarPaseador', data);
-      } catch (error){
-        console.error(error)
+        const data = this.getDatosPaseador();
+        this.$emit("registrarPaseador", data);
+      } catch (error) {
+        console.error(error);
       }
-    }
+    },
   },
   computed: {
-    mensajeError(){
+    mensajeError() {
       let sError = [];
-      if (!this.nombreValido ){
-        sError.push( " El nombre no es correcto" )
+      if (!this.nombreValido) {
+        sError.push(" El nombre no es correcto");
       }
-      if (!this.dniValido ){
-        sError.push("El DNI no es correcto")
-
+      if (!this.dniValido) {
+        sError.push("El DNI no es correcto");
       }
-      if ( this.dniExiste) {
-        sError.push( " Un paseador con este DNI ya está registrado" )
+      if (this.dniExiste) {
+        sError.push(" Un paseador con este DNI ya está registrado");
       }
-      if (!this.mailValido ){
-        sError.push("El mail no es correcto")
+      if (!this.mailValido) {
+        sError.push("El mail no es correcto");
       }
-      if (!this.telefonoValido ){
-        sError.push("El teléfono no es correcto")
-
+      if (!this.telefonoValido) {
+        sError.push("El teléfono no es correcto");
       }
-      if (!this.zonaValida ){
-        sError.push("La zona no es correcta")
+      if (!this.zonaValida) {
+        sError.push("La zona no es correcta");
       }
-      if (!this.diasValidos ){
-        sError.push("Seleccione por lo menos un horario")
+      if (!this.diasValidos) {
+        sError.push("Seleccione por lo menos un horario");
       }
-      return sError
+      return sError;
     },
-    nombreValido(){
+    nombreValido() {
       return this.name.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.name);
     },
-    dniValido(){
+    dniValido() {
       return this.dni.length == 8 && /^\d+$/.test(this.dni);
     },
-    dniExiste(){
+    dniExiste() {
       return this.dniPaseadores.includes(parseInt(this.dni));
     },
-    mailValido(){
-      return this.mail.length > 5 && this.mail.includes('@') && this.mail.includes('.')
+    mailValido() {
+      return (
+        this.mail.length > 5 &&
+        this.mail.includes("@") &&
+        this.mail.includes(".")
+      );
     },
-    telefonoValido(){
+    telefonoValido() {
       return this.telefono.length > 6 && /^\d+$/.test(this.telefono);
     },
-    zonaValida(){
-      return this.zona.length > 0
+    zonaValida() {
+      return this.zona.length > 0;
     },
-    diasValidos(){
+    diasValidos() {
       return this.dias.length > 0;
     },
-    camposValidos(){
-      return this.nombreValido && !this.dniExiste && this.dniValido && this.mailValido && this.telefonoValido && this.zonaValida && this.diasValidos;
+    camposValidos() {
+      return (
+        this.nombreValido &&
+        !this.dniExiste &&
+        this.dniValido &&
+        this.mailValido &&
+        this.telefonoValido &&
+        this.zonaValida &&
+        this.diasValidos
+      );
     },
-
-  }
+  },
 });
 </script>

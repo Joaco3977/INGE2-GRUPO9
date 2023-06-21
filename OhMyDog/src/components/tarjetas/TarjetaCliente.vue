@@ -15,7 +15,7 @@
               class=""
               style="width: max-content; height: max-content"
             >
-            <div>Editar</div>
+              <div>Editar</div>
             </q-btn>
             <q-btn @click="confirmar = true" class="q-ml-sm" color="accent">
               <div>Eliminar</div>
@@ -128,6 +128,8 @@
         </q-card-section>
 
         <q-card-actions align="right">
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+
           <q-btn
             flat
             label="Eliminar"
@@ -135,7 +137,6 @@
             color="primary"
             v-close-popup
           />
-          <q-btn flat label="Cancelar" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -200,7 +201,7 @@ export default defineComponent({
     },
   },
   setup(props) {
-    const mostrarPopupEditar= ref(false);
+    const mostrarPopupEditar = ref(false);
     const nombresPerros = ref([]);
     const perrosCliente = ref([]);
     const verPerro = ref(false);
