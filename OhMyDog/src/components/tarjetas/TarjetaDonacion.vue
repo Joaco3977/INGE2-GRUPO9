@@ -90,6 +90,8 @@
         <q-input
           class="q-px-lg"
           filled
+          maxlength="100"
+          mask="######"
           v-model="donacion.monto"
           label="Monto en pesos"
         />
@@ -116,7 +118,7 @@
     </q-dialog>
 
     <q-dialog persistent v-model="abrirFormTarjeta" class="">
-      <formTarjeta :cantidad="donacion.monto" :link="link" />
+      <formTarjeta @pagarConTarjeta="pagarConTarjeta" :cantidad="donacion.monto" :link="link" />
     </q-dialog>
 
     <q-dialog v-model="MostrarPopEditar" class="">
@@ -128,6 +130,26 @@
         :nombreDonaciones="nombreDonaciones"
       />
     </q-dialog>
+
+    <q-dialog v-model="MostrarPopPagoTarjeta">
+      <q-card>
+
+        <q-card-section class="q-pt-none">
+          {{ mensajePagoTarjeta }}
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn v-if="!pagoAprobado" flat label="Aceptar" color="primary" v-close-popup />
+          <q-btn v-if="pagoAprobado"
+            flat
+            label="Aceptar"
+            @click="() => { abrirFormTarjeta = false; sumarBonusCliente(); }"
+            color="primary"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -137,6 +159,8 @@ import { defineComponent, ref } from "vue";
 import formTarjeta from "../formularios/formTarjeta.vue";
 import formDonacion from "../formulariosEditar/formDonacion.vue";
 import { api } from "src/boot/axios";
+
+const numerosValidos = ['1111-2222-3333-4444', '0000-0000-0000-0000']
 
 export default defineComponent({
   name: "TarjetaDonacion",
@@ -158,6 +182,10 @@ export default defineComponent({
   setup(props, { emit }) {
     const abrirFormTarjeta = ref(false);
     const MostrarPopEditar = ref(false);
+    const MostrarPopPagoTarjeta = ref(false);
+    const pagoAprobado = ref (false)
+
+    const mensajePagoTarjeta = ref('')
 
     const donacion = ref({
       dniCliente: useStore().dni,
@@ -170,13 +198,6 @@ export default defineComponent({
       dni: useStore().dni,
       nombre: useStore().nombre,
     };
-
-    const tarjeta = ref({
-      numero: "",
-      titular: "",
-      vencimiento: "",
-      codigo: "",
-    });
 
     const editarDonacion = async (donacion) => {
       try {
@@ -191,6 +212,39 @@ export default defineComponent({
       }
     };
 
+    const pagarConTarjeta = async (data) => {
+      console.log('data: ',data)
+      if (data.tarjeta.titular === 'Renzo Gigena' && data.tarjeta.codigo === '111' && numerosValidos.includes(data.tarjeta.numero)) {
+        if (data.tarjeta.numero === '1111-2222-3333-4444') {
+          mensajePagoTarjeta.value = `El pago fue realizado con exito, has obtenido un bonus de ${donacion.value.monto * 0.10}$ para tu proxima consulta`
+          pagoAprobado.value = true
+          MostrarPopPagoTarjeta.value = true
+        } else {
+          mensajePagoTarjeta.value = 'La tarjeta no cuenta con los fondos suficientes'
+          pagoAprobado.value = false
+          MostrarPopPagoTarjeta.value = true
+        }
+      } else {
+        mensajePagoTarjeta.value = 'Los datos de la tarjeta no son validos'
+        pagoAprobado.value = false
+        MostrarPopPagoTarjeta.value = true
+      }
+    }
+
+    const sumarBonusCliente = async () => {
+      console.log(useStore().rol)
+      if (useStore().rol === 1) {
+        try {
+          api.post('/donacion/sumarBonus', {
+            dni: useStore().dni,
+            bonus: donacion.value.monto * 0.10,
+          })
+        } catch (error) {
+          console.log(error)
+        }
+      }
+    }
+
     return {
       MostrarPopEditar,
       abrirFormTarjeta,
@@ -199,11 +253,14 @@ export default defineComponent({
       donar: ref(false),
       pagoTarjeta: ref(false),
       donacion,
-      tarjeta,
+      pagarConTarjeta,
+      MostrarPopPagoTarjeta,
+      pagoAprobado,
+      mensajePagoTarjeta,
+      sumarBonusCliente,
     };
   },
   methods: {
-    async initiatePayment() {},
     eliminarDonacion(id, nombre) {
       const data = {
         id: id,
@@ -214,20 +271,13 @@ export default defineComponent({
     resetMonto() {
       this.donacion.monto = "";
     },
-    resetTarjeta() {
-      this.tarjeta.numero = "";
-      this.tarjeta.titular = "";
-      this.tarjeta.vencimiento = "";
-      this.tarjeta.codigo = "";
-    },
   },
   mounted() {},
   computed: {
     montoValido() {
       return (
         /^\d+$/.test(this.donacion.monto) &&
-        parseInt(this.donacion.monto) > 0 &&
-        parseInt(this.donacion.monto) < 1000000
+        parseInt(this.donacion.monto) > 0
       );
     },
     camposValidos() {

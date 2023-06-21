@@ -23,7 +23,8 @@
           <q-input
             class="q-px-lg"
             filled
-            maxlength="16"
+            maxlength="19"
+            mask="####-####-####-####"
             v-model="numero"
             label="Número de la tarjeta"
           />
@@ -70,9 +71,8 @@
               @click="realizarDonacion(link, cantidad)"
               :disabled="!camposValidos"
               color="accent"
-              v-close-popup
             />
-            
+
           </div>
         </q-form>
       </q-card-section>
@@ -98,12 +98,6 @@ export default defineComponent({
     const codigo = ref("");
     const vencimiento = ref("");
 
-    const realizarDonacion = async (link, cantidad) => {
-      console.log("DONACION");
-      console.log("Link: ", link);
-      console.log("Cantidad: ", cantidad, "$");
-    };
-
     const sumarBonus = async () => {
       const bonus = props.cantidad * 0.1;
       await api
@@ -123,8 +117,23 @@ export default defineComponent({
       codigo,
       vencimiento,
       sumarBonus,
-      realizarDonacion,
     };
+  },
+  methods: {
+    realizarDonacion(link, cantidad) {
+      let tarjeta = {
+        titular: this.nombreTitular,
+        numero: this.numero,
+        codigo: this.codigo,
+        vencimiento: this.vencimiento,
+      }
+      let data = {
+        tarjeta: tarjeta,
+        link: link,
+        cantidad: cantidad
+      }
+      this.$emit('pagarConTarjeta', data)
+    },
   },
   computed: {
     mensajeError() {
@@ -137,6 +146,9 @@ export default defineComponent({
       }
       if (!this.vencimientoValido) {
         sError.push("Complete la fecha de vencimiento");
+      }
+      if (this.tarjetaVencida) {
+        sError.push("La tarjeta esta vencida");
       }
       if (!this.codigoValido) {
         sError.push("Complete el codigo de seguridad");
@@ -151,12 +163,27 @@ export default defineComponent({
       );
     },
 
+    tarjetaVencida() {
+      let anioActual = (new Date()).getFullYear()
+      let mesActual = (new Date()).getMonth() + 1;
+      let anioTarjeta = parseInt(this.vencimiento.split('/')[1])
+      let mesTarjeta = parseInt(this.vencimiento.split('/')[0])
+      if (anioTarjeta < anioActual) {
+        return true
+      } else if (anioActual === anioTarjeta) {
+        return mesTarjeta <= mesActual
+      } else {
+        return false
+      }
+    },
+
     numeroValido() {
-      return this.numero.length >= 16 && /^\d+$/.test(this.numero);
+      let numeroAux = this.numero.replaceAll('-', '');
+      return numeroAux.length === 16 && /^\d+$/.test(numeroAux);
     },
 
     vencimientoValido() {
-      return this.vencimiento.length > 0;
+      return this.vencimiento.length === 7;
     },
 
     codigoValido() {
@@ -167,7 +194,8 @@ export default defineComponent({
         this.nombreTitularValido &&
         this.numeroValido &&
         this.vencimientoValido &&
-        this.codigoValido
+        this.codigoValido &&
+        !this.tarjetaVencida
       );
     },
   },

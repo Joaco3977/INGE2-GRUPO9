@@ -43,13 +43,13 @@ router.post ('/editarDonacion',async(req,res)=>{
     }
 })
 
-router.post('/addDonacion', (req,res) => {
+router.post('/addDonacion', async (req,res) => {
     const nuevaDonacion = {
         NOMBRE: req.body.campania.NOMBRE,
         DESCRIPCION: req.body.campania.DESCRIPCION,
         LINK: req.body.campania.LINK
     }
-    knex('campania').insert(nuevaDonacion)
+    await knex('campania').insert(nuevaDonacion)
     .then(() => {
         Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO agrego la campaña: ${req.body.campania.NOMBRE}`)
         Log.agregarEntradaLog(req.body.quienSoy.rol, req.body.quienSoy.nombre, req.body.quienSoy.dni, `agrego la campaña ${nuevaDonacion.NOMBRE} con link: ${nuevaDonacion.LINK}`)
@@ -58,6 +58,18 @@ router.post('/addDonacion', (req,res) => {
     .catch((error) => {
         console.log(error)
         res.status(401).send({})
+    })
+})
+
+router.post('/sumarBonus', async (req, res) => {
+    await knex('cliente').where('DNI', req.body.dni).update({'MONTODESCUENTO': req.body.bonus})
+    .then(() => {
+        Consola.mensaje("\x1b[35m%s\x1b[0m", `CLIENTE ${req.body.dni} dono ${req.body.bonus / 0.10}$ pesos argentinos`)
+        res.status(200).send({})
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send(error)
     })
 })
 
