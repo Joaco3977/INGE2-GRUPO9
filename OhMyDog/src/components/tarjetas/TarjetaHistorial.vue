@@ -4,7 +4,7 @@
   <div class="bg-primary full-height" style="width: 96%; height: 27vh">
     <q-card flat>
       <div class="bg-primary full-width flex justify-end">
-        <q-btn @click="mostrarPopup = true" class="q-ma-sm" color="accent">
+        <q-btn v-if="rol == 2" @click="mostrarPopup = true" class="q-ma-sm" color="accent">
           <div>Agregar historial</div>
         </q-btn>
       </div>
