@@ -7,7 +7,7 @@
 
       <q-card-section class="q-pt-md">
         <div class="text-h6 q-pb-xs text-center text-primary"> Información básica </div>
-        <q-form @submit="onSubmit(Adni)" @reset="onReset" class="q-gutter-md">
+        <q-form @submit="confirmar = true" @reset="onReset" class="q-gutter-md">
           <q-input
             class="q-px-lg"
             filled
@@ -89,6 +89,26 @@
         </q-form>
       </q-card-section>
     </q-card>
+
+    <q-dialog v-model="confirmar">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">¿Editar paseador?</div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+                    <q-btn flat label="Cancelar" color="primary" v-close-popup />
+
+          <q-btn
+            flat
+            label="Confirmar"
+            @click="onSubmit(Adni)"
+            color="primary"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -222,6 +242,7 @@ export default defineComponent({
       dias,
       getDatosPaseador,
       semana,
+      confirmar: ref(false),
 
       onReset() {
         name.value = null;

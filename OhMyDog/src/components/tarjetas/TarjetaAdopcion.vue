@@ -7,19 +7,22 @@
       class="my-card bg-primary text-white q-ma-md"
       style="width: 20rem"
     >
-      <q-card-section v-if="adoptado == 1" class="bg-primary textoNoItems text-white">
+      <q-card-section
+        v-if="adoptado == 1"
+        class="bg-primary textoNoItems text-white"
+      >
         ¡ADOPTADO!
       </q-card-section>
       <q-card-section v-if="servicio === 'perrosMios' || rol === 2">
         <div class="row justify-end full-width">
-           <q-btn
-            @click="mostrarPopupEditar = true "
+          <q-btn
+            @click="mostrarPopupEditar = true"
             v-if="servicio === 'perrosMios' || rol === 2 || adoptado == 0"
             class=""
             color="accent"
           >
             <div>Editar</div>
-          </q-btn> 
+          </q-btn>
           <q-btn
             v-if="servicio === 'perrosMios' || rol === 2 || adoptado == 0"
             @click="confirmar = true"
@@ -40,14 +43,18 @@
             <div>{{ nombre }}</div>
           </div>
           <div v-else class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs"> ¡Elegime un nombre! </div>
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs">
+              ¡Elegime un nombre!
+            </div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Tamaño:</div>
             <div>{{ tamanio }}</div>
           </div>
           <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Edad aproximada:</div>
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs">
+              Edad aproximada:
+            </div>
             <div>{{ edad }} meses</div>
           </div>
           <div class="row">
@@ -73,7 +80,8 @@
       <!-- Acciones -->
       <q-separator dark />
       <q-card-actions v-if="adoptado == 0" class="column items-center">
-        <q-btn @click="confirmarAdopcion = true"
+        <q-btn
+          @click="confirmarAdopcion = true"
           flat
           v-if="servicio === 'perrosMios' || rol == 2"
           class="textoBoton"
@@ -118,7 +126,9 @@
     <q-dialog v-model="confirmarAdopcion">
       <q-card>
         <q-card-section>
-          <div class="textoTituloTarjeta text-primary">¿Marcar perro como adoptado?</div>
+          <div class="textoTituloTarjeta text-primary">
+            ¿Marcar perro como adoptado?
+          </div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -134,14 +144,13 @@
             color="primary"
             v-close-popup
           />
-
         </q-card-actions>
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="mostrarPopupEditar">
-        <formPerroAdopcion
-        @editarPerro="editarPerro" 
+    <q-dialog ref="popup1" v-model="mostrarPopupEditar">
+      <formPerroAdopcion
+        @editarPerro="editarPerro"
         :nombre="nombre"
         :tamanio="tamanio"
         :edad="edad"
@@ -149,8 +158,8 @@
         :comentario="comentario"
         :mail="mail"
         :id="id"
-        />
-      </q-dialog>
+      />
+    </q-dialog>
   </div>
 </template>
 
@@ -159,13 +168,13 @@ import { useQuasar } from "quasar";
 import { defineComponent, ssrContextKey } from "vue";
 import { ref } from "vue";
 import formPerroAdopcion from "../formulariosEditar/formPerroAdopcion.vue";
-import { useStore } from '../../pinia/store.js'
+import { useStore } from "../../pinia/store.js";
 
 export default defineComponent({
   name: "TarjetaAdopcion",
   components: {
-    formPerroAdopcion
-},
+    formPerroAdopcion,
+  },
   props: {
     id: String,
     rol: String,
@@ -180,28 +189,36 @@ export default defineComponent({
     adoptado: String,
     dnicliente: String,
   },
-  setup(props, {emit}) {
+  setup(props, { emit }) {
+
+    const mostrarPopupEditar= ref(false);
+
     const editarPerro = async (perroEditado) => {
-        var perro={
-            id: props.id,
-            nombre:perroEditado.nombre,
-            sexo:perroEditado.sexo,
-            edad:perroEditado.edad,
-            tamanio:perroEditado.tamanio,
-            comentario:perroEditado.comentario,
-            mail:perroEditado.mail,
-          }
-        emit("editarPerro", perro)
-        }
+      mostrarPopupEditar.value = false;
+      var perro = {
+        id: props.id,
+        nombre: perroEditado.nombre,
+        sexo: perroEditado.sexo,
+        edad: perroEditado.edad,
+        tamanio: perroEditado.tamanio,
+        comentario: perroEditado.comentario,
+        mail: perroEditado.mail,
+      };
+      emit("editarPerro", perro);
+    };
     return {
       editarPerro,
+      mostrarPopupEditar,
       contactoCliente: "",
       confirmar: ref(false),
       confirmarAdopcion: ref(false),
-      mostrarPopupEditar : ref(false),
+      
     };
   },
   methods: {
+    closePopup() {
+      this.$refs.popup1.hide();
+    },
     convertirContacto() {
       let cont = "";
       if (this.mail.includes("@")) {
