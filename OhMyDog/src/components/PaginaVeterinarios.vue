@@ -164,14 +164,16 @@ export default defineComponent({
       );
     };
 
-    async function eliminarVeterinario(dni) {
+    async function eliminarVeterinario(dni,nombreApellido) {
       try {
-        await api.post("veterinario/deleteVeterinario", {
+        console.log("entre")
+        await api.post("/veterinario/deleteVeterinario", {
           dni: dni,
           nombre: nombreApellido,
         });
         loadVeterinarios();
-      } catch {
+      } catch (error){
+        console.log(error)
         console.error("NO SE PUDO ELIMINAR VETERINARIO");
       }
     }
