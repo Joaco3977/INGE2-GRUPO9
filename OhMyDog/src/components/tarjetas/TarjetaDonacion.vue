@@ -147,6 +147,7 @@ export default defineComponent({
   },
   setup(props, {emit}) {
     const abrirFormTarjeta= ref(false);
+    const MostrarPopEditar= ref(false);
 
     const donacion = ref({
       dniCliente: useStore().dni,
@@ -169,6 +170,7 @@ export default defineComponent({
 
     const editarDonacion = async (donacion) => {
       try {
+        MostrarPopEditar.value = false;
         const response = await api.post("/donacion/editarDonacion",{
           donacion,
           quienSoy: quienSoy,
@@ -179,7 +181,7 @@ export default defineComponent({
       }}
 
     return {
-      MostrarPopEditar:ref(false),
+      MostrarPopEditar,
       abrirFormTarjeta,
       editarDonacion,
       confirmar: ref(false),
