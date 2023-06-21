@@ -1,7 +1,7 @@
 <template>
   <!-- Todo el contenido tiene que estar adentro de un div -->
   <!-- Pueden usar componentes dentro de este componente -->
-  <div class="bg-white" style="width: full; max-height: 90vh">
+  <div class="bg-white" style="width: full">
     <q-card class="my-card bg-white text-white q-ma-md" style="width: 75vw">
       <q-card-section class="bg-primary">
         <div class="row justify-between full-width">
