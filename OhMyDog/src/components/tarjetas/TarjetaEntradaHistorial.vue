@@ -52,7 +52,7 @@ export default defineComponent({
     const veterinario = ref({})
 
     const getDatosVeterinario = async () => {
-      await api.post('/veterinario/getVeterinario', {
+      await api.post('/veterinario/getVeterinarioHistorial', {
         dni: parseInt(props.dniVet)
       })
       .then((response) => {
