@@ -173,7 +173,7 @@ export default defineComponent({
         { label: "Castración", value: "Castración" },
       ],
       opcionVacuna: [
-        { label: "Rabia", value: "Rabiea" },
+        { label: "Rabia", value: "Rabia" },
         { label: "Parvovirus canino", value: "Parvovirus canino" },
         { label: "Moquillo", value: "Moquillo" },
         { label: "Hepatitis canina", value: "Hepatitis canina" },
