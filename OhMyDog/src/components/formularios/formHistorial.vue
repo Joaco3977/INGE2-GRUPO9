@@ -108,7 +108,7 @@ export default defineComponent({
       return this.nombreServicio.value === "Vacunación";
     },
     camposValidos () {
-      return true
+      return this.nombreServicio !== null
     }
   },
 });

@@ -86,6 +86,17 @@ router.post('/getVeterinario',async (req,res) =>{
     })
 })
 
+router.post('/getVeterinarioHistorial',async (req,res) =>{
+    await knex('veterinario').select('*').where('DNI', req.body.dni).first()
+    .then((response) => {
+        res.status(200).send(response)
+        Consola.mensaje("\x1b[33m%s\x1b[0m", "SISTEMA solicito un Veterinario")
+    })
+    .catch (() => {
+        res.status(401).send('No fue posible conectar con la base de datos');
+    })
+})
+
 router.post ('/editarVeterinario',async(req,res)=>{
     try {  
         await knex('Veterinario').where("DNI", req.body.veterinario.dniA).update({"DNI":req.body.veterinario.dni,"NOMBREAPELLIDO" : req.body.veterinario.nombreApellido,"MAIL": req.body.veterinario.mail,"TELEFONO":req.body.veterinario.telefono});
