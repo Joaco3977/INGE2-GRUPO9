@@ -105,10 +105,10 @@ export default defineComponent({
       try {
         const response = await api.post("/veterinario/addVeterinario", {
           veterinario: {
-            dni: veterinario.value,
-            nombreApellido: veterinario.value,
-            mail: veterinario.value,
-            telefono: veterinario.value,
+            dni: veterinario.dni,
+            nombreApellido: veterinario.nombreApellido,
+            mail: veterinario.mail,
+            telefono: veterinario.telefono,
           },
         });
         loadVeterinarios();
