@@ -21,7 +21,7 @@
             label="Descripción"
           />
 
-          <q-input class="q-px-lg" filled v-model="link" label="Link" />
+          <q-input class="q-px-lg" filled v-model="montoEsperado" label="Monto objetivo" maxlength="10" mask="##########"/>
 
           <ul class="q-mx-md q-py-xs">
             <li
@@ -83,7 +83,7 @@ export default defineComponent({
   props: {
     Anombre: String,
     Adescripcion: String,
-    Alink: String,
+    AmontoEsperado: String,
     nombreDonaciones: {
       type: Array,
       required: true,
@@ -92,14 +92,14 @@ export default defineComponent({
   setup(props) {
     const nombre = ref(props.Anombre);
     const descripcion = ref(props.Adescripcion);
-    const link = ref(props.Alink);
+    const montoEsperado = ref(props.AmontoEsperado)
 
     const getDatosDonacion = () => {
       const donacion = {
         NOMBRE: nombre.value,
         DESCRIPCION: descripcion.value,
-        LINK: link.value,
         NOMBREA: props.Anombre,
+        MONTOESPERADO: montoEsperado.value
       };
       return donacion;
     };
@@ -107,7 +107,7 @@ export default defineComponent({
     return {
       nombre,
       descripcion,
-      link,
+      montoEsperado,
       getDatosDonacion,
 
       confirmar: ref(false),
@@ -115,7 +115,7 @@ export default defineComponent({
       onReset() {
         nombre.value = null;
         descripcion.value = null;
-        link.value = null;
+        montoEsperado.value = null
       },
     };
   },
@@ -145,8 +145,8 @@ export default defineComponent({
       if (!this.descripcionValida) {
         sError.push("Ingrese una descripción de la campaña");
       }
-      if (!this.linkValido) {
-        sError.push("El link debe ser válido");
+      if (!this.montoValido) {
+        sError.push("El monto objetivo debe ser válido");
       }
       return sError;
     },
@@ -156,8 +156,8 @@ export default defineComponent({
     descripcionValida() {
       return this.descripcion.length > 0;
     },
-    linkValido() {
-      return this.link.toString().length > 0 && this.urlValida(this.link);
+    montoValido() {
+      return this.montoEsperado.length > 0;
     },
     nombreExiste() {
       if (this.Anombre === this.nombre) {
@@ -170,7 +170,7 @@ export default defineComponent({
       return (
         this.nombreValido &&
         !this.nombreExiste &&
-        this.linkValido &&
+        this.montoValido &&
         this.descripcionValida
       );
     },

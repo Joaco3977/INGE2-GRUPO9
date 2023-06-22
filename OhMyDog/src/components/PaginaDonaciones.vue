@@ -41,7 +41,7 @@
           :id="donacion.ID"
           :nombre="donacion.NOMBRE"
           :descripcion="donacion.DESCRIPCION"
-          :link="donacion.LINK"
+          :montoEsperado="donacion.MONTOESPERADO"
         />
       </div>
       <div

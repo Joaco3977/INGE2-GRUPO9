@@ -34,7 +34,7 @@ router.post ('/editarDonacion',async(req,res)=>{
     try {  
         await knex('campania').where({
             NOMBRE: req.body.donacion.NOMBREA
-        }).update({"NOMBRE" : req.body.donacion.NOMBRE,"LINK":req.body.donacion.LINK, "DESCRIPCION": req.body.donacion.DESCRIPCION});
+        }).update({"NOMBRE" : req.body.donacion.NOMBRE,"MONTOESPERADO":req.body.donacion.MONTOESPERADO, "DESCRIPCION": req.body.donacion.DESCRIPCION});
         Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `edito la Donacion ${req.body.donacion.NOMBREA} `)
         res.status(200).send({});
     }catch (error){
@@ -44,20 +44,56 @@ router.post ('/editarDonacion',async(req,res)=>{
 })
 
 router.post('/addDonacion', async (req,res) => {
-    const nuevaDonacion = {
+    const nuevaCampania = {
         NOMBRE: req.body.campania.NOMBRE,
         DESCRIPCION: req.body.campania.DESCRIPCION,
-        LINK: req.body.campania.LINK
+        MONTOESPERADO: req.body.campania.MONTOESPERADO
     }
-    await knex('campania').insert(nuevaDonacion)
+    await knex('campania').insert(nuevaCampania)
     .then(() => {
         Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO agrego la campaña: ${req.body.campania.NOMBRE}`)
-        Log.agregarEntradaLog(req.body.quienSoy.rol, req.body.quienSoy.nombre, req.body.quienSoy.dni, `agrego la campaña ${nuevaDonacion.NOMBRE} con link: ${nuevaDonacion.LINK}`)
+        Log.agregarEntradaLog(req.body.quienSoy.rol, req.body.quienSoy.nombre, req.body.quienSoy.dni, `agrego la campaña ${nuevaDonacion.NOMBRE}`)
         res.status(200).send({})
     })
     .catch((error) => {
         console.log(error)
         res.status(401).send({})
+    })
+})
+
+router.post('/getMontoActual', async(req, res) => {
+    await knex('donaciones')
+    .sum('cantidad as total')
+    .where('IDCAMPANIA', req.body.id)
+    .then(result => {
+      let total = result[0].total || 0
+      res.status(200).send({total})
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send({total})
+    })
+})
+
+router.post('/donar', async(req, res) => {
+    let dniCliente = null
+    if (req.body.dniCliente !== null) {
+        dniCliente = req.body.dniCliente;
+    } 
+    const nuevaDonacion = {
+        IDCAMPANIA: req.body.id,
+        FECHA: new Date(),
+        DNICLIENTE: dniCliente,
+        CANTIDAD: req.body.cantidad,
+    }
+    await knex('donaciones').insert(nuevaDonacion)
+    .then(() => {
+        console.log("DONACION CORRECTA")
+        res.status(200).send({})
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send(error)
     })
 })
 

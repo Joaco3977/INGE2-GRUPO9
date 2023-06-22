@@ -89,7 +89,6 @@ export default defineComponent({
   name: "formTarjeta",
   components: {},
   props: {
-    link: String,
     cantidad: Number,
   },
   setup(props) {
@@ -129,7 +128,6 @@ export default defineComponent({
       }
       let data = {
         tarjeta: tarjeta,
-        link: link,
         cantidad: cantidad
       }
       this.$emit('pagarConTarjeta', data)

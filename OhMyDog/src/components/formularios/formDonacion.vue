@@ -21,7 +21,7 @@
             label="Descripción"
           />
 
-          <q-input class="q-px-lg" filled v-model="link" label="Link" />
+          <q-input class="q-px-lg" filled v-model="montoEsperado" label="Monto objetivo" maxlength="10" mask="##########"/>
 
           <ul class="q-mx-md q-py-xs">
             <li
@@ -48,7 +48,7 @@
               type="submit"
               color="accent"
             />
-            
+
           </div>
         </q-form>
       </q-card-section>
@@ -70,13 +70,13 @@ export default defineComponent({
   setup() {
     const nombre = ref("");
     const descripcion = ref("");
-    const link = ref("");
+    const montoEsperado = ref('')
 
     const getDatosDonacion = () => {
       const donacion = {
         NOMBRE: nombre.value,
         DESCRIPCION: descripcion.value,
-        LINK: link.value,
+        MONTOESPERADO: montoEsperado.value,
       };
       return donacion;
     };
@@ -84,13 +84,13 @@ export default defineComponent({
     return {
       nombre,
       descripcion,
-      link,
+      montoEsperado,
       getDatosDonacion,
 
       onReset() {
         nombre.value = null;
         descripcion.value = null;
-        link.value = null;
+        montoEsperado.value = null;
       },
     };
   },
@@ -102,10 +102,6 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
-    },
-    urlValida(string){
-      const urlPattern = /^(https?:\/\/)?([\w.-]+)\.([a-z]{2,})(\/.*)?$/i;
-      return urlPattern.test(string);
     }
   },
   computed: {
@@ -120,8 +116,8 @@ export default defineComponent({
       if (!this.descripcionValida) {
         sError.push("Ingrese una descripción de la campaña");
       }
-      if (!this.linkValido) {
-        sError.push("El link debe ser válido");
+      if (!this.montoValido) {
+        sError.push("El monto objetivo debe ser válido");
       }
       return sError;
     },
@@ -131,14 +127,14 @@ export default defineComponent({
     descripcionValida() {
       return this.descripcion.length > 0;
     },
-    linkValido() {
-      return this.link.length > 0 && this.urlValida(this.link);
+    montoValido() {
+      return this.montoEsperado.length > 0;
     },
     nombreExiste() {
       return this.nombreDonaciones.includes(this.nombre);
     },
     camposValidos() {
-      return this.nombreValido && !this.nombreExiste && this.linkValido && this.descripcionValida;
+      return this.nombreValido && !this.nombreExiste && this.montoValido && this.descripcionValida;
     },
   },
 });

@@ -34,6 +34,10 @@
                 <div class="textoTituloPosteo q-mr-md q-pb-xs">Descripción</div>
                 <div>{{ descripcion }}</div>
               </div>
+              <div class="row">
+                <div class="textoTituloPosteo q-mr-md q-pb-xs">Objetivo</div>
+                <div>Se recaudaron {{ montoActual }}/{{ montoEsperado }} del monto objetivo! Contribuye con tu donacion.</div>
+              </div>
             </div>
             <!-- Acciones -->
             <div class="col-grow"></div>
@@ -126,8 +130,8 @@
         @editarDonacion="editarDonacion"
         :Anombre="nombre"
         :Adescripcion="descripcion"
-        :Alink="link"
         :nombreDonaciones="nombreDonaciones"
+        :AmontoEsperado="montoEsperado"
       />
     </q-dialog>
 
@@ -143,7 +147,7 @@
           <q-btn v-if="pagoAprobado"
             flat
             label="Aceptar"
-            @click="() => { abrirFormTarjeta = false; sumarBonusCliente(); }"
+            @click="() => { abrirFormTarjeta = false; sumarBonusCliente(); setMontoActual()}"
             color="primary"
             v-close-popup
           />
@@ -173,7 +177,7 @@ export default defineComponent({
     id: String,
     nombre: String,
     descripcion: String,
-    link: String,
+    montoEsperado: String,
     nombreDonaciones: {
       type: Array,
       required: true,
@@ -186,6 +190,21 @@ export default defineComponent({
     const pagoAprobado = ref (false)
 
     const mensajePagoTarjeta = ref('')
+
+
+    const montoActual = ref(0)
+
+    const setMontoActual = async() => {
+      await api.post('/donacion/getMontoActual', {
+        id: props.id
+      })
+      .then((response) => {
+        montoActual.value = response.data.total
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
 
     const donacion = ref({
       dniCliente: useStore().dni,
@@ -213,12 +232,29 @@ export default defineComponent({
     };
 
     const pagarConTarjeta = async (data) => {
-      console.log('data: ',data)
       if (data.tarjeta.titular === 'Renzo Gigena' && data.tarjeta.codigo === '111' && numerosValidos.includes(data.tarjeta.numero)) {
         if (data.tarjeta.numero === '1111-2222-3333-4444') {
-          mensajePagoTarjeta.value = `El pago fue realizado con exito, has obtenido un bonus de ${donacion.value.monto * 0.10}$ para tu proxima consulta`
-          pagoAprobado.value = true
-          MostrarPopPagoTarjeta.value = true
+          let dniCliente = null
+          if (useStore().rol === 1) {
+            dniCliente = useStore().dni
+          }
+          try {
+            await api.post('/donacion/donar', {
+              id: props.id,
+              dniCliente: dniCliente,
+              cantidad: donacion.value.monto,
+            })
+            .then(() => {
+              mensajePagoTarjeta.value = `El pago fue realizado con exito, has obtenido un bonus de ${donacion.value.monto * 0.10}$ para tu proxima consulta`
+              pagoAprobado.value = true
+              MostrarPopPagoTarjeta.value = true
+            })
+            .catch((error) => {
+              console.log(error)
+            })
+          } catch (error2) {
+            console.log(error2)
+          }
         } else {
           mensajePagoTarjeta.value = 'La tarjeta no cuenta con los fondos suficientes'
           pagoAprobado.value = false
@@ -258,6 +294,8 @@ export default defineComponent({
       pagoAprobado,
       mensajePagoTarjeta,
       sumarBonusCliente,
+      montoActual,
+      setMontoActual
     };
   },
   methods: {
@@ -272,7 +310,9 @@ export default defineComponent({
       this.donacion.monto = "";
     },
   },
-  mounted() {},
+  mounted() {
+    this.setMontoActual()
+  },
   computed: {
     montoValido() {
       return (

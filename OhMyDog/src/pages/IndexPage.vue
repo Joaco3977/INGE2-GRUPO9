@@ -87,7 +87,12 @@
           icon="ion-hand"
           label="Donaciones"
         />
-        <!-- <q-tab name="TESTING" icon="ion-walk" label="TESTING" /> -->
+        <q-tab
+          v-if="store.rol < 0"
+          name="Registro donaciones"
+          icon="ion-hand"
+          label="Registro donaciones"
+        />
         <!-- <q-tab
           v-if="store.rol === 2"
           name="Responder Consultas"
@@ -177,9 +182,10 @@
           <PaginaConsultaVeterinario />
         </q-tab-panel>
 
-        <q-tab-panel name="TESTING">
-          <PaginaTesting />
+        <q-tab-panel v-if="store.rol === -1" name="Registro Donaciones">
+          <PaginaRegistroDonaciones />
         </q-tab-panel>
+
       </q-tab-panels>
     </div>
   </div>
@@ -204,11 +210,11 @@ import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
 import PaginaVeterinarios from "src/components/PaginaVeterinarios.vue";
 import PaginaDonaciones from "../components/PaginaDonaciones.vue";
+import PaginaRegistroDonaciones from "../components/PaginaRegistroDonaciones.vue"
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
 import { api } from "../boot/axios.js";
 import { LocalStorage } from "quasar";
-import PaginaTesting from "../components/PaginaTesting.vue"; //SACAR DESPUES
 
 export default defineComponent({
   name: "IndexPage",
@@ -226,9 +232,9 @@ export default defineComponent({
     PaginaPerfil,
     PaginaLog,
     PaginaVeterinarios,
-    PaginaTesting, //SACAR DESPUES
     PaginaAdopciones,
     PaginaDonaciones,
+    PaginaRegistroDonaciones,
   },
   setup() {
     const data = reactive({
