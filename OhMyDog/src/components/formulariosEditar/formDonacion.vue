@@ -56,7 +56,7 @@
     <q-dialog v-model="confirmar">
       <q-card>
         <q-card-section>
-          <div class="textoTituloTarjeta text-primary">¿Editar perro?</div>
+          <div class="textoTituloTarjeta text-primary">¿Editar Campaña?</div>
         </q-card-section>
 
         <q-card-actions align="right">

@@ -8,6 +8,9 @@
       </q-card-section>
 
       <q-card-section class="">
+        <div class="text-center q-py-md">
+          La entrada solo se podrá editar el mismo día de su creación
+        </div>
         <q-form class="q-px-xl" reset>
           <q-select
             v-model="nombreServicio"
@@ -48,7 +51,13 @@
               class="q-ml-sm"
               v-close-popup
             />
-            <q-btn :disabled="!camposValidos" @click="agregarEntrada()" label="Agregar Historial" color="accent" v-close-popup />
+            <q-btn
+              :disabled="!camposValidos"
+              @click="agregarEntrada()"
+              label="Agregar Historial"
+              color="accent"
+              v-close-popup
+            />
           </div>
         </q-form>
       </q-card-section>
@@ -61,14 +70,14 @@ import { defineComponent, ref } from "vue";
 import { useStore } from "src/pinia/store";
 
 export default defineComponent({
-  name: "formTurno",
+  name: "formHistorial",
   props: {
     idPerro: String,
   },
   setup(props, { emit }) {
-    const nombreServicio = ref ('')
-    const nombreVacuna = ref ('')
-    const comentario = ref ('')
+    const nombreServicio = ref("");
+    const nombreVacuna = ref("");
+    const comentario = ref("");
 
     const agregarEntrada = async () => {
       let entrada = {
@@ -76,10 +85,10 @@ export default defineComponent({
         DNIVET: useStore().dni,
         NOMBRESERVICIO: nombreServicio.value.value,
         COMENTARIO: comentario.value,
-        NOMBREVACUNA: nombreVacuna.value.value
-      }
-      emit('registrarEntrada', entrada);
-    }
+        NOMBREVACUNA: nombreVacuna.value.value,
+      };
+      emit("registrarEntrada", entrada);
+    };
 
     return {
       nombreServicio,
@@ -98,18 +107,16 @@ export default defineComponent({
         { label: "Moquillo", value: "Moquillo" },
         { label: "Hepatitis canina", value: "Hepatitis canina" },
       ],
-    }
+    };
   },
-  methods: {
-
-  },
+  methods: {},
   computed: {
     esVacuna() {
       return this.nombreServicio.value === "Vacunación";
     },
-    camposValidos () {
-      return this.nombreServicio !== null
-    }
+    camposValidos() {
+      return this.nombreServicio !== null;
+    },
   },
 });
 </script>

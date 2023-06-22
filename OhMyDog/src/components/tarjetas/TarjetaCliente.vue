@@ -246,6 +246,7 @@ export default defineComponent({
       } catch (error) {
         console.error(error);
       }
+      verPerro.value = false;
     };
 
     const eliminarPerro = async (nombre) => {
