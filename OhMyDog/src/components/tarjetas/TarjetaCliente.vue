@@ -9,9 +9,6 @@
             {{ nombreApellido }}
           </div>
           <div>
-            <q-btn @click="mostrarPopupBonus = true" class="" color="accent">
-              <div>Bonus</div>
-            </q-btn>
             <q-btn
               @click="mostrarPopupEditar = true"
               color="accent"
@@ -24,6 +21,9 @@
               <div>Eliminar</div>
 
               <!-- @click="ejecutarFuncionPadre(dni)"-->
+            </q-btn>
+            <q-btn @click="mostrarPopupBonus = true" class="q-ml-sm" color="accent">
+              <div>Bonus</div>
             </q-btn>
           </div>
         </div>
