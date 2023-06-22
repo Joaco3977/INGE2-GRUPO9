@@ -99,7 +99,7 @@ export default defineComponent({
     },
 
     montoValido() {
-      return this.nuevoMonto > 0 && /^\d+$/.test(this.nuevoMonto);
+      return this.nuevoMonto >= 0 && /^\d+$/.test(this.nuevoMonto);
     },
 
     camposValidos() {
