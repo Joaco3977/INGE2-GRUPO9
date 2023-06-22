@@ -100,7 +100,7 @@ router.post('/getVeterinarioHistorial',async (req,res) =>{
 router.post ('/editarVeterinario',async(req,res)=>{
     try {  
         await knex('veterinario').where("DNI", req.body.veterinario.dniA).update({"DNI":req.body.veterinario.dni,"NOMBREAPELLIDO" : req.body.veterinario.nombreApellido,"MAIL": req.body.veterinario.mail,"TELEFONO":req.body.veterinario.telefono});
-        await knex('turno').where('DNIVETERINARIO', req.body.veterinario.dniA).update({'DNIVETERINARIO': req.body.veterinario.dniA})
+        await knex('turno').where('DNIVETERINARIO', req.body.veterinario.dniA).update({'DNIVETERINARIO': req.body.veterinario.dni})
         console.log("admin edito un vet")
         res.status(200).send({});
     }catch (error){

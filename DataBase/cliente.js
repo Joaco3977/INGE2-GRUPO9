@@ -85,9 +85,9 @@ router.post('/deleteCliente', async (req, res) => {
 router.post ('/editarCliente',async(req,res)=>{
     try {  
         await knex('cliente').where("DNI", req.body.cliente.dniA).update({"DNI":req.body.cliente.dni,"NOMBREAPELLIDO" : req.body.cliente.nombreApellido,"MAIL": req.body.cliente.mail,"TELEFONO":req.body.cliente.telefono,"DIRECCION": req.body.cliente.direccion})
-        await knex('perro').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dniA})
-        await knex('turno').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dniA})
-        await knex('perroadopcion').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dniA})
+        await knex('perro').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dni})
+        await knex('turno').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dni})
+        await knex('perroadopcion').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dni})
         //await knex('perroPerdido').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dniA})
         //await knex('perroCruza').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dniA})
         Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `edito al CLIENTE ${req.body.cliente.nombreApellido} con DNI: ${req.body.cliente.dniA}`)
