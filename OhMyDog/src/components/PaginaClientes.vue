@@ -63,6 +63,7 @@
           <div class="full-width row items-center q-py-md">
             <TarjetaCliente
               :ref="'losClientes'"
+              @loadClientes="loadClientes"
               @ejecutarFuncion="eliminarCliente"
               @editarCliente="editarCliente"
               v-for="(cliente, dni) in clientesFiltrados"
@@ -75,6 +76,7 @@
               :mailsClientes="mailsClientes"
               :mailsVeterinarios="mailsVeterinarios"
               :dniClientes="dniClientes"
+              :montoBonificacion="cliente.MONTODESCUENTO"
             />
           </div>
           <div

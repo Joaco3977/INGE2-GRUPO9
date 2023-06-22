@@ -9,6 +9,9 @@
             {{ nombreApellido }}
           </div>
           <div>
+            <q-btn @click="mostrarPopupBonus = true" class="" color="accent">
+              <div>Bonus</div>
+            </q-btn>
             <q-btn
               @click="mostrarPopupEditar = true"
               color="accent"
@@ -50,6 +53,10 @@
             <div class="row">
               <div class="textoTituloPosteo q-pr-sm q-pb-xs">Dirección:</div>
               <div>{{ direccion }}</div>
+            </div>
+            <div class="row">
+              <div class="textoTituloPosteo q-pr-sm q-pb-xs">Bonificacion por donar:</div>
+              <div>{{ montoBonificacion }}$ pesos argentinos</div>
             </div>
           </div>
 
@@ -148,6 +155,14 @@
       />
     </q-dialog>
 
+    <q-dialog v-model="mostrarPopupBonus">
+      <FormBonus
+        @loadClientes="loadClientes"
+        :dniCliente="dni"
+        :montoBonificacion="montoBonificacion"
+      />
+    </q-dialog>
+
     <q-dialog v-model="mostrarPopupEditar">
       <FormClienteEditar
         @editarCliente="editarCliente"
@@ -171,6 +186,7 @@ import { ref } from "vue";
 import TarjetaPerroVet from "./TarjetaPerroVet.vue";
 import FormPerro from "../formularios/formPerro.vue";
 import FormClienteEditar from "../formulariosEditar/formCliente.vue";
+import FormBonus from "../formulariosEditar/formBonus.vue";
 import { normalizeString } from "src/functions/misc";
 import { useStore } from "../../pinia/store.js";
 
@@ -180,7 +196,8 @@ export default defineComponent({
     TarjetaPerroVet,
     FormPerro,
     FormClienteEditar,
-  },
+    FormBonus,
+},
   props: {
     dni: String,
     nombreApellido: String,
@@ -199,9 +216,11 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    montoBonificacion: String,
   },
   setup(props) {
     const mostrarPopupEditar = ref(false);
+    const mostrarPopupBonus = ref (false);
     const nombresPerros = ref([]);
     const perrosCliente = ref([]);
     const verPerro = ref(false);
@@ -282,9 +301,14 @@ export default defineComponent({
       eliminarPerro,
       loadPerrosCliente,
       cerrarPerro,
+      mostrarPopupBonus
     };
   },
   methods: {
+    loadClientes() {
+      this.$emit('loadClientes', {})
+      this.mostrarPopupBonus = false
+    },
     ejecutarFuncionPadre(dni) {
       this.$emit("ejecutarFuncion", dni);
     },
