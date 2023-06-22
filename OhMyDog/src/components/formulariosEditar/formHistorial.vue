@@ -95,11 +95,21 @@
       const comentario = ref (props.Acomentario)
   
       const editarEntrada = async () => {
-        let entrada = {
+        let entrada;
+        if (nombreVacuna.value == null){
+          entrada = {
+          ID:props.id,
+          NOMBRESERVICIO: nombreServicio.value.value,
+          COMENTARIO: comentario.value,
+          NOMBREVACUNA: null,
+        }
+        }else{
+          entrada = {
           ID:props.id,
           NOMBRESERVICIO: nombreServicio.value.value,
           COMENTARIO: comentario.value,
           NOMBREVACUNA: nombreVacuna.value.value,
+        }
         }
         emit('editarHistorial', entrada);
       }

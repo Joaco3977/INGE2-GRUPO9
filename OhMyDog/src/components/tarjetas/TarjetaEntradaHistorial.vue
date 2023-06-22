@@ -3,12 +3,12 @@
     <q-card
       flat
       class="my-card bg-white text-white q-my-md"
-      style="width: 60vw"
+      style="width: 35vw"
     >
       <!-- style="min-width: 20rem; max-width: 25rem" -->
       <q-card-section class="row justify-end">
         <q-btn
-          v-if="!(Date.now() - new Date(fecha) > 24 * 60 * 60 * 1000) && rol == 2"
+          v-if="comprobarFecha() && rol == 2" 
           @click="mostrarPopupEditar = true"
           color="accent"
           class=""
@@ -119,16 +119,25 @@ export default defineComponent({
         });
       mostrarPopupEditar.value = false;
     };
-
+    const comprobarFecha = ()=>{
+    var fechaInicial = new Date(props.fecha);
+    var fechaActual = new Date();
+    var milisegundosPorDia = 24 * 60 * 60 * 1000; // Cantidad de milisegundos en un día
+    var diferenciaEnMilisegundos = fechaActual - fechaInicial;
+    var diasTranscurridos = Math.floor(diferenciaEnMilisegundos / milisegundosPorDia);
+    return diasTranscurridos <= 1;
+    }
     return {
       rol,
       getDatosVeterinario,
       editarHistorial,
+      comprobarFecha,
       veterinario,
       mostrarPopupEditar,
     };
   },
-  methods: {},
+  methods: {
+  },
   mounted() {
     this.getDatosVeterinario();
   },
@@ -150,7 +159,7 @@ export default defineComponent({
       if (minuto < 10) {
         minuto = `0${minuto}`;
       }
-      let formattedDate = `${date.toLocaleDateString()} - ${hora}:${minuto}`;
+      let formattedDate = `${date.toLocaleDateString()}`;
       return formattedDate;
     },
   },
