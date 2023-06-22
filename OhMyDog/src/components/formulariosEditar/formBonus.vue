@@ -41,7 +41,7 @@
               v-close-popup
             />
             <q-btn
-              label="Realizar Donación"
+              label="Editar monto"
               @click="cambiarMontoBonus(nuevoMonto)"
               :disabled="!camposValidos"
               color="accent"
