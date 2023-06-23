@@ -89,9 +89,9 @@
         />
         <q-tab
           v-if="store.rol < 0"
-          name="Registro donaciones"
+          name="Registro Donaciones"
           icon="ion-hand"
-          label="Registro donaciones"
+          label="Registro Donaciones"
         />
         <!-- <q-tab
           v-if="store.rol === 2"

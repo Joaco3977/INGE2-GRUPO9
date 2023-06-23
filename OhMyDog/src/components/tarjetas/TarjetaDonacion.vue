@@ -241,6 +241,7 @@ export default defineComponent({
           try {
             await api.post('/donacion/donar', {
               id: props.id,
+              nombre: props.nombre,
               dniCliente: dniCliente,
               cantidad: donacion.value.monto,
             })

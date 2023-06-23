@@ -82,13 +82,13 @@ router.post('/donar', async(req, res) => {
     } 
     const nuevaDonacion = {
         IDCAMPANIA: req.body.id,
+        NOMBRECAMPANIA: req.body.nombre,
         FECHA: new Date(),
         DNICLIENTE: dniCliente,
         CANTIDAD: req.body.cantidad,
     }
     await knex('donaciones').insert(nuevaDonacion)
     .then(() => {
-        console.log("DONACION CORRECTA")
         res.status(200).send({})
     })
     .catch((error) => {
@@ -105,6 +105,26 @@ router.post('/sumarBonus', async (req, res) => {
     })
     .catch((error) => {
         console.log(error)
+        res.status(401).send(error)
+    })
+})
+
+router.get('/getRegistrosDonacion', async(req,res) => {
+    await knex('donaciones').select('*')
+    .then((response) => {
+        res.status(200).send(response)
+    })
+    .catch((error) => {
+        console.log(error)
+    })
+})
+
+router.post('/marcarTransferido', async(req,res) => {
+    await knex('donaciones').where('ID', req.body.id).update({'ESTADO': 'TRANSFERIDO'})
+    .then(() => {
+        res.status(200).send({})
+    })
+    .catch((error) => {
         res.status(401).send(error)
     })
 })
