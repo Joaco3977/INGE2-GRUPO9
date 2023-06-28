@@ -59,19 +59,16 @@
                 @marcarAdoptado="marcarAdoptado"
                 @editarPerro="editarPerro"
                 v-for="perro of perrosDatos"
-                :key="perro.IDPERROADOPCION"
-                :id="perro.IDPERROADOPCION"
+                :key="perro.IDPERROPERDIDO"
+                :id="perro.IDPERROPERDIDO"
                 :rol="rol"
                 :dnicliente="perro.DNICLIENTE"
                 :servicio="servicio1"
                 :nombre="perro.NOMBRE"
-                :edad="perro.EDAD"
-                :tamanio="perro.TAMANIO"
                 :sexo="perro.SEXO"
                 :telefono="perro.TELEFONO"
-                :mail="perro.MAIL"
                 :comentario="perro.COMENTARIO"
-                :adoptado="perro.ADOPTADO"
+                :encontrado="perro.ENCONTRADO"
               />
             </div>
             <div
@@ -96,8 +93,8 @@
                 @marcarAdoptado="marcarAdoptado"
                 @editarPerro="editarPerro"
                 v-for="perro of perrosDatos"
-                :key="perro.IDPERROADOPCION"
-                :id="perro.IDPERROADOPCION"
+                :key="perro.IDPERROPERDIDO"
+                :id="perro.IDPERROPERDIDO"
                 :rol="rol"
                 :dnicliente="perro.DNICLIENTE"
                 :servicio="servicio2"
@@ -108,7 +105,7 @@
                 :telefono="perro.TELEFONO"
                 :mail="perro.MAIL"
                 :comentario="perro.COMENTARIO"
-                :adoptado="perro.ADOPTADO"
+                :encontrado="perro.ENCONTRADO"
               />
             </div>
             <div
@@ -137,6 +134,7 @@ import TarjetaPerdido from "./tarjetas/TarjetaPerdido.vue";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
 import formPerdido from "./formularios/formPerroPerdido.vue";
+import { checkToken } from "../functions/check.js";
 
 export default defineComponent({
   name: "PaginaPerdido",
@@ -152,9 +150,10 @@ export default defineComponent({
     const tab = ref("perrosOtros");
     const servicio1 = "perrosOtros";
     const servicio2 = "perrosMios";
+
     const loadPerros = async () => {
       try {
-        const response = await api.get("/perroAdopcion/getPerrosAdopcion");
+        const response = await api.get("/perroPerdido/getPerrosPerdidos");
         perrosDatos.value = response.data;
       } catch (error) {
         console.error(error);
@@ -167,7 +166,7 @@ export default defineComponent({
     }
     const registrarPerro = async (perro) => {
       try {
-        await api.post("/perroAdopcion/addPerroAdopcion", {
+        await api.post("/perroPerdido/addPerroPerdido", {
           perro,
           rol: useStore().rol,
           dni: useStore().dni,
@@ -186,7 +185,7 @@ export default defineComponent({
 
     const editarPerro = async (perro) => {
       try {
-        const response = await api.post("/perroAdopcion/editarPerro",{
+        const response = await api.post("/perroPerdido/editarPerro",{
           perro,
           quienSoy: quienSoy,
         })
@@ -201,7 +200,7 @@ export default defineComponent({
 
     async function eliminarPerroAdopcion(data) {
       try {
-        await api.post("perroAdopcion/deletePerroAdopcion", {
+        await api.post("perroPerdido/deletePerroPerdido", {
           rol: useStore().rol,
           dni: useStore().dni,
           nombre: useStore().nombre,
@@ -214,13 +213,12 @@ export default defineComponent({
           loadPerrosPropios();
         }
       } catch {
-        console.error("No es posible eliminar al perro en adopcion");
+        console.error("No es posible eliminar al perro perdido");
       }
     }
 
     const marcarAdoptado = async (id) => {
-      console.log('llegue funcion')
-      await api.post('perroAdopcion/marcarAdoptado', {
+      await api.post('perroPerdido/marcarEncontrado', {
         id: id
       })
       .then(() => {
@@ -229,7 +227,6 @@ export default defineComponent({
         } else {
           loadPerrosPropios();
         }
-        console.log('funco')
       })
       .catch((error) => {
         console.log(error)
@@ -239,11 +236,11 @@ export default defineComponent({
     const loadPerrosPropios = async () => {
       try {
         const response = await api.post(
-          "/perroAdopcion/getPerrosAdopcionPropios",
+          "/perroPerdido/getPerrosPerdidosPropios",
           { dni: useStore().dni }
         );
         perrosDatos.value = response.data;
-
+        loadPerrosPropios();
       } catch (error) {
         console.error(error);
       }
@@ -273,6 +270,7 @@ export default defineComponent({
     };
   },
   mounted() {
+    checkToken();
     this.loadPerros();
     this.mostrarPopupM();
   },

@@ -87,7 +87,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useStore } from "src/pinia/store";
-import { useQuasar } from "quasar";
+import { LocalStorage, useQuasar } from "quasar";
 
 export default defineComponent({
   name: "formAdopcion",
@@ -105,9 +105,9 @@ export default defineComponent({
       const perro = {
         sexo: perroSEXO.value.value,
         zona: perroZONA.value,
-        telefono: "0",
         nombre: perroNOMBRE.value,
         telefono: perroTELEFONO.value,
+        mail: LocalStorage.getItem('mail'),
         comentario: perroCOMENTARIO.value,
         dnicliente: perroDNICLIENTE,
       };

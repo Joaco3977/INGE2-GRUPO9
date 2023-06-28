@@ -80,7 +80,7 @@
       <q-separator dark />
       <q-card-actions v-if="encontrado == 0" class="column items-center">
         <q-btn
-          @click="confirmarAdopcion = true"
+          @click="confirmarEncontrado = true"
           flat
           v-if="servicio === 'perrosMios' || rol == 2"
           class="textoBoton"
@@ -123,7 +123,7 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="confirmarAdopcion">
+    <q-dialog v-model="confirmarEncontrado">
       <q-card>
         <q-card-section>
           <div class="textoTituloTarjeta text-primary">
@@ -184,7 +184,6 @@ export default defineComponent({
     fecha: String,
     sexo: String,
     telefono: String,
-    mail: String,
     comentario: String,
     encontrado: String,
     dnicliente: String,
@@ -210,7 +209,7 @@ export default defineComponent({
       mostrarPopupEditar,
       contactoCliente: "",
       confirmar: ref(false),
-      confirmarAdopcion: ref(false),
+      confirmarEncontrado: ref(false),
     };
   },
   methods: {
