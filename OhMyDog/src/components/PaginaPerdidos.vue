@@ -54,7 +54,7 @@
             class="bg-white full-width"
           >
             <div class="full-width row items-justify">
-              <TarjetaAdopcion
+              <TarjetaPerdido
                 @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 @marcarAdoptado="marcarAdoptado"
                 @editarPerro="editarPerro"
@@ -91,7 +91,7 @@
             class="bg-white full-width"
           >
             <div class="full-width row items-justify">
-              <TarjetaAdopcion
+              <TarjetaPerdido
                 @eliminarPerroAdopcion="eliminarPerroAdopcion"
                 @marcarAdoptado="marcarAdoptado"
                 @editarPerro="editarPerro"
@@ -133,7 +133,7 @@
 import { defineComponent } from "vue";
 import { ref, reactive } from "vue";
 import { QDialog } from "quasar";
-import TarjetaAdopcion from "./tarjetas/TarjetaAdopcion.vue";
+import TarjetaPerdido from "./tarjetas/TarjetaPerdido.vue";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
 import formPerdido from "./formularios/formPerroPerdido.vue";
@@ -141,7 +141,7 @@ import formPerdido from "./formularios/formPerroPerdido.vue";
 export default defineComponent({
   name: "PaginaPerdido",
   components: {
-    TarjetaAdopcion,
+    TarjetaPerdido,
     QDialog,
     formPerdido,
   },
