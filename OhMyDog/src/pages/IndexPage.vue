@@ -7,24 +7,20 @@
     >
       <q-img src="logotipo" />
 
-      <!-- <div class="q-pa-md text-center text-white bg-accent">
-        ROL ACTUAL: {{ roles[store.rol + 1] }}
-      </div> -->
-
       <q-tabs
         v-model="store.tab"
         inline-label
         vertical
         flat
         class="q-pt-sm bg-primary text-white"
-        style="max-height: 60vh"
+        style="height:70vh"
       >
-        <q-tab
+       <!-- <q-tab
           v-if="store.rol > -1"
           name="Quienes Somos"
           icon="ion-home"
           label="¿Quiénes Somos?"
-        />
+        /> -->
         <q-tab
           v-if="store.rol > 0"
           name="Mi Perfil"
@@ -74,6 +70,18 @@
           name="Adopciones"
           icon="ion-heart"
           label="Adopciones"
+        />
+        <q-tab
+          v-if="store.rol > -1"
+          name="Perros Perdidos"
+          icon="ion-search"
+          label="Perros perdidos"
+        />
+        <q-tab
+          v-if="store.rol > 0"
+          name="Cruza"
+          icon="ion-rose"
+          label="Cruza"
         />
         <q-tab
           v-if="store.rol > -1"
@@ -162,6 +170,10 @@
           <PaginaAdopciones :rol="store.rol" />
         </q-tab-panel>
 
+        <q-tab-panel name="Perros Perdidos">
+          <PaginaPerdidos :rol="store.rol" />
+        </q-tab-panel>
+
         <q-tab-panel name="Paseadores">
           <PaginaPaseadores :rol="store.rol" />
         </q-tab-panel>
@@ -185,7 +197,6 @@
         <q-tab-panel v-if="store.rol === -1" name="Registro Donaciones">
           <PaginaRegistroDonaciones />
         </q-tab-panel>
-
       </q-tab-panels>
     </div>
   </div>
@@ -204,13 +215,14 @@ import PaginaConsultaCliente from "src/components/PaginaConsultaCliente.vue";
 import PaginaConsultaVeterinario from "src/components/PaginaConsultaVeterinario.vue";
 import PaginaClientes from "../components/PaginaClientes.vue";
 import PaginaPerros from "../components/PaginaPerros.vue";
+import PaginaPerdidos from "../components/PaginaPerdidos.vue";
 import PaginaAdopciones from "../components/PaginaAdopciones.vue";
 import PaginaPaseadores from "../components/PaginaPaseadores.vue";
 import PaginaPerfil from "../components/PaginaPerfil.vue";
 import PaginaLog from "../components/PaginaLog.vue";
 import PaginaVeterinarios from "src/components/PaginaVeterinarios.vue";
 import PaginaDonaciones from "../components/PaginaDonaciones.vue";
-import PaginaRegistroDonaciones from "../components/PaginaRegistroDonaciones.vue"
+import PaginaRegistroDonaciones from "../components/PaginaRegistroDonaciones.vue";
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
 import { api } from "../boot/axios.js";
@@ -228,6 +240,7 @@ export default defineComponent({
     PaginaClientes,
     PaginaPerros,
     PaginaAdopciones,
+    PaginaPerdidos,
     PaginaPaseadores,
     PaginaPerfil,
     PaginaLog,
