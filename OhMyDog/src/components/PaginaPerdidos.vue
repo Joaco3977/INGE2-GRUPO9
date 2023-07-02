@@ -134,7 +134,6 @@ import TarjetaPerdido from "./tarjetas/TarjetaPerdido.vue";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
 import formPerdido from "./formularios/formPerroPerdido.vue";
-import { checkToken } from "../functions/check.js";
 
 export default defineComponent({
   name: "PaginaPerdido",
@@ -270,7 +269,6 @@ export default defineComponent({
     };
   },
   mounted() {
-    checkToken();
     this.loadPerros();
     this.mostrarPopupM();
   },

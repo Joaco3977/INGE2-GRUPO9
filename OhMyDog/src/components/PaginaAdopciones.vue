@@ -137,7 +137,6 @@ import TarjetaAdopcion from "./tarjetas/TarjetaAdopcion.vue";
 import { useStore } from "../pinia/store.js";
 import { api } from "../boot/axios.js";
 import formAdopcion from "./formularios/formPerroAdopcion.vue";
-import { checkToken } from "../functions/check.js";
 
 export default defineComponent({
   name: "PaginaAdopciones",
@@ -276,7 +275,6 @@ export default defineComponent({
   mounted() {
     this.loadPerros();
     this.mostrarPopupM();
-    checkToken();
   },
 });
 </script>
