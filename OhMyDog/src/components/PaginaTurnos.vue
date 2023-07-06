@@ -269,7 +269,6 @@ export default defineComponent({
       listaTurnos,
       mostrarPopup,
       misPerros,
-      obtenerBeneficio,
       cancelarTurno,
       loadTurnosPropios,
       loadTurnosPropiosFecha,
