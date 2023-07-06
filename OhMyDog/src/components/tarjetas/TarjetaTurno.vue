@@ -100,11 +100,19 @@
           Esta acción no puede deshacerse
         </q-card-section>
 
+        <q-input
+          v-if="rol === 2"
+          class="q-px-lg"
+          filled
+          v-model="motivo"
+          label="Motivo"
+        />
+
         <q-card-actions align="right">
           <q-btn
             flat
             label="Confirmar"
-            @click="cancelarTurno(id, state)"
+            @click="cancelarTurno(id, state, motivo)"
             color="primary"
             v-close-popup
           />
@@ -138,6 +146,9 @@ export default defineComponent({
   },
   setup() {
     const horaTurno = ref("");
+
+    const motivo = ref("")
+
     return {
       confirmar: ref(false),
       confirmarCancelar: ref(false),
@@ -147,13 +158,15 @@ export default defineComponent({
         { label: "Tarde", value: "Tarde" },
         { label: "Noche", value: "Noche" },
       ],
+      motivo,
     };
   },
   methods: {
-    cancelarTurno(id, state) {
+    cancelarTurno(id, state, motivo) {
       let data = {
         id: id,
         state: state,
+        motivo: motivo,
       };
       this.$emit("cancelarTurno", data);
     },

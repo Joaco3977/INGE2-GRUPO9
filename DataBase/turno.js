@@ -32,10 +32,10 @@ router.post('/cancelarTurno', async(req,res) =>{
             .then((mail) =>{
                 if(req.body.rol === 2){
                     if(turno.FRANJAHORARIA === null){
-                        mensaje=`Hola ${turno.NOMBRECLIENTE}! El turno solicitado de ${turno.NOMBRESERVICIO} para su perro ${turno.NOMBREPERRO}, para el dia ${turno.FECHA.toLocaleDateString('es-ES', opciones)}, fue rechazado por un veterinario.`
-                        enviadorMails.enviarMail('Turno rechazado', mensaje , mail.MAIL)
+                        mensaje=`Hola ${turno.NOMBRECLIENTE}! El turno solicitado de ${turno.NOMBRESERVICIO} para su perro ${turno.NOMBREPERRO}, para el dia ${turno.FECHA.toLocaleDateString('es-ES', opciones)}, fue rechazado por un veterinario. Motivo: ${req.body.motivo}`
+                        enviadorMails.enviarMail('Turno rechazado por la veterinaria', mensaje , mail.MAIL)
                     }else{
-                        mensaje=`Hola ${turno.NOMBRECLIENTE}! Lo sentimos mucho pero el turno confirmado de ${turno.NOMBRESERVICIO} para su perro ${turno.NOMBREPERRO}, para el dia ${turno.FECHA.toLocaleDateString('es-ES', opciones)}, fue cancelado por un veterinario.`
+                        mensaje=`Hola ${turno.NOMBRECLIENTE}! Lo sentimos mucho pero el turno confirmado de ${turno.NOMBRESERVICIO} para su perro ${turno.NOMBREPERRO}, para el dia ${turno.FECHA.toLocaleDateString('es-ES', opciones)}, fue cancelado por un veterinario. Motivo: ${req.body.motivo}`
                         enviadorMails.enviarMail('Turno cancelado por la veterinaria', mensaje , mail.MAIL)
                     }
                 }else{

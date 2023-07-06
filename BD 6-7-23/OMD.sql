@@ -31,7 +31,7 @@ CREATE TABLE `campania` (
   PRIMARY KEY (`ID`,`NOMBRE`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   UNIQUE KEY `NOMBRE_UNIQUE` (`NOMBRE`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `campania` (
 
 LOCK TABLES `campania` WRITE;
 /*!40000 ALTER TABLE `campania` DISABLE KEYS */;
-INSERT INTO `campania` VALUES (14,'PRUEBA','ahora estoy funcionando',75000,0);
+INSERT INTO `campania` VALUES (17,'Canes contentos','Comedor para perros en situacion de calle',800000,0);
 /*!40000 ALTER TABLE `campania` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -177,7 +177,7 @@ CREATE TABLE `log` (
   `DESCRIPCION` varchar(120) NOT NULL,
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,7 +186,7 @@ CREATE TABLE `log` (
 
 LOCK TABLES `log` WRITE;
 /*!40000 ALTER TABLE `log` DISABLE KEYS */;
-INSERT INTO `log` VALUES (105,'2023-06-08','[VETERINARIO 43178686 Joaquin Diez] -- edito al CLIENTE Mauricio con DNI: 44523451'),(106,'2023-06-08','[VETERINARIO 43178686 Joaquin Diez] -- agrego la campaña afaf con link: afaf'),(107,'2023-06-12','[VETERINARIO 43178686 Joaquin Diez] -- agrego la campaña fafw con link: wfwafwaf'),(108,'2023-06-12','[VETERINARIO 43178686 Joaquin Diez] -- elimino la campaña fafw'),(109,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- agrego al PASEADOR undefined'),(110,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(111,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(112,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(113,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(114,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(115,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(116,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(117,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(118,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521111'),(119,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(120,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(121,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(122,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(123,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(124,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(125,'2023-06-20','[VETERINARIO 43178686 ] -- agrego al PASEADOR undefined'),(126,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 24444222'),(127,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 24411111'),(128,'2023-06-20','[VETERINARIO 43178686 ] -- elimino al PASEADOR 24411111'),(129,'2023-06-20','[VETERINARIO 43178686 ] -- elimino al PASEADOR 51521511'),(130,'2023-06-20','[CLIENTE 43178686 Joaquin Diez] -- elimino a su propio PERRO Donna'),(131,'2023-06-20','[CLIENTE 43178686 Joaquin Diez] -- elimino a su propio PERRO Donna'),(132,'2023-06-20','[CLIENTE 43178686 Joaquin Diez] -- elimino a su propio PERRO Donna'),(133,'2023-06-21','[VETERINARIO 43178686 Joaquin Diez] -- edito al CLIENTE Joaquin Diez con DNI: 43178686'),(134,'2023-06-21','[VETERINARIO 43178686 Joaquin Diez] -- edito al CLIENTE Joaquin Diez con DNI: 43178686'),(135,'2023-06-21','[VETERINARIO 43178686 Joaquin Diez] -- edito al CLIENTE Joaquin Diez con DNI: 11111111'),(136,'2023-06-22','[VETERINARIO 43178686 Joaquin Diez] -- agrego la campaña PRUEBA con link: undefined'),(137,'2023-06-22','[VETERINARIO 43178686 ] -- edito la Donacion PRUEBA '),(138,'2023-06-22','[VETERINARIO 43178686 ] -- edito la Donacion PRUEBA '),(139,'2023-06-28','[VETERINARIO agrego al PERRO PERDIDO ADAD 43178686] -- undefined'),(140,'2023-06-28','[VETERINARIO agrego al PERRO PERDIDO prueba 43178686] -- undefined'),(141,'2023-06-28','[VETERINARIO 43178686 ADAD] -- elimino al PERRO PERDIDO ADAD del cliente 43178686'),(142,'2023-06-28','[VETERINARIO 43178686 prueba] -- elimino al PERRO PERDIDO prueba del cliente 43178686'),(143,'2023-06-28','[CLIENTE agrego al PERRO PERDIDO Fiona 43178686] -- undefined'),(144,'2023-06-28','[CLIENTE agrego al PERRO PERDIDO AD 43178686] -- undefined'),(145,'2023-06-28','[CLIENTE 43178686 AD] -- elimino al PERRO PERDIDO AD del cliente 43178686');
+INSERT INTO `log` VALUES (105,'2023-06-08','[VETERINARIO 43178686 Joaquin Diez] -- edito al CLIENTE Mauricio con DNI: 44523451'),(106,'2023-06-08','[VETERINARIO 43178686 Joaquin Diez] -- agrego la campaña afaf con link: afaf'),(107,'2023-06-12','[VETERINARIO 43178686 Joaquin Diez] -- agrego la campaña fafw con link: wfwafwaf'),(108,'2023-06-12','[VETERINARIO 43178686 Joaquin Diez] -- elimino la campaña fafw'),(109,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- agrego al PASEADOR undefined'),(110,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(111,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(112,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(113,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(114,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(115,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(116,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(117,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(118,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521111'),(119,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(120,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521511'),(121,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(122,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 51521521'),(123,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(124,'2023-06-20','[VETERINARIO 43178686 Joaquin Diez] -- edito al PASEADOR 51521511'),(125,'2023-06-20','[VETERINARIO 43178686 ] -- agrego al PASEADOR undefined'),(126,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 24444222'),(127,'2023-06-20','[VETERINARIO 43178686 ] -- edito al PASEADOR 24411111'),(128,'2023-06-20','[VETERINARIO 43178686 ] -- elimino al PASEADOR 24411111'),(129,'2023-06-20','[VETERINARIO 43178686 ] -- elimino al PASEADOR 51521511'),(130,'2023-06-20','[CLIENTE 43178686 Joaquin Diez] -- elimino a su propio PERRO Donna'),(131,'2023-06-20','[CLIENTE 43178686 Joaquin Diez] -- elimino a su propio PERRO Donna'),(132,'2023-06-20','[CLIENTE 43178686 Joaquin Diez] -- elimino a su propio PERRO Donna'),(133,'2023-06-21','[VETERINARIO 43178686 Joaquin Diez] -- edito al CLIENTE Joaquin Diez con DNI: 43178686'),(134,'2023-06-21','[VETERINARIO 43178686 Joaquin Diez] -- edito al CLIENTE Joaquin Diez con DNI: 43178686'),(135,'2023-06-21','[VETERINARIO 43178686 Joaquin Diez] -- edito al CLIENTE Joaquin Diez con DNI: 11111111'),(136,'2023-06-22','[VETERINARIO 43178686 Joaquin Diez] -- agrego la campaña PRUEBA con link: undefined'),(137,'2023-06-22','[VETERINARIO 43178686 ] -- edito la Donacion PRUEBA '),(138,'2023-06-22','[VETERINARIO 43178686 ] -- edito la Donacion PRUEBA '),(139,'2023-06-28','[VETERINARIO agrego al PERRO PERDIDO ADAD 43178686] -- undefined'),(140,'2023-06-28','[VETERINARIO agrego al PERRO PERDIDO prueba 43178686] -- undefined'),(141,'2023-06-28','[VETERINARIO 43178686 ADAD] -- elimino al PERRO PERDIDO ADAD del cliente 43178686'),(142,'2023-06-28','[VETERINARIO 43178686 prueba] -- elimino al PERRO PERDIDO prueba del cliente 43178686'),(143,'2023-06-28','[CLIENTE agrego al PERRO PERDIDO Fiona 43178686] -- undefined'),(144,'2023-06-28','[CLIENTE agrego al PERRO PERDIDO AD 43178686] -- undefined'),(145,'2023-06-28','[CLIENTE 43178686 AD] -- elimino al PERRO PERDIDO AD del cliente 43178686'),(146,'2023-07-06','[VETERINARIO 43178686 Joaquin Diez] -- agrego la campaña Canes contentos'),(147,'2023-07-06','[VETERINARIO agrego al PERRO PERDIDO ada 43178686] -- undefined'),(148,'2023-07-06','[VETERINARIO 43178686 ada] -- elimino al PERRO PERDIDO ada del cliente 43178686'),(149,'2023-07-06','[VETERINARIO agrego al PERRO PERDIDO ADAD 43178686] -- undefined'),(150,'2023-07-06','[VETERINARIO agrego al PERRO PERDIDO Jose 43178686] -- undefined'),(151,'2023-07-06','[VETERINARIO agrego al PERRO PERDIDO adawd 43178686] -- undefined'),(152,'2023-07-06','[VETERINARIO agrego al PERRO PERDIDO Manu 43178686] -- undefined'),(153,'2023-07-06','[VETERINARIO undefined undefined] -- undefined'),(154,'2023-07-06','[VETERINARIO undefined undefined] -- undefined'),(155,'2023-07-06','[CLIENTE undefined undefined] -- undefined'),(156,'2023-07-06','[VETERINARIO undefined undefined] -- undefined');
 /*!40000 ALTER TABLE `log` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -340,9 +340,11 @@ CREATE TABLE `perroperdido` (
   `ELIMINADO` tinyint NOT NULL DEFAULT '0',
   `SEXO` varchar(6) NOT NULL,
   `ENCONTRADO` tinyint NOT NULL DEFAULT '0',
+  `ZONA` varchar(60) NOT NULL,
+  `FECHAPERDIDA` date NOT NULL,
   PRIMARY KEY (`IDPERROPERDIDO`),
   UNIQUE KEY `IDPERROPERDIDO_UNIQUE` (`IDPERROPERDIDO`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -351,7 +353,7 @@ CREATE TABLE `perroperdido` (
 
 LOCK TABLES `perroperdido` WRITE;
 /*!40000 ALTER TABLE `perroperdido` DISABLE KEYS */;
-INSERT INTO `perroperdido` VALUES (4,'43124124','AD','JoaquinDiez3977@gmail.com','','43178686',1,'Macho',1);
+INSERT INTO `perroperdido` VALUES (9,'1241241','Manu','JoaVet@gmail.com','','43178686',0,'Macho',0,'Plaza Moreno','2023-07-03');
 /*!40000 ALTER TABLE `perroperdido` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -378,6 +380,7 @@ CREATE TABLE `sesion` (
 
 LOCK TABLES `sesion` WRITE;
 /*!40000 ALTER TABLE `sesion` DISABLE KEYS */;
+INSERT INTO `sesion` VALUES ('e59d02de-826a-40c2-b407-2152c575110a','JoaVet@gmail.com',43178686,2);
 /*!40000 ALTER TABLE `sesion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -404,7 +407,7 @@ CREATE TABLE `turno` (
   `ELIMINADO` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -413,7 +416,7 @@ CREATE TABLE `turno` (
 
 LOCK TABLES `turno` WRITE;
 /*!40000 ALTER TABLE `turno` DISABLE KEYS */;
-INSERT INTO `turno` VALUES (16,1,43178686,43178686,'2023-08-24','Cancelado',NULL,'Donna','Consulta','Joaquin Diez','Joaquin Diez','Tarde',1),(30,1,NULL,43178686,'2023-06-22','Cancelado',NULL,'Donna','Desparacitación',NULL,'Joaquin Diez',NULL,1);
+INSERT INTO `turno` VALUES (31,1,43178686,43178686,'2023-07-20','Cancelado',NULL,'Donna','Desparacitación','Joaquin Diez','Joaquin Diez','Tarde',0);
 /*!40000 ALTER TABLE `turno` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -511,4 +514,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-28 19:42:11
+-- Dump completed on 2023-07-06 12:06:04

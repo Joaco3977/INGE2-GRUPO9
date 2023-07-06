@@ -202,6 +202,7 @@ export default defineComponent({
       await api
       .post("/turno/cancelarTurno", {
         rol: useStore().rol,
+        motivo: data.motivo,
         id: data.id,
       })
       .then(()=>{
