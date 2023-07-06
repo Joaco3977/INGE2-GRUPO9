@@ -240,6 +240,7 @@ CREATE TABLE `perro` (
   `PESO` float DEFAULT NULL,
   `FOTO` tinyint NOT NULL DEFAULT '0',
   `ELIMINADO` tinyint NOT NULL DEFAULT '0',
+  `CRUZA` tinyint NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`),
   UNIQUE KEY `ID_UNIQUE` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -251,7 +252,7 @@ CREATE TABLE `perro` (
 
 LOCK TABLES `perro` WRITE;
 /*!40000 ALTER TABLE `perro` DISABLE KEYS */;
-INSERT INTO `perro` VALUES (1,'Donna','Mediano','Marron y Negro','2019-12-21','Hembra','Mestizo',43178686,27.4,0,0),(2,'Princesa','Mediano','Gris','2020-06-17','Hembra','Pitbull',2,35.7,0,0);
+INSERT INTO `perro` VALUES (1,'Donna','Mediano','Marron y Negro','2019-12-21','Hembra','Mestizo',43178686,27.4,0,0,0),(2,'Princesa','Mediano','Gris','2020-06-17','Hembra','Pitbull',2,35.7,0,0,0),(3,'Renzo','Chico','Negro','2021-08-12','Macho','Pug',43178686,7.9,0,0,0);
 /*!40000 ALTER TABLE `perro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -380,7 +381,7 @@ CREATE TABLE `sesion` (
 
 LOCK TABLES `sesion` WRITE;
 /*!40000 ALTER TABLE `sesion` DISABLE KEYS */;
-INSERT INTO `sesion` VALUES ('e59d02de-826a-40c2-b407-2152c575110a','JoaVet@gmail.com',43178686,2);
+INSERT INTO `sesion` VALUES ('ea116335-e5fc-4e0b-b975-3dfc8f3fb568','JoaquinDiez3977@gmail.com',43178686,1);
 /*!40000 ALTER TABLE `sesion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -416,7 +417,6 @@ CREATE TABLE `turno` (
 
 LOCK TABLES `turno` WRITE;
 /*!40000 ALTER TABLE `turno` DISABLE KEYS */;
-INSERT INTO `turno` VALUES (31,1,43178686,43178686,'2023-07-20','Cancelado',NULL,'Donna','Desparacitación','Joaquin Diez','Joaquin Diez','Tarde',0);
 /*!40000 ALTER TABLE `turno` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -514,4 +514,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-06 12:06:04
+-- Dump completed on 2023-07-06 14:22:32
