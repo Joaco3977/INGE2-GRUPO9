@@ -135,4 +135,22 @@ router.post('/addCliente', async (req, res) => {
     })
 })
 
+router.post('/getBeneficio',async (req,res) =>{
+    console.log(req.body.dni)
+    getClientePorDNI(req.body.dni)
+    .then ((resultadoGet) => {
+        if (resultadoGet === undefined || resultadoGet === false) {
+            res.status(401).send('No fue posible conectar con la base de datos');
+        } else {
+            Consola.mensaje("\x1b[33m%s\x1b[0m", "SISTEMA solicito un cliente")
+            var beneficio =resultadoGet.MONTODESCUENTO;
+            console.log(beneficio)
+            res.status(200).send({beneficio:beneficio})
+        }
+    })
+    .catch (() => {
+        res.status(401).send('No fue posible conectar con la base de datos');
+    })
+})
+
 module.exports = router;

@@ -15,6 +15,7 @@
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Cliente:</div>
             <div>{{ nombreCliente }} - DNI: {{ dniCliente }}</div>
           </div>
+          <div  v-if="rol === 2 && (state === 'Confirmado' || state === 'Pendiente')" class="textoTituloPosteo q-pr-sm q-pb-xs">Monto Beneficio: {{ beneficio }}</div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Perro:</div>
             <div>{{ nombrePerro }}</div>
@@ -127,6 +128,7 @@
 import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useStore } from "../../pinia/store";
+import { api } from "src/boot/axios";
 
 export default defineComponent({
   name: "TarjetaPaseador",
@@ -144,15 +146,15 @@ export default defineComponent({
     fecha: String,
     nombreServicio: String,
   },
-  setup() {
+  setup(props, { emit }) {
     const horaTurno = ref("");
-
     const motivo = ref("")
-
+    const beneficio = ref("")
     return {
       confirmar: ref(false),
       confirmarCancelar: ref(false),
       horaTurno,
+      beneficio,
       opcionHora: [
         { label: "Mañana", value: "Mañana" },
         { label: "Tarde", value: "Tarde" },
@@ -188,6 +190,14 @@ export default defineComponent({
     mostrarBoton() {
       return this.state != "Cancelado" && !this.esTurnoPasado();
     },
+    async obtenerBeneficio() {
+      try {
+        const response = await api.post("/cliente/getBeneficio", { dni: this.dniCliente });
+        this.beneficio = response.data.beneficio;
+      } catch (error) {
+        console.log(error);
+      }
+    },
   },
   computed: {
     formattedDate() {
@@ -206,5 +216,8 @@ export default defineComponent({
       } else return this.nombreServicio;
     },
   },
+  created() {
+    this.obtenerBeneficio();
+  }
 });
 </script>

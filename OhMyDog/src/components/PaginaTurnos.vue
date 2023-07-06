@@ -193,7 +193,6 @@ export default defineComponent({
     const mostrarPopupM = () => {
       mostrarPopup.value = !mostrarPopup.value;
     };
-
     const cancelarTurno = async(data) => {
       await api
       .post("/turno/cancelarTurno", {
@@ -270,6 +269,7 @@ export default defineComponent({
       listaTurnos,
       mostrarPopup,
       misPerros,
+      obtenerBeneficio,
       cancelarTurno,
       loadTurnosPropios,
       loadTurnosPropiosFecha,
