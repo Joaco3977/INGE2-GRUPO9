@@ -119,6 +119,9 @@ export default defineComponent({
       if (!this.montoValido) {
         sError.push("El monto objetivo debe ser válido");
       }
+      if (!this.montoNoMinimo) {
+        sError.push("El monto objetivo debe ser mayor o igual a 5000$");
+      }
       return sError;
     },
     nombreValido() {
@@ -129,6 +132,9 @@ export default defineComponent({
     },
     montoValido() {
       return this.montoEsperado.length > 0;
+    },
+    montoNoMinimo() {
+      return (parseInt(this.montoEsperado) >= 5000)
     },
     nombreExiste() {
       return this.nombreDonaciones.includes(this.nombre);
