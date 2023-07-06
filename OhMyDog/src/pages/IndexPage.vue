@@ -78,7 +78,7 @@
           label="Perros perdidos"
         />
         <q-tab
-          v-if="store.rol > 0"
+          v-if="store.rol === 1"
           name="Cruza"
           icon="ion-rose"
           label="Cruza"
@@ -174,6 +174,10 @@
           <PaginaPerdidos :rol="store.rol" />
         </q-tab-panel>
 
+        <q-tab-panel name="Cruza">
+          <PaginaCruza />
+        </q-tab-panel>
+
         <q-tab-panel name="Paseadores">
           <PaginaPaseadores :rol="store.rol" />
         </q-tab-panel>
@@ -223,6 +227,7 @@ import PaginaLog from "../components/PaginaLog.vue";
 import PaginaVeterinarios from "src/components/PaginaVeterinarios.vue";
 import PaginaDonaciones from "../components/PaginaDonaciones.vue";
 import PaginaRegistroDonaciones from "../components/PaginaRegistroDonaciones.vue";
+import PaginaCruza from "../components/PaginaCruza.vue"
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
 import { api } from "../boot/axios.js";
@@ -248,6 +253,7 @@ export default defineComponent({
     PaginaAdopciones,
     PaginaDonaciones,
     PaginaRegistroDonaciones,
+    PaginaCruza,
   },
   setup() {
     const data = reactive({
