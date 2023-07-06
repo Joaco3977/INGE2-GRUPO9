@@ -52,7 +52,7 @@ router.post('/addDonacion', async (req,res) => {
     await knex('campania').insert(nuevaCampania)
     .then(() => {
         Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO agrego la campaña: ${req.body.campania.NOMBRE}`)
-        Log.agregarEntradaLog(req.body.quienSoy.rol, req.body.quienSoy.nombre, req.body.quienSoy.dni, `agrego la campaña ${nuevaDonacion.NOMBRE}`)
+        Log.agregarEntradaLog(req.body.quienSoy.rol, req.body.quienSoy.nombre, req.body.quienSoy.dni, `agrego la campaña ${nuevaCampania.NOMBRE}`)
         res.status(200).send({})
     })
     .catch((error) => {
