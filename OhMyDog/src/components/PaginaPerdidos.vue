@@ -66,6 +66,8 @@
                 :servicio="servicio1"
                 :nombre="perro.NOMBRE"
                 :sexo="perro.SEXO"
+                :fecha="perro.FECHAPERDIDA"
+                :zona="perro.ZONA"
                 :telefono="perro.TELEFONO"
                 :comentario="perro.COMENTARIO"
                 :encontrado="perro.ENCONTRADO"
@@ -101,6 +103,8 @@
                 :nombre="perro.NOMBRE"
                 :edad="perro.EDAD"
                 :tamanio="perro.TAMANIO"
+                :fecha="perro.FECHAPERDIDA"
+                :zona="perro.ZONA"
                 :sexo="perro.SEXO"
                 :telefono="perro.TELEFONO"
                 :mail="perro.MAIL"
@@ -164,6 +168,7 @@ export default defineComponent({
       nombre: useStore().nombre,
     }
     const registrarPerro = async (perro) => {
+      console.log(perro)
       try {
         await api.post("/perroPerdido/addPerroPerdido", {
           perro,

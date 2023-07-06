@@ -46,13 +46,13 @@
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">
               Fecha de pérdida:
             </div>
-            <div>{{ fecha }}</div>
+            <div>{{ new Date(fecha).toLocaleDateString() }}</div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">
               Zona de pérdida:
             </div>
-            <div>{{ zona }} meses</div>
+            <div>{{ zona }}</div>
           </div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Sexo:</div>

@@ -107,6 +107,7 @@ export default defineComponent({
         zona: perroZONA.value,
         nombre: perroNOMBRE.value,
         telefono: perroTELEFONO.value,
+        fechaPerdida: perroFECHA.value,
         mail: LocalStorage.getItem('mail'),
         comentario: perroCOMENTARIO.value,
         dnicliente: perroDNICLIENTE,

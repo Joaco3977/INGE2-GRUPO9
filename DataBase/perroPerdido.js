@@ -62,13 +62,16 @@ router.post('/getPerrosPerdidosPropios', async (req, res) => {
 })
 
 router.post('/addPerroPerdido', async (req, res) => {
+    console.log(req.body.perro)
             const nuevoPerroP = {
                 SEXO: req.body.perro.sexo,
                 TELEFONO:req.body.perro.telefono,
                 NOMBRE:req.body.perro.nombre,
+                ZONA: req.body.perro.zona,
                 MAIL:req.body.perro.mail,
                 COMENTARIO:req.body.perro.comentario,
                 DNICLIENTE:req.body.dni,
+                FECHAPERDIDA: new Date(req.body.perro.fechaPerdida)
             }
             addperroPerdido(nuevoPerroP)
             .then ((resultadoAdd) => {
