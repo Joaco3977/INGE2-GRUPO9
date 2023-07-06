@@ -24,6 +24,17 @@ router.post('/getPerrosCruza', async (req,res) => {
     })
 })
 
+router.post('/getPerrosRecomendados', async (req,res) => {
+    await knex('perro').select('*').where('ELIMINADO', 0).andWhere('DNICLIENTE', '!=', req.body.dni).andWhere('CRUZA', 1)
+    .then((resultado) => {
+        res.status(200).send(resultado)
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send(error)
+    })
+})
+
 router.post('/addPerroCruza', async (req,res) => {
     await knex('perro').select('*').where('ID', req.body.id).update({'CRUZA' : 1})
     .then(() => {
@@ -35,4 +46,14 @@ router.post('/addPerroCruza', async (req,res) => {
     })
 })
 
+router.post('/getNumeroDuenio', async (req,res) => {
+    await knex('cliente').select('TELEFONO').where('DNI', req.body.dni).first()
+    .then((resultado) => {
+        res.status(200).send(resultado)
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send(error)
+    })
+})
 module.exports = router
