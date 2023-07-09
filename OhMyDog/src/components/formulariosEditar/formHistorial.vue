@@ -6,7 +6,6 @@
             Editar Historial
           </div>
         </q-card-section>
-  
         <q-card-section class="">
           <q-form class="q-px-xl" reset>
             <q-select
@@ -16,7 +15,7 @@
               label="Servicio"
             />
             <q-select
-              v-if="esVacuna"
+              v-if="nombreServicio === 'Vacunación'"
               v-model="nombreVacuna"
               :options="opcionVacuna"
               class="q-px-xl"
@@ -84,6 +83,7 @@
     name: "formHistorial",
     props: {
       id:String,
+      fecha:String,
       Aservicio:String,
       Acomentario:String,
       AnombreVacuna:String,
@@ -93,7 +93,16 @@
       const nombreServicio = ref (props.Aservicio)
       const nombreVacuna = ref (props.AnombreVacuna)
       const comentario = ref (props.Acomentario)
-  
+      
+      const comprobarFecha = ()=>{
+        var fechaInicial = new Date(props.fecha);
+        var fechaActual = new Date();
+        var milisegundosPorDia = 24 * 60 * 60 * 1000; // Cantidad de milisegundos en un día
+        var diferenciaEnMilisegundos = fechaActual - fechaInicial;
+        var diasTranscurridos = Math.floor(diferenciaEnMilisegundos / milisegundosPorDia);
+        return diasTranscurridos <= 1;
+      }
+
       const editarEntrada = async () => {
         let entrada;
         if (nombreVacuna.value == null){
@@ -120,6 +129,7 @@
         nombreVacuna,
         comentario,
         editarEntrada,
+        comprobarFecha,
         opcionServicio: [
           { label: "Consulta", value: "Consulta" },
           { label: "Vacunación", value: "Vacunación" },
@@ -138,11 +148,15 @@
   
     },
     computed: {
-      esVacuna() {
-        return this.nombreServicio.value === "Vacunación";
+      mensajeError(){
+        let sError = [];
+        if (!this.comprobarFecha() ){
+          sError.push( "Ya pasaron las 24hs para editar esta entrada" )
+        }
+      return sError
       },
       camposValidos () {
-        return this.nombreServicio !== null
+        return this.nombreServicio !== null && this.comprobarFecha()
       }
     },
   });

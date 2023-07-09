@@ -167,7 +167,6 @@ export default defineComponent({
     const motivo = ref("")
     const beneficio = ref("")
     const mostrarPopup = ref("false");
-    console.log(props)
     const registrarEntrada = async (entrada) => {
       await api.post('/historial/agregarEntrada', {
         entrada: entrada,
