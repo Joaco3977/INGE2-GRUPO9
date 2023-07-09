@@ -7,7 +7,14 @@ const Consola = require ('./serverFunctions.js')
 const Log = require ('./log.js')
 
 router.post('/editarVeterinaria', async(req,res) => {
-
+    await knex('veterinaria').where('ID', req.body.veterinaria.id).update({'NOMBRE': req.body.veterinaria.nombre, 'DIRECCION': req.body.veterinaria.direccion})
+    .then(() => {
+        res.status(200).send({})
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send(error)
+    })
 })
 
 router.post('/registrarVeterinariaRegistrada', async(req,res) => {

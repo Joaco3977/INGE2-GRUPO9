@@ -11,13 +11,13 @@
           <q-input
             ref="inputRef"
             class="q-px-xl"
-            label="DNI"
+            label="Nombre"
             v-model="veterinaria.nombre"
           />
           <q-input
             class="q-px-xl"
             v-model="veterinaria.direccion"
-            label="Nombre y Apellido"
+            label="Direccion"
             type="text"
           />
           <ul class="q-mx-md q-py-xs">
@@ -39,8 +39,8 @@
               v-close-popup
             />
             <q-btn
-              label="Editar veterinario"
-              :disabled="!camposValidos"
+              label="Editar veterinaria"
+              :disabled=" !camposValidos "
               color="accent"
               @click ="confirmar = true"
             />
@@ -78,15 +78,18 @@ export default {
   name: "formVeterinaria",
   components: {},
   props: {
+    id: String,
+    tab: String,
     nombre: String,
     direccion: String,
     nombresVeterinarias: {
       type: Array,
       required: true,
-    },
+    }
   },
   setup(props, { emit }) {
     const veterinaria = ref({
+      id: props.id,
       nombre: props.nombre,
       direccion: props.direccion,
     });
@@ -120,20 +123,17 @@ export default {
       return sError;
     },
     nombreExiste() {
-      if(this.veterinaria.nombre == this.nombreA){
+      if(this.veterinaria.nombre === this.nombreA){
           return false
       }else{
-      return (this.nombresClientes.includes(this.veterinaria.nombre));
-    }},
+        return (this.nombresVeterinarias.includes(this.veterinaria.nombre))
+      }
+    },
     nombreValido() {
-      return (
-          this.veterinaria.nombre.length > 0 && /^[A-Za-zÀ-ÿ\s]+$/.test(this.veterinaria.nombre)
-      );
+      return this.veterinaria.nombre.length > 0
     },
     direccionValida() {
-      return (
-        this.veterinaria.direccion.length > 0
-      );
+      return this.veterinaria.direccion.length > 0
     },
     camposValidos() {
       return (
@@ -143,5 +143,5 @@ export default {
       );
     },
   },
-};
+}
 </script>

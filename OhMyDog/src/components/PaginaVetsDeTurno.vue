@@ -98,11 +98,13 @@
               class="q-px-sm col-stretch"
               v-for="vet in vetsTurnoRegistradas"
               @eliminarVetTurno="eliminarVetTurno"
+              @loadVetsRegistradas="loadVetsRegistradas"
               :key="vet.ID"
               :tab="tab"
               :id="vet.ID"
               :nombre="vet.NOMBRE"
               :direccion="vet.DIRECCION"
+              :nombresVeterinarias="nombresVeterinarias"
             />
           </div>
           <div
@@ -169,7 +171,7 @@
     <q-dialog v-model="registrarVetDeTurno">
       <FormVeterinaria
         @registrarVetTurno="registrarVetTurno"
-        :nombresVeterinarias="nombreVetsTurno"
+        :nombresVeterinarias="nombresVeterinarias"
       />
     </q-dialog>
   </div>
@@ -181,7 +183,6 @@ import { api } from "../boot/axios.js";
 import { useStore } from "../pinia/store.js";
 import TarjetaVeterinaria from "./tarjetas/TarjetaVeterinaria.vue";
 import FormVeterinaria from "./formularios/formVeterinaria.vue"
-import { normalizeString } from "src/functions/misc";
 
 export default defineComponent({
   name: "PaginaVetsDeTurno",
@@ -207,7 +208,7 @@ export default defineComponent({
 
     const fechaTurno = ref("")
 
-    const nombreVetsTurno = ref([]);
+    const nombresVeterinarias = ref([])
 
     const opcionVetsTurno = ref([])
 
@@ -224,7 +225,6 @@ export default defineComponent({
         resultado.data.forEach(vet => {
           opcionVetsTurno.value.push({ label: vet.NOMBRE, value: vet })
         });
-        nombreVetsTurno.value = resultado.data.map((vet) => normalizeString(vet.NOMBRE));
       })
       .catch((error) => {
         console.log(error)
@@ -235,6 +235,7 @@ export default defineComponent({
       await api.get('/vetsTurno/getVetsRegistradas')
       .then((resultado) => {
         vetsTurnoRegistradas.value = resultado.data
+        nombresVeterinarias.value = resultado.data.map((vet) => vet.NOMBRE);
       })
       .catch((error) => {
         console.log(error)
@@ -327,7 +328,7 @@ export default defineComponent({
       agregarVetDeTurno,
       registrarVetDeTurno,
       vetElegida,
-      nombreVetsTurno,
+      nombresVeterinarias,
       opcionVetsTurno,
       veterinariaRegistrar,
       fechaTurno,
@@ -337,7 +338,7 @@ export default defineComponent({
       loadVetsRegistradas,
       loadListadoVetsTurno,
       opcionesFecha,
-      agregarVetListado
+      agregarVetListado,
     };
   },
   mounted() {

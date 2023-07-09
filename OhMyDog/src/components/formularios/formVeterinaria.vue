@@ -67,6 +67,7 @@ export default {
     },
   },
   setup(_, { emit }) {
+
     const veterinaria = ref({
       nombre: "",
       direccion: "",
@@ -97,7 +98,7 @@ export default {
     },
     nombreExiste() {
       return (
-        this.nombresVeterinarias.includes(normalizeString(this.veterinaria.nombre))
+        this.nombresVeterinarias.includes(this.veterinaria.nombre)
       );
     },
     nombreValido() {

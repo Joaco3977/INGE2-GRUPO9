@@ -8,7 +8,7 @@ const Log = require ('./log.js')
 router.get('/getDonaciones', (req,res) => {
     knex('campania').select('*').where('ELIMINADO', 0)
     .then ((response) => {
-        Consola.mensaje("\x1b[33m%s\x1b[0m", "USUARIO solicito clientes")
+        Consola.mensaje("\x1b[33m%s\x1b[0m", "USUARIO solicito donaciones")
         res.status(200).send(response)
     })
     .catch((error) => {
