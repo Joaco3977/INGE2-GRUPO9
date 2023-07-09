@@ -8,7 +8,7 @@
       <!-- style="min-width: 20rem; max-width: 25rem" -->
       <q-card-section class="row justify-end">
         <q-btn
-          v-if="comprobarFecha() && rol == 2" 
+          v-if="rol == 2" 
           @click="mostrarPopupEditar = true"
           color="accent"
           class=""
@@ -57,6 +57,7 @@
               <formHistorial
                 @editarHistorial="editarHistorial"
                 :id="id"
+                :fecha="fecha"
                 :Aservicio="servicio"
                 :Acomentario="comentario"
                 :AnombreVacuna="nombreVacuna"
