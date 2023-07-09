@@ -6,6 +6,11 @@
       flat
       class="my-card bg-primary text-white q-ma-md full-width q-mx-xl"
     >
+    <div class="bg-primary full-width flex justify-end">
+        <q-btn v-if="rol == 2 && (state === 'Confirmado')" @click="mostrarPopup = true" class="q-ma-sm" color="accent">
+          <div>Agregar historial</div>
+        </q-btn>
+    </div>
       <q-card-section class="column">
         <div class="column">
           <div class="textoPerfil q-py-sm">
@@ -121,6 +126,13 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="mostrarPopup">
+      <FormHistorial
+        @registrarEntrada="registrarEntrada"
+        :idPerro="idPerro"
+      />
+    </q-dialog>
   </div>
 </template>
 
@@ -129,16 +141,20 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 import { useStore } from "../../pinia/store";
 import { api } from "src/boot/axios";
+import FormHistorial from "../formularios/formHistorial.vue";
 
 export default defineComponent({
-  name: "TarjetaPaseador",
-  components: {},
+  name: "TarjetaTurno",
+  components: {
+    FormHistorial,
+  },
   props: {
     id: String,
     rol: String,
     state: String,
     dniCliente: String,
     nombreCliente: String,
+    idPerro:String,
     nombreVeterinario: String,
     nombrePerro: String,
     nombreVacuna: String,
@@ -150,11 +166,25 @@ export default defineComponent({
     const horaTurno = ref("");
     const motivo = ref("")
     const beneficio = ref("")
+    const mostrarPopup = ref("false");
+    console.log(props)
+    const registrarEntrada = async (entrada) => {
+      await api.post('/historial/agregarEntrada', {
+        entrada: entrada,
+      })
+      .then(() => {
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
     return {
       confirmar: ref(false),
       confirmarCancelar: ref(false),
       horaTurno,
       beneficio,
+      mostrarPopup,
+      registrarEntrada,
       opcionHora: [
         { label: "Mañana", value: "Mañana" },
         { label: "Tarde", value: "Tarde" },

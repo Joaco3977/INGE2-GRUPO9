@@ -244,7 +244,6 @@ export default defineComponent({
           { dni: useStore().dni }
         );
         perrosDatos.value = response.data;
-        loadPerrosPropios();
       } catch (error) {
         console.error(error);
       }
