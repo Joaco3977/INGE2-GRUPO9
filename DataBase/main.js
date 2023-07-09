@@ -171,6 +171,14 @@ app.listen(5137, function () {
       Consola.mensaje("\x1b[32m%s\x1b[0m", "Servidor de Mail esta listo para enviar correos!");
     }
   });
+  knex('listadovetsturno').where('FECHA', '<', new Date(Date.now() - 24 * 60 * 60 * 1000)).del()
+  .then(() => {
+    Consola.mensaje("\x1b[32m%s\x1b[0m", "Se borraron exitosamente todas las entradas pasadas del listado de veterinarias de turno");
+  })
+  .catch((error) => {
+    Consola.mensaje("\x1b[31m%s\x1b[0m", error);
+    process.exit()
+  })
 });
 
 process.on('SIGINT', async () => {
