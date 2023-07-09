@@ -165,6 +165,32 @@ INSERT INTO `historialperro` VALUES (1,2,43178686,'2023-06-21','Castracion',NULL
 UNLOCK TABLES;
 
 --
+-- Table structure for table `listadovetsturno`
+--
+
+DROP TABLE IF EXISTS `listadovetsturno`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `listadovetsturno` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `NOMBRE` varchar(80) NOT NULL,
+  `DIRECCION` varchar(80) NOT NULL,
+  `FECHA` date NOT NULL,
+  PRIMARY KEY (`ID`),
+  UNIQUE KEY `ID_UNIQUE` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `listadovetsturno`
+--
+
+LOCK TABLES `listadovetsturno` WRITE;
+/*!40000 ALTER TABLE `listadovetsturno` DISABLE KEYS */;
+/*!40000 ALTER TABLE `listadovetsturno` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `log`
 --
 
@@ -252,7 +278,7 @@ CREATE TABLE `perro` (
 
 LOCK TABLES `perro` WRITE;
 /*!40000 ALTER TABLE `perro` DISABLE KEYS */;
-INSERT INTO `perro` VALUES (1,'Donna','Mediano','Marron y Negro','2019-12-21','Hembra','Mestizo',43178686,27.4,0,0,0),(2,'Princesa','Mediano','Gris','2020-06-17','Hembra','Pitbull',2,35.7,0,0,0),(3,'Renzo','Chico','Negro','2021-08-12','Macho','Pug',43178686,7.9,0,0,0);
+INSERT INTO `perro` VALUES (1,'Donna','Mediano','Marron y Negro','2019-12-21','Hembra','Mestizo',43178686,27.4,0,0,0),(2,'Princesa','Mediano','Gris','2020-06-17','Hembra','Pitbull',2,35.7,0,0,1),(3,'Renzo','Chico','Negro','2021-08-12','Macho','Pug',43178686,7.9,0,0,0);
 /*!40000 ALTER TABLE `perro` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -381,7 +407,6 @@ CREATE TABLE `sesion` (
 
 LOCK TABLES `sesion` WRITE;
 /*!40000 ALTER TABLE `sesion` DISABLE KEYS */;
-INSERT INTO `sesion` VALUES ('ea116335-e5fc-4e0b-b975-3dfc8f3fb568','JoaquinDiez3977@gmail.com',43178686,1);
 /*!40000 ALTER TABLE `sesion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -454,15 +479,13 @@ DROP TABLE IF EXISTS `veterinaria`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `veterinaria` (
-  `ID` int NOT NULL,
+  `ID` int NOT NULL AUTO_INCREMENT,
   `NOMBRE` varchar(45) NOT NULL,
   `DIRECCION` varchar(60) NOT NULL,
-  `COMENTARIO` varchar(200) DEFAULT NULL,
-  `ELIMINADO` varchar(45) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID`,`NOMBRE`),
   UNIQUE KEY `ID_UNIQUE` (`ID`),
   UNIQUE KEY `NOMBRE_UNIQUE` (`NOMBRE`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -504,6 +527,10 @@ LOCK TABLES `veterinario` WRITE;
 INSERT INTO `veterinario` VALUES (5,'Renzo Vet','renzovet@gmail.com','123','221786767','2023-05-08',0),(6,'Pedro Pulgas','pedro@gmail.com','pulgas','221147687','2023-05-08',0),(43178686,'Joaquin Diez','JoaVet@gmail.com','cisco','2352463977','2023-04-28',0),(44456456,'Mauricio Cella','ren.sabee@gmail.com','5pDUFmX8sC','(547) 656 - 4734','2023-05-11',0);
 /*!40000 ALTER TABLE `veterinario` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'ohmydog'
+--
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -514,4 +541,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-07-06 14:22:32
+-- Dump completed on 2023-07-09 17:17:13
