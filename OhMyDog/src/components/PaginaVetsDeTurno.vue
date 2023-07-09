@@ -126,6 +126,14 @@
           No hay ninguna veterinaria registrada para agregar
         </q-card-section>
 
+        <q-date
+          v-if="vetsTurnoRegistradas.length > 0"
+          class="q-mb-lg"
+          v-model="fechaTurno"
+          minimal
+          :options="opcionesFecha"
+        />
+
         <q-select
             v-if="vetsTurnoRegistradas.length > 0"
             v-model="vetElegida"
@@ -134,11 +142,21 @@
             label="Veterinaria"
         />
 
+        <ul class="q-mx-md q-py-xs">
+            <li
+              v-for="mnsj in mensajeError"
+              :key="mnsj"
+              class="bg-white text-accent text-bold"
+            >
+              {{ mnsj }}
+            </li>
+          </ul>
+
         <q-card-actions align="right">
           <q-btn
             flat
             label="Confirmar"
-            @click="agregarVetListado(vetElegida.value.ID)"
+            @click="agregarVetListado(vetElegida.value.ID, fechaTurno)"
             :disabled="!camposValidos"
             color="primary"
             v-close-popup
@@ -187,6 +205,8 @@ export default defineComponent({
       direccion: '',
     })
 
+    const fechaTurno = ref("")
+
     const nombreVetsTurno = ref([]);
 
     const opcionVetsTurno = ref([])
@@ -200,7 +220,6 @@ export default defineComponent({
     const loadVetsDisponibles = async () => {
       await api.get('/vetsTurno/getVetsRegistradas')
       .then((resultado) => {
-        vetElegida.value = { label: "", value: '' }
         opcionVetsTurno.value = []
         resultado.data.forEach(vet => {
           opcionVetsTurno.value.push({ label: vet.NOMBRE, value: vet })
@@ -246,6 +265,26 @@ export default defineComponent({
       })
     };
 
+    const agregarVetListado = async(id, fecha) => {
+      const vetSeleccionada = vetsTurnoRegistradas.value.find(vet => vet.ID === id)
+      const nuevaVet = {
+        nombre: vetSeleccionada.NOMBRE,
+        direccion: vetSeleccionada.DIRECCION,
+        fecha: fecha,
+      }
+      await api.post('/vetsTurno/agregarVeterinariaListado', {
+        veterinaria: nuevaVet
+      })
+      .then(() => {
+        loadListadoVetsTurno()
+        fechaTurno.value = ''
+        vetElegida.value = { label: "", value: '' }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+    }
+
     const eliminarVetTurno = async (data) => {
       if (data.tab === 'listadoVets') {
         await api.post('/vetsTurno/eliminarVeterinariaListado', {
@@ -255,7 +294,7 @@ export default defineComponent({
           loadListadoVetsTurno()
         })
         .catch((error) => {
-
+          console.log(error)
         })
       } else {
         await api.post('/vetsTurno/eliminarVeterinariaRegistrada', {
@@ -266,10 +305,20 @@ export default defineComponent({
           loadVetsDisponibles()
         })
         .catch((error) => {
-
+          console.log(error)
         })
       }
     }
+
+    const opcionesFecha = (date) => {
+      const hoy = new Date().toLocaleDateString("zh-Hans-CN", {
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+      });
+
+      return date >= hoy;
+    };
 
     return {
       tab,
@@ -282,11 +331,14 @@ export default defineComponent({
       nombreVetsTurno,
       opcionVetsTurno,
       veterinariaRegistrar,
+      fechaTurno,
       eliminarVetTurno,
       registrarVetTurno,
       loadVetsDisponibles,
       loadVetsRegistradas,
-      loadListadoVetsTurno
+      loadListadoVetsTurno,
+      opcionesFecha,
+      agregarVetListado
     };
   },
   mounted() {
@@ -295,8 +347,24 @@ export default defineComponent({
     this.loadListadoVetsTurno()
   },
   computed: {
-    camposValidos () {
+    mensajeError() {
+      let sError = [];
+      if (!this.veterinariaElegida) {
+        sError.push("Seleccione una veterinaria");
+      }
+      if (!this.fechaElegida) {
+        sError.push("Seleccione una fecha");
+      }
+      return sError;
+    },
+    veterinariaElegida() {
       return this.vetElegida.label !== ''
+    },
+    fechaElegida() {
+      return this.fechaTurno !== ''
+    },
+    camposValidos () {
+      return this.fechaElegida && this.veterinariaElegida
     }
   }
 });

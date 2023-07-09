@@ -25,6 +25,22 @@ router.post('/registrarVeterinariaRegistrada', async(req,res) => {
     })
 })
 
+router.post('/agregarVeterinariaListado', async(req, res) => {
+    const nuevaVet = {
+        NOMBRE: req.body.veterinaria.nombre,
+        DIRECCION: req.body.veterinaria.direccion,
+        FECHA: new Date(req.body.veterinaria.fecha),
+    }
+    await knex('listadovetsturno').insert(nuevaVet)
+    .then(() => {
+        res.status(200).send({})
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send(error)
+    })
+})
+
 router.post('/eliminarVeterinariaRegistrada', async(req,res) => {
     await knex('veterinaria').where('ID', req.body.id).del()
     .then(() => {

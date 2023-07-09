@@ -91,7 +91,7 @@ export default {
         sError.push("Ya existe una veterinaria registrada con ese nombre");
       }
       if (!this.direccionValida) {
-        sError.push("Ingrese una direcion válida");
+        sError.push("Ingrese una direccion válida");
       }
       return sError;
     },
@@ -107,7 +107,7 @@ export default {
     },
     direccionValida() {
       return (
-        this.veterinaria.nombre.length > 0
+        this.veterinaria.direccion.length > 0
       );
     },
     camposValidos() {
