@@ -116,6 +116,7 @@
         /> -->
 
         <q-tab
+          v-if="store.rol > -1"
           name="Veterinarias de turno"
           icon="calendar_month"
           label="Veterinarias de turno"
