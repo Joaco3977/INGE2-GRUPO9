@@ -7,7 +7,7 @@
             <q-btn v-if="rol == 2" @click="confirmar = true" class="q-ml-sm" color="accent">
               <div>Eliminar</div>
             </q-btn>
-            <q-btn v-if="rol == 2"  @click="mostrarPop = true" class="q-ml-sm" color="accent">
+            <q-btn v-if="rol == 2 && tab==='vetsTurno'"  @click="mostrarPop = true" class="q-ml-sm" color="accent">
               <div>Editar</div>
             </q-btn>
           </div>
@@ -58,6 +58,7 @@
       <formVeterinaria
         @editarVeterinaria="editarVeterinaria"
         :id="id"
+        :tab="tab"
         :nombre="nombre"
         :direccion="direccion"
         :nombresVeterinarias="nombresVeterinarias"
@@ -105,21 +106,16 @@ export default defineComponent({
       this.$emit("eliminarVetTurno", data);
     },
     async editarVeterinaria(veterinaria) {
-      try {
-        const response = await api.post("/vetsTurno/editarVeterinaria", {
-          veterinario: {
-            dni: veterinario.dni,
-            nombreApellido: veterinario.nombreApellido,
-            mail: veterinario.mail,
-            telefono: veterinario.telefono,
-            dniA: veterinario.dniA,
-          },
-        });
-        this.mostrarPop = false;
-        await this.$emit("loadVeterinarios");
-      } catch (error) {
-        console.error(error);
-      }
+      await api.post('/vetsTurno/editarVeterinaria', {
+        veterinaria: veterinaria,
+      })
+      .then(() => {
+        this.mostrarPop = false
+        this.$emit('loadVetsRegistradas')
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     },
   },
 });
