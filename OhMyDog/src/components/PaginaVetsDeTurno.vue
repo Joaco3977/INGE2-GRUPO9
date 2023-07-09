@@ -349,10 +349,10 @@ export default defineComponent({
   computed: {
     mensajeError() {
       let sError = [];
-      if (!this.veterinariaElegida) {
+      if (!this.veterinariaElegida && this.vetsTurnoRegistradas.length > 0) {
         sError.push("Seleccione una veterinaria");
       }
-      if (!this.fechaElegida) {
+      if (!this.fechaElegida && this.vetsTurnoRegistradas.length > 0) {
         sError.push("Seleccione una fecha");
       }
       return sError;
