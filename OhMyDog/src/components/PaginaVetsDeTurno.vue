@@ -244,8 +244,7 @@ export default defineComponent({
     const loadListadoVetsTurno = async () => {
       await api.get('/vetsTurno/getListadoVetsTurno')
       .then((resultado) => {
-        listadoVetsTurno.value = resultado.data
-        //ACA HAY Q ORDENAR POR FECHA
+        listadoVetsTurno.value = resultado.data.sort((a, b) => new Date(a.FECHA) - new Date(b.FECHA));
       })
       .catch((error) => {
         console.log(error)
