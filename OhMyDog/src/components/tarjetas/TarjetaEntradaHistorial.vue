@@ -120,14 +120,6 @@ export default defineComponent({
         });
       mostrarPopupEditar.value = false;
     };
-    const comprobarFecha = ()=>{
-    var fechaInicial = new Date(props.fecha);
-    var fechaActual = new Date();
-    var milisegundosPorDia = 24 * 60 * 60 * 1000; // Cantidad de milisegundos en un día
-    var diferenciaEnMilisegundos = fechaActual - fechaInicial;
-    var diasTranscurridos = Math.floor(diferenciaEnMilisegundos / milisegundosPorDia);
-    return diasTranscurridos <= 1;
-    }
     return {
       rol,
       getDatosVeterinario,
