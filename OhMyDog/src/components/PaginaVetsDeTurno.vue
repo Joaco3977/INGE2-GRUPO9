@@ -8,12 +8,22 @@
         VETERINARIAS DE TURNO
       </div>
       <q-btn
+        v-if="rol === 2 && tab === 'listadoVets'"
         @click="agregarVetDeTurno = true"
         color="accent"
         class=""
         style="width: max-content; height: max-content"
       >
         <div class="textoBoton">Agregar veterinaria al listado</div>
+      </q-btn>
+      <q-btn
+        v-if="rol === 2 && tab === 'vetsTurno'"
+        @click="registrarVetDeTurno = true"
+        color="accent"
+        class=""
+        style="width: max-content; height: max-content"
+      >
+        <div class="textoBoton">Registrar nueva veterinaria</div>
       </q-btn>
     </div>
 
@@ -33,6 +43,7 @@
           label="Listado de veterinarias de turno"
         />
         <q-tab
+          v-if="rol === 2"
           @click="loadVetsTurno"
           name="vetsTurno"
           label="Veterinarias registradas"
@@ -48,37 +59,26 @@
           class="bg-white"
           >
           <div
-            v-if="perrosCruza.length > 0"
+            v-if="listadoVetsTurno.length > 0"
             class="full-width row wrap justify-center"
           >
-            <TarjetaCruza
+            <TarjetaVeterinaria
               class="q-px-sm col-stretch"
-              v-for="perro in perrosCruza"
-              :key="perro.ID"
-              :id="perro.ID"
-              :rol="rol"
-              :foto="perro.FOTO"
-              :nombre="perro.NOMBRE"
-              :nacimiento="perro.NACIMIENTO"
-              :peso="perro.PESO"
-              :tamanio="perro.TAMANIO"
-              :sexo="perro.SEXO"
-              :raza="perro.RAZA"
-              :color="perro.COLOR"
-              :dnicliente="perro.DNICLIENTE"
-              linkImg="https://cdn.quasar.dev/img/parallax2.jpg"
+              v-for="vet in listadoVetsTurno"
+              :key="vet.ID"
+              :id="vet.ID"
             />
           </div>
           <div
           class="row textoNoItems justify-center full-height content-center q-pa-xl"
           v-else
           >
-            ¡Todavía no tenemos otros perros en cruza!
+            ¡No hay ninguna veterinaria de turno!
           </div>
           </q-scroll-area>
         </q-tab-panel>
 
-        <q-tab-panel v-if="rol > 0" name="vetsTurno" class="column">
+        <q-tab-panel name="vetsTurno" class="column">
           <q-scroll-area
           :thumb-style="thumbStyle"
           :bar-style="barStyle"
@@ -86,50 +86,34 @@
           class="bg-white"
           >
           <div
-            v-if="perrosRecomendados.length > 0"
+            v-if="vetsTurnoRegistradas.length > 0"
             class="full-width row wrap justify-center"
           >
-            <TarjetaCruza
+            <TarjetaVeterinaria
               class="q-px-sm col-stretch"
-              v-for="perro in perrosRecomendados"
-              :key="perro.ID"
-              :id="perro.ID"
-              :rol="rol"
-              :foto="perro.FOTO"
-              :nombre="perro.NOMBRE"
-              :nacimiento="perro.NACIMIENTO"
-              :peso="perro.PESO"
-              :tamanio="perro.TAMANIO"
-              :sexo="perro.SEXO"
-              :raza="perro.RAZA"
-              :color="perro.COLOR"
-              :dnicliente="perro.DNICLIENTE"
-              linkImg="https://cdn.quasar.dev/img/parallax2.jpg"
+              v-for="vet in vetsTurnoRegistradas"
+              :key="vet.ID"
+              :id="vet.ID"
             />
           </div>
           <div
           class="row textoNoItems justify-center full-height content-center q-pa-xl"
           v-else
           >
-            ¡Todavía no tenemos ningun perro en cruza para tu perro!
+            ¡Todavía se registro ninguna veterinaria de turno!
           </div>
           </q-scroll-area>
         </q-tab-panel>
       </q-tab-panels>
     </q-card>
 
-    <q-dialog v-model="agregarPerroCruza">
+    <q-dialog v-model="agregarVetDeTurno">
       <q-card>
         <q-card-section>
-          <div class="textoTituloTarjeta text-primary">Agregar perro de cruza</div>
-        </q-card-section>
-
-        <q-card-section class="q-pt-none" v-if="opcionPerros.length === 0">
-          No quedan perros para cruzar
+          <div class="textoTituloTarjeta text-primary">Agregar veterinaria al listado</div>
         </q-card-section>
 
         <q-select
-            v-if="opcionPerros.length > 0"
             v-model="perroElegido"
             :options="opcionPerros"
             class="q-px-xl"
@@ -152,4 +136,77 @@
   </div>
 </template>
 <script>
+import { defineComponent } from "vue";
+import { ref } from "vue";
+import { api } from "../boot/axios.js";
+import { useStore } from "../pinia/store.js";
+import TarjetaVeterinaria from "./tarjetas/TarjetaVeterinaria.vue";
+
+export default defineComponent({
+  name: "PaginaVetsDeTurno",
+  components: {
+    TarjetaVeterinaria,
+  },
+  setup() {
+    const listadoVetsTurno = ref([]);
+    const vetsTurnoRegistradas = ref([])
+
+    const tab = ref("listadoVets");
+
+    const rol = useStore().rol;
+    const agregarVetDeTurno = ref(false);
+    const registrarVetDeTurno = ref(false);
+
+    const vetElegida = ref({ label: "", value: '' })
+
+    const nombreVetsTurno = ref([]);
+
+    const opcionVetsTurno = ref([])
+
+    const quienSoy = {
+      rol: useStore().rol,
+      dni: useStore().dni,
+      nombre: useStore().nombre,
+    }
+
+    const loadMisDisponiblesCruzar = async () => {
+
+    }
+
+    const loadPerrosRecomendados = async () => {
+
+    };
+
+    const loadPerrosCruza = async () => {
+
+    };
+
+    const registrarVetTurno = async (id) => {
+
+    };
+
+    const eliminarVetTurno = async (data) => {
+
+    }
+
+    return {
+      tab,
+      rol,
+      listadoVetsTurno,
+      vetsTurnoRegistradas,
+      agregarVetDeTurno,
+      registrarVetDeTurno,
+      vetElegida,
+      nombreVetsTurno,
+      opcionVetsTurno
+    };
+  },
+  mounted() {
+  },
+  computed: {
+    camposValidos () {
+      return this.perroElegido.label !== ''
+    }
+  }
+});
 </script>
