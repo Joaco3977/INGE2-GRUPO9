@@ -4,10 +4,10 @@
       <q-card-section>
         <div class="column">
           <div class="q-pb-sm flex justify-end">
-            <q-btn @click="confirmar = true" class="q-ml-sm" color="accent">
+            <q-btn v-if="rol == 2" @click="confirmar = true" class="q-ml-sm" color="accent">
               <div>Eliminar</div>
             </q-btn>
-            <q-btn @click="mostrarPop = true" class="q-ml-sm" color="accent">
+            <q-btn v-if="rol == 2"  @click="mostrarPop = true" class="q-ml-sm" color="accent">
               <div>Editar</div>
             </q-btn>
           </div>
@@ -71,6 +71,7 @@ import { defineComponent } from "vue";
 import { ref } from "vue";
 import formVeterinaria from "../formulariosEditar/formVeterinaria.vue";
 import { api } from "../../boot/axios.js";
+import { useStore } from "../../pinia/store.js";
 
 export default defineComponent({
   name: "TarjetaVeterinaria",
@@ -88,10 +89,11 @@ export default defineComponent({
   },
   setup() {
     const mostrarPop = ref(false);
-
+    const rol = useStore().rol;
     return {
       confirmar: ref(false),
       mostrarPop,
+      rol,
     };
   },
   methods: {
