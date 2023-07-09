@@ -44,7 +44,7 @@
         />
         <q-tab
           v-if="rol === 2"
-          @click="loadVetsTurno"
+          @click="loadVetsRegistradas"
           name="vetsTurno"
           label="Veterinarias registradas"
         />
@@ -65,8 +65,13 @@
             <TarjetaVeterinaria
               class="q-px-sm col-stretch"
               v-for="vet in listadoVetsTurno"
+              @eliminarVetTurno="eliminarVetTurno"
               :key="vet.ID"
+              :tab="tab"
               :id="vet.ID"
+              :nombre="vet.NOMBRE"
+              :direccion="vet.DIRECCION"
+              :fecha="vet.FECHA"
             />
           </div>
           <div
@@ -92,8 +97,12 @@
             <TarjetaVeterinaria
               class="q-px-sm col-stretch"
               v-for="vet in vetsTurnoRegistradas"
+              @eliminarVetTurno="eliminarVetTurno"
               :key="vet.ID"
+              :tab="tab"
               :id="vet.ID"
+              :nombre="vet.NOMBRE"
+              :direccion="vet.DIRECCION"
             />
           </div>
           <div
@@ -113,18 +122,23 @@
           <div class="textoTituloTarjeta text-primary">Agregar veterinaria al listado</div>
         </q-card-section>
 
+        <q-card-section class="q-pt-none" v-if="vetsTurnoRegistradas.length === 0">
+          No hay ninguna veterinaria registrada para agregar
+        </q-card-section>
+
         <q-select
-            v-model="perroElegido"
-            :options="opcionPerros"
+            v-if="vetsTurnoRegistradas.length > 0"
+            v-model="vetElegida"
+            :options="opcionVetsTurno"
             class="q-px-xl"
-            label="Perro"
+            label="Veterinaria"
         />
 
         <q-card-actions align="right">
           <q-btn
             flat
             label="Confirmar"
-            @click="registrarPerroCruza(perroElegido.value.ID, fechaCelo)"
+            @click="agregarVetListado(vetElegida.value.ID)"
             :disabled="!camposValidos"
             color="primary"
             v-close-popup
@@ -132,6 +146,13 @@
           <q-btn flat label="Volver" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
+    </q-dialog>
+
+    <q-dialog v-model="registrarVetDeTurno">
+      <FormVeterinaria
+        @registrarVetTurno="registrarVetTurno"
+        :nombresVeterinarias="nombreVetsTurno"
+      />
     </q-dialog>
   </div>
 </template>
@@ -141,11 +162,14 @@ import { ref } from "vue";
 import { api } from "../boot/axios.js";
 import { useStore } from "../pinia/store.js";
 import TarjetaVeterinaria from "./tarjetas/TarjetaVeterinaria.vue";
+import FormVeterinaria from "./formularios/formVeterinaria.vue"
+import { normalizeString } from "src/functions/misc";
 
 export default defineComponent({
   name: "PaginaVetsDeTurno",
   components: {
     TarjetaVeterinaria,
+    FormVeterinaria
   },
   setup() {
     const listadoVetsTurno = ref([]);
@@ -158,6 +182,10 @@ export default defineComponent({
     const registrarVetDeTurno = ref(false);
 
     const vetElegida = ref({ label: "", value: '' })
+    const veterinariaRegistrar = ref({
+      nombre: '',
+      direccion: '',
+    })
 
     const nombreVetsTurno = ref([]);
 
@@ -169,24 +197,78 @@ export default defineComponent({
       nombre: useStore().nombre,
     }
 
-    const loadMisDisponiblesCruzar = async () => {
-
+    const loadVetsDisponibles = async () => {
+      await api.get('/vetsTurno/getVetsRegistradas')
+      .then((resultado) => {
+        vetElegida.value = { label: "", value: '' }
+        opcionVetsTurno.value = []
+        resultado.data.forEach(vet => {
+          opcionVetsTurno.value.push({ label: vet.NOMBRE, value: vet })
+        });
+        nombreVetsTurno.value = resultado.data.map((vet) => normalizeString(vet.NOMBRE));
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     }
 
-    const loadPerrosRecomendados = async () => {
-
+    const loadVetsRegistradas = async () => {
+      await api.get('/vetsTurno/getVetsRegistradas')
+      .then((resultado) => {
+        vetsTurnoRegistradas.value = resultado.data
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     };
 
-    const loadPerrosCruza = async () => {
-
+    const loadListadoVetsTurno = async () => {
+      await api.get('/vetsTurno/getListadoVetsTurno')
+      .then((resultado) => {
+        listadoVetsTurno.value = resultado.data
+        //ACA HAY Q ORDENAR POR FECHA
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     };
 
-    const registrarVetTurno = async (id) => {
-
+    const registrarVetTurno = async (veterinaria) => {
+      await api.post('/vetsTurno/registrarVeterinariaRegistrada', {
+        veterinaria: veterinaria,
+      })
+      .then(() => {
+        loadVetsRegistradas();
+        loadVetsDisponibles();
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     };
 
     const eliminarVetTurno = async (data) => {
+      if (data.tab === 'listadoVets') {
+        await api.post('/vetsTurno/eliminarVeterinariaListado', {
+          id: data.id
+        })
+        .then(() => {
+          loadListadoVetsTurno()
+        })
+        .catch((error) => {
 
+        })
+      } else {
+        await api.post('/vetsTurno/eliminarVeterinariaRegistrada', {
+          id: data.id
+        })
+        .then(() => {
+          loadVetsRegistradas()
+          loadVetsDisponibles()
+        })
+        .catch((error) => {
+
+        })
+      }
     }
 
     return {
@@ -198,14 +280,23 @@ export default defineComponent({
       registrarVetDeTurno,
       vetElegida,
       nombreVetsTurno,
-      opcionVetsTurno
+      opcionVetsTurno,
+      veterinariaRegistrar,
+      eliminarVetTurno,
+      registrarVetTurno,
+      loadVetsDisponibles,
+      loadVetsRegistradas,
+      loadListadoVetsTurno
     };
   },
   mounted() {
+    this.loadVetsDisponibles()
+    this.loadVetsRegistradas()
+    this.loadListadoVetsTurno()
   },
   computed: {
     camposValidos () {
-      return this.perroElegido.label !== ''
+      return this.vetElegida.label !== ''
     }
   }
 });

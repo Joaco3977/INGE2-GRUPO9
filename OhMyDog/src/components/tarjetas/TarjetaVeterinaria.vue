@@ -1,49 +1,37 @@
 <template>
-  <!-- Todo el contenido tiene que estar adentro de un div -->
-  <!-- Pueden usar componentes dentro de este componente -->
   <div class="bg-white" style="width: full; max-height: 90vh">
     <q-card class="my-card bg-primary text-white q-ma-md" style="width: 70vw">
       <q-card-section>
-        <!-- Contenido -->
         <div class="column">
           <div class="q-pb-sm flex justify-end">
             <q-btn @click="confirmar = true" class="q-ml-sm" color="accent">
               <div>Eliminar</div>
-              <!-- @click="ejecutarFuncionPadre(dni)"-->
             </q-btn>
             <q-btn @click="mostrarPop = true" class="q-ml-sm" color="accent">
               <div>Editar</div>
             </q-btn>
           </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">DNI:</div>
-            <div>{{ dni }}</div>
+          <div class="row" v-if="tab === 'listadoVets'">
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs">FECHA: </div>
+            <div>{{ (new Date(fecha)).toLocaleDateString() }}</div>
           </div>
           <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">
-              Nombre y Apellido:
-            </div>
-            <div>{{ nombreApellido }}</div>
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs">NOMBRE:</div>
+            <div>{{ nombre }}</div>
           </div>
           <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Mail:</div>
-            <div>{{ mail }}</div>
-          </div>
-          <div class="row">
-            <div class="textoTituloPosteo q-pr-sm q-pb-xs">Telefono:</div>
-            <div>{{ telefono }}</div>
+            <div class="textoTituloPosteo q-pr-sm q-pb-xs">DIRECCION:</div>
+            <div>{{ direccion }}</div>
           </div>
         </div>
       </q-card-section>
       <q-card-actions class="column items-center">
-        <!--<q-btn push class="textoBoton"  flat> Contactar </q-btn>
-          <q-btn push class="textoBoton"  flat> Editar </q-btn>-->
 
         <q-dialog v-model="confirmar">
           <q-card>
             <q-card-section>
               <div class="textoTituloTarjeta text-primary">
-                ¿Eliminar veterinario?
+                ¿Eliminar veterinaria?
               </div>
             </q-card-section>
 
@@ -57,7 +45,7 @@
               <q-btn
                 flat
                 label="Eliminar"
-                @click="ejecutarFuncionPadre(dni, nombreApellido)"
+                @click="eliminarVetTurno(id)"
                 color="primary"
                 v-close-popup
               />
@@ -67,16 +55,12 @@
       </q-card-actions>
     </q-card>
     <q-dialog v-model="mostrarPop">
-      <formVeterinario
-        @editarVeterinario="editarVeterinario"
-        :dni="dni"
-        :nombreApellido="nombreApellido"
-        :mail="mail"
-        :telefono="telefono"
-        :mailsClientes="mailsClientes"
-        :mailsVeterinarios="mailsVeterinarios"
-        :dniClientes="dniClientes"
-        :dniVeterinarios="dniVeterinarios"
+      <formVeterinaria
+        @editarVeterinaria="editarVeterinaria"
+        :id="id"
+        :nombre="nombre"
+        :direccion="direccion"
+        :nombresVeterinarias="nombresVeterinarias"
       />
     </q-dialog>
   </div>
@@ -85,48 +69,42 @@
 <script>
 import { defineComponent } from "vue";
 import { ref } from "vue";
-import formVeterinario from "../formulariosEditar/formVeterinario.vue";
+import formVeterinaria from "../formulariosEditar/formVeterinaria.vue";
 import { api } from "../../boot/axios.js";
 
 export default defineComponent({
   name: "TarjetaVeterinaria",
-  components: {},
+  components: { formVeterinaria },
   props: {
-    dni: String,
-    nombreApellido: String,
-    mail: String,
-    telefono: String,
-    mailsClientes: {
-      type: Array,
-      required: true,
-    },
-    mailsVeterinarios: {
-      type: Array,
-      required: true,
-    },
-    dniClientes: {
-      type: Array,
-      required: true,
-    },
-    dniVeterinarios: {
+    id: String,
+    tab: String,
+    nombre: String,
+    direccion: String,
+    fecha: String,
+    nombresVeterinarias: {
       type: Array,
       required: true,
     },
   },
   setup() {
     const mostrarPop = ref(false);
+
     return {
       confirmar: ref(false),
       mostrarPop,
     };
   },
   methods: {
-    ejecutarFuncionPadre(dni, nombreApellido) {
-      this.$emit("ejecutarFuncion", dni, nombreApellido);
+    eliminarVetTurno(id) {
+      const data = {
+        id: id,
+        tab: this.tab,
+      }
+      this.$emit("eliminarVetTurno", data);
     },
-    async editarVeterinario(veterinario) {
+    async editarVeterinaria(veterinaria) {
       try {
-        const response = await api.post("/veterinario/editarVeterinario", {
+        const response = await api.post("/vetsTurno/editarVeterinaria", {
           veterinario: {
             dni: veterinario.dni,
             nombreApellido: veterinario.nombreApellido,
