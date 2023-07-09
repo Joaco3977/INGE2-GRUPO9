@@ -36,6 +36,7 @@ const donacionRouter = require ('./donacion.js');
 const logRouter = Log.router;
 const historialRouter = require ('./historial.js');
 const cruzaRouter = require ('./cruza.js')
+const vetsTurnoRouter = require ('./vetsTurno.js')
 
 app.use('/cliente', clienteRouter)
 app.use('/veterinario', veterinarioRouter)
@@ -49,6 +50,7 @@ app.use('/donacion', donacionRouter)
 app.use('/log', logRouter)
 app.use('/historial', historialRouter)
 app.use('/cruza', cruzaRouter)
+app.use('/vetsTurno', vetsTurnoRouter)
 
 app.post("/login", async (req, res) => {
   const admin = checkAdmin(req.body.mail, req.body.password);

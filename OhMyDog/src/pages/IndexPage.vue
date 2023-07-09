@@ -101,6 +101,7 @@
           icon="ion-hand"
           label="Registro Donaciones"
         />
+
         <!-- <q-tab
           v-if="store.rol === 2"
           name="Responder Consultas"
@@ -113,6 +114,12 @@
           icon="ion-people"
           label="Consultas"
         /> -->
+
+        <q-tab
+          name="Veterinarias de turno"
+          icon="calendar_month"
+          label="Veterinarias de turno"
+        />
       </q-tabs>
 
       <q-btn
@@ -201,6 +208,10 @@
         <q-tab-panel v-if="store.rol === -1" name="Registro Donaciones">
           <PaginaRegistroDonaciones />
         </q-tab-panel>
+
+        <q-tab-panel name="Veterinarias de turno">
+          <PaginaVetsDeTurno />
+        </q-tab-panel>
       </q-tab-panels>
     </div>
   </div>
@@ -228,6 +239,7 @@ import PaginaVeterinarios from "src/components/PaginaVeterinarios.vue";
 import PaginaDonaciones from "../components/PaginaDonaciones.vue";
 import PaginaRegistroDonaciones from "../components/PaginaRegistroDonaciones.vue";
 import PaginaCruza from "../components/PaginaCruza.vue"
+import PaginaVetsDeTurno from '../components/PaginaVetsDeTurno.vue'
 import { useStore } from "../pinia/store.js";
 import { checkTokenHome } from "../functions/check.js";
 import { api } from "../boot/axios.js";
@@ -254,6 +266,7 @@ export default defineComponent({
     PaginaDonaciones,
     PaginaRegistroDonaciones,
     PaginaCruza,
+    PaginaVetsDeTurno,
   },
   setup() {
     const data = reactive({
