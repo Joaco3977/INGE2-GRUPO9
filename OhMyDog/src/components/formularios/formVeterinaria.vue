@@ -39,7 +39,7 @@
               v-close-popup
             />
             <q-btn
-              label="Registrar veterinario"
+              label="Registrar veterinaria"
               :disabled="!camposValidos"
               type="submit"
               color="accent"
