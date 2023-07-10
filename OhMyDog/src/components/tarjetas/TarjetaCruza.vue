@@ -81,8 +81,11 @@ export default defineComponent({
         dni: dnicliente
       })
       .then((respuesta) => {
-        console.log(respuesta.data.TELEFONO)
-        //ACA IRIA PARA Q ABRA EN NAVEGADOR EL NUMERO DE TELEFONO
+        let cont =
+          "https://api.whatsapp.com/send?phone=" +
+          respuesta.data.TELEFONO +
+          "&text=Contacto%20desde%20OhMyDog";
+          window.open(cont, '_blank');
       })
       .catch((error) => {
         console.log(error)
