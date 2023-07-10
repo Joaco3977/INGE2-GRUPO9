@@ -6,7 +6,6 @@
           Agregar perro perdido
         </div>
       </q-card-section>
-
       <q-card-section class="">
         <q-form class="q-px-xl" @submit.prevent="ejecutarFuncionPadre" reset>
           <q-input
@@ -16,18 +15,20 @@
             type="text"
           />
           <div class="column items-center bg-white q-pa-sm">
-            <q-uploader
-              auto-upload
-              label= "Foto del perro"
-              url="http://localhost:9000/upload"
-              style="max-width: 300px"
-            />
-          </div>
-          <div class="column items-center bg-white q-pa-sm">
             <div class="q-px-xl q-py-sm text-start self-start color-grey">
               Fecha de pérdida:
             </div>
             <q-date v-model="perroFECHA" minimal :options="opcionesFecha" />
+          </div>
+          <div class="column items-center bg-white q-pa-sm">
+            <q-uploader
+              ref="uploaderPerdido"
+              label= "Foto del perro"
+              accept="image/*"
+              :field-name="'perroPerdidoImagen'"
+              url="http://localhost:5137/perroPerdido/subirImagenPerdido"
+              style="max-width: 300px"
+            />
           </div>
           <q-input
             v-model="perroZONA"
@@ -88,6 +89,7 @@
 import { defineComponent, ref } from "vue";
 import { useStore } from "src/pinia/store";
 import { LocalStorage, useQuasar } from "quasar";
+import { api } from "../../boot/axios.js";
 
 export default defineComponent({
   name: "formAdopcion",
@@ -163,9 +165,24 @@ export default defineComponent({
     };
   },
   methods: {
-    ejecutarFuncionPadre() {
+    async ejecutarFuncionPadre() {
       const perro = this.getDatosAdopcion();
-      this.$emit("registrarPerro", perro);
+      await api.post("/perroPerdido/addPerroPerdido", {
+          perro,
+          rol: useStore().rol,
+          dni: useStore().dni,
+          nombre: useStore().nombre,
+        }).then((result)=>{
+          console.log(result)
+          this.$refs.uploaderPerdido.additionalFields = {
+            id: result.data.id,
+          };
+          this.$refs.uploaderPerdido.upload();
+          this.$emit("registrarPerro", perro);
+        })
+        .catch((error)=>{
+          console.log(error)
+        })
     },
   },
   computed: {

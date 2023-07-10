@@ -1,9 +1,9 @@
 const express = require('express');
 const knex = require('./configs/knexConfig.js')
 const router = express.Router();
-
 const Consola = require ('./serverFunctions.js')
 const Log = require ('./log.js')
+const upload = require('./upload.js')
 
 const getPerrosPerdidos = async () => {
     try {
@@ -27,13 +27,24 @@ const getPerrosPerdidosPropios = async (dni) =>{
 
 const addperroPerdido = async (nuevoPerroP) => {
     try {
-        await knex('perroPerdido').insert(nuevoPerroP)
-        return true
+      await knex('perroPerdido').insert(nuevoPerroP);
+      const resultado = await knex('perroPerdido')
+        .select('IDPERROPERDIDO')
+        .where({
+          DNICLIENTE: nuevoPerroP.DNICLIENTE,
+          NOMBRE: nuevoPerroP.NOMBRE,
+          FECHAPERDIDA: nuevoPerroP.FECHAPERDIDA
+        })
+        .first();
+      return {
+        resultado: true,
+        id: resultado.IDPERROPERDIDO
+      };
     } catch (error) {
-        console.error(error)
-        return false
+      console.error(error);
+      return false;
     }
-}
+  };
 
 // VER LISTA PERRO PERDIDOS - GET traer todos los perros perdidos
 router.get('/getPerrosPerdidos', async (req, res) => {
@@ -75,11 +86,12 @@ router.post('/addPerroPerdido', async (req, res) => {
             }
             addperroPerdido(nuevoPerroP)
             .then ((resultadoAdd) => {
-                if (resultadoAdd !== false) {
+                console.log(resultadoAdd)
+                if (resultadoAdd.resultado !== false) {
                     //añadir a log
                     console.log("\x1b[35m%s\x1b[0m", `Cliente agrego al perro perdido: ${req.body.perro.nombre}`)
                     Log.agregarEntradaLog(req.body.rol, req.body.dni, `agrego al PERRO PERDIDO ${req.body.perro.nombre}`)
-                    res.status(200).send({})
+                    res.status(200).send({id : resultadoAdd.id})
                 } else {
                     res.status(401)
                 }
@@ -101,6 +113,7 @@ router.post('/marcarEncontrado', async(req,res) => {
             console.log(error)
         })
 })
+
 
 router.post('/deletePerroPerdido', async (req,res) =>{
     let quien = ''
@@ -126,5 +139,8 @@ router.post('/deletePerroPerdido', async (req,res) =>{
     })
 })
 
+router.post('/subirImagenPerdido',upload.upload,async (req,res)=>{
+    res.send({data: 'enviado'})
+})
     
 module.exports = router;

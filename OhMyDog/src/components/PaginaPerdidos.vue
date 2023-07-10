@@ -167,24 +167,13 @@ export default defineComponent({
       dni: useStore().dni,
       nombre: useStore().nombre,
     }
-    const registrarPerro = async (perro) => {
-      console.log(perro)
-      try {
-        await api.post("/perroPerdido/addPerroPerdido", {
-          perro,
-          rol: useStore().rol,
-          dni: useStore().dni,
-          nombre: useStore().nombre,
-        });
+    const registrarPerro = async () => {
         mostrarPopupM();
         if (tab.value === "perrosOtros") {
           loadPerros();
         } else {
           loadPerrosPropios();
         }
-      } catch (error) {
-        console.error(error);
-      }
     };
 
     const editarPerro = async (perro) => {
