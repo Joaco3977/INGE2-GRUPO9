@@ -278,6 +278,7 @@ export default defineComponent({
         .then(() => {
           perroElegido.value = { label: "", value: '' }
           opcionPerros.value = []
+          loadMisPerrosEnCruza()
           loadMisDisponiblesCruzar()
         }).catch((error) => {
           console.log(error)
