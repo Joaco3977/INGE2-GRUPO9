@@ -67,4 +67,16 @@ router.post('/getNumeroDuenio', async (req,res) => {
         res.status(401).send(error)
     })
 })
+
+router.post('/quitarPerroCruza', async(req,res) => {
+    await knex('perro').where('ID', req.body.id).update({'CRUZA': 0})
+    .then(() => {
+        res.status(200).send({})
+    })
+    .catch((error) => {
+        console.log(error)
+        res.status(401).send(error)
+    })
+})
+
 module.exports = router

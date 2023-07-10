@@ -8,6 +8,14 @@
         CRUZA
       </div>
       <q-btn
+        @click="quitarPerroCruza = true"
+        color="accent"
+        class=""
+        style="width: max-content; height: max-content"
+      >
+        <div class="textoBoton">Quitar perro para cruzar</div>
+      </q-btn>
+      <q-btn
         @click="agregarPerroCruza = true"
         color="accent"
         class=""
@@ -167,6 +175,38 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="quitarPerroCruza">
+      <q-card>
+        <q-card-section>
+          <div class="textoTituloTarjeta text-primary">Quitar perro de cruza</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none" v-if="opcionMisPerrosEnCruza.length === 0">
+          Todavia no tenes ningun perro en cruza.
+        </q-card-section>
+
+        <q-select
+            v-if="opcionMisPerrosEnCruza.length > 0"
+            v-model="quitarMiPerroElegidoCruza"
+            :options="opcionMisPerrosEnCruza"
+            class="q-px-xl"
+            label="Perro"
+        />
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="Confirmar"
+            @click="eliminarPerroCruza(quitarMiPerroElegidoCruza.value.ID)"
+            :disabled="!camposValidosQuitar"
+            color="primary"
+            v-close-popup
+          />
+          <q-btn flat label="Volver" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -191,6 +231,8 @@ export default defineComponent({
     const rol = useStore().rol;
     const agregarPerroCruza = ref(false);
 
+    const quitarPerroCruza = ref(false);
+
     const perroElegido = ref({ label: "", value: '' })
 
     const nombrePerrosCruza = ref([]);
@@ -200,6 +242,8 @@ export default defineComponent({
     const opcionMisPerrosEnCruza = ref ([])
 
     const miPerroElegidoCruza = ref({ label: "", value: '' })
+
+    const quitarMiPerroElegidoCruza = ref({ label: "", value: '' })
 
     const quienSoy = {
       rol: useStore().rol,
@@ -253,11 +297,12 @@ export default defineComponent({
     }
 
     watch(miPerroElegidoCruza, (nuevoValor, valorAnterior) => {
-      loadPerrosRecomendados(nuevoValor.value)
+      if (miPerroElegidoCruza.value.label !== '') {
+        loadPerrosRecomendados(nuevoValor.value)
+      }
     });
 
     const loadPerrosCruza = async () => {
-      console.log('tocaste en loadPerrosCruza')
       try {
         const response = await api.post("/cruza/getPerrosCruza", {
           dni: useStore().dni,
@@ -285,17 +330,22 @@ export default defineComponent({
         })
     };
 
-    async function eliminarPerroCruza(data) {
-      try {
-        await api.post("/cruza/deletePerroCruza", {
-          id: data.id,
-          nombre: data.nombre,
-          quienSoy: quienSoy,
-        });
-        loadPerrosCruza();
-      } catch {
-        console.error("NO SE PUDO ELIMINAR CAMPAÑA");
-      }
+    const eliminarPerroCruza = async (id) => {
+      await api.post('/cruza/quitarPerroCruza', {
+        id: id,
+      })
+      .then(() => {
+        loadMisPerrosEnCruza()
+        loadMisDisponiblesCruzar()
+        if (miPerroElegidoCruza.value.ID === undefined) {
+          perrosRecomendados.value = []
+          miPerroElegidoCruza.value = { label: "", value: '' }
+        }
+        quitarMiPerroElegidoCruza.value = { label: "", value: '' }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     }
 
     return {
@@ -312,6 +362,8 @@ export default defineComponent({
       tab,
       opcionMisPerrosEnCruza,
       miPerroElegidoCruza,
+      quitarPerroCruza,
+      quitarMiPerroElegidoCruza,
       loadPerrosRecomendados,
       loadMisDisponiblesCruzar,
       loadMisPerrosEnCruza
@@ -321,10 +373,14 @@ export default defineComponent({
     checkToken()
     this.loadPerrosCruza()
     this.loadMisDisponiblesCruzar()
+    this.loadMisPerrosEnCruza()
   },
   computed: {
     camposValidos () {
       return this.perroElegido.label !== ''
+    },
+    camposValidosQuitar () {
+      return this.quitarMiPerroElegidoCruza.label !== ''
     }
   }
 });
