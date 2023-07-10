@@ -124,7 +124,6 @@ export default defineComponent({
       rol,
       getDatosVeterinario,
       editarHistorial,
-      comprobarFecha,
       veterinario,
       mostrarPopupEditar,
     };
