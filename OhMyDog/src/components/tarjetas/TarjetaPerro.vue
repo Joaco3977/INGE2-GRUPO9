@@ -9,9 +9,7 @@
     >
       <q-card-section horizontal>
         <q-img
-          class="col-3 q-pb-none"
-          fit="cover"
-          src="https://shorturl.at/mnsL0"
+          :src="rutaFoto"
         />
 
         <q-card-section class="column col-9 justify-between">
@@ -66,6 +64,7 @@
 <script>
 import { defineComponent, ref } from "vue";
 import TarjetaHistorial from "./TarjetaHistorial.vue";
+import { api } from "src/boot/axios";
 
 export default defineComponent({
   name: "TarjetaPerro",
@@ -85,9 +84,27 @@ export default defineComponent({
     linkImg: String,
     foto: Image,
   },
-  setup() {
+  setup(props) {
+
+    const rutaFoto = ref(``)
+
+    const getFoto = async () => {
+      await api.post('/perro/getFoto', {
+        id: props.id
+      },
+      {
+        responseType: 'blob'
+      })
+      .then((resultado) => {
+        const imageUrl = URL.createObjectURL(resultado.data);
+        rutaFoto.value = imageUrl;
+      })
+    }
+
     return {
       mostrarPopupEditar: ref(false),
+      getFoto,
+      rutaFoto
     };
   },
   methods: {
@@ -127,5 +144,8 @@ export default defineComponent({
       return formattedDate;
     },
   },
+  mounted() {
+    this.getFoto()
+  }
 });
 </script>

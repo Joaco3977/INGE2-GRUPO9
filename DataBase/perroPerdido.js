@@ -5,6 +5,8 @@ const Consola = require ('./serverFunctions.js')
 const Log = require ('./log.js')
 const upload = require('./upload.js')
 
+const rutaFoto = require ('./configs/rutaFotosConfig.js')
+
 const getPerrosPerdidos = async () => {
     try {
         const resultado = await knex('perroPerdido').select('*').where('ELIMINADO', 0)
@@ -72,8 +74,12 @@ router.post('/getPerrosPerdidosPropios', async (req, res) => {
     })
 })
 
+router.post('/getFoto', async(req,res)=> {
+    const imgPath = `${rutaFoto()}/imagenes/PERDIDA/${req.body.id}.png`
+    res.status(200).sendFile(imgPath)
+})
+
 router.post('/addPerroPerdido', async (req, res) => {
-    console.log(req.body.perro)
             const nuevoPerroP = {
                 SEXO: req.body.perro.sexo,
                 TELEFONO:req.body.perro.telefono,

@@ -15,6 +15,8 @@ const router = express.Router();
 const Consola = require ('./serverFunctions.js')
 const Log = require ('./log.js')
 
+const rutaFoto = require ('./configs/rutaFotosConfig.js')
+
 const getPerrosPropios = async (dni) => {
     try {
         const resultado = await knex('perro').select('*').where('DNICLIENTE', dni).andWhere('ELIMINADO', 0)
@@ -77,6 +79,11 @@ router.post('/addPerro', async (req, res) => {
     })
 
 });
+
+router.post('/getFoto', async(req,res)=> {
+    const imgPath = `${rutaFoto()}/imagenes/PERRO/${req.body.id}.png`
+    res.status(200).sendFile(imgPath)
+})
 
 router.post ('/editarPerro',async(req,res)=>{
     try {  

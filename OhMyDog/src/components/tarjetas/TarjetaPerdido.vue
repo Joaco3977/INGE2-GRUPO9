@@ -13,6 +13,7 @@
       >
         ¡ENCONTRADO!
       </q-card-section>
+
       <q-card-section v-if="servicio === 'perrosMios' || rol === 2">
         <div class="row justify-end full-width">
           <q-btn
@@ -37,6 +38,11 @@
       </q-card-section>
       <q-card-section>
         <!-- Contenido -->
+        <q-img
+          class="col-3 q-pb-none"
+          fit="cover"
+          :src="rutaFoto"
+        />
         <div class="column">
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Nombre:</div>
@@ -169,6 +175,7 @@ import { defineComponent, ssrContextKey } from "vue";
 import { ref } from "vue";
 import formPerroAdopcion from "../formulariosEditar/formPerroAdopcion.vue";
 import { useStore } from "../../pinia/store.js";
+import { api } from '../../boot/axios.js'
 
 export default defineComponent({
   name: "TarjetaPerdido",
@@ -176,7 +183,7 @@ export default defineComponent({
     formPerroAdopcion,
   },
   props: {
-    id: String,
+    id: Number,
     rol: String,
     servicio: String,
     nombre: String,
@@ -191,6 +198,22 @@ export default defineComponent({
   setup(props, { emit }) {
     const mostrarPopupEditar = ref(false);
 
+    const rutaFoto = ref(``)
+
+    const getFoto = async () => {
+      console.log('entre')
+      await api.post('/perroPerdido/getFoto', {
+        id: props.id
+      },
+      {
+        responseType: 'blob'
+      })
+      .then((resultado) => {
+        const imageUrl = URL.createObjectURL(resultado.data);
+        rutaFoto.value = imageUrl;
+      })
+    }
+
     const editarPerro = async (perroEditado) => {
       mostrarPopupEditar.value = false;
       var perro = {
@@ -203,13 +226,17 @@ export default defineComponent({
         telefono: perroEditado.telefono,
       };
       emit("editarPerro", perro);
+
     };
+
     return {
       editarPerro,
       mostrarPopupEditar,
       contactoCliente: "",
       confirmar: ref(false),
       confirmarEncontrado: ref(false),
+      rutaFoto,
+      getFoto,
     };
   },
   methods: {
@@ -237,6 +264,8 @@ export default defineComponent({
       this.$emit("marcarAdoptado", id);
     },
   },
-  mounted() {},
+  mounted() {
+    this.getFoto()
+  },
 });
 </script>
