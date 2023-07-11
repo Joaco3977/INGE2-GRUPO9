@@ -26,6 +26,10 @@
               label= "Foto del perro"
               accept="image/*"
               :field-name="'perroPerdidoImagen'"
+              :form-fields="[
+                {name: 'seccion', value: 'PERDIDA'},
+                {name: 'id', value: idPerroPerdidoAgregado}
+              ]"
               url="http://localhost:5137/perroPerdido/subirImagenPerdido"
               style="max-width: 300px"
             />
@@ -147,6 +151,8 @@ export default defineComponent({
       return date <= hoy && date >= fechaStr;
     };
 
+    const idPerroPerdidoAgregado = ref(0)
+
     return {
       opcionesFecha,
       perroSEXO,
@@ -162,6 +168,7 @@ export default defineComponent({
       ],
       getDatosAdopcion,
       onReset,
+      idPerroPerdidoAgregado,
     };
   },
   methods: {
@@ -173,10 +180,8 @@ export default defineComponent({
           dni: useStore().dni,
           nombre: useStore().nombre,
         }).then((result)=>{
-          console.log(result)
-          this.$refs.uploaderPerdido.additionalFields = {
-            id: result.data.id,
-          };
+          this.$refs.uploaderPerdido.formFields[1].value = result.data.id
+          console.log(this.$refs.uploaderPerdido.formFields)
           this.$refs.uploaderPerdido.upload();
           this.$emit("registrarPerro", perro);
         })
