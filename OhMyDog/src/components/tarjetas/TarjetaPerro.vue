@@ -10,7 +10,10 @@
       <q-card-section horizontal>
         <q-img
           :src="rutaFoto"
-        />
+          class="col-3 q-pb-none"
+          fit="cover"
+          style="max-height: 50vh;"
+          />
 
         <q-card-section class="column col-9 justify-between">
           <div class="">

@@ -60,6 +60,7 @@ router.post('/addPerroCruza', async (req,res) => {
 router.post('/getNumeroDuenio', async (req,res) => {
     await knex('cliente').select('TELEFONO').where('DNI', req.body.dni).first()
     .then((resultado) => {
+        console.log(resultado)
         res.status(200).send(resultado)
     })
     .catch((error) => {

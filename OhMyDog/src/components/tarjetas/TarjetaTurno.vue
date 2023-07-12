@@ -20,7 +20,7 @@
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Cliente:</div>
             <div>{{ nombreCliente }} - DNI: {{ dniCliente }}</div>
           </div>
-          <div  v-if="rol === 2 && (state === 'Confirmado' || state === 'Pendiente')" class="textoTituloPosteo q-pr-sm q-pb-xs">Monto Beneficio: {{ beneficio }}</div>
+          <div  v-if="rol === 2 && (state === 'Confirmado' || state === 'Pendiente')" class="textoTituloPosteo q-pr-sm q-pb-xs">Monto Beneficio: {{ beneficio }}$ pesos argentinos</div>
           <div class="row">
             <div class="textoTituloPosteo q-pr-sm q-pb-xs">Perro:</div>
             <div>{{ nombrePerro }}</div>

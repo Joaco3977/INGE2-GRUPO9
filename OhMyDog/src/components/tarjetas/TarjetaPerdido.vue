@@ -16,14 +16,14 @@
 
       <q-card-section v-if="servicio === 'perrosMios' || rol === 2">
         <div class="row justify-end full-width">
-          <q-btn
+          <!--<q-btn
             @click="mostrarPopupEditar = true"
             v-if="servicio === 'perrosMios' || rol === 2 || encontrado == 0"
             class=""
             color="accent"
           >
             <div>Editar</div>
-          </q-btn>
+          </q-btn>-->
           <q-btn
             v-if="servicio === 'perrosMios' || rol === 2 || encontrado == 0"
             @click="confirmar = true"

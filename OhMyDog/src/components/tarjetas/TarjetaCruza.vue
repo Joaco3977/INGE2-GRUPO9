@@ -11,6 +11,7 @@
         <q-img
           class="col-3 q-pb-none"
           fit="cover"
+          style="max-height: 50vh;"
           :src="rutaFoto"
         />
 
@@ -95,15 +96,16 @@ export default defineComponent({
       }
     }
 
-    const contactarDuenio = async (dnicliente) => {
+    const contactarDuenio = async () => {
       await api.post('/cruza/getNumeroDuenio', {
-        dni: dnicliente
+        dni: props.dnicliente
       })
       .then((respuesta) => {
+        console.log(respuesta.data) //no se pq no lo agarra
         let cont =
           "https://api.whatsapp.com/send?phone=" +
           respuesta.data.TELEFONO +
-          "&text=Contacto%20desde%20OhMyDog";
+          `&text=Contacto%20desde%20OhMyDog%20por%20perro%20de%20cruza%20${props.nombre}`;
           window.open(cont, '_blank');
       })
       .catch((error) => {
