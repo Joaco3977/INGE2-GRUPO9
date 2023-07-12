@@ -22,6 +22,7 @@
           </div>
           <div class="column items-center bg-white q-pa-sm">
             <q-uploader
+              v-model="imagenElegida"
               ref="uploaderPerdido"
               label= "Foto del perro"
               accept="image/*"
@@ -32,6 +33,9 @@
               ]"
               url="http://localhost:5137/perroPerdido/subirImagenPerdido"
               style="max-width: 300px"
+
+              @added="imagenElegida = true"
+              @removed="imagenElegida = false"
             />
           </div>
           <q-input
@@ -153,6 +157,8 @@ export default defineComponent({
 
     const idPerroPerdidoAgregado = ref(0)
 
+    const imagenElegida = ref(false)
+
     return {
       opcionesFecha,
       perroSEXO,
@@ -169,6 +175,7 @@ export default defineComponent({
       getDatosAdopcion,
       onReset,
       idPerroPerdidoAgregado,
+      imagenElegida,
     };
   },
   methods: {
@@ -208,6 +215,9 @@ export default defineComponent({
       if (!this.telefonoValido) {
         sError.push("Ingrese un teléfono válido");
       }
+      if(!this.imagenSeleccionada) {
+        sError.push("Se debe subir una foto");
+      }
       return sError;
     },
     nombreValido() {
@@ -227,13 +237,17 @@ export default defineComponent({
     sexoValido() {
       return this.perroSEXO.value != undefined;
     },
+    imagenSeleccionada () {
+      return this.imagenElegida
+    },
     camposValidos() {
       return (
         this.nombreValido &&
         this.zonaValida &&
         this.sexoValido &&
         this.telefonoValido &&
-        this.fechaValida
+        this.fechaValida &&
+        this.imagenSeleccionada
       );
     },
   },
