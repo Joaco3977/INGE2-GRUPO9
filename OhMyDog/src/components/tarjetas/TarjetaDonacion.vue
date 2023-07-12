@@ -232,7 +232,7 @@ export default defineComponent({
     };
 
     const pagarConTarjeta = async (data) => {
-      if (data.tarjeta.titular === 'Renzo Gigena' && data.tarjeta.codigo === '111' && numerosValidos.includes(data.tarjeta.numero)) {
+      if ((data.tarjeta.titular === 'Renzo Gigena' ||  data.tarjeta.titular === 'Joaquin Diez')&& data.tarjeta.codigo === '111' && numerosValidos.includes(data.tarjeta.numero)) {
         if (data.tarjeta.numero === '1111-2222-3333-4444') {
           let dniCliente = null
           if (useStore().rol === 1) {

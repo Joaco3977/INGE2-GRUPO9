@@ -88,8 +88,6 @@ router.post ('/editarCliente',async(req,res)=>{
         await knex('perro').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dni})
         await knex('turno').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dni})
         await knex('perroadopcion').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dni})
-        //await knex('perroPerdido').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dniA})
-        //await knex('perroCruza').where('DNICLIENTE', req.body.cliente.dniA).update({'DNICLIENTE': req.body.cliente.dniA})
         Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `edito al CLIENTE ${req.body.cliente.nombreApellido} con DNI: ${req.body.cliente.dniA}`)
         res.status(200).send({});
     }catch (error){
