@@ -2,8 +2,8 @@
   <div class="row" style="height: 100vh; max-height: 100vh">
     <!-- Menú lateral -->
     <div
-      class="column col-2 bg-primary shadow-2"
-      style="max-width: 40vw; height: 100vh; max-height: 100vh"
+      class="column col-2 bg-primary shadow-2 justify-start no-wrap"
+      style="max-width: 40vw; height: 100vh; max-height: 110vh"
     >
       <q-img src="logotipo" />
 
