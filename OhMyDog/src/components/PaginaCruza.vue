@@ -4,25 +4,25 @@
       class="flex row q-mx-xl justify-between items-center"
       style="height: 4em"
     >
-      <div class="titulo text-center text-h4 text-bold text-primary">
-        CRUZA
+      <div class="titulo text-center text-h4 text-bold text-primary">CRUZA</div>
+      <div class="flez row justify-between" style="width: 60%">
+        <q-btn
+          @click="quitarPerroCruza = true"
+          color="accent"
+          class=""
+          style="width: max-content; height: max-content"
+        >
+          <div class="textoBoton">Quitar perro para cruzar</div>
+        </q-btn>
+        <q-btn
+          @click="agregarPerroCruza = true"
+          color="accent"
+          class=""
+          style="width: max-content; height: max-content"
+        >
+          <div class="textoBoton">Agregar perro para cruzar</div>
+        </q-btn>
       </div>
-      <q-btn
-        @click="quitarPerroCruza = true"
-        color="accent"
-        class=""
-        style="width: max-content; height: max-content"
-      >
-        <div class="textoBoton">Quitar perro para cruzar</div>
-      </q-btn>
-      <q-btn
-        @click="agregarPerroCruza = true"
-        color="accent"
-        class=""
-        style="width: max-content; height: max-content"
-      >
-        <div class="textoBoton">Agregar perro para cruzar</div>
-      </q-btn>
     </div>
 
     <q-card stretch flat class="bg-white full-width full-height column no-wrap">
@@ -50,67 +50,18 @@
       <q-tab-panels v-model="tab" animated class="full-width">
         <q-tab-panel name="perrosTodos">
           <q-scroll-area
-          :thumb-style="thumbStyle"
-          :bar-style="barStyle"
-          style="height: 86vh"
-          class="bg-white"
+            :thumb-style="thumbStyle"
+            :bar-style="barStyle"
+            style="height: 86vh"
+            class="bg-white"
           >
-          <div
-            v-if="perrosCruza.length > 0"
-            class="full-width row wrap justify-center"
-          >
-            <TarjetaCruza
-              class="q-px-sm col-stretch"
-              v-for="perro in perrosCruza"
-              :key="perro.ID"
-              :id="perro.ID"
-              :rol="rol"
-              :foto="perro.FOTO"
-              :nombre="perro.NOMBRE"
-              :nacimiento="perro.NACIMIENTO"
-              :peso="perro.PESO"
-              :tamanio="perro.TAMANIO"
-              :sexo="perro.SEXO"
-              :raza="perro.RAZA"
-              :color="perro.COLOR"
-              :dnicliente="perro.DNICLIENTE"
-              linkImg="https://cdn.quasar.dev/img/parallax2.jpg"
-            />
-          </div>
-          <div
-          class="row textoNoItems justify-center full-height content-center q-pa-xl"
-          v-else
-          >
-            ¡Todavía no tenemos otros perros en cruza!
-          </div>
-          </q-scroll-area>
-        </q-tab-panel>
-
-        <q-tab-panel v-if="rol > 0" name="perrosRecomendados" class="column">
-          <q-scroll-area
-          :thumb-style="thumbStyle"
-          :bar-style="barStyle"
-          style="height: 86vh"
-          class="bg-white"
-          >
-          <div
-            v-if="opcionMisPerrosEnCruza.length > 0"
-            class="full-width row wrap justify-center"
-          >
-            <q-select
-              v-if="opcionMisPerrosEnCruza.length > 0"
-              v-model="miPerroElegidoCruza"
-              :options="opcionMisPerrosEnCruza"
-              class="full-width row wrap justify-center"
-              label="Elige un perro para mostrar recomendaciones!"
-            />
             <div
-              v-if="perrosRecomendados.length > 0"
+              v-if="perrosCruza.length > 0"
               class="full-width row wrap justify-center"
             >
               <TarjetaCruza
                 class="q-px-sm col-stretch"
-                v-for="perro in perrosRecomendados"
+                v-for="perro in perrosCruza"
                 :key="perro.ID"
                 :id="perro.ID"
                 :rol="rol"
@@ -127,18 +78,67 @@
               />
             </div>
             <div
-            class="row textoNoItems justify-center full-height content-center q-pa-xl"
-            v-else
+              class="row textoNoItems justify-center full-height content-center q-pa-xl"
+              v-else
             >
-              ¡Todavía no tenemos ningun perro en cruza para tu perro!
+              ¡Todavía no tenemos otros perros en cruza!
             </div>
-          </div>
-          <div
-            class="row textoNoItems justify-center full-height content-center q-pa-xl"
-            v-else
+          </q-scroll-area>
+        </q-tab-panel>
+
+        <q-tab-panel v-if="rol > 0" name="perrosRecomendados" class="column">
+          <q-scroll-area
+            :thumb-style="thumbStyle"
+            :bar-style="barStyle"
+            style="height: 86vh"
+            class="bg-white"
+          >
+            <div
+              v-if="opcionMisPerrosEnCruza.length > 0"
+              class="full-width row wrap justify-center"
+            >
+              <q-select
+                v-if="opcionMisPerrosEnCruza.length > 0"
+                v-model="miPerroElegidoCruza"
+                :options="opcionMisPerrosEnCruza"
+                class="full-width row wrap justify-center"
+                label="Elige un perro para mostrar recomendaciones!"
+              />
+              <div
+                v-if="perrosRecomendados.length > 0"
+                class="full-width row wrap justify-center"
+              >
+                <TarjetaCruza
+                  class="q-px-sm col-stretch"
+                  v-for="perro in perrosRecomendados"
+                  :key="perro.ID"
+                  :id="perro.ID"
+                  :rol="rol"
+                  :foto="perro.FOTO"
+                  :nombre="perro.NOMBRE"
+                  :nacimiento="perro.NACIMIENTO"
+                  :peso="perro.PESO"
+                  :tamanio="perro.TAMANIO"
+                  :sexo="perro.SEXO"
+                  :raza="perro.RAZA"
+                  :color="perro.COLOR"
+                  :dnicliente="perro.DNICLIENTE"
+                  linkImg="https://cdn.quasar.dev/img/parallax2.jpg"
+                />
+              </div>
+              <div
+                class="row textoNoItems justify-center full-height content-center q-pa-xl"
+                v-else
+              >
+                ¡Todavía no tenemos ningun perro en cruza para tu perro!
+              </div>
+            </div>
+            <div
+              class="row textoNoItems justify-center full-height content-center q-pa-xl"
+              v-else
             >
               ¡No tenes ningun perro en cruza!
-          </div>
+            </div>
           </q-scroll-area>
         </q-tab-panel>
       </q-tab-panels>
@@ -147,7 +147,9 @@
     <q-dialog v-model="agregarPerroCruza">
       <q-card>
         <q-card-section>
-          <div class="textoTituloTarjeta text-primary">Agregar perro de cruza</div>
+          <div class="textoTituloTarjeta text-primary">
+            Agregar perro de cruza
+          </div>
         </q-card-section>
 
         <q-card-section class="q-pt-none" v-if="opcionPerros.length === 0">
@@ -155,11 +157,11 @@
         </q-card-section>
 
         <q-select
-            v-if="opcionPerros.length > 0"
-            v-model="perroElegido"
-            :options="opcionPerros"
-            class="q-px-xl"
-            label="Perro"
+          v-if="opcionPerros.length > 0"
+          v-model="perroElegido"
+          :options="opcionPerros"
+          class="q-px-xl"
+          label="Perro"
         />
 
         <q-card-actions align="right">
@@ -179,19 +181,24 @@
     <q-dialog v-model="quitarPerroCruza">
       <q-card>
         <q-card-section>
-          <div class="textoTituloTarjeta text-primary">Quitar perro de cruza</div>
+          <div class="textoTituloTarjeta text-primary">
+            Quitar perro de cruza
+          </div>
         </q-card-section>
 
-        <q-card-section class="q-pt-none" v-if="opcionMisPerrosEnCruza.length === 0">
+        <q-card-section
+          class="q-pt-none"
+          v-if="opcionMisPerrosEnCruza.length === 0"
+        >
           Todavia no tenes ningun perro en cruza.
         </q-card-section>
 
         <q-select
-            v-if="opcionMisPerrosEnCruza.length > 0"
-            v-model="quitarMiPerroElegidoCruza"
-            :options="opcionMisPerrosEnCruza"
-            class="q-px-xl"
-            label="Perro"
+          v-if="opcionMisPerrosEnCruza.length > 0"
+          v-model="quitarMiPerroElegidoCruza"
+          :options="opcionMisPerrosEnCruza"
+          class="q-px-xl"
+          label="Perro"
         />
 
         <q-card-actions align="right">
@@ -211,7 +218,7 @@
 </template>
 
 <script>
-import { defineComponent, watch, ref} from "vue";
+import { defineComponent, watch, ref } from "vue";
 import { api } from "../boot/axios.js";
 import { useStore } from "../pinia/store.js";
 import { checkToken } from "src/functions/check";
@@ -224,7 +231,7 @@ export default defineComponent({
   },
   setup() {
     const perrosCruza = ref([]);
-    const perrosRecomendados = ref([])
+    const perrosRecomendados = ref([]);
 
     const tab = ref("perrosTodos");
 
@@ -233,72 +240,78 @@ export default defineComponent({
 
     const quitarPerroCruza = ref(false);
 
-    const perroElegido = ref({ label: "", value: '' })
+    const perroElegido = ref({ label: "", value: "" });
 
     const nombrePerrosCruza = ref([]);
 
-    const opcionPerros = ref([])
+    const opcionPerros = ref([]);
 
-    const opcionMisPerrosEnCruza = ref ([])
+    const opcionMisPerrosEnCruza = ref([]);
 
-    const miPerroElegidoCruza = ref({ label: "", value: '' })
+    const miPerroElegidoCruza = ref({ label: "", value: "" });
 
-    const quitarMiPerroElegidoCruza = ref({ label: "", value: '' })
+    const quitarMiPerroElegidoCruza = ref({ label: "", value: "" });
 
     const quienSoy = {
       rol: useStore().rol,
       dni: useStore().dni,
       nombre: useStore().nombre,
-    }
+    };
 
     const loadMisPerrosEnCruza = async () => {
-      await api.post('/cruza/loadMisPerrosEnCruza', {
-        dni: useStore().dni,
-      })
-      .then((respuesta) => {
-        opcionMisPerrosEnCruza.value = []
-        respuesta.data.forEach(perro => {
-          opcionMisPerrosEnCruza.value.push({ label: perro.NOMBRE, value: perro })
-        });
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    }
-
-    const loadMisDisponiblesCruzar = async () => {
-      try {
-        await api.post("/cruza/loadMisDisponiblesCruzar", {
+      await api
+        .post("/cruza/loadMisPerrosEnCruza", {
           dni: useStore().dni,
         })
         .then((respuesta) => {
-          opcionPerros.value = []
-          respuesta.data.forEach(perro => {
-            opcionPerros.value.push({ label: perro.NOMBRE, value: perro })
+          opcionMisPerrosEnCruza.value = [];
+          respuesta.data.forEach((perro) => {
+            opcionMisPerrosEnCruza.value.push({
+              label: perro.NOMBRE,
+              value: perro,
+            });
           });
         })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+
+    const loadMisDisponiblesCruzar = async () => {
+      try {
+        await api
+          .post("/cruza/loadMisDisponiblesCruzar", {
+            dni: useStore().dni,
+          })
+          .then((respuesta) => {
+            opcionPerros.value = [];
+            respuesta.data.forEach((perro) => {
+              opcionPerros.value.push({ label: perro.NOMBRE, value: perro });
+            });
+          });
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
 
     const loadPerrosRecomendados = async (perro) => {
-      await api.post('/cruza/getPerrosRecomendados', {
-        dni: useStore().dni,
-        raza: perro.RAZA,
-        sexo: perro.SEXO,
-      })
-      .then((respuesta) => {
-        perrosRecomendados.value = respuesta.data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    }
+      await api
+        .post("/cruza/getPerrosRecomendados", {
+          dni: useStore().dni,
+          raza: perro.RAZA,
+          sexo: perro.SEXO,
+        })
+        .then((respuesta) => {
+          perrosRecomendados.value = respuesta.data;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
 
     watch(miPerroElegidoCruza, (nuevoValor, valorAnterior) => {
-      if (miPerroElegidoCruza.value.label !== '') {
-        loadPerrosRecomendados(nuevoValor.value)
+      if (miPerroElegidoCruza.value.label !== "") {
+        loadPerrosRecomendados(nuevoValor.value);
       }
     });
 
@@ -317,36 +330,39 @@ export default defineComponent({
     };
 
     const registrarPerroCruza = async (id) => {
-      await api.post('/cruza/addPerroCruza', {
-            id: id,
+      await api
+        .post("/cruza/addPerroCruza", {
+          id: id,
         })
         .then(() => {
-          perroElegido.value = { label: "", value: '' }
-          opcionPerros.value = []
-          loadMisPerrosEnCruza()
-          loadMisDisponiblesCruzar()
-        }).catch((error) => {
-          console.log(error)
+          perroElegido.value = { label: "", value: "" };
+          opcionPerros.value = [];
+          loadMisPerrosEnCruza();
+          loadMisDisponiblesCruzar();
         })
+        .catch((error) => {
+          console.log(error);
+        });
     };
 
     const eliminarPerroCruza = async (id) => {
-      await api.post('/cruza/quitarPerroCruza', {
-        id: id,
-      })
-      .then(() => {
-        loadMisPerrosEnCruza()
-        loadMisDisponiblesCruzar()
-        if (miPerroElegidoCruza.value.ID === undefined) {
-          perrosRecomendados.value = []
-          miPerroElegidoCruza.value = { label: "", value: '' }
-        }
-        quitarMiPerroElegidoCruza.value = { label: "", value: '' }
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    }
+      await api
+        .post("/cruza/quitarPerroCruza", {
+          id: id,
+        })
+        .then(() => {
+          loadMisPerrosEnCruza();
+          loadMisDisponiblesCruzar();
+          if (miPerroElegidoCruza.value.ID === undefined) {
+            perrosRecomendados.value = [];
+            miPerroElegidoCruza.value = { label: "", value: "" };
+          }
+          quitarMiPerroElegidoCruza.value = { label: "", value: "" };
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
 
     return {
       eliminarPerroCruza,
@@ -366,22 +382,22 @@ export default defineComponent({
       quitarMiPerroElegidoCruza,
       loadPerrosRecomendados,
       loadMisDisponiblesCruzar,
-      loadMisPerrosEnCruza
+      loadMisPerrosEnCruza,
     };
   },
   mounted() {
-    checkToken()
-    this.loadPerrosCruza()
-    this.loadMisDisponiblesCruzar()
-    this.loadMisPerrosEnCruza()
+    checkToken();
+    this.loadPerrosCruza();
+    this.loadMisDisponiblesCruzar();
+    this.loadMisPerrosEnCruza();
   },
   computed: {
-    camposValidos () {
-      return this.perroElegido.label !== ''
+    camposValidos() {
+      return this.perroElegido.label !== "";
     },
-    camposValidosQuitar () {
-      return this.quitarMiPerroElegidoCruza.label !== ''
-    }
-  }
+    camposValidosQuitar() {
+      return this.quitarMiPerroElegidoCruza.label !== "";
+    },
+  },
 });
 </script>

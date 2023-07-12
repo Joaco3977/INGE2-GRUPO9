@@ -46,7 +46,7 @@
             </div>
             <q-separator class="q-mt-xs" dark />
           </div>
-          <q-card-actions class="justify-end items-center">
+          <q-card-actions class="justify-center items-center">
             <q-btn @click="contactarDuenio(id)" flat class="textoBoton"> Contactar dueño </q-btn>
           </q-card-actions>
         </q-card-section>
