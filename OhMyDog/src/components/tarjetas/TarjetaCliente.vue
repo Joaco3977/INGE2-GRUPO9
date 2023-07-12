@@ -226,6 +226,7 @@ export default defineComponent({
     const perrosCliente = ref([]);
     const verPerro = ref(false);
     const perroElegido = ref("");
+    const agregarPerro = ref(false)
 
     const quienSoy = {
       rol: useStore().rol,
@@ -234,6 +235,7 @@ export default defineComponent({
     };
 
     const registrarPerro = async () => {
+      agregarPerro.value = false
       loadPerrosCliente();
     };
 
@@ -277,7 +279,7 @@ export default defineComponent({
       expandedItem: ref(false),
       nombresPerros,
       verPerro,
-      agregarPerro: ref(false),
+      agregarPerro,
       mostrarPopupEditar,
       perrosCliente,
       perroElegido,

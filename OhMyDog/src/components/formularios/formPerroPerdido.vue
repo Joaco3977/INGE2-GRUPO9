@@ -29,7 +29,7 @@
               :field-name="'perroPerdidoImagen'"
               :form-fields="[
                 {name: 'seccion', value: 'PERDIDA'},
-                {name: 'id', value: idPerroPerdidoAgregado}
+                {name: 'id', value: 0}
               ]"
               url="http://localhost:5137/perroPerdido/subirImagenPerdido"
               style="max-width: 300px"
@@ -126,7 +126,6 @@ export default defineComponent({
     };
 
     const onReset = () => {
-      console.log("Los datos están mal!");
       perroSEXO.value = "";
       perroNOMBRE.value = "";
       perroTELEFONO.value = "";
@@ -155,8 +154,6 @@ export default defineComponent({
       return date <= hoy && date >= fechaStr;
     };
 
-    const idPerroPerdidoAgregado = ref(0)
-
     const imagenElegida = ref(false)
 
     return {
@@ -174,7 +171,6 @@ export default defineComponent({
       ],
       getDatosAdopcion,
       onReset,
-      idPerroPerdidoAgregado,
       imagenElegida,
     };
   },

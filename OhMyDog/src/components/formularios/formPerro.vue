@@ -23,7 +23,7 @@
               :field-name="'perroPerdidoImagen'"
               :form-fields="[
                 {name: 'seccion', value: 'PERRO'},
-                {name: 'id', value: idPerroPerdidoAgregado}
+                {name: 'id', value: 0}
               ]"
               url="http://localhost:5137/perro/subirImagenPerro"
               style="max-width: 300px"
@@ -95,9 +95,7 @@
               @click="this.ejecutarFuncionPadre()"
               :disabled="!camposValidos"
               color="accent"
-              v-close-popup
             />
-
           </div>
         </q-form>
       </q-card-section>
@@ -108,9 +106,9 @@
 <script>
 import { defineComponent, ref } from "vue";
 import { useStore } from "src/pinia/store";
-import { useQuasar } from "quasar";
 import { normalizeString } from "src/functions/misc";
 import { api } from "src/boot/axios";
+import { useQuasar } from "quasar";
 
 export default defineComponent({
   name: "formPerro",
@@ -122,7 +120,7 @@ export default defineComponent({
     dnicliente: String,
   },
   setup(props) {
-    const $q = useQuasar();
+    const $q = useQuasar()
 
     const perroSEXO = ref("");
     const perroTAMANIO = ref("");
@@ -131,9 +129,6 @@ export default defineComponent({
     const perroRAZA = ref("");
     const perroCOLOR = ref("");
     const perroPESO = ref("");
-
-    const imagenElegida = ref(false)
-    const idPerroPerdidoAgregado = ref(0)
 
     const getDatosPerro = () => {
       let subioFoto;
@@ -192,6 +187,8 @@ export default defineComponent({
       return date <= hoy && date >= fechaStr;
     };
 
+    const imagenElegida = ref(false)
+
     return {
       perroNACIMIENTO,
       perroSEXO,
@@ -211,7 +208,6 @@ export default defineComponent({
       ],
       imagenElegida,
       quienSoy,
-      idPerroPerdidoAgregado,
       getDatosPerro,
       onReset,
       opcionesFecha,
@@ -235,7 +231,6 @@ export default defineComponent({
           quienSoy: this.quienSoy,
       })
       .then((result) => {
-        console.log(this.$refs.uploaderPerdido)
         this.$refs.uploaderPerdido.formFields[1].value = result.data.id
         this.$refs.uploaderPerdido.upload();
         this.$emit("registrarPerro");
