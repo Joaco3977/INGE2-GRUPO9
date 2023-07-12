@@ -152,6 +152,7 @@
       <FormPerro
         @registrarPerro="registrarPerro"
         :nombresPerros="nombresPerros"
+        :dnicliente="dni"
       />
     </q-dialog>
 
@@ -232,25 +233,8 @@ export default defineComponent({
       nombre: useStore().nombre,
     };
 
-    const registrarPerro = async (perroAdd) => {
-      try {
-        const response = await api.post("/perro/addPerro", {
-          perro: {
-            nombre: perroAdd.nombre,
-            tamanio: perroAdd.tamanio,
-            color: perroAdd.color,
-            nacimiento: perroAdd.nacimiento,
-            sexo: perroAdd.sexo,
-            raza: perroAdd.raza,
-            peso: perroAdd.peso,
-            dnicliente: props.dni,
-          },
-          quienSoy: quienSoy,
-        });
-        loadPerrosCliente();
-      } catch (error) {
-        console.error("error en agregar perro cliente", error);
-      }
+    const registrarPerro = async () => {
+      loadPerrosCliente();
     };
 
     const loadPerrosCliente = async () => {

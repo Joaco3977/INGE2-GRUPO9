@@ -6,7 +6,6 @@
           Agregar perro a cliente
         </div>
       </q-card-section>
-
       <q-card-section class="">
         <q-form class="q-px-xl" @submit.prevent="ejecutarFuncionPadre" reset>
           <q-input
@@ -15,6 +14,24 @@
             label="Nombre"
             type="text"
           />
+          <div class="column items-center bg-white q-pa-sm">
+            <q-uploader
+              v-model="imagenElegida"
+              ref="uploaderPerdido"
+              label= "Foto del perro"
+              accept="image/*"
+              :field-name="'perroPerdidoImagen'"
+              :form-fields="[
+                {name: 'seccion', value: 'PERRO'},
+                {name: 'id', value: idPerroPerdidoAgregado}
+              ]"
+              url="http://localhost:5137/perro/subirImagenPerro"
+              style="max-width: 300px"
+
+              @added="imagenElegida = true"
+              @removed="imagenElegida = false"
+            />
+          </div>
           <q-select
             v-model="perroTAMANIO"
             :options="opcionTamanio"
@@ -80,7 +97,7 @@
               color="accent"
               v-close-popup
             />
-            
+
           </div>
         </q-form>
       </q-card-section>
@@ -93,6 +110,7 @@ import { defineComponent, ref } from "vue";
 import { useStore } from "src/pinia/store";
 import { useQuasar } from "quasar";
 import { normalizeString } from "src/functions/misc";
+import { api } from "src/boot/axios";
 
 export default defineComponent({
   name: "formPerro",
@@ -101,8 +119,9 @@ export default defineComponent({
       type: Array,
       required: true,
     },
+    dnicliente: String,
   },
-  setup() {
+  setup(props) {
     const $q = useQuasar();
 
     const perroSEXO = ref("");
@@ -113,7 +132,16 @@ export default defineComponent({
     const perroCOLOR = ref("");
     const perroPESO = ref("");
 
+    const imagenElegida = ref(false)
+    const idPerroPerdidoAgregado = ref(0)
+
     const getDatosPerro = () => {
+      let subioFoto;
+      if (imagenElegida.value === true) {
+        subioFoto = 1
+      } else {
+        subioFoto = 0
+      }
       const perro = {
         sexo: perroSEXO.value.value,
         tamanio: perroTAMANIO.value.value,
@@ -122,12 +150,19 @@ export default defineComponent({
         color: perroCOLOR.value,
         nombre: perroNOMBRE.value,
         peso: perroPESO.value,
+        dnicliente: props.dnicliente,
+        foto: subioFoto
       };
       return perro;
     };
 
+    const quienSoy = {
+      rol: useStore().rol,
+      dni: useStore().dni,
+      nombre: useStore().nombre,
+    };
+
     const onReset = () => {
-      console.log("Los datos están mal!");
       perroSEXO.value = "";
       perroTAMANIO.value = "";
       perroNACIMIENTO.value = "";
@@ -174,15 +209,40 @@ export default defineComponent({
         { label: "Mediano", value: "Mediano" },
         { label: "Grande", value: "Grande" },
       ],
+      imagenElegida,
+      quienSoy,
+      idPerroPerdidoAgregado,
       getDatosPerro,
       onReset,
       opcionesFecha,
     };
   },
   methods: {
-    ejecutarFuncionPadre() {
+    async ejecutarFuncionPadre() {
       const perro = this.getDatosPerro();
-      this.$emit("registrarPerro", perro);
+      await api.post('/perro/addPerro', {
+        perro: {
+            nombre: perro.nombre,
+            tamanio: perro.tamanio,
+            color: perro.color,
+            nacimiento: perro.nacimiento,
+            sexo: perro.sexo,
+            raza: perro.raza,
+            peso: perro.peso,
+            foto: perro.foto,
+            dnicliente: perro.dnicliente,
+          },
+          quienSoy: this.quienSoy,
+      })
+      .then((result) => {
+        console.log(this.$refs.uploaderPerdido)
+        this.$refs.uploaderPerdido.formFields[1].value = result.data.id
+        this.$refs.uploaderPerdido.upload();
+        this.$emit("registrarPerro");
+      })
+      .catch((error) => {
+        console.log(error)
+      })
     },
   },
   computed: {

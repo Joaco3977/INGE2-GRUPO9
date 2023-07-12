@@ -63,6 +63,7 @@ router.get('/getPerrosPerdidos', async (req, res) => {
         res.status(401)
     })
 })
+
 router.post('/getPerrosPerdidosPropios', async (req, res) => {
     await knex('perroPerdido').select('*').where('DNICLIENTE', req.body.dni).andWhere('ELIMINADO', 0)
     .then((resultado) => {
@@ -92,7 +93,6 @@ router.post('/addPerroPerdido', async (req, res) => {
             }
             addperroPerdido(nuevoPerroP)
             .then ((resultadoAdd) => {
-                console.log(resultadoAdd)
                 if (resultadoAdd.resultado !== false) {
                     //añadir a log
                     console.log("\x1b[35m%s\x1b[0m", `Cliente agrego al perro perdido: ${req.body.perro.nombre}`)

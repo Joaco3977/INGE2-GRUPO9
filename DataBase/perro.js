@@ -14,6 +14,7 @@ const router = express.Router();
 
 const Consola = require ('./serverFunctions.js')
 const Log = require ('./log.js')
+const upload = require('./upload.js')
 
 const rutaFoto = require ('./configs/rutaFotosConfig.js')
 
@@ -28,12 +29,22 @@ const getPerrosPropios = async (dni) => {
 }
 const addPerro = async (nuevoPerro) => {
     try {
-        await knex('perro').insert(nuevoPerro)
-        return true
-    } catch (error) {
-        console.error(error)
-        return false
-    }
+        await knex('perro').insert(nuevoPerro);
+        const resultado = await knex('perro')
+          .select('ID')
+          .where({
+            DNICLIENTE: nuevoPerro.DNICLIENTE,
+            NOMBRE: nuevoPerro.NOMBRE,
+          })
+          .first();
+        return {
+          resultado: true,
+          id: resultado.ID
+        };
+      } catch (error) {
+        console.error(error);
+        return false;
+      }
 }
 
 
@@ -62,13 +73,15 @@ router.post('/addPerro', async (req, res) => {
         PESO:req.body.perro.peso,
         COLOR:req.body.perro.color,
         DNICLIENTE:req.body.perro.dnicliente,
+        FOTO:req.body.perro.foto
     }
     addPerro(nuevoPerro)
     .then ((resultadoAdd) => {
-        if (resultadoAdd !== false) {
+        if (resultadoAdd.resultado !== false) {
+            console.log(resultadoAdd)
             Log.agregarEntradaLog(2, req.body.quienSoy.nombre, req.body.quienSoy.dni, `agrego al PERRO ${req.body.perro.nombre} del cliente con DNI:${req.body.perro.dnicliente}`)
             Consola.mensaje("\x1b[35m%s\x1b[0m", `VETERINARIO agrego al perro: ${req.body.perro.nombre} al cliente con dni ${req.body.perro.dnicliente}`)
-            res.status(200).send({})
+            res.status(200).send({id: resultadoAdd.id})
         } else {
             res.status(401).send('No fue posible agregar al perro');
         }
@@ -124,6 +137,10 @@ router.post('/deletePerroPropio', async (req, res) => {
         console.log(error)
         res.status(401).send('No fue posible conectar con la base de datos');
     })
+})
+
+router.post('/subirImagenPerro',upload.upload,async (req,res)=>{
+    res.send({data: 'enviado'})
 })
 
 module.exports = router;

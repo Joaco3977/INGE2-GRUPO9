@@ -188,7 +188,6 @@ export default defineComponent({
           nombre: useStore().nombre,
         }).then((result)=>{
           this.$refs.uploaderPerdido.formFields[1].value = result.data.id
-          console.log(this.$refs.uploaderPerdido.formFields)
           this.$refs.uploaderPerdido.upload();
           this.$emit("registrarPerro", perro);
         })
