@@ -82,14 +82,15 @@ export default defineComponent({
     peso: String,
     color: String,
     linkImg: String,
-    foto: Image,
+    foto: Number,
   },
   setup(props) {
 
     const rutaFoto = ref(``)
 
     const getFoto = async () => {
-      await api.post('/perro/getFoto', {
+      if (props.foto === 1) {
+        await api.post('/perro/getFoto', {
         id: props.id
       },
       {
@@ -99,6 +100,9 @@ export default defineComponent({
         const imageUrl = URL.createObjectURL(resultado.data);
         rutaFoto.value = imageUrl;
       })
+      } else {
+        rutaFoto.value = `../../../public/silueta.png`;
+      }
     }
 
     return {

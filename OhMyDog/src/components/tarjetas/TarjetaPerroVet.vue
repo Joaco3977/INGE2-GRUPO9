@@ -25,7 +25,7 @@
           <q-img
             class="col-5 q-pb-none"
             fit="cover"
-            src="https://shorturl.at/mnsL0"
+            :src="rutaFoto"
           />
 
           <q-card-section class="column col-7 justify-between">
@@ -159,6 +159,28 @@ export default defineComponent({
     },
   },
   setup(props, context) {
+
+    const rutaFoto = ref(``)
+
+    console.log(props.perro)
+
+    const getFoto = async () => {
+      if (props.perro.FOTO === 1) {
+        await api.post('/perro/getFoto', {
+        id: props.perro.ID
+      },
+      {
+        responseType: 'blob'
+      })
+      .then((resultado) => {
+        const imageUrl = URL.createObjectURL(resultado.data);
+        rutaFoto.value = imageUrl;
+      })
+      } else {
+        rutaFoto.value = `../../../public/silueta.png`;
+      }
+    }
+
     const tab = ref("datos");
     const edicionPerro = ref(false);
     const quienSoy = {
@@ -193,6 +215,8 @@ export default defineComponent({
       confirmar: ref(false),
       edicionPerro,
       editarPerro,
+      rutaFoto,
+      getFoto
     };
   },
   methods: {
@@ -229,6 +253,9 @@ export default defineComponent({
 
       return formattedDate;
     }
+  },
+  mounted() {
+    this.getFoto()
   }
 });
 </script>

@@ -34,7 +34,6 @@
                 :sexo="perro.SEXO"
                 :raza="perro.RAZA"
                 :color="perro.COLOR"
-                linkImg="https://cdn.quasar.dev/img/parallax2.jpg"
               />
             </div>
             <div
