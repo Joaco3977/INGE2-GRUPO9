@@ -48,7 +48,7 @@ const enviarMail = async (asunto, mensaje, destinatario) => {
 }
 
 function checkAdmin (mail, pass) {
-    if (mail == 'admin@admin' && pass == '357') {
+    if (mail == 'admin@admin' && pass == '123') {
         return true;
     } return false;
 }
